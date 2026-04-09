@@ -15,26 +15,38 @@
 <body>
   <header class="app-header">
     <h1>Grocery Scanner</h1>
-    <p class="subtitle">First phone setup test</p>
+    <p class="subtitle">Shopping list - step 2</p>
   </header>
 
   <main class="container">
     <section class="card">
-      <h2>Status</h2>
-      <p id="status">Loading app...</p>
+      <h2>Add item</h2>
+
+      <div class="input-row">
+        <input
+          id="itemInput"
+          type="text"
+          placeholder="e.g. Bananas"
+          autocomplete="off"
+        />
+        <button id="addButton" class="primary-button">Add</button>
+      </div>
+
+      <p id="status" class="status-text">Ready.</p>
     </section>
 
     <section class="card">
-      <h2>What comes next</h2>
-      <ul>
-        <li>Shopping list</li>
-        <li>Barcode scan</li>
-        <li>Nutrition lookup</li>
-        <li>Recipe macros</li>
-      </ul>
-    </section>
+      <div class="list-header">
+        <h2>Your shopping list</h2>
+        <button id="clearButton" class="secondary-button">Clear all</button>
+      </div>
 
-    <button id="testButton">Tap me</button>
+      <ul id="shoppingList" class="shopping-list"></ul>
+
+      <p id="emptyMessage" class="empty-message">
+        Your list is empty.
+      </p>
+    </section>
   </main>
 
   <script src="app.js"></script>
