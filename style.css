@@ -109,10 +109,31 @@ button {
   gap: 12px;
 }
 
+.status-section {
+  margin-top: 16px;
+}
+
+.status-heading {
+  margin: 0 0 8px;
+  font-size: 18px;
+}
+
+.category-block {
+  margin-top: 14px;
+}
+
+.category-heading {
+  margin: 0 0 6px;
+  font-size: 15px;
+  color: #475569;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
 .shopping-list {
   list-style: none;
   padding: 0;
-  margin: 16px 0 0;
+  margin: 0;
 }
 
 .shopping-list li {
@@ -148,6 +169,16 @@ button {
   display: block;
   font-size: 14px;
   color: #64748b;
+}
+
+.item-category {
+  display: inline-block;
+  margin-top: 6px;
+  font-size: 12px;
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: #e8f5e9;
+  color: #2e7d32;
 }
 
 .item-button.bought .item-name,
