@@ -41,19 +41,26 @@ h2 {
   margin-top: 0;
 }
 
+.form-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
 .input-row {
   display: flex;
   gap: 10px;
-  margin-bottom: 12px;
 }
 
-input {
-  flex: 1;
+input,
+select {
+  width: 100%;
   border: 1px solid #cbd5e1;
   border-radius: 12px;
   padding: 14px 12px;
   font-size: 16px;
   min-width: 0;
+  background: white;
 }
 
 button {
@@ -114,12 +121,28 @@ button {
   color: #1f2937;
   padding: 0;
   border: 0;
-  font-size: 16px;
 }
 
 .item-button.bought {
-  text-decoration: line-through;
   opacity: 0.55;
+}
+
+.item-name {
+  display: block;
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.item-meta {
+  display: block;
+  font-size: 14px;
+  color: #64748b;
+}
+
+.item-button.bought .item-name,
+.item-button.bought .item-meta {
+  text-decoration: line-through;
 }
 
 .delete-button {
