@@ -15,7 +15,7 @@
 <body>
   <header class="app-header">
     <h1>Grocery Scanner</h1>
-    <p class="subtitle">Shopping list - step 7</p>
+    <p class="subtitle">Shopping list - step 8</p>
   </header>
 
   <main class="container">
@@ -74,6 +74,43 @@
     </section>
 
     <section class="card">
+      <h2>Search and filter</h2>
+
+      <div class="form-stack">
+        <input
+          id="searchInput"
+          type="text"
+          placeholder="Search item name"
+          autocomplete="off"
+        />
+
+        <div class="input-row">
+          <select id="filterStatusInput">
+            <option value="all">All statuses</option>
+            <option value="to-buy">To buy</option>
+            <option value="bought">Bought</option>
+          </select>
+
+          <select id="filterCategoryInput">
+            <option value="all">All categories</option>
+            <option value="">Uncategorised</option>
+            <option value="Produce">Produce</option>
+            <option value="Dairy">Dairy</option>
+            <option value="Pantry">Pantry</option>
+            <option value="Frozen">Frozen</option>
+            <option value="Drinks">Drinks</option>
+            <option value="Household">Household</option>
+            <option value="Personal care">Personal care</option>
+          </select>
+        </div>
+
+        <button id="resetFiltersButton" class="secondary-button">
+          Reset filters
+        </button>
+      </div>
+    </section>
+
+    <section class="card">
       <div class="list-header">
         <h2>Your shopping list</h2>
         <button id="clearButton" class="secondary-button">Clear all</button>
@@ -84,7 +121,7 @@
       <div id="shoppingSections"></div>
 
       <p id="emptyMessage" class="empty-message">
-        Your list is empty.
+        No items match the current filters.
       </p>
     </section>
   </main>
