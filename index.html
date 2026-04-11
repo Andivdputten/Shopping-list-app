@@ -15,20 +15,43 @@
 <body>
   <header class="app-header">
     <h1>Grocery Scanner</h1>
-    <p class="subtitle">Shopping list - step 3</p>
+    <p class="subtitle">Shopping list - step 4</p>
   </header>
 
   <main class="container">
     <section class="card">
       <h2>Add item</h2>
 
-      <div class="input-row">
+      <div class="form-stack">
         <input
           id="itemInput"
           type="text"
-          placeholder="e.g. Bananas"
+          placeholder="Item name, e.g. Bananas"
           autocomplete="off"
         />
+
+        <div class="input-row">
+          <input
+            id="quantityInput"
+            type="number"
+            inputmode="decimal"
+            min="0"
+            step="any"
+            placeholder="Quantity"
+          />
+
+          <select id="unitInput">
+            <option value="pcs">pcs</option>
+            <option value="g">g</option>
+            <option value="kg">kg</option>
+            <option value="ml">ml</option>
+            <option value="l">l</option>
+            <option value="pack">pack</option>
+            <option value="bottle">bottle</option>
+            <option value="can">can</option>
+          </select>
+        </div>
+
         <button id="addButton" class="primary-button">Add</button>
       </div>
 
