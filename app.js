@@ -1,7 +1,9 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const STORAGE_KEY = "grocery_scanner_items_v2";
+  const STORAGE_KEY = "grocery_scanner_items_v3";
 
   const itemInput = document.getElementById("itemInput");
+  const quantityInput = document.getElementById("quantityInput");
+  const unitInput = document.getElementById("unitInput");
   const addButton = document.getElementById("addButton");
   const clearButton = document.getElementById("clearButton");
   const shoppingList = document.getElementById("shoppingList");
@@ -10,6 +12,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (
     !itemInput ||
+    !quantityInput ||
+    !unitInput ||
     !addButton ||
     !clearButton ||
     !shoppingList ||
@@ -28,22 +32,42 @@ document.addEventListener("DOMContentLoaded", () => {
   addButton.addEventListener("click", addItem);
   clearButton.addEventListener("click", clearAllItems);
 
-  itemInput.addEventListener("keydown", (event) => {
+  itemInput.addEventListener("keydown", handleEnterToAdd);
+  quantityInput.addEventListener("keydown", handleEnterToAdd);
+  unitInput.addEventListener("keydown", handleEnterToAdd);
+
+  function handleEnterToAdd(event) {
     if (event.key === "Enter") {
       addItem();
     }
-  });
+  }
 
   function addItem() {
-    const value = itemInput.value.trim();
+    const name = itemInput.value.trim();
+    const quantityRaw = quantityInput.value.trim();
+    const unit = unitInput.value;
 
-    if (value === "") {
+    if (name === "") {
       setStatus("Type an item name first.");
       return;
     }
 
+    if (quantityRaw === "") {
+      setStatus("Enter a quantity.");
+      return;
+    }
+
+    const quantity = Number(quantityRaw);
+
+    if (!Number.isFinite(quantity) || quantity <= 0) {
+      setStatus("Quantity must be greater than 0.");
+      return;
+    }
+
     items.push({
-      name: value,
+      name,
+      quantity,
+      unit,
       bought: false
     });
 
@@ -51,8 +75,11 @@ document.addEventListener("DOMContentLoaded", () => {
     renderList();
 
     itemInput.value = "";
+    quantityInput.value = "";
+    unitInput.value = "pcs";
     itemInput.focus();
-    setStatus(`Added "${value}".`);
+
+    setStatus(`Added "${name}".`);
   }
 
   function toggleBought(index) {
@@ -102,10 +129,20 @@ document.addEventListener("DOMContentLoaded", () => {
       if (item.bought) {
         itemButton.classList.add("bought");
       }
-      itemButton.textContent = item.name;
       itemButton.addEventListener("click", () => {
         toggleBought(index);
       });
+
+      const nameSpan = document.createElement("span");
+      nameSpan.className = "item-name";
+      nameSpan.textContent = item.name;
+
+      const metaSpan = document.createElement("span");
+      metaSpan.className = "item-meta";
+      metaSpan.textContent = `${formatQuantity(item.quantity)} ${item.unit}`;
+
+      itemButton.appendChild(nameSpan);
+      itemButton.appendChild(metaSpan);
 
       const deleteButton = document.createElement("button");
       deleteButton.className = "delete-button";
@@ -118,6 +155,14 @@ document.addEventListener("DOMContentLoaded", () => {
       li.appendChild(deleteButton);
       shoppingList.appendChild(li);
     });
+  }
+
+  function formatQuantity(quantity) {
+    if (Number.isInteger(quantity)) {
+      return String(quantity);
+    }
+
+    return String(quantity);
   }
 
   function saveItems() {
@@ -143,6 +188,8 @@ document.addEventListener("DOMContentLoaded", () => {
           typeof item === "object" &&
           item !== null &&
           typeof item.name === "string" &&
+          typeof item.quantity === "number" &&
+          typeof item.unit === "string" &&
           typeof item.bought === "boolean"
         );
       });
