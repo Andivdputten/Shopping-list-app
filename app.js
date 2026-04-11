@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const addButton = document.getElementById("addButton");
   const cancelEditButton = document.getElementById("cancelEditButton");
   const clearButton = document.getElementById("clearButton");
-  const shoppingList = document.getElementById("shoppingList");
+  const shoppingSections = document.getElementById("shoppingSections");
   const emptyMessage = document.getElementById("emptyMessage");
   const statusEl = document.getElementById("status");
 
@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", () => {
     !addButton ||
     !cancelEditButton ||
     !clearButton ||
-    !shoppingList ||
+    !shoppingSections ||
     !emptyMessage ||
     !statusEl
   ) {
@@ -174,7 +174,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function renderList() {
-    shoppingList.innerHTML = "";
+    shoppingSections.innerHTML = "";
 
     if (items.length === 0) {
       emptyMessage.style.display = "block";
@@ -183,7 +183,51 @@ document.addEventListener("DOMContentLoaded", () => {
 
     emptyMessage.style.display = "none";
 
+    const groupedItems = getGroupedItems();
+
+    if (groupedItems.toBuy.length > 0) {
+      shoppingSections.appendChild(
+        createSection("To buy", groupedItems.toBuy)
+      );
+    }
+
+    if (groupedItems.bought.length > 0) {
+      shoppingSections.appendChild(
+        createSection("Bought", groupedItems.bought)
+      );
+    }
+  }
+
+  function getGroupedItems() {
+    const toBuy = [];
+    const bought = [];
+
     items.forEach((item, index) => {
+      const entry = { item, index };
+
+      if (item.bought) {
+        bought.push(entry);
+      } else {
+        toBuy.push(entry);
+      }
+    });
+
+    return { toBuy, bought };
+  }
+
+  function createSection(title, entries) {
+    const wrapper = document.createElement("div");
+
+    const heading = document.createElement("h3");
+    heading.textContent = `${title} (${entries.length})`;
+    heading.style.margin = "16px 0 8px";
+    heading.style.fontSize = "18px";
+
+    const list = document.createElement("ul");
+    list.className = "shopping-list";
+    list.style.marginTop = "0";
+
+    entries.forEach(({ item, index }) => {
       const li = document.createElement("li");
 
       const itemButton = document.createElement("button");
@@ -233,8 +277,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
       li.appendChild(itemButton);
       li.appendChild(actions);
-      shoppingList.appendChild(li);
+      list.appendChild(li);
     });
+
+    wrapper.appendChild(heading);
+    wrapper.appendChild(list);
+
+    return wrapper;
   }
 
   function buildMetaText(item) {
