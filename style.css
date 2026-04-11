@@ -52,6 +52,11 @@ h2 {
   gap: 10px;
 }
 
+.action-row {
+  display: flex;
+  gap: 10px;
+}
+
 input,
 select {
   width: 100%;
@@ -73,11 +78,16 @@ button {
 .primary-button {
   background: #2e7d32;
   color: white;
+  flex: 1;
 }
 
 .secondary-button {
   background: #e5e7eb;
   color: #111827;
+}
+
+.hidden {
+  display: none;
 }
 
 .status-text {
@@ -145,12 +155,24 @@ button {
   text-decoration: line-through;
 }
 
+.item-actions {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.edit-button {
+  background: #2563eb;
+  color: white;
+  padding: 10px 12px;
+  font-size: 14px;
+}
+
 .delete-button {
   background: #dc2626;
   color: white;
   padding: 10px 12px;
   font-size: 14px;
-  flex-shrink: 0;
 }
 
 .empty-message {
