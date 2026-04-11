@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const STORAGE_KEY = "grocery_scanner_items_v3";
+  const STORAGE_KEY = "grocery_scanner_items_v4";
 
   const itemInput = document.getElementById("itemInput");
   const quantityInput = document.getElementById("quantityInput");
@@ -45,23 +45,22 @@ document.addEventListener("DOMContentLoaded", () => {
   function addItem() {
     const name = itemInput.value.trim();
     const quantityRaw = quantityInput.value.trim();
-    const unit = unitInput.value;
+    const unit = unitInput.value.trim();
 
     if (name === "") {
       setStatus("Type an item name first.");
       return;
     }
 
-    if (quantityRaw === "") {
-      setStatus("Enter a quantity.");
-      return;
-    }
+    let quantity = null;
 
-    const quantity = Number(quantityRaw);
+    if (quantityRaw !== "") {
+      quantity = Number(quantityRaw);
 
-    if (!Number.isFinite(quantity) || quantity <= 0) {
-      setStatus("Quantity must be greater than 0.");
-      return;
+      if (!Number.isFinite(quantity) || quantity <= 0) {
+        setStatus("Quantity must be greater than 0.");
+        return;
+      }
     }
 
     items.push({
@@ -126,9 +125,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const itemButton = document.createElement("button");
       itemButton.className = "item-button";
+
       if (item.bought) {
         itemButton.classList.add("bought");
       }
+
       itemButton.addEventListener("click", () => {
         toggleBought(index);
       });
@@ -139,10 +140,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const metaSpan = document.createElement("span");
       metaSpan.className = "item-meta";
-      metaSpan.textContent = `${formatQuantity(item.quantity)} ${item.unit}`;
+
+      const metaText = buildMetaText(item);
+      metaSpan.textContent = metaText;
 
       itemButton.appendChild(nameSpan);
-      itemButton.appendChild(metaSpan);
+
+      if (metaText !== "") {
+        itemButton.appendChild(metaSpan);
+      }
 
       const deleteButton = document.createElement("button");
       deleteButton.className = "delete-button";
@@ -157,11 +163,22 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  function formatQuantity(quantity) {
-    if (Number.isInteger(quantity)) {
-      return String(quantity);
+  function buildMetaText(item) {
+    const hasQuantity = typeof item.quantity === "number" && item.quantity > 0;
+    const hasUnit = typeof item.unit === "string" && item.unit.trim() !== "";
+
+    if (hasQuantity && hasUnit) {
+      return `${formatQuantity(item.quantity)} ${item.unit}`;
     }
 
+    if (hasQuantity) {
+      return `${formatQuantity(item.quantity)}`;
+    }
+
+    return "";
+  }
+
+  function formatQuantity(quantity) {
     return String(quantity);
   }
 
@@ -188,7 +205,7 @@ document.addEventListener("DOMContentLoaded", () => {
           typeof item === "object" &&
           item !== null &&
           typeof item.name === "string" &&
-          typeof item.quantity === "number" &&
+          (typeof item.quantity === "number" || item.quantity === null) &&
           typeof item.unit === "string" &&
           typeof item.bought === "boolean"
         );
