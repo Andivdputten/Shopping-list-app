@@ -18,6 +18,12 @@ document.addEventListener("DOMContentLoaded", () => {
   const categoryInput = document.getElementById("categoryInput");
   const addButton = document.getElementById("addButton");
   const cancelEditButton = document.getElementById("cancelEditButton");
+
+  const searchInput = document.getElementById("searchInput");
+  const filterStatusInput = document.getElementById("filterStatusInput");
+  const filterCategoryInput = document.getElementById("filterCategoryInput");
+  const resetFiltersButton = document.getElementById("resetFiltersButton");
+
   const clearButton = document.getElementById("clearButton");
   const shoppingSections = document.getElementById("shoppingSections");
   const emptyMessage = document.getElementById("emptyMessage");
@@ -31,6 +37,10 @@ document.addEventListener("DOMContentLoaded", () => {
     !categoryInput ||
     !addButton ||
     !cancelEditButton ||
+    !searchInput ||
+    !filterStatusInput ||
+    !filterCategoryInput ||
+    !resetFiltersButton ||
     !clearButton ||
     !shoppingSections ||
     !emptyMessage ||
@@ -50,6 +60,11 @@ document.addEventListener("DOMContentLoaded", () => {
   addButton.addEventListener("click", submitForm);
   cancelEditButton.addEventListener("click", cancelEdit);
   clearButton.addEventListener("click", clearAllItems);
+  resetFiltersButton.addEventListener("click", resetFilters);
+
+  searchInput.addEventListener("input", renderList);
+  filterStatusInput.addEventListener("change", renderList);
+  filterCategoryInput.addEventListener("change", renderList);
 
   itemInput.addEventListener("keydown", handleEnterToSubmit);
   quantityInput.addEventListener("keydown", handleEnterToSubmit);
@@ -190,23 +205,28 @@ document.addEventListener("DOMContentLoaded", () => {
     setStatus("All items cleared.");
   }
 
+  function resetFilters() {
+    searchInput.value = "";
+    filterStatusInput.value = "all";
+    filterCategoryInput.value = "all";
+    renderList();
+    setStatus("Filters reset.");
+  }
+
   function renderList() {
     shoppingSections.innerHTML = "";
 
-    if (items.length === 0) {
+    const filteredEntries = getFilteredEntries();
+
+    if (filteredEntries.length === 0) {
       emptyMessage.style.display = "block";
       return;
     }
 
     emptyMessage.style.display = "none";
 
-    const toBuyEntries = items
-      .map((item, index) => ({ item, index }))
-      .filter((entry) => !entry.item.bought);
-
-    const boughtEntries = items
-      .map((item, index) => ({ item, index }))
-      .filter((entry) => entry.item.bought);
+    const toBuyEntries = filteredEntries.filter((entry) => !entry.item.bought);
+    const boughtEntries = filteredEntries.filter((entry) => entry.item.bought);
 
     if (toBuyEntries.length > 0) {
       shoppingSections.appendChild(createStatusSection("To buy", toBuyEntries));
@@ -215,6 +235,31 @@ document.addEventListener("DOMContentLoaded", () => {
     if (boughtEntries.length > 0) {
       shoppingSections.appendChild(createStatusSection("Bought", boughtEntries));
     }
+  }
+
+  function getFilteredEntries() {
+    const searchValue = searchInput.value.trim().toLowerCase();
+    const statusValue = filterStatusInput.value;
+    const categoryValue = filterCategoryInput.value;
+
+    return items
+      .map((item, index) => ({ item, index }))
+      .filter(({ item }) => {
+        const matchesSearch =
+          searchValue === "" ||
+          item.name.toLowerCase().includes(searchValue);
+
+        const matchesStatus =
+          statusValue === "all" ||
+          (statusValue === "to-buy" && !item.bought) ||
+          (statusValue === "bought" && item.bought);
+
+        const normalizedCategory = normalizeCategory(item.category);
+        const matchesCategory =
+          categoryValue === "all" || normalizedCategory === categoryValue;
+
+        return matchesSearch && matchesStatus && matchesCategory;
+      });
   }
 
   function createStatusSection(title, entries) {
