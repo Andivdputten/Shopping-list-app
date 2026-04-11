@@ -1,10 +1,21 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const STORAGE_KEY = "grocery_scanner_items_v4";
+  const STORAGE_KEY = "grocery_scanner_items_v5";
+  const CATEGORY_ORDER = [
+    "",
+    "Produce",
+    "Dairy",
+    "Pantry",
+    "Frozen",
+    "Drinks",
+    "Household",
+    "Personal care"
+  ];
 
   const formTitle = document.getElementById("formTitle");
   const itemInput = document.getElementById("itemInput");
   const quantityInput = document.getElementById("quantityInput");
   const unitInput = document.getElementById("unitInput");
+  const categoryInput = document.getElementById("categoryInput");
   const addButton = document.getElementById("addButton");
   const cancelEditButton = document.getElementById("cancelEditButton");
   const clearButton = document.getElementById("clearButton");
@@ -17,6 +28,7 @@ document.addEventListener("DOMContentLoaded", () => {
     !itemInput ||
     !quantityInput ||
     !unitInput ||
+    !categoryInput ||
     !addButton ||
     !cancelEditButton ||
     !clearButton ||
@@ -42,6 +54,7 @@ document.addEventListener("DOMContentLoaded", () => {
   itemInput.addEventListener("keydown", handleEnterToSubmit);
   quantityInput.addEventListener("keydown", handleEnterToSubmit);
   unitInput.addEventListener("keydown", handleEnterToSubmit);
+  categoryInput.addEventListener("keydown", handleEnterToSubmit);
 
   function handleEnterToSubmit(event) {
     if (event.key === "Enter") {
@@ -53,6 +66,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const name = itemInput.value.trim();
     const quantityRaw = quantityInput.value.trim();
     const unit = unitInput.value.trim();
+    const category = categoryInput.value.trim();
 
     if (name === "") {
       setStatus("Type an item name first.");
@@ -74,6 +88,7 @@ document.addEventListener("DOMContentLoaded", () => {
       name,
       quantity,
       unit,
+      category,
       bought: false
     };
 
@@ -98,6 +113,7 @@ document.addEventListener("DOMContentLoaded", () => {
     itemInput.value = item.name;
     quantityInput.value = item.quantity === null ? "" : String(item.quantity);
     unitInput.value = item.unit;
+    categoryInput.value = item.category;
     updateFormMode();
 
     itemInput.focus();
@@ -119,6 +135,7 @@ document.addEventListener("DOMContentLoaded", () => {
     itemInput.value = "";
     quantityInput.value = "";
     unitInput.value = "";
+    categoryInput.value = "";
     updateFormMode();
     itemInput.focus();
   }
@@ -183,49 +200,76 @@ document.addEventListener("DOMContentLoaded", () => {
 
     emptyMessage.style.display = "none";
 
-    const groupedItems = getGroupedItems();
+    const toBuyEntries = items
+      .map((item, index) => ({ item, index }))
+      .filter((entry) => !entry.item.bought);
 
-    if (groupedItems.toBuy.length > 0) {
-      shoppingSections.appendChild(
-        createSection("To buy", groupedItems.toBuy)
-      );
+    const boughtEntries = items
+      .map((item, index) => ({ item, index }))
+      .filter((entry) => entry.item.bought);
+
+    if (toBuyEntries.length > 0) {
+      shoppingSections.appendChild(createStatusSection("To buy", toBuyEntries));
     }
 
-    if (groupedItems.bought.length > 0) {
-      shoppingSections.appendChild(
-        createSection("Bought", groupedItems.bought)
-      );
+    if (boughtEntries.length > 0) {
+      shoppingSections.appendChild(createStatusSection("Bought", boughtEntries));
     }
   }
 
-  function getGroupedItems() {
-    const toBuy = [];
-    const bought = [];
-
-    items.forEach((item, index) => {
-      const entry = { item, index };
-
-      if (item.bought) {
-        bought.push(entry);
-      } else {
-        toBuy.push(entry);
-      }
-    });
-
-    return { toBuy, bought };
-  }
-
-  function createSection(title, entries) {
-    const wrapper = document.createElement("div");
+  function createStatusSection(title, entries) {
+    const wrapper = document.createElement("section");
+    wrapper.className = "status-section";
 
     const heading = document.createElement("h3");
+    heading.className = "status-heading";
     heading.textContent = `${title} (${entries.length})`;
-    heading.style.margin = "16px 0 8px";
-    heading.style.fontSize = "18px";
+
+    wrapper.appendChild(heading);
+
+    const groupedEntries = groupEntriesByCategory(entries);
+
+    CATEGORY_ORDER.forEach((category) => {
+      const categoryEntries = groupedEntries[category] || [];
+
+      if (categoryEntries.length === 0) {
+        return;
+      }
+
+      wrapper.appendChild(
+        createCategoryBlock(getCategoryLabel(category), categoryEntries)
+      );
+    });
+
+    return wrapper;
+  }
+
+  function groupEntriesByCategory(entries) {
+    const grouped = {};
+
+    entries.forEach((entry) => {
+      const key = normalizeCategory(entry.item.category);
+
+      if (!grouped[key]) {
+        grouped[key] = [];
+      }
+
+      grouped[key].push(entry);
+    });
+
+    return grouped;
+  }
+
+  function createCategoryBlock(title, entries) {
+    const wrapper = document.createElement("div");
+    wrapper.className = "category-block";
+
+    const heading = document.createElement("h4");
+    heading.className = "category-heading";
+    heading.textContent = `${title} (${entries.length})`;
 
     const list = document.createElement("ul");
     list.className = "shopping-list";
-    list.style.marginTop = "0";
 
     entries.forEach(({ item, index }) => {
       const li = document.createElement("li");
@@ -244,7 +288,6 @@ document.addEventListener("DOMContentLoaded", () => {
       const nameSpan = document.createElement("span");
       nameSpan.className = "item-name";
       nameSpan.textContent = item.name;
-
       itemButton.appendChild(nameSpan);
 
       const metaText = buildMetaText(item);
@@ -254,6 +297,11 @@ document.addEventListener("DOMContentLoaded", () => {
         metaSpan.textContent = metaText;
         itemButton.appendChild(metaSpan);
       }
+
+      const categoryLabel = document.createElement("span");
+      categoryLabel.className = "item-category";
+      categoryLabel.textContent = getCategoryLabel(item.category);
+      itemButton.appendChild(categoryLabel);
 
       const actions = document.createElement("div");
       actions.className = "item-actions";
@@ -284,6 +332,25 @@ document.addEventListener("DOMContentLoaded", () => {
     wrapper.appendChild(list);
 
     return wrapper;
+  }
+
+  function normalizeCategory(category) {
+    if (typeof category !== "string") {
+      return "";
+    }
+
+    const trimmed = category.trim();
+
+    if (CATEGORY_ORDER.includes(trimmed)) {
+      return trimmed;
+    }
+
+    return "";
+  }
+
+  function getCategoryLabel(category) {
+    const normalized = normalizeCategory(category);
+    return normalized === "" ? "Uncategorised" : normalized;
   }
 
   function buildMetaText(item) {
@@ -330,6 +397,7 @@ document.addEventListener("DOMContentLoaded", () => {
           typeof item.name === "string" &&
           (typeof item.quantity === "number" || item.quantity === null) &&
           typeof item.unit === "string" &&
+          typeof item.category === "string" &&
           typeof item.bought === "boolean"
         );
       });
