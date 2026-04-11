@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const STORAGE_KEY = "grocery_scanner_items";
+  const STORAGE_KEY = "grocery_scanner_items_v2";
 
   const itemInput = document.getElementById("itemInput");
   const addButton = document.getElementById("addButton");
@@ -25,10 +25,7 @@ document.addEventListener("DOMContentLoaded", () => {
   renderList();
   setStatus("App loaded successfully.");
 
-  addButton.addEventListener("click", () => {
-    addItem();
-  });
-
+  addButton.addEventListener("click", addItem);
   clearButton.addEventListener("click", clearAllItems);
 
   itemInput.addEventListener("keydown", (event) => {
@@ -45,7 +42,11 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    items.push(value);
+    items.push({
+      name: value,
+      bought: false
+    });
+
     saveItems();
     renderList();
 
@@ -54,8 +55,17 @@ document.addEventListener("DOMContentLoaded", () => {
     setStatus(`Added "${value}".`);
   }
 
+  function toggleBought(index) {
+    items[index].bought = !items[index].bought;
+    saveItems();
+    renderList();
+
+    const stateText = items[index].bought ? "bought" : "not bought";
+    setStatus(`Marked "${items[index].name}" as ${stateText}.`);
+  }
+
   function deleteItem(index) {
-    const removedItem = items[index];
+    const removedItem = items[index].name;
     items.splice(index, 1);
     saveItems();
     renderList();
@@ -87,9 +97,15 @@ document.addEventListener("DOMContentLoaded", () => {
     items.forEach((item, index) => {
       const li = document.createElement("li");
 
-      const span = document.createElement("span");
-      span.className = "item-text";
-      span.textContent = item;
+      const itemButton = document.createElement("button");
+      itemButton.className = "item-button";
+      if (item.bought) {
+        itemButton.classList.add("bought");
+      }
+      itemButton.textContent = item.name;
+      itemButton.addEventListener("click", () => {
+        toggleBought(index);
+      });
 
       const deleteButton = document.createElement("button");
       deleteButton.className = "delete-button";
@@ -98,7 +114,7 @@ document.addEventListener("DOMContentLoaded", () => {
         deleteItem(index);
       });
 
-      li.appendChild(span);
+      li.appendChild(itemButton);
       li.appendChild(deleteButton);
       shoppingList.appendChild(li);
     });
@@ -118,11 +134,18 @@ document.addEventListener("DOMContentLoaded", () => {
     try {
       const parsedItems = JSON.parse(savedItems);
 
-      if (Array.isArray(parsedItems)) {
-        return parsedItems;
+      if (!Array.isArray(parsedItems)) {
+        return [];
       }
 
-      return [];
+      return parsedItems.filter((item) => {
+        return (
+          typeof item === "object" &&
+          item !== null &&
+          typeof item.name === "string" &&
+          typeof item.bought === "boolean"
+        );
+      });
     } catch (error) {
       return [];
     }
