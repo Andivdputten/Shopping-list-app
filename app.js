@@ -26,7 +26,6 @@ document.addEventListener("DOMContentLoaded", () => {
   setStatus("App loaded successfully.");
 
   addButton.addEventListener("click", () => {
-    alert("Add button tapped");
     addItem();
   });
 
