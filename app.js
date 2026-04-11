@@ -75,7 +75,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     itemInput.value = "";
     quantityInput.value = "";
-    unitInput.value = "pcs";
+    unitInput.value = "";
     itemInput.focus();
 
     setStatus(`Added "${name}".`);
