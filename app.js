@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const STORAGE_KEY = "grocery_scanner_items_v5";
+  const STORAGE_KEY = "grocery_scanner_items_v6";
   const CATEGORY_ORDER = [
     "",
     "Produce",
@@ -16,6 +16,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const quantityInput = document.getElementById("quantityInput");
   const unitInput = document.getElementById("unitInput");
   const categoryInput = document.getElementById("categoryInput");
+  const noteInput = document.getElementById("noteInput");
   const addButton = document.getElementById("addButton");
   const cancelEditButton = document.getElementById("cancelEditButton");
 
@@ -35,6 +36,7 @@ document.addEventListener("DOMContentLoaded", () => {
     !quantityInput ||
     !unitInput ||
     !categoryInput ||
+    !noteInput ||
     !addButton ||
     !cancelEditButton ||
     !searchInput ||
@@ -82,6 +84,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const quantityRaw = quantityInput.value.trim();
     const unit = unitInput.value.trim();
     const category = categoryInput.value.trim();
+    const note = noteInput.value.trim();
 
     if (name === "") {
       setStatus("Type an item name first.");
@@ -104,6 +107,7 @@ document.addEventListener("DOMContentLoaded", () => {
       quantity,
       unit,
       category,
+      note,
       bought: false
     };
 
@@ -129,6 +133,7 @@ document.addEventListener("DOMContentLoaded", () => {
     quantityInput.value = item.quantity === null ? "" : String(item.quantity);
     unitInput.value = item.unit;
     categoryInput.value = item.category;
+    noteInput.value = item.note;
     updateFormMode();
 
     itemInput.focus();
@@ -151,6 +156,7 @@ document.addEventListener("DOMContentLoaded", () => {
     quantityInput.value = "";
     unitInput.value = "";
     categoryInput.value = "";
+    noteInput.value = "";
     updateFormMode();
     itemInput.focus();
   }
@@ -343,6 +349,13 @@ document.addEventListener("DOMContentLoaded", () => {
         itemButton.appendChild(metaSpan);
       }
 
+      if (item.note !== "") {
+        const noteSpan = document.createElement("span");
+        noteSpan.className = "item-note";
+        noteSpan.textContent = item.note;
+        itemButton.appendChild(noteSpan);
+      }
+
       const categoryLabel = document.createElement("span");
       categoryLabel.className = "item-category";
       categoryLabel.textContent = getCategoryLabel(item.category);
@@ -443,6 +456,7 @@ document.addEventListener("DOMContentLoaded", () => {
           (typeof item.quantity === "number" || item.quantity === null) &&
           typeof item.unit === "string" &&
           typeof item.category === "string" &&
+          typeof item.note === "string" &&
           typeof item.bought === "boolean"
         );
       });
