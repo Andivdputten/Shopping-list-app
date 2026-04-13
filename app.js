@@ -17,8 +17,15 @@ document.addEventListener("DOMContentLoaded", () => {
   const unitInput = document.getElementById("unitInput");
   const categoryInput = document.getElementById("categoryInput");
   const noteInput = document.getElementById("noteInput");
+  const barcodePreview = document.getElementById("barcodePreview");
+  const clearBarcodeButton = document.getElementById("clearBarcodeButton");
   const addButton = document.getElementById("addButton");
   const cancelEditButton = document.getElementById("cancelEditButton");
+
+  const startScannerButton = document.getElementById("startScannerButton");
+  const stopScannerButton = document.getElementById("stopScannerButton");
+  const scannerMessage = document.getElementById("scannerMessage");
+  const readerWrapper = document.getElementById("readerWrapper");
 
   const searchInput = document.getElementById("searchInput");
   const filterStatusInput = document.getElementById("filterStatusInput");
@@ -37,8 +44,14 @@ document.addEventListener("DOMContentLoaded", () => {
     !unitInput ||
     !categoryInput ||
     !noteInput ||
+    !barcodePreview ||
+    !clearBarcodeButton ||
     !addButton ||
     !cancelEditButton ||
+    !startScannerButton ||
+    !stopScannerButton ||
+    !scannerMessage ||
+    !readerWrapper ||
     !searchInput ||
     !filterStatusInput ||
     !filterCategoryInput ||
@@ -54,14 +67,29 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let items = loadItems();
   let editIndex = null;
+  let pendingBarcode = "";
+  let html5QrCode = null;
+  let scannerRunning = false;
+  let scanLock = false;
 
   renderList();
   updateFormMode();
+  updatePendingBarcodeUI();
   setStatus("App loaded successfully.");
 
   addButton.addEventListener("click", submitForm);
   cancelEditButton.addEventListener("click", cancelEdit);
   clearButton.addEventListener("click", clearAllItems);
+  clearBarcodeButton.addEventListener("click", clearPendingBarcode);
+
+  startScannerButton.addEventListener("click", () => {
+    void startScanner();
+  });
+
+  stopScannerButton.addEventListener("click", () => {
+    void stopScanner(false);
+  });
+
   resetFiltersButton.addEventListener("click", resetFilters);
 
   searchInput.addEventListener("input", renderList);
@@ -108,6 +136,7 @@ document.addEventListener("DOMContentLoaded", () => {
       unit,
       category,
       note,
+      barcode: pendingBarcode,
       bought: false
     };
 
@@ -134,6 +163,8 @@ document.addEventListener("DOMContentLoaded", () => {
     unitInput.value = item.unit;
     categoryInput.value = item.category;
     noteInput.value = item.note;
+    pendingBarcode = typeof item.barcode === "string" ? item.barcode : "";
+    updatePendingBarcodeUI();
     updateFormMode();
 
     itemInput.focus();
@@ -157,6 +188,8 @@ document.addEventListener("DOMContentLoaded", () => {
     unitInput.value = "";
     categoryInput.value = "";
     noteInput.value = "";
+    pendingBarcode = "";
+    updatePendingBarcodeUI();
     updateFormMode();
     itemInput.focus();
   }
@@ -171,6 +204,158 @@ document.addEventListener("DOMContentLoaded", () => {
       addButton.textContent = "Save changes";
       cancelEditButton.classList.remove("hidden");
     }
+  }
+
+  function updatePendingBarcodeUI() {
+    barcodePreview.value = pendingBarcode;
+    clearBarcodeButton.disabled = pendingBarcode === "";
+  }
+
+  function clearPendingBarcode() {
+    if (pendingBarcode === "") {
+      setStatus("There is no barcode to clear.");
+      return;
+    }
+
+    pendingBarcode = "";
+    updatePendingBarcodeUI();
+    setStatus("Pending barcode cleared.");
+  }
+
+  async function startScanner() {
+    if (scannerRunning) {
+      setStatus("Scanner already running.");
+      return;
+    }
+
+    if (!window.isSecureContext) {
+      scannerMessage.textContent = "Scanner unavailable: page is not using HTTPS.";
+      setStatus("Camera scanning requires HTTPS.");
+      return;
+    }
+
+    if (typeof Html5Qrcode === "undefined") {
+      scannerMessage.textContent = "Scanner unavailable: library failed to load.";
+      setStatus("Scanner library did not load.");
+      return;
+    }
+
+    readerWrapper.classList.remove("hidden");
+    startScannerButton.disabled = true;
+    stopScannerButton.disabled = true;
+    scannerMessage.textContent = "Requesting camera access...";
+
+    scanLock = false;
+    html5QrCode = new Html5Qrcode("reader");
+
+    try {
+      await html5QrCode.start(
+        { facingMode: "environment" },
+        {
+          fps: 10,
+          qrbox: { width: 280, height: 120 },
+          aspectRatio: 1.7777778
+        },
+        onScanSuccess,
+        () => {
+          // Ignore per-frame scan misses.
+        }
+      );
+
+      scannerRunning = true;
+      stopScannerButton.disabled = false;
+      scannerMessage.textContent =
+        "Scanner running. Point the back camera at a barcode.";
+      setStatus("Scanner started.");
+    } catch (error) {
+      html5QrCode = null;
+      readerWrapper.classList.add("hidden");
+      startScannerButton.disabled = false;
+      stopScannerButton.disabled = true;
+      scannerMessage.textContent = "Could not start scanner.";
+      setStatus(getScannerStartErrorMessage(error));
+    }
+  }
+
+  function onScanSuccess(decodedText) {
+    if (scanLock) {
+      return;
+    }
+
+    scanLock = true;
+    pendingBarcode = decodedText;
+    updatePendingBarcodeUI();
+    scannerMessage.textContent = `Scanned barcode: ${decodedText}`;
+    setStatus(`Barcode scanned: ${decodedText}`);
+
+    void stopScanner(true);
+  }
+
+  async function stopScanner(autoStopped) {
+    if (!html5QrCode) {
+      scannerRunning = false;
+      startScannerButton.disabled = false;
+      stopScannerButton.disabled = true;
+      readerWrapper.classList.add("hidden");
+
+      if (autoStopped) {
+        scannerMessage.textContent = `Barcode ready for next save: ${pendingBarcode}`;
+      } else {
+        scannerMessage.textContent = "Scanner stopped.";
+        setStatus("Scanner stopped.");
+      }
+
+      return;
+    }
+
+    try {
+      if (scannerRunning) {
+        await html5QrCode.stop();
+      }
+    } catch (error) {
+      // Ignore stop errors and continue cleanup.
+    }
+
+    try {
+      html5QrCode.clear();
+    } catch (error) {
+      // Ignore clear errors during cleanup.
+    }
+
+    html5QrCode = null;
+    scannerRunning = false;
+    scanLock = false;
+    startScannerButton.disabled = false;
+    stopScannerButton.disabled = true;
+    readerWrapper.classList.add("hidden");
+
+    if (autoStopped) {
+      scannerMessage.textContent = `Barcode ready for next save: ${pendingBarcode}`;
+    } else {
+      scannerMessage.textContent = "Scanner stopped.";
+      setStatus("Scanner stopped.");
+    }
+  }
+
+  function getScannerStartErrorMessage(error) {
+    const message =
+      error && typeof error.message === "string"
+        ? error.message
+        : String(error || "");
+
+    if (message.includes("NotAllowedError")) {
+      return "Camera permission was denied.";
+    }
+
+    if (message.includes("NotFoundError")) {
+      return "No usable camera was found.";
+    }
+
+    if (message.includes("NotReadableError")) {
+      return "Camera is busy or blocked by another app.";
+    }
+
+    return "Could not start the scanner.";
   }
 
   function toggleBought(index) {
@@ -251,9 +436,16 @@ document.addEventListener("DOMContentLoaded", () => {
     return items
       .map((item, index) => ({ item, index }))
       .filter(({ item }) => {
+        const searchText = [
+          item.name,
+          item.note,
+          item.barcode
+        ]
+          .join(" ")
+          .toLowerCase();
+
         const matchesSearch =
-          searchValue === "" ||
-          item.name.toLowerCase().includes(searchValue);
+          searchValue === "" || searchText.includes(searchValue);
 
         const matchesStatus =
           statusValue === "all" ||
@@ -356,6 +548,13 @@ document.addEventListener("DOMContentLoaded", () => {
         itemButton.appendChild(noteSpan);
       }
 
+      if (item.barcode !== "") {
+        const barcodeSpan = document.createElement("span");
+        barcodeSpan.className = "item-barcode";
+        barcodeSpan.textContent = `Barcode: ${item.barcode}`;
+        itemButton.appendChild(barcodeSpan);
+      }
+
       const categoryLabel = document.createElement("span");
       categoryLabel.className = "item-category";
       categoryLabel.textContent = getCategoryLabel(item.category);
@@ -448,18 +647,25 @@ document.addEventListener("DOMContentLoaded", () => {
         return [];
       }
 
-      return parsedItems.filter((item) => {
-        return (
-          typeof item === "object" &&
-          item !== null &&
-          typeof item.name === "string" &&
-          (typeof item.quantity === "number" || item.quantity === null) &&
-          typeof item.unit === "string" &&
-          typeof item.category === "string" &&
-          typeof item.note === "string" &&
-          typeof item.bought === "boolean"
-        );
-      });
+      return parsedItems
+        .filter((item) => {
+          return (
+            typeof item === "object" &&
+            item !== null &&
+            typeof item.name === "string" &&
+            (typeof item.quantity === "number" || item.quantity === null) &&
+            typeof item.unit === "string" &&
+            typeof item.category === "string" &&
+            typeof item.note === "string" &&
+            typeof item.bought === "boolean"
+          );
+        })
+        .map((item) => {
+          return {
+            ...item,
+            barcode: typeof item.barcode === "string" ? item.barcode : ""
+          };
+        });
     } catch (error) {
       return [];
     }
