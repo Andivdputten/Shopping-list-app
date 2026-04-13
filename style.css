@@ -57,6 +57,11 @@ h2 {
   gap: 10px;
 }
 
+.barcode-row {
+  display: flex;
+  gap: 10px;
+}
+
 input,
 select,
 textarea {
@@ -74,11 +79,20 @@ textarea {
   resize: vertical;
 }
 
+input[readonly] {
+  background: #f8fafc;
+  color: #334155;
+}
+
 button {
   border: 0;
   border-radius: 12px;
   padding: 14px 16px;
   font-size: 16px;
+}
+
+button:disabled {
+  opacity: 0.65;
 }
 
 .primary-button {
@@ -106,6 +120,23 @@ button {
   margin: 8px 0 0;
   font-size: 14px;
   color: #64748b;
+}
+
+.reader-wrapper {
+  margin-top: 12px;
+  border-radius: 14px;
+  overflow: hidden;
+  background: #111827;
+}
+
+.reader-wrapper video {
+  width: 100% !important;
+  display: block;
+}
+
+#reader {
+  width: 100%;
+  min-height: 240px;
 }
 
 .list-header {
@@ -185,6 +216,15 @@ button {
   white-space: pre-wrap;
 }
 
+.item-barcode {
+  display: block;
+  margin-top: 6px;
+  font-size: 13px;
+  color: #475569;
+  font-family: monospace;
+  word-break: break-all;
+}
+
 .item-category {
   display: inline-block;
   margin-top: 6px;
@@ -197,7 +237,8 @@ button {
 
 .item-button.bought .item-name,
 .item-button.bought .item-meta,
-.item-button.bought .item-note {
+.item-button.bought .item-note,
+.item-button.bought .item-barcode {
   text-decoration: line-through;
 }
 
