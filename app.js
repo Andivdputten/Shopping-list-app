@@ -130,6 +130,20 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }
 
+    const duplicateBarcodeIndex = findDuplicateBarcodeIndex(
+      pendingBarcode,
+      editIndex
+    );
+
+    if (duplicateBarcodeIndex !== null) {
+      const existingItem = items[duplicateBarcodeIndex];
+      startEdit(duplicateBarcodeIndex);
+      setStatus(
+        `Barcode already belongs to "${existingItem.name}". Loaded existing item for editing instead of creating a duplicate.`
+      );
+      return;
+    }
+
     const itemData = {
       name,
       quantity,
@@ -162,7 +176,7 @@ document.addEventListener("DOMContentLoaded", () => {
     quantityInput.value = item.quantity === null ? "" : String(item.quantity);
     unitInput.value = item.unit;
     categoryInput.value = item.category;
-    noteInput.value = item.note;
+    noteInput.value = item.note || "";
     pendingBarcode = typeof item.barcode === "string" ? item.barcode : "";
     updatePendingBarcodeUI();
     updateFormMode();
@@ -283,12 +297,29 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     scanLock = true;
+    void handleDetectedBarcode(decodedText);
+  }
+
+  async function handleDetectedBarcode(decodedText) {
     pendingBarcode = decodedText;
     updatePendingBarcodeUI();
-    scannerMessage.textContent = `Scanned barcode: ${decodedText}`;
-    setStatus(`Barcode scanned: ${decodedText}`);
 
-    void stopScanner(true);
+    await stopScanner(true);
+
+    const existingIndex = findItemIndexByBarcode(decodedText);
+
+    if (existingIndex !== null) {
+      const existingItem = items[existingIndex];
+      startEdit(existingIndex);
+      scannerMessage.textContent = `Matched existing item: ${existingItem.name}`;
+      setStatus(
+        `Barcode matched "${existingItem.name}". Existing item loaded for editing.`
+      );
+      return;
+    }
+
+    scannerMessage.textContent = `New barcode ready: ${decodedText}`;
+    setStatus(`New barcode scanned: ${decodedText}. Fill in the item details and save.`);
   }
 
   async function stopScanner(autoStopped) {
@@ -356,6 +387,37 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     return "Could not start the scanner.";
+  }
+
+  function findItemIndexByBarcode(barcode) {
+    if (typeof barcode !== "string" || barcode.trim() === "") {
+      return null;
+    }
+
+    const normalizedBarcode = barcode.trim();
+
+    const index = items.findIndex((item) => {
+      return (
+        typeof item.barcode === "string" &&
+        item.barcode.trim() === normalizedBarcode
+      );
+    });
+
+    return index === -1 ? null : index;
+  }
+
+  function findDuplicateBarcodeIndex(barcode, ignoreIndex) {
+    const matchIndex = findItemIndexByBarcode(barcode);
+
+    if (matchIndex === null) {
+      return null;
+    }
+
+    if (ignoreIndex !== null && matchIndex === ignoreIndex) {
+      return null;
+    }
+
+    return matchIndex;
   }
 
   function toggleBought(index) {
@@ -436,11 +498,7 @@ document.addEventListener("DOMContentLoaded", () => {
     return items
       .map((item, index) => ({ item, index }))
       .filter(({ item }) => {
-        const searchText = [
-          item.name,
-          item.note,
-          item.barcode
-        ]
+        const searchText = [item.name, item.note, item.barcode]
           .join(" ")
           .toLowerCase();
 
