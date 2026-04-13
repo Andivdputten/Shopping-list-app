@@ -15,10 +15,28 @@
 <body>
   <header class="app-header">
     <h1>Grocery Scanner</h1>
-    <p class="subtitle">Shopping list - step 9</p>
+    <p class="subtitle">Shopping list - barcode scanner foundation</p>
   </header>
 
   <main class="container">
+    <section class="card">
+      <h2>Barcode scanner</h2>
+      <p class="hint-text">
+        Tap start, allow camera access, then point the back camera at a product barcode.
+      </p>
+
+      <div class="action-row">
+        <button id="startScannerButton" class="primary-button">Start scanner</button>
+        <button id="stopScannerButton" class="secondary-button" disabled>Stop scanner</button>
+      </div>
+
+      <p id="scannerMessage" class="status-text">Scanner idle.</p>
+
+      <div id="readerWrapper" class="reader-wrapper hidden">
+        <div id="reader"></div>
+      </div>
+    </section>
+
     <section class="card">
       <h2 id="formTitle">Add item</h2>
 
@@ -64,6 +82,16 @@
           <option value="Personal care">Personal care</option>
         </select>
 
+        <div class="barcode-row">
+          <input
+            id="barcodePreview"
+            type="text"
+            placeholder="No barcode scanned yet"
+            readonly
+          />
+          <button id="clearBarcodeButton" class="secondary-button">Clear barcode</button>
+        </div>
+
         <textarea
           id="noteInput"
           placeholder="Optional note, e.g. fridge aisle or cheapest brand"
@@ -86,7 +114,7 @@
         <input
           id="searchInput"
           type="text"
-          placeholder="Search item name"
+          placeholder="Search name, note or barcode"
           autocomplete="off"
         />
 
@@ -132,6 +160,7 @@
     </section>
   </main>
 
+  <script src="https://cdn.jsdelivr.net/npm/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
   <script src="app.js"></script>
 </body>
 </html>
