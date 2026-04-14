@@ -68,6 +68,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let items = loadItems();
   let editIndex = null;
   let pendingBarcode = "";
+  let pendingNutrition = createEmptyNutrition();
   let html5QrCode = null;
   let scannerRunning = false;
   let scanLock = false;
@@ -108,82 +109,84 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function submitForm() {
-    const name = itemInput.value.trim();
-    const quantityRaw = quantityInput.value.trim();
-    const unit = unitInput.value.trim();
-    const category = categoryInput.value.trim();
-    const note = noteInput.value.trim();
+  const name = itemInput.value.trim();
+  const quantityRaw = quantityInput.value.trim();
+  const unit = unitInput.value.trim();
+  const category = categoryInput.value.trim();
+  const note = noteInput.value.trim();
 
-    if (name === "") {
-      setStatus("Type an item name first.");
-      return;
-    }
-
-    let quantity = null;
-
-    if (quantityRaw !== "") {
-      quantity = Number(quantityRaw);
-
-      if (!Number.isFinite(quantity) || quantity <= 0) {
-        setStatus("Quantity must be greater than 0.");
-        return;
-      }
-    }
-
-    const duplicateBarcodeIndex = findDuplicateBarcodeIndex(
-      pendingBarcode,
-      editIndex
-    );
-
-    if (duplicateBarcodeIndex !== null) {
-      const existingItem = items[duplicateBarcodeIndex];
-      startEdit(duplicateBarcodeIndex);
-      setStatus(
-        `Barcode already belongs to "${existingItem.name}". Loaded existing item for editing instead of creating a duplicate.`
-      );
-      return;
-    }
-
-    const itemData = {
-      name,
-      quantity,
-      unit,
-      category,
-      note,
-      barcode: pendingBarcode,
-      bought: false
-    };
-
-    if (editIndex === null) {
-      items.push(itemData);
-      setStatus(`Added "${name}".`);
-    } else {
-      itemData.bought = items[editIndex].bought;
-      items[editIndex] = itemData;
-      setStatus(`Updated "${name}".`);
-    }
-
-    saveItems();
-    renderList();
-    resetForm();
+  if (name === "") {
+    setStatus("Type an item name first.");
+    return;
   }
+
+  let quantity = null;
+
+  if (quantityRaw !== "") {
+    quantity = Number(quantityRaw);
+
+    if (!Number.isFinite(quantity) || quantity <= 0) {
+      setStatus("Quantity must be greater than 0.");
+      return;
+    }
+  }
+
+  const duplicateBarcodeIndex = findDuplicateBarcodeIndex(
+    pendingBarcode,
+    editIndex
+  );
+
+  if (duplicateBarcodeIndex !== null) {
+    const existingItem = items[duplicateBarcodeIndex];
+    startEdit(duplicateBarcodeIndex);
+    setStatus(
+      `Barcode already belongs to "${existingItem.name}". Loaded existing item for editing instead of creating a duplicate.`
+    );
+    return;
+  }
+
+  const itemData = {
+    name,
+    quantity,
+    unit,
+    category,
+    note,
+    barcode: pendingBarcode,
+    nutrition: normalizeNutrition(pendingNutrition),
+    bought: false
+  };
+
+  if (editIndex === null) {
+    items.push(itemData);
+    setStatus(`Added "${name}".`);
+  } else {
+    itemData.bought = items[editIndex].bought;
+    items[editIndex] = itemData;
+    setStatus(`Updated "${name}".`);
+  }
+
+  saveItems();
+  renderList();
+  resetForm();
+}
 
   function startEdit(index) {
-    const item = items[index];
+  const item = items[index];
 
-    editIndex = index;
-    itemInput.value = item.name;
-    quantityInput.value = item.quantity === null ? "" : String(item.quantity);
-    unitInput.value = item.unit;
-    categoryInput.value = item.category;
-    noteInput.value = item.note || "";
-    pendingBarcode = typeof item.barcode === "string" ? item.barcode : "";
-    updatePendingBarcodeUI();
-    updateFormMode();
+  editIndex = index;
+  itemInput.value = item.name;
+  quantityInput.value = item.quantity === null ? "" : String(item.quantity);
+  unitInput.value = item.unit;
+  categoryInput.value = item.category;
+  noteInput.value = item.note || "";
+  pendingBarcode = typeof item.barcode === "string" ? item.barcode : "";
+  pendingNutrition = normalizeNutrition(item.nutrition);
+  updatePendingBarcodeUI();
+  updateFormMode();
 
-    itemInput.focus();
-    setStatus(`Editing "${item.name}".`);
-  }
+  itemInput.focus();
+  setStatus(`Editing "${item.name}".`);
+}
 
   function cancelEdit() {
     if (editIndex === null) {
@@ -196,17 +199,18 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function resetForm() {
-    editIndex = null;
-    itemInput.value = "";
-    quantityInput.value = "";
-    unitInput.value = "";
-    categoryInput.value = "";
-    noteInput.value = "";
-    pendingBarcode = "";
-    updatePendingBarcodeUI();
-    updateFormMode();
-    itemInput.focus();
-  }
+  editIndex = null;
+  itemInput.value = "";
+  quantityInput.value = "";
+  unitInput.value = "";
+  categoryInput.value = "";
+  noteInput.value = "";
+  pendingBarcode = "";
+  pendingNutrition = createEmptyNutrition();
+  updatePendingBarcodeUI();
+  updateFormMode();
+  itemInput.focus();
+}
 
   function updateFormMode() {
     if (editIndex === null) {
@@ -422,7 +426,8 @@ async function lookupProductByBarcode(barcode) {
     "brands",
     "quantity",
     "categories_tags",
-    "nutrition_grades"
+    "nutrition_grades",
+    "nutriments"
   ].join(",");
 
   const url =
@@ -452,7 +457,8 @@ async function lookupProductByBarcode(barcode) {
     brand: normalizeText(product.brands),
     packageQuantity: normalizeText(product.quantity),
     category: mapOffCategoryToAppCategory(product.categories_tags),
-    nutriScore: normalizeNutriScore(product.nutrition_grades)
+    nutriScore: normalizeNutriScore(product.nutrition_grades),
+    nutrition: extractNutritionFromOffProduct(product)
   };
 }
 
@@ -470,6 +476,8 @@ function applyLookupToForm(productData) {
   if (generatedNote !== "" && noteInput.value.trim() === "") {
     noteInput.value = generatedNote;
   }
+
+  pendingNutrition = normalizeNutrition(productData.nutrition);
 }
 
 function buildLookupNote(productData) {
@@ -570,6 +578,110 @@ function firstNonEmpty(...values) {
   }
 
   return "";
+}
+function createEmptyNutrition() {
+  return {
+    kcal100g: null,
+    protein100g: null,
+    carbs100g: null,
+    fat100g: null,
+    sugars100g: null,
+    salt100g: null
+  };
+}
+
+function normalizeNutrition(value) {
+  const empty = createEmptyNutrition();
+
+  if (typeof value !== "object" || value === null) {
+    return empty;
+  }
+
+  return {
+    kcal100g: normalizeNutritionNumber(value.kcal100g),
+    protein100g: normalizeNutritionNumber(value.protein100g),
+    carbs100g: normalizeNutritionNumber(value.carbs100g),
+    fat100g: normalizeNutritionNumber(value.fat100g),
+    sugars100g: normalizeNutritionNumber(value.sugars100g),
+    salt100g: normalizeNutritionNumber(value.salt100g)
+  };
+}
+
+function normalizeNutritionNumber(value) {
+  if (typeof value !== "number" || !Number.isFinite(value) || value < 0) {
+    return null;
+  }
+
+  return value;
+}
+
+function extractNutritionFromOffProduct(product) {
+  const nutriments =
+    typeof product === "object" && product !== null && typeof product.nutriments === "object"
+      ? product.nutriments
+      : {};
+
+  return normalizeNutrition({
+    kcal100g: pickFirstNumber(
+      nutriments["energy-kcal_100g"],
+      nutriments["energy-kcal"],
+      nutriments["energy_100g"]
+    ),
+    protein100g: pickFirstNumber(nutriments.proteins_100g),
+    carbs100g: pickFirstNumber(nutriments.carbohydrates_100g),
+    fat100g: pickFirstNumber(nutriments.fat_100g),
+    sugars100g: pickFirstNumber(nutriments.sugars_100g),
+    salt100g: pickFirstNumber(nutriments.salt_100g)
+  });
+}
+
+function pickFirstNumber(...values) {
+  for (const value of values) {
+    if (typeof value === "number" && Number.isFinite(value) && value >= 0) {
+      return value;
+    }
+  }
+
+  return null;
+}
+
+function formatNutritionSummary(nutrition) {
+  const data = normalizeNutrition(nutrition);
+  const parts = [];
+
+  if (data.kcal100g !== null) {
+    parts.push(`${formatNutritionValue(data.kcal100g)} kcal`);
+  }
+
+  if (data.protein100g !== null) {
+    parts.push(`P ${formatNutritionValue(data.protein100g)}g`);
+  }
+
+  if (data.carbs100g !== null) {
+    parts.push(`C ${formatNutritionValue(data.carbs100g)}g`);
+  }
+
+  if (data.fat100g !== null) {
+    parts.push(`F ${formatNutritionValue(data.fat100g)}g`);
+  }
+
+  if (parts.length === 0) {
+    return "";
+  }
+
+  return `Per 100g: ${parts.join(" · ")}`;
+}
+
+function formatNutritionValue(value) {
+  if (!Number.isFinite(value)) {
+    return "";
+  }
+
+  if (Number.isInteger(value)) {
+    return String(value);
+  }
+
+  return String(Math.round(value * 10) / 10);
 }
 
   function findItemIndexByBarcode(barcode) {
@@ -783,18 +895,26 @@ function firstNonEmpty(...values) {
       }
 
       if (item.note !== "") {
-        const noteSpan = document.createElement("span");
-        noteSpan.className = "item-note";
-        noteSpan.textContent = item.note;
-        itemButton.appendChild(noteSpan);
-      }
+  const noteSpan = document.createElement("span");
+  noteSpan.className = "item-note";
+  noteSpan.textContent = item.note;
+  itemButton.appendChild(noteSpan);
+}
 
-      if (item.barcode !== "") {
-        const barcodeSpan = document.createElement("span");
-        barcodeSpan.className = "item-barcode";
-        barcodeSpan.textContent = `Barcode: ${item.barcode}`;
-        itemButton.appendChild(barcodeSpan);
-      }
+const nutritionSummary = formatNutritionSummary(item.nutrition);
+if (nutritionSummary !== "") {
+  const nutritionSpan = document.createElement("span");
+  nutritionSpan.className = "item-meta";
+  nutritionSpan.textContent = nutritionSummary;
+  itemButton.appendChild(nutritionSpan);
+}
+
+if (item.barcode !== "") {
+  const barcodeSpan = document.createElement("span");
+  barcodeSpan.className = "item-barcode";
+  barcodeSpan.textContent = `Barcode: ${item.barcode}`;
+  itemButton.appendChild(barcodeSpan);
+}
 
       const categoryLabel = document.createElement("span");
       categoryLabel.className = "item-category";
@@ -875,44 +995,54 @@ function firstNonEmpty(...values) {
   }
 
   function loadItems() {
-    const savedItems = localStorage.getItem(STORAGE_KEY);
+  const savedItems = localStorage.getItem(STORAGE_KEY);
 
-    if (!savedItems) {
+  if (!savedItems) {
+    return [];
+  }
+
+  try {
+    const parsedItems = JSON.parse(savedItems);
+
+    if (!Array.isArray(parsedItems)) {
       return [];
     }
 
-    try {
-      const parsedItems = JSON.parse(savedItems);
+    return parsedItems
+      .map((item) => {
+        if (typeof item !== "object" || item === null) {
+          return null;
+        }
 
-      if (!Array.isArray(parsedItems)) {
-        return [];
-      }
+        const name = typeof item.name === "string" ? item.name.trim() : "";
 
-      return parsedItems
-        .filter((item) => {
-          return (
-            typeof item === "object" &&
-            item !== null &&
-            typeof item.name === "string" &&
-            (typeof item.quantity === "number" || item.quantity === null) &&
-            typeof item.unit === "string" &&
-            typeof item.category === "string" &&
-            typeof item.note === "string" &&
-            typeof item.bought === "boolean"
-          );
-        })
-        .map((item) => {
-          return {
-            ...item,
-            barcode: typeof item.barcode === "string" ? item.barcode : ""
-          };
-        });
-    } catch (error) {
-      return [];
-    }
+        if (name === "") {
+          return null;
+        }
+
+        let quantity = null;
+        if (
+          typeof item.quantity === "number" &&
+          Number.isFinite(item.quantity) &&
+          item.quantity > 0
+        ) {
+          quantity = item.quantity;
+        }
+
+        return {
+          name,
+          quantity,
+          unit: typeof item.unit === "string" ? item.unit : "",
+          category: typeof item.category === "string" ? item.category : "",
+          note: typeof item.note === "string" ? item.note : "",
+          barcode: typeof item.barcode === "string" ? item.barcode : "",
+          nutrition: normalizeNutrition(item.nutrition),
+          bought: typeof item.bought === "boolean" ? item.bought : false
+        };
+      })
+      .filter(Boolean);
+  } catch (error) {
+    return [];
   }
-
-  function setStatus(message) {
-    statusEl.textContent = message;
-  }
+}
 });
