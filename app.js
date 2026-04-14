@@ -301,26 +301,52 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   async function handleDetectedBarcode(decodedText) {
-    pendingBarcode = decodedText;
-    updatePendingBarcodeUI();
+  pendingBarcode = decodedText;
+  updatePendingBarcodeUI();
 
-    await stopScanner(true);
+  await stopScanner(true);
 
-    const existingIndex = findItemIndexByBarcode(decodedText);
+  const existingIndex = findItemIndexByBarcode(decodedText);
 
-    if (existingIndex !== null) {
-      const existingItem = items[existingIndex];
-      startEdit(existingIndex);
-      scannerMessage.textContent = `Matched existing item: ${existingItem.name}`;
-      setStatus(
-        `Barcode matched "${existingItem.name}". Existing item loaded for editing.`
-      );
+  if (existingIndex !== null) {
+    const existingItem = items[existingIndex];
+    startEdit(existingIndex);
+    scannerMessage.textContent = `Matched existing item: ${existingItem.name}`;
+    setStatus(
+      `Barcode matched "${existingItem.name}". Existing item loaded for editing.`
+    );
+    return;
+  }
+
+  scannerMessage.textContent = "Looking up product data...";
+  setStatus("Barcode scanned. Looking up external product data...");
+
+  try {
+    const productData = await lookupProductByBarcode(decodedText);
+
+    if (productData !== null) {
+      applyLookupToForm(productData);
+
+      scannerMessage.textContent =
+        productData.name !== ""
+          ? `External match: ${productData.name}`
+          : `External match for barcode ${decodedText}`;
+
+      setStatus("External product match found. Review the autofill and save.");
       return;
     }
 
     scannerMessage.textContent = `New barcode ready: ${decodedText}`;
-    setStatus(`New barcode scanned: ${decodedText}. Fill in the item details and save.`);
+    setStatus(
+      "Barcode not found in your list or external lookup. Fill in the item details manually."
+    );
+  } catch (error) {
+    scannerMessage.textContent = `New barcode ready: ${decodedText}`;
+    setStatus(
+      "Barcode scanned, but external lookup failed. Fill in the item details manually."
+    );
   }
+}
 
   async function stopScanner(autoStopped) {
     if (!html5QrCode) {
