@@ -182,37 +182,58 @@
   <p class="hint-text">Build a temporary recipe from saved items with nutrition data.</p>
 
   <div class="form-stack">
-    <select id="recipeItemSelect">
-      <option value="">Select an item</option>
-    </select>
+  <input
+    id="recipeNameInput"
+    type="text"
+    placeholder="Recipe name, e.g. Protein oats"
+    autocomplete="off"
+  />
 
-    <div class="input-row">
-      <input
-        id="recipeGramsInput"
-        type="number"
-        inputmode="decimal"
-        min="0"
-        step="any"
-        placeholder="Grams used in recipe"
-      />
+  <select id="recipeItemSelect">
+    <option value="">Select an item</option>
+  </select>
 
-      <button id="addRecipeIngredientButton" class="primary-button">
-        Add ingredient
-      </button>
-    </div>
+  <div class="input-row">
+    <input
+      id="recipeGramsInput"
+      type="number"
+      inputmode="decimal"
+      min="0"
+      step="any"
+      placeholder="Grams used in recipe"
+    />
+
+    <button id="addRecipeIngredientButton" class="primary-button">
+      Add ingredient
+    </button>
+  </div>
+
+  <div class="action-row">
+    <button id="saveRecipeButton" class="primary-button">
+      Save recipe
+    </button>
 
     <button id="clearRecipeButton" class="secondary-button">
       Clear recipe
     </button>
   </div>
+</div>
 
-  <ul id="recipeIngredientsList" class="shopping-list"></ul>
+<ul id="recipeIngredientsList" class="shopping-list"></ul>
 
-  <p id="recipeEmptyMessage" class="empty-message">
-    No ingredients in the recipe yet.
-  </p>
+<p id="recipeEmptyMessage" class="empty-message">
+  No ingredients in the recipe yet.
+</p>
 
-  <p id="recipeTotals" class="item-meta"></p>
+<p id="recipeTotals" class="item-meta"></p>
+
+<h3>Saved recipes</h3>
+
+<ul id="savedRecipesList" class="shopping-list"></ul>
+
+<p id="savedRecipesEmptyMessage" class="empty-message">
+  No saved recipes yet.
+</p>
 </section>
 
 <section class="card">
