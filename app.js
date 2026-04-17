@@ -21,6 +21,7 @@ const nutritionKcalInput = document.getElementById("nutritionKcalInput");
 const nutritionProteinInput = document.getElementById("nutritionProteinInput");
 const nutritionCarbsInput = document.getElementById("nutritionCarbsInput");
 const nutritionFatInput = document.getElementById("nutritionFatInput");
+const nutritionAmountInput = document.getElementById("nutritionAmountInput");
 const barcodePreview = document.getElementById("barcodePreview");
 const clearBarcodeButton = document.getElementById("clearBarcodeButton");
 const addButton = document.getElementById("addButton");
@@ -52,6 +53,7 @@ if (
 !nutritionProteinInput ||
 !nutritionCarbsInput ||
 !nutritionFatInput ||
+!nutritionAmountInput ||
 !barcodePreview ||
 !clearBarcodeButton ||
 !addButton ||
@@ -113,7 +115,8 @@ nutritionKcalInput.addEventListener("keydown", handleEnterToSubmit);
 nutritionProteinInput.addEventListener("keydown", handleEnterToSubmit);
 nutritionCarbsInput.addEventListener("keydown", handleEnterToSubmit);
 nutritionFatInput.addEventListener("keydown", handleEnterToSubmit);
-
+nutritionAmountInput.addEventListener("keydown", handleEnterToSubmit);
+  
 function handleEnterToSubmit(event) {
 if (event.key === "Enter") {
 submitForm();
@@ -144,6 +147,7 @@ function submitForm() {
   }
   
   pendingNutrition = readNutritionFromInputs();
+  const nutritionAmount = parseOptionalNumberInput(nutritionAmountInput.value);
   
   const duplicateBarcodeIndex = findDuplicateBarcodeIndex(
     pendingBarcode,
@@ -166,8 +170,9 @@ function submitForm() {
     category,
     note,
     barcode: pendingBarcode,
-    nutrition: normalizeNutrition(pendingNutrition),
-    bought: false
+   nutrition: normalizeNutrition(pendingNutrition),
+   nutritionAmount,
+   bought: false
   };
 
   if (editIndex === null) {
@@ -196,6 +201,7 @@ function startEdit(index) {
   pendingBarcode = typeof item.barcode === "string" ? item.barcode : "";
   pendingNutrition = normalizeNutrition(item.nutrition);
   syncNutritionInputsFromPending();
+  nutritionAmountInput.value = formatNutritionInputValue(item.nutritionAmount);
   updatePendingBarcodeUI();
   updateFormMode();
 
@@ -223,6 +229,7 @@ function resetForm() {
   pendingBarcode = "";
   pendingNutrition = createEmptyNutrition();
   syncNutritionInputsFromPending();
+  nutritionAmountInput.value = "";
   updatePendingBarcodeUI();
   updateFormMode();
   itemInput.focus();
@@ -741,6 +748,38 @@ function formatNutritionInputValue(value) {
 
   return String(Math.round(value * 10) / 10);
 }
+
+function formatNutritionTotalSummary(nutrition, amountGrams) {
+  if (typeof amountGrams !== "number" || !Number.isFinite(amountGrams) || amountGrams <= 0) {
+    return "";
+  }
+
+  const data = normalizeNutrition(nutrition);
+  const factor = amountGrams / 100;
+  const parts = [];
+
+  if (data.kcal100g !== null) {
+    parts.push(`${formatNutritionValue(data.kcal100g * factor)} kcal`);
+  }
+
+  if (data.protein100g !== null) {
+    parts.push(`P ${formatNutritionValue(data.protein100g * factor)}g`);
+  }
+
+  if (data.carbs100g !== null) {
+    parts.push(`C ${formatNutritionValue(data.carbs100g * factor)}g`);
+  }
+
+  if (data.fat100g !== null) {
+    parts.push(`F ${formatNutritionValue(data.fat100g * factor)}g`);
+  }
+
+  if (parts.length === 0) {
+    return "";
+  }
+
+  return `For ${formatNutritionValue(amountGrams)}g: ${parts.join(" · ")}`;
+}
   
 function findItemIndexByBarcode(barcode) {
 if (typeof barcode !== "string" || barcode.trim() === "") {
@@ -967,6 +1006,17 @@ if (nutritionSummary !== "") {
   itemButton.appendChild(nutritionSpan);
 }
 
+const nutritionTotalSummary = formatNutritionTotalSummary(
+  item.nutrition,
+  item.nutritionAmount
+);
+if (nutritionTotalSummary !== "") {
+  const nutritionTotalSpan = document.createElement("span");
+  nutritionTotalSpan.className = "item-meta";
+  nutritionTotalSpan.textContent = nutritionTotalSummary;
+  itemButton.appendChild(nutritionTotalSpan);
+}
+
 if (item.barcode !== "") {
   const barcodeSpan = document.createElement("span");
   barcodeSpan.className = "item-barcode";
@@ -1053,42 +1103,57 @@ localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
 }
 
 function loadItems() {
-    const savedItems = localStorage.getItem(STORAGE_KEY);
+  const savedItems = localStorage.getItem(STORAGE_KEY);
 
-    if (!savedItems) {
-return [];
-}
+  if (!savedItems) {
+    return [];
+  }
 
-    try {
-      const parsedItems = JSON.parse(savedItems);
+  try {
+    const parsedItems = JSON.parse(savedItems);
 
-      if (!Array.isArray(parsedItems)) {
-        return [];
-      }
-
-      return parsedItems
-        .filter((item) => {
-          return (
-            typeof item === "object" &&
-            item !== null &&
-            typeof item.name === "string" &&
-            (typeof item.quantity === "number" || item.quantity === null) &&
-            typeof item.unit === "string" &&
-            typeof item.category === "string" &&
-            typeof item.note === "string" &&
-            typeof item.bought === "boolean"
-          );
-        })
-        .map((item) => {
-          return {
-            ...item,
-            barcode: typeof item.barcode === "string" ? item.barcode : ""
-          };
-        });
-    } catch (error) {
+    if (!Array.isArray(parsedItems)) {
       return [];
     }
+
+    return parsedItems
+      .map((item) => {
+        if (typeof item !== "object" || item === null) {
+          return null;
+        }
+
+        const name = typeof item.name === "string" ? item.name.trim() : "";
+
+        if (name === "") {
+          return null;
+        }
+
+        let quantity = null;
+        if (
+          typeof item.quantity === "number" &&
+          Number.isFinite(item.quantity) &&
+          item.quantity > 0
+        ) {
+          quantity = item.quantity;
+        }
+
+        return {
+          name,
+          quantity,
+          unit: typeof item.unit === "string" ? item.unit : "",
+          category: typeof item.category === "string" ? item.category : "",
+          note: typeof item.note === "string" ? item.note : "",
+          barcode: typeof item.barcode === "string" ? item.barcode : "",
+          nutrition: normalizeNutrition(item.nutrition),
+          nutritionAmount: normalizeNutritionNumber(item.nutritionAmount),
+          bought: typeof item.bought === "boolean" ? item.bought : false
+        };
+      })
+      .filter(Boolean);
+  } catch (error) {
+    return [];
   }
+}
 
   function setStatus(message) {
     statusEl.textContent = message;
