@@ -17,6 +17,10 @@ const quantityInput = document.getElementById("quantityInput");
 const unitInput = document.getElementById("unitInput");
 const categoryInput = document.getElementById("categoryInput");
 const noteInput = document.getElementById("noteInput");
+const nutritionKcalInput = document.getElementById("nutritionKcalInput");
+const nutritionProteinInput = document.getElementById("nutritionProteinInput");
+const nutritionCarbsInput = document.getElementById("nutritionCarbsInput");
+const nutritionFatInput = document.getElementById("nutritionFatInput");
 const barcodePreview = document.getElementById("barcodePreview");
 const clearBarcodeButton = document.getElementById("clearBarcodeButton");
 const addButton = document.getElementById("addButton");
@@ -44,6 +48,10 @@ if (
 !unitInput ||
 !categoryInput ||
 !noteInput ||
+!nutritionKcalInput ||
+!nutritionProteinInput ||
+!nutritionCarbsInput ||
+!nutritionFatInput ||
 !barcodePreview ||
 !clearBarcodeButton ||
 !addButton ||
@@ -101,6 +109,10 @@ itemInput.addEventListener("keydown", handleEnterToSubmit);
 quantityInput.addEventListener("keydown", handleEnterToSubmit);
 unitInput.addEventListener("keydown", handleEnterToSubmit);
 categoryInput.addEventListener("keydown", handleEnterToSubmit);
+nutritionKcalInput.addEventListener("keydown", handleEnterToSubmit);
+nutritionProteinInput.addEventListener("keydown", handleEnterToSubmit);
+nutritionCarbsInput.addEventListener("keydown", handleEnterToSubmit);
+nutritionFatInput.addEventListener("keydown", handleEnterToSubmit);
 
 function handleEnterToSubmit(event) {
 if (event.key === "Enter") {
@@ -130,7 +142,9 @@ function submitForm() {
       return;
     }
   }
-
+  
+  pendingNutrition = readNutritionFromInputs();
+  
   const duplicateBarcodeIndex = findDuplicateBarcodeIndex(
     pendingBarcode,
     editIndex
@@ -181,6 +195,7 @@ function startEdit(index) {
   noteInput.value = item.note || "";
   pendingBarcode = typeof item.barcode === "string" ? item.barcode : "";
   pendingNutrition = normalizeNutrition(item.nutrition);
+  syncNutritionInputsFromPending();
   updatePendingBarcodeUI();
   updateFormMode();
 
@@ -207,6 +222,7 @@ function resetForm() {
   noteInput.value = "";
   pendingBarcode = "";
   pendingNutrition = createEmptyNutrition();
+  syncNutritionInputsFromPending();
   updatePendingBarcodeUI();
   updateFormMode();
   itemInput.focus();
@@ -478,6 +494,7 @@ function applyLookupToForm(productData) {
   }
 
   pendingNutrition = normalizeNutrition(productData.nutrition);
+  syncNutritionInputsFromPending();
 }
 
 function buildLookupNote(productData) {
@@ -679,6 +696,52 @@ function formatNutritionValue(value) {
   return String(Math.round(value * 10) / 10);
 }
 
+function syncNutritionInputsFromPending() {
+  const nutrition = normalizeNutrition(pendingNutrition);
+
+  nutritionKcalInput.value = formatNutritionInputValue(nutrition.kcal100g);
+  nutritionProteinInput.value = formatNutritionInputValue(nutrition.protein100g);
+  nutritionCarbsInput.value = formatNutritionInputValue(nutrition.carbs100g);
+  nutritionFatInput.value = formatNutritionInputValue(nutrition.fat100g);
+}
+
+function readNutritionFromInputs() {
+  return normalizeNutrition({
+    kcal100g: parseOptionalNumberInput(nutritionKcalInput.value),
+    protein100g: parseOptionalNumberInput(nutritionProteinInput.value),
+    carbs100g: parseOptionalNumberInput(nutritionCarbsInput.value),
+    fat100g: parseOptionalNumberInput(nutritionFatInput.value)
+  });
+}
+
+function parseOptionalNumberInput(value) {
+  const trimmed = typeof value === "string" ? value.trim() : "";
+
+  if (trimmed === "") {
+    return null;
+  }
+
+  const numberValue = Number(trimmed);
+
+  if (!Number.isFinite(numberValue) || numberValue < 0) {
+    return null;
+  }
+
+  return numberValue;
+}
+
+function formatNutritionInputValue(value) {
+  if (typeof value !== "number" || !Number.isFinite(value)) {
+    return "";
+  }
+
+  if (Number.isInteger(value)) {
+    return String(value);
+  }
+
+  return String(Math.round(value * 10) / 10);
+}
+  
 function findItemIndexByBarcode(barcode) {
 if (typeof barcode !== "string" || barcode.trim() === "") {
 return null;
