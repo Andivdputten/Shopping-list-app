@@ -640,6 +640,45 @@ function pickFirstNumber(...values) {
   return null;
 }
 
+function formatNutritionSummary(nutrition) {
+  const data = normalizeNutrition(nutrition);
+  const parts = [];
+
+  if (data.kcal100g !== null) {
+    parts.push(`${formatNutritionValue(data.kcal100g)} kcal`);
+  }
+
+  if (data.protein100g !== null) {
+    parts.push(`P ${formatNutritionValue(data.protein100g)}g`);
+  }
+
+  if (data.carbs100g !== null) {
+    parts.push(`C ${formatNutritionValue(data.carbs100g)}g`);
+  }
+
+  if (data.fat100g !== null) {
+    parts.push(`F ${formatNutritionValue(data.fat100g)}g`);
+  }
+
+  if (parts.length === 0) {
+    return "";
+  }
+
+  return `Per 100g: ${parts.join(" · ")}`;
+}
+
+function formatNutritionValue(value) {
+  if (!Number.isFinite(value)) {
+    return "";
+  }
+
+  if (Number.isInteger(value)) {
+    return String(value);
+  }
+
+  return String(Math.round(value * 10) / 10);
+}
+
 function findItemIndexByBarcode(barcode) {
 if (typeof barcode !== "string" || barcode.trim() === "") {
 return null;
@@ -851,18 +890,26 @@ itemButton.appendChild(metaSpan);
 }
 
 if (item.note !== "") {
-        const noteSpan = document.createElement("span");
-        noteSpan.className = "item-note";
-        noteSpan.textContent = item.note;
-        itemButton.appendChild(noteSpan);
-      }
+  const noteSpan = document.createElement("span");
+  noteSpan.className = "item-note";
+  noteSpan.textContent = item.note;
+  itemButton.appendChild(noteSpan);
+}
 
-      if (item.barcode !== "") {
-        const barcodeSpan = document.createElement("span");
-        barcodeSpan.className = "item-barcode";
-        barcodeSpan.textContent = `Barcode: ${item.barcode}`;
-        itemButton.appendChild(barcodeSpan);
-      }
+const nutritionSummary = formatNutritionSummary(item.nutrition);
+if (nutritionSummary !== "") {
+  const nutritionSpan = document.createElement("span");
+  nutritionSpan.className = "item-meta";
+  nutritionSpan.textContent = nutritionSummary;
+  itemButton.appendChild(nutritionSpan);
+}
+
+if (item.barcode !== "") {
+  const barcodeSpan = document.createElement("span");
+  barcodeSpan.className = "item-barcode";
+  barcodeSpan.textContent = `Barcode: ${item.barcode}`;
+  itemButton.appendChild(barcodeSpan);
+}
 
 const categoryLabel = document.createElement("span");
 categoryLabel.className = "item-category";
