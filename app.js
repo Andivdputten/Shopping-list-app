@@ -41,9 +41,6 @@ const recipeEmptyMessage = document.getElementById("recipeEmptyMessage");
 const recipeTotals = document.getElementById("recipeTotals");
 
 const searchInput = document.getElementById("searchInput");
-const filterStatusInput = document.getElementById("filterStatusInput");
-const filterCategoryInput = document.getElementById("filterCategoryInput");
-const resetFiltersButton = document.getElementById("resetFiltersButton");
 
 const clearButton = document.getElementById("clearButton");
 const shoppingSections = document.getElementById("shoppingSections");
@@ -78,9 +75,6 @@ if (
 !recipeEmptyMessage ||
 !recipeTotals ||  
 !searchInput ||
-!filterStatusInput ||
-!filterCategoryInput ||
-!resetFiltersButton ||
 !clearButton ||
 !shoppingSections ||
 !emptyMessage ||
@@ -122,12 +116,8 @@ void startScanner();
 stopScannerButton.addEventListener("click", () => {
 void stopScanner(false);
 });
-
-resetFiltersButton.addEventListener("click", resetFilters);
-
+  
 searchInput.addEventListener("input", renderList);
-filterStatusInput.addEventListener("change", renderList);
-filterCategoryInput.addEventListener("change", renderList);
 
 itemInput.addEventListener("keydown", handleEnterToSubmit);
 quantityInput.addEventListener("keydown", handleEnterToSubmit);
@@ -1067,13 +1057,6 @@ renderList();
 setStatus("All items cleared.");
 }
 
-function resetFilters() {
-searchInput.value = "";
-filterStatusInput.value = "all";
-filterCategoryInput.value = "all";
-renderList();
-setStatus("Filters reset.");
-}
 
 function renderList() {
 renderRecipeItemOptions();
@@ -1102,31 +1085,19 @@ shoppingSections.appendChild(createStatusSection("Bought", boughtEntries));
 }
 
 function getFilteredEntries() {
-const searchValue = searchInput.value.trim().toLowerCase();
-const statusValue = filterStatusInput.value;
-const categoryValue = filterCategoryInput.value;
+  const searchValue = searchInput.value.trim().toLowerCase();
 
-return items
-.map((item, index) => ({ item, index }))
-.filter(({ item }) => {
-const searchText = [item.name, item.note, item.barcode]
-.join(" ")
-.toLowerCase();
+  return items
+    .map((item, index) => ({ item, index }))
+    .filter(({ item }) => {
+      const searchText = [
+        item.name,
+        item.note,
+        item.barcode
+      ].join(" ").toLowerCase();
 
-const matchesSearch =
-searchValue === "" || searchText.includes(searchValue);
-
-const matchesStatus =
-statusValue === "all" ||
-(statusValue === "to-buy" && !item.bought) ||
-(statusValue === "bought" && item.bought);
-
-const normalizedCategory = normalizeCategory(item.category);
-const matchesCategory =
-categoryValue === "all" || normalizedCategory === categoryValue;
-
-return matchesSearch && matchesStatus && matchesCategory;
-});
+      return searchValue === "" || searchText.includes(searchValue);
+    });
 }
 
 function createStatusSection(title, entries) {
