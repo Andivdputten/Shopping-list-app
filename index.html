@@ -182,16 +182,25 @@
   <p class="hint-text">Build a temporary recipe from saved items with nutrition data.</p>
 
   <div class="form-stack">
-  <input
-    id="recipeNameInput"
-    type="text"
-    placeholder="Recipe name, e.g. Protein oats"
-    autocomplete="off"
-  />
+ <input
+  id="recipeNameInput"
+  type="text"
+  placeholder="Recipe name, e.g. Protein oats"
+  autocomplete="off"
+/>
 
-  <select id="recipeItemSelect">
-    <option value="">Select an item</option>
-  </select>
+<input
+  id="recipeServingsInput"
+  type="number"
+  inputmode="decimal"
+  min="0"
+  step="any"
+  placeholder="Servings, e.g. 2"
+/>
+
+<select id="recipeItemSelect">
+  <option value="">Select an item</option>
+</select>
 
   <div class="input-row">
     <input
@@ -226,9 +235,9 @@
 </p>
 
 <p id="recipeTotals" class="item-meta"></p>
+<p id="recipePerServingTotals" class="item-meta"></p>
 
 <h3>Saved recipes</h3>
-
 <ul id="savedRecipesList" class="shopping-list"></ul>
 
 <p id="savedRecipesEmptyMessage" class="empty-message">
