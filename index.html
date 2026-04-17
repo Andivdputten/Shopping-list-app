@@ -93,16 +93,57 @@
         </div>
 
         <textarea
-          id="noteInput"
-          placeholder="Optional note, e.g. fridge aisle or cheapest brand"
-          rows="3"
-        ></textarea>
+  id="noteInput"
+  placeholder="Optional note, e.g. fridge aisle or cheapest brand"
+  rows="3"
+></textarea>
 
-        <div class="action-row">
-          <button id="addButton" class="primary-button">Add item</button>
-          <button id="cancelEditButton" class="secondary-button hidden">Cancel edit</button>
-        </div>
-      </div>
+<p class="hint-text">Optional nutrition per 100g</p>
+
+<div class="input-row">
+  <input
+    id="nutritionKcalInput"
+    type="number"
+    inputmode="decimal"
+    min="0"
+    step="any"
+    placeholder="kcal"
+  />
+
+  <input
+    id="nutritionProteinInput"
+    type="number"
+    inputmode="decimal"
+    min="0"
+    step="any"
+    placeholder="protein (g)"
+  />
+</div>
+
+<div class="input-row">
+  <input
+    id="nutritionCarbsInput"
+    type="number"
+    inputmode="decimal"
+    min="0"
+    step="any"
+    placeholder="carbs (g)"
+  />
+
+  <input
+    id="nutritionFatInput"
+    type="number"
+    inputmode="decimal"
+    min="0"
+    step="any"
+    placeholder="fat (g)"
+  />
+</div>
+
+<div class="action-row">
+  <button id="addButton" class="primary-button">Add item</button>
+  <button id="cancelEditButton" class="secondary-button hidden">Cancel edit</button>
+</div>
 
       <p id="status" class="status-text">Ready.</p>
     </section>
