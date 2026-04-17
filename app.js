@@ -1,5 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
 const STORAGE_KEY = "grocery_scanner_items_v6";
+const RECIPE_STORAGE_KEY = "grocery_scanner_recipes_v1";
 const CATEGORY_ORDER = [
 "",
 "Produce",
@@ -32,13 +33,17 @@ const stopScannerButton = document.getElementById("stopScannerButton");
 const scannerMessage = document.getElementById("scannerMessage");
 const readerWrapper = document.getElementById("readerWrapper");
 
+const recipeNameInput = document.getElementById("recipeNameInput");
 const recipeItemSelect = document.getElementById("recipeItemSelect");
 const recipeGramsInput = document.getElementById("recipeGramsInput");
 const addRecipeIngredientButton = document.getElementById("addRecipeIngredientButton");
+const saveRecipeButton = document.getElementById("saveRecipeButton");
 const clearRecipeButton = document.getElementById("clearRecipeButton");
 const recipeIngredientsList = document.getElementById("recipeIngredientsList");
 const recipeEmptyMessage = document.getElementById("recipeEmptyMessage");
 const recipeTotals = document.getElementById("recipeTotals");
+const savedRecipesList = document.getElementById("savedRecipesList");
+const savedRecipesEmptyMessage = document.getElementById("savedRecipesEmptyMessage");
 
 const searchInput = document.getElementById("searchInput");
 
@@ -69,6 +74,10 @@ if (
 !readerWrapper ||
 !recipeItemSelect ||
 !recipeGramsInput ||
+!recipeNameInput ||
+!saveRecipeButton ||
+!savedRecipesList ||
+!savedRecipesEmptyMessage ||
 !addRecipeIngredientButton ||
 !clearRecipeButton ||
 !recipeIngredientsList ||
@@ -92,6 +101,7 @@ let html5QrCode = null;
 let scannerRunning = false;
 let scanLock = false;
 let recipeIngredients = [];
+let savedRecipes = loadRecipes();
 
 renderList();
 updateFormMode();
@@ -99,6 +109,7 @@ updatePendingBarcodeUI();
 setStatus("App loaded successfully.");
 renderRecipeItemOptions();
 renderRecipeBuilder();
+renderSavedRecipes();
 
 addButton.addEventListener("click", submitForm);
 cancelEditButton.addEventListener("click", cancelEdit);
@@ -108,6 +119,8 @@ addRecipeIngredientButton.addEventListener("click", addRecipeIngredient);
 clearRecipeButton.addEventListener("click", clearRecipeIngredients);
 recipeGramsInput.addEventListener("keydown", handleEnterToSubmit);
 recipeItemSelect.addEventListener("keydown", handleEnterToSubmit);
+saveRecipeButton.addEventListener("click", saveCurrentRecipe);
+recipeNameInput.addEventListener("keydown", handleEnterToSubmit);
 
 startScannerButton.addEventListener("click", () => {
 void startScanner();
@@ -933,13 +946,233 @@ function renderRecipeBuilder() {
 }
 
 function buildRecipeTotalsSummary() {
+  const summary = buildRecipeTotalsSummaryFromIngredients(recipeIngredients);
+
+  if (summary === "") {
+    return "";
+  }
+
+  return `Recipe total: ${summary}`;
+}
+
+function hasAnyNutrition(nutrition) {
+  const data = normalizeNutrition(nutrition);
+
+  return (
+    data.kcal100g !== null ||
+    data.protein100g !== null ||
+    data.carbs100g !== null ||
+    data.fat100g !== null
+  );
+}
+
+function saveCurrentRecipe() {
+  const recipeName = recipeNameInput.value.trim();
+
+  if (recipeName === "") {
+    setStatus("Type a recipe name first.");
+    return;
+  }
+
+  if (recipeIngredients.length === 0) {
+    setStatus("Add at least one ingredient before saving the recipe.");
+    return;
+  }
+
+  const recipeData = {
+    name: recipeName,
+    ingredients: recipeIngredients.map((ingredient) => {
+      return {
+        name: ingredient.name,
+        grams: ingredient.grams,
+        nutrition: normalizeNutrition(ingredient.nutrition)
+      };
+    })
+  };
+
+  const existingIndex = savedRecipes.findIndex((recipe) => {
+    return recipe.name.toLowerCase() === recipeName.toLowerCase();
+  });
+
+  if (existingIndex === -1) {
+    savedRecipes.push(recipeData);
+    setStatus(`Saved recipe "${recipeName}".`);
+  } else {
+    savedRecipes[existingIndex] = recipeData;
+    setStatus(`Updated recipe "${recipeName}".`);
+  }
+
+  saveRecipes();
+  renderSavedRecipes();
+}
+
+function renderSavedRecipes() {
+  savedRecipesList.innerHTML = "";
+
+  if (savedRecipes.length === 0) {
+    savedRecipesEmptyMessage.style.display = "block";
+    return;
+  }
+
+  savedRecipesEmptyMessage.style.display = "none";
+
+  savedRecipes.forEach((recipe, index) => {
+    const li = document.createElement("li");
+
+    const infoWrap = document.createElement("div");
+
+    const nameSpan = document.createElement("span");
+    nameSpan.className = "item-name";
+    nameSpan.textContent = recipe.name;
+
+    const ingredientCountSpan = document.createElement("span");
+    ingredientCountSpan.className = "item-meta";
+    ingredientCountSpan.textContent = `${recipe.ingredients.length} ingredient(s)`;
+
+    const totalsSpan = document.createElement("span");
+    totalsSpan.className = "item-meta";
+    totalsSpan.textContent = buildRecipeTotalsSummaryFromIngredients(recipe.ingredients);
+
+    infoWrap.appendChild(nameSpan);
+    infoWrap.appendChild(ingredientCountSpan);
+    infoWrap.appendChild(totalsSpan);
+
+    const actions = document.createElement("div");
+    actions.className = "item-actions";
+
+    const loadButton = document.createElement("button");
+    loadButton.className = "edit-button";
+    loadButton.textContent = "Load";
+    loadButton.addEventListener("click", () => {
+      loadSavedRecipe(index);
+    });
+
+    const deleteButton = document.createElement("button");
+    deleteButton.className = "delete-button";
+    deleteButton.textContent = "Delete";
+    deleteButton.addEventListener("click", () => {
+      deleteSavedRecipe(index);
+    });
+
+    actions.appendChild(loadButton);
+    actions.appendChild(deleteButton);
+
+    li.appendChild(infoWrap);
+    li.appendChild(actions);
+    savedRecipesList.appendChild(li);
+  });
+}
+
+function loadSavedRecipe(index) {
+  const recipe = savedRecipes[index];
+
+  if (!recipe) {
+    return;
+  }
+
+  recipeNameInput.value = recipe.name;
+  recipeIngredients = recipe.ingredients.map((ingredient) => {
+    return {
+      name: ingredient.name,
+      grams: ingredient.grams,
+      nutrition: normalizeNutrition(ingredient.nutrition)
+    };
+  });
+
+  renderRecipeBuilder();
+  setStatus(`Loaded recipe "${recipe.name}".`);
+}
+
+function deleteSavedRecipe(index) {
+  const recipe = savedRecipes[index];
+
+  if (!recipe) {
+    return;
+  }
+
+  const removedName = recipe.name;
+  savedRecipes.splice(index, 1);
+  saveRecipes();
+  renderSavedRecipes();
+  setStatus(`Deleted recipe "${removedName}".`);
+}
+
+function saveRecipes() {
+  localStorage.setItem(RECIPE_STORAGE_KEY, JSON.stringify(savedRecipes));
+}
+
+function loadRecipes() {
+  const savedValue = localStorage.getItem(RECIPE_STORAGE_KEY);
+
+  if (!savedValue) {
+    return [];
+  }
+
+  try {
+    const parsed = JSON.parse(savedValue);
+
+    if (!Array.isArray(parsed)) {
+      return [];
+    }
+
+    return parsed
+      .map((recipe) => {
+        if (typeof recipe !== "object" || recipe === null) {
+          return null;
+        }
+
+        const name = typeof recipe.name === "string" ? recipe.name.trim() : "";
+
+        if (name === "" || !Array.isArray(recipe.ingredients)) {
+          return null;
+        }
+
+        const ingredients = recipe.ingredients
+          .map((ingredient) => {
+            if (typeof ingredient !== "object" || ingredient === null) {
+              return null;
+            }
+
+            const ingredientName =
+              typeof ingredient.name === "string" ? ingredient.name.trim() : "";
+
+            if (ingredientName === "") {
+              return null;
+            }
+
+            const grams = parseOptionalNumberInput(String(ingredient.grams));
+
+            if (grams === null || grams <= 0) {
+              return null;
+            }
+
+            return {
+              name: ingredientName,
+              grams,
+              nutrition: normalizeNutrition(ingredient.nutrition)
+            };
+          })
+          .filter(Boolean);
+
+        return {
+          name,
+          ingredients
+        };
+      })
+      .filter(Boolean);
+  } catch (error) {
+    return [];
+  }
+}
+
+function buildRecipeTotalsSummaryFromIngredients(ingredients) {
   let totalKcal = 0;
   let totalProtein = 0;
   let totalCarbs = 0;
   let totalFat = 0;
   let hasAny = false;
 
-  recipeIngredients.forEach((ingredient) => {
+  ingredients.forEach((ingredient) => {
     const nutrition = normalizeNutrition(ingredient.nutrition);
     const factor = ingredient.grams / 100;
 
@@ -969,22 +1202,10 @@ function buildRecipeTotalsSummary() {
   }
 
   return (
-    `Recipe total: ` +
     `${formatNutritionValue(totalKcal)} kcal · ` +
     `P ${formatNutritionValue(totalProtein)}g · ` +
     `C ${formatNutritionValue(totalCarbs)}g · ` +
     `F ${formatNutritionValue(totalFat)}g`
-  );
-}
-
-function hasAnyNutrition(nutrition) {
-  const data = normalizeNutrition(nutrition);
-
-  return (
-    data.kcal100g !== null ||
-    data.protein100g !== null ||
-    data.carbs100g !== null ||
-    data.fat100g !== null
   );
 }
   
@@ -1061,6 +1282,7 @@ setStatus("All items cleared.");
 function renderList() {
 renderRecipeItemOptions();
 renderRecipeBuilder();
+renderSavedRecipes();
 shoppingSections.innerHTML = "";
 
 const filteredEntries = getFilteredEntries();
