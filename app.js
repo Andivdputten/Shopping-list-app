@@ -32,6 +32,14 @@ const stopScannerButton = document.getElementById("stopScannerButton");
 const scannerMessage = document.getElementById("scannerMessage");
 const readerWrapper = document.getElementById("readerWrapper");
 
+const recipeItemSelect = document.getElementById("recipeItemSelect");
+const recipeGramsInput = document.getElementById("recipeGramsInput");
+const addRecipeIngredientButton = document.getElementById("addRecipeIngredientButton");
+const clearRecipeButton = document.getElementById("clearRecipeButton");
+const recipeIngredientsList = document.getElementById("recipeIngredientsList");
+const recipeEmptyMessage = document.getElementById("recipeEmptyMessage");
+const recipeTotals = document.getElementById("recipeTotals");
+
 const searchInput = document.getElementById("searchInput");
 const filterStatusInput = document.getElementById("filterStatusInput");
 const filterCategoryInput = document.getElementById("filterCategoryInput");
@@ -62,6 +70,13 @@ if (
 !stopScannerButton ||
 !scannerMessage ||
 !readerWrapper ||
+!recipeItemSelect ||
+!recipeGramsInput ||
+!addRecipeIngredientButton ||
+!clearRecipeButton ||
+!recipeIngredientsList ||
+!recipeEmptyMessage ||
+!recipeTotals ||  
 !searchInput ||
 !filterStatusInput ||
 !filterCategoryInput ||
@@ -82,16 +97,23 @@ let pendingNutrition = createEmptyNutrition();
 let html5QrCode = null;
 let scannerRunning = false;
 let scanLock = false;
+let recipeIngredients = [];
 
 renderList();
 updateFormMode();
 updatePendingBarcodeUI();
 setStatus("App loaded successfully.");
+renderRecipeItemOptions();
+renderRecipeBuilder();
 
 addButton.addEventListener("click", submitForm);
 cancelEditButton.addEventListener("click", cancelEdit);
 clearButton.addEventListener("click", clearAllItems);
 clearBarcodeButton.addEventListener("click", clearPendingBarcode);
+addRecipeIngredientButton.addEventListener("click", addRecipeIngredient);
+clearRecipeButton.addEventListener("click", clearRecipeIngredients);
+recipeGramsInput.addEventListener("keydown", handleEnterToSubmit);
+recipeItemSelect.addEventListener("keydown", handleEnterToSubmit);
 
 startScannerButton.addEventListener("click", () => {
 void startScanner();
@@ -780,6 +802,201 @@ function formatNutritionTotalSummary(nutrition, amountGrams) {
 
   return `For ${formatNutritionValue(amountGrams)}g: ${parts.join(" · ")}`;
 }
+
+function renderRecipeItemOptions() {
+  const previousValue = recipeItemSelect.value;
+
+  recipeItemSelect.innerHTML = "";
+
+  const placeholderOption = document.createElement("option");
+  placeholderOption.value = "";
+  placeholderOption.textContent = "Select an item";
+  recipeItemSelect.appendChild(placeholderOption);
+
+  items.forEach((item, index) => {
+    if (!hasAnyNutrition(item.nutrition)) {
+      return;
+    }
+
+    const option = document.createElement("option");
+    option.value = String(index);
+    option.textContent = item.name;
+    recipeItemSelect.appendChild(option);
+  });
+
+  const stillExists = Array.from(recipeItemSelect.options).some((option) => {
+    return option.value === previousValue;
+  });
+
+  recipeItemSelect.value = stillExists ? previousValue : "";
+}
+
+function addRecipeIngredient() {
+  const selectedIndexRaw = recipeItemSelect.value;
+  const grams = parseOptionalNumberInput(recipeGramsInput.value);
+
+  if (selectedIndexRaw === "") {
+    setStatus("Select an item for the recipe first.");
+    return;
+  }
+
+  if (grams === null || grams <= 0) {
+    setStatus("Recipe grams must be greater than 0.");
+    return;
+  }
+
+  const selectedIndex = Number(selectedIndexRaw);
+  const item = items[selectedIndex];
+
+  if (!item) {
+    setStatus("Selected recipe item no longer exists.");
+    renderRecipeItemOptions();
+    return;
+  }
+
+  if (!hasAnyNutrition(item.nutrition)) {
+    setStatus(`"${item.name}" has no nutrition data yet.`);
+    return;
+  }
+
+  recipeIngredients.push({
+    name: item.name,
+    grams,
+    nutrition: normalizeNutrition(item.nutrition)
+  });
+
+  recipeGramsInput.value = "";
+  renderRecipeBuilder();
+  setStatus(`Added "${item.name}" to the recipe.`);
+}
+
+function clearRecipeIngredients() {
+  if (recipeIngredients.length === 0) {
+    setStatus("There is no recipe to clear.");
+    return;
+  }
+
+  recipeIngredients = [];
+  renderRecipeBuilder();
+  setStatus("Recipe cleared.");
+}
+
+function removeRecipeIngredient(index) {
+  if (!recipeIngredients[index]) {
+    return;
+  }
+
+  const removedName = recipeIngredients[index].name;
+  recipeIngredients.splice(index, 1);
+  renderRecipeBuilder();
+  setStatus(`Removed "${removedName}" from the recipe.`);
+}
+
+function renderRecipeBuilder() {
+  recipeIngredientsList.innerHTML = "";
+
+  if (recipeIngredients.length === 0) {
+    recipeEmptyMessage.style.display = "block";
+    recipeTotals.textContent = "";
+    return;
+  }
+
+  recipeEmptyMessage.style.display = "none";
+
+  recipeIngredients.forEach((ingredient, index) => {
+    const li = document.createElement("li");
+
+    const infoWrap = document.createElement("div");
+
+    const nameSpan = document.createElement("span");
+    nameSpan.className = "item-name";
+    nameSpan.textContent = ingredient.name;
+
+    const gramsSpan = document.createElement("span");
+    gramsSpan.className = "item-meta";
+    gramsSpan.textContent = `${formatNutritionValue(ingredient.grams)}g`;
+
+    const totalsSpan = document.createElement("span");
+    totalsSpan.className = "item-meta";
+    totalsSpan.textContent = formatNutritionTotalSummary(
+      ingredient.nutrition,
+      ingredient.grams
+    );
+
+    infoWrap.appendChild(nameSpan);
+    infoWrap.appendChild(gramsSpan);
+    infoWrap.appendChild(totalsSpan);
+
+    const removeButton = document.createElement("button");
+    removeButton.className = "delete-button";
+    removeButton.textContent = "Remove";
+    removeButton.addEventListener("click", () => {
+      removeRecipeIngredient(index);
+    });
+
+    li.appendChild(infoWrap);
+    li.appendChild(removeButton);
+    recipeIngredientsList.appendChild(li);
+  });
+
+  recipeTotals.textContent = buildRecipeTotalsSummary();
+}
+
+function buildRecipeTotalsSummary() {
+  let totalKcal = 0;
+  let totalProtein = 0;
+  let totalCarbs = 0;
+  let totalFat = 0;
+  let hasAny = false;
+
+  recipeIngredients.forEach((ingredient) => {
+    const nutrition = normalizeNutrition(ingredient.nutrition);
+    const factor = ingredient.grams / 100;
+
+    if (nutrition.kcal100g !== null) {
+      totalKcal += nutrition.kcal100g * factor;
+      hasAny = true;
+    }
+
+    if (nutrition.protein100g !== null) {
+      totalProtein += nutrition.protein100g * factor;
+      hasAny = true;
+    }
+
+    if (nutrition.carbs100g !== null) {
+      totalCarbs += nutrition.carbs100g * factor;
+      hasAny = true;
+    }
+
+    if (nutrition.fat100g !== null) {
+      totalFat += nutrition.fat100g * factor;
+      hasAny = true;
+    }
+  });
+
+  if (!hasAny) {
+    return "";
+  }
+
+  return (
+    `Recipe total: ` +
+    `${formatNutritionValue(totalKcal)} kcal · ` +
+    `P ${formatNutritionValue(totalProtein)}g · ` +
+    `C ${formatNutritionValue(totalCarbs)}g · ` +
+    `F ${formatNutritionValue(totalFat)}g`
+  );
+}
+
+function hasAnyNutrition(nutrition) {
+  const data = normalizeNutrition(nutrition);
+
+  return (
+    data.kcal100g !== null ||
+    data.protein100g !== null ||
+    data.carbs100g !== null ||
+    data.fat100g !== null
+  );
+}
   
 function findItemIndexByBarcode(barcode) {
 if (typeof barcode !== "string" || barcode.trim() === "") {
@@ -859,6 +1076,8 @@ setStatus("Filters reset.");
 }
 
 function renderList() {
+renderRecipeItemOptions();
+renderRecipeBuilder();
 shoppingSections.innerHTML = "";
 
 const filteredEntries = getFilteredEntries();
