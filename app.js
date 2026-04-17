@@ -68,6 +68,7 @@ return;
 let items = loadItems();
 let editIndex = null;
 let pendingBarcode = "";
+let pendingNutrition = createEmptyNutrition();
 let html5QrCode = null;
 let scannerRunning = false;
 let scanLock = false;
@@ -108,82 +109,84 @@ submitForm();
 }
 
 function submitForm() {
-    const name = itemInput.value.trim();
-    const quantityRaw = quantityInput.value.trim();
-    const unit = unitInput.value.trim();
-    const category = categoryInput.value.trim();
-    const note = noteInput.value.trim();
+  const name = itemInput.value.trim();
+  const quantityRaw = quantityInput.value.trim();
+  const unit = unitInput.value.trim();
+  const category = categoryInput.value.trim();
+  const note = noteInput.value.trim();
 
-    if (name === "") {
-      setStatus("Type an item name first.");
+  if (name === "") {
+    setStatus("Type an item name first.");
+    return;
+  }
+
+  let quantity = null;
+
+  if (quantityRaw !== "") {
+    quantity = Number(quantityRaw);
+
+    if (!Number.isFinite(quantity) || quantity <= 0) {
+      setStatus("Quantity must be greater than 0.");
       return;
     }
+  }
 
-    let quantity = null;
+  const duplicateBarcodeIndex = findDuplicateBarcodeIndex(
+    pendingBarcode,
+    editIndex
+  );
 
-    if (quantityRaw !== "") {
-      quantity = Number(quantityRaw);
-
-      if (!Number.isFinite(quantity) || quantity <= 0) {
-        setStatus("Quantity must be greater than 0.");
-        return;
-      }
-    }
-
-    const duplicateBarcodeIndex = findDuplicateBarcodeIndex(
-      pendingBarcode,
-      editIndex
+  if (duplicateBarcodeIndex !== null) {
+    const existingItem = items[duplicateBarcodeIndex];
+    startEdit(duplicateBarcodeIndex);
+    setStatus(
+      `Barcode already belongs to "${existingItem.name}". Loaded existing item for editing instead of creating a duplicate.`
     );
+    return;
+  }
 
-    if (duplicateBarcodeIndex !== null) {
-      const existingItem = items[duplicateBarcodeIndex];
-      startEdit(duplicateBarcodeIndex);
-      setStatus(
-        `Barcode already belongs to "${existingItem.name}". Loaded existing item for editing instead of creating a duplicate.`
-      );
-return;
-}
+  const itemData = {
+    name,
+    quantity,
+    unit,
+    category,
+    note,
+    barcode: pendingBarcode,
+    nutrition: normalizeNutrition(pendingNutrition),
+    bought: false
+  };
 
-    const itemData = {
-      name,
-      quantity,
-      unit,
-      category,
-      note,
-      barcode: pendingBarcode,
-      bought: false
-    };
+  if (editIndex === null) {
+    items.push(itemData);
+    setStatus(`Added "${name}".`);
+  } else {
+    itemData.bought = items[editIndex].bought;
+    items[editIndex] = itemData;
+    setStatus(`Updated "${name}".`);
+  }
 
-    if (editIndex === null) {
-      items.push(itemData);
-      setStatus(`Added "${name}".`);
-    } else {
-      itemData.bought = items[editIndex].bought;
-      items[editIndex] = itemData;
-      setStatus(`Updated "${name}".`);
-    }
-
-    saveItems();
-    renderList();
-    resetForm();
+  saveItems();
+  renderList();
+  resetForm();
 }
 
 function startEdit(index) {
-    const item = items[index];
+  const item = items[index];
 
-    editIndex = index;
-    itemInput.value = item.name;
-    quantityInput.value = item.quantity === null ? "" : String(item.quantity);
-    unitInput.value = item.unit;
-    categoryInput.value = item.category;
-    noteInput.value = item.note || "";
-    pendingBarcode = typeof item.barcode === "string" ? item.barcode : "";
-    updatePendingBarcodeUI();
-    updateFormMode();
+  editIndex = index;
+  itemInput.value = item.name;
+  quantityInput.value = item.quantity === null ? "" : String(item.quantity);
+  unitInput.value = item.unit;
+  categoryInput.value = item.category;
+  noteInput.value = item.note || "";
+  pendingBarcode = typeof item.barcode === "string" ? item.barcode : "";
+  pendingNutrition = normalizeNutrition(item.nutrition);
+  updatePendingBarcodeUI();
+  updateFormMode();
 
-    itemInput.focus();
-    setStatus(`Editing "${item.name}".`);
-  }
+  itemInput.focus();
+  setStatus(`Editing "${item.name}".`);
+}
 
 function cancelEdit() {
 if (editIndex === null) {
@@ -196,18 +199,18 @@ setStatus(`Edit cancelled for "${itemName}".`);
 }
 
 function resetForm() {
-    editIndex = null;
-    itemInput.value = "";
-    quantityInput.value = "";
-    unitInput.value = "";
-    categoryInput.value = "";
-    noteInput.value = "";
-    pendingBarcode = "";
-    updatePendingBarcodeUI();
-    updateFormMode();
-    itemInput.focus();
-  }
-
+  editIndex = null;
+  itemInput.value = "";
+  quantityInput.value = "";
+  unitInput.value = "";
+  categoryInput.value = "";
+  noteInput.value = "";
+  pendingBarcode = "";
+  pendingNutrition = createEmptyNutrition();
+  updatePendingBarcodeUI();
+  updateFormMode();
+  itemInput.focus();
+}
 function updateFormMode() {
 if (editIndex === null) {
 formTitle.textContent = "Add item";
@@ -226,14 +229,15 @@ clearBarcodeButton.disabled = pendingBarcode === "";
 }
 
 function clearPendingBarcode() {
-if (pendingBarcode === "") {
-setStatus("There is no barcode to clear.");
-return;
-}
+  if (pendingBarcode === "") {
+    setStatus("There is no barcode to clear.");
+    return;
+  }
 
-pendingBarcode = "";
-updatePendingBarcodeUI();
-setStatus("Pending barcode cleared.");
+  pendingBarcode = "";
+  pendingNutrition = createEmptyNutrition();
+  updatePendingBarcodeUI();
+  setStatus("Pending barcode cleared.");
 }
 
 async function startScanner() {
@@ -416,60 +420,64 @@ return "Could not start the scanner.";
 }
 
 async function lookupProductByBarcode(barcode) {
-const fields = [
-"product_name",
-"product_name_en",
-"brands",
-"quantity",
-"categories_tags",
-    "nutrition_grades"
-].join(",");
+  const fields = [
+    "product_name",
+    "product_name_en",
+    "brands",
+    "quantity",
+    "categories_tags",
+    "nutrition_grades",
+    "nutriments"
+  ].join(",");
 
-const url =
-`https://world.openfoodfacts.org/api/v2/product/${encodeURIComponent(barcode)}` +
-`?fields=${encodeURIComponent(fields)}`;
+  const url =
+    `https://world.openfoodfacts.org/api/v2/product/${encodeURIComponent(barcode)}` +
+    `?fields=${encodeURIComponent(fields)}`;
 
-const response = await fetch(url);
+  const response = await fetch(url);
 
-if (!response.ok) {
-throw new Error(`Lookup failed with status ${response.status}`);
-}
+  if (!response.ok) {
+    throw new Error(`Lookup failed with status ${response.status}`);
+  }
 
-const data = await response.json();
+  const data = await response.json();
 
-if (!data || data.status !== 1 || !data.product) {
-return null;
-}
+  if (!data || data.status !== 1 || !data.product) {
+    return null;
+  }
 
-const product = data.product;
+  const product = data.product;
 
-return {
-name: firstNonEmpty(
-normalizeText(product.product_name),
-normalizeText(product.product_name_en),
-""
-),
-brand: normalizeText(product.brands),
-packageQuantity: normalizeText(product.quantity),
-category: mapOffCategoryToAppCategory(product.categories_tags),
-    nutriScore: normalizeNutriScore(product.nutrition_grades)
-};
+  return {
+    name: firstNonEmpty(
+      normalizeText(product.product_name),
+      normalizeText(product.product_name_en),
+      ""
+    ),
+    brand: normalizeText(product.brands),
+    packageQuantity: normalizeText(product.quantity),
+    category: mapOffCategoryToAppCategory(product.categories_tags),
+    nutriScore: normalizeNutriScore(product.nutrition_grades),
+    nutrition: extractNutritionFromOffProduct(product)
+  };
 }
 
 function applyLookupToForm(productData) {
-if (productData.name !== "" && itemInput.value.trim() === "") {
-itemInput.value = productData.name;
-}
+  if (productData.name !== "" && itemInput.value.trim() === "") {
+    itemInput.value = productData.name;
+  }
 
-if (productData.category !== "" && categoryInput.value.trim() === "") {
-categoryInput.value = productData.category;
-}
+  if (productData.category !== "" && categoryInput.value.trim() === "") {
+    categoryInput.value = productData.category;
+  }
 
-const generatedNote = buildLookupNote(productData);
+  const generatedNote = buildLookupNote(productData);
 
-if (generatedNote !== "" && noteInput.value.trim() === "") {
-noteInput.value = generatedNote;
-}
+  if (generatedNote !== "" && noteInput.value.trim() === "") {
+    noteInput.value = generatedNote;
+  }
+
+  pendingNutrition = normalizeNutrition(productData.nutrition);
 }
 
 function buildLookupNote(productData) {
@@ -570,6 +578,66 @@ return value.trim();
 }
 
 return "";
+}
+
+function createEmptyNutrition() {
+  return {
+    kcal100g: null,
+    protein100g: null,
+    carbs100g: null,
+    fat100g: null
+  };
+}
+
+function normalizeNutrition(value) {
+  if (typeof value !== "object" || value === null) {
+    return createEmptyNutrition();
+  }
+
+  return {
+    kcal100g: normalizeNutritionNumber(value.kcal100g),
+    protein100g: normalizeNutritionNumber(value.protein100g),
+    carbs100g: normalizeNutritionNumber(value.carbs100g),
+    fat100g: normalizeNutritionNumber(value.fat100g)
+  };
+}
+
+function normalizeNutritionNumber(value) {
+  if (typeof value !== "number" || !Number.isFinite(value) || value < 0) {
+    return null;
+  }
+
+  return value;
+}
+
+function extractNutritionFromOffProduct(product) {
+  const nutriments =
+    product &&
+    typeof product === "object" &&
+    product.nutriments &&
+    typeof product.nutriments === "object"
+      ? product.nutriments
+      : {};
+
+  return normalizeNutrition({
+    kcal100g: pickFirstNumber(
+      nutriments["energy-kcal_100g"],
+      nutriments["energy-kcal"]
+    ),
+    protein100g: pickFirstNumber(nutriments.proteins_100g),
+    carbs100g: pickFirstNumber(nutriments.carbohydrates_100g),
+    fat100g: pickFirstNumber(nutriments.fat_100g)
+  });
+}
+
+function pickFirstNumber(...values) {
+  for (const value of values) {
+    if (typeof value === "number" && Number.isFinite(value) && value >= 0) {
+      return value;
+    }
+  }
+
+  return null;
 }
 
 function findItemIndexByBarcode(barcode) {
