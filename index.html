@@ -177,43 +177,44 @@
       <p id="status" class="status-text">Ready.</p>
     </section>
 
-    <section class="card">
-      <h2>Search and filter</h2>
+   <section class="card">
+  <h2>Recipe builder</h2>
+  <p class="hint-text">Build a temporary recipe from saved items with nutrition data.</p>
 
-      <div class="form-stack">
-        <input
-          id="searchInput"
-          type="text"
-          placeholder="Search name, note or barcode"
-          autocomplete="off"
-        />
+  <div class="form-stack">
+    <select id="recipeItemSelect">
+      <option value="">Select an item</option>
+    </select>
 
-        <div class="input-row">
-          <select id="filterStatusInput">
-            <option value="all">All statuses</option>
-            <option value="to-buy">To buy</option>
-            <option value="bought">Bought</option>
-          </select>
+    <div class="input-row">
+      <input
+        id="recipeGramsInput"
+        type="number"
+        inputmode="decimal"
+        min="0"
+        step="any"
+        placeholder="Grams used in recipe"
+      />
 
-          <select id="filterCategoryInput">
-            <option value="all">All categories</option>
-            <option value="">Uncategorised</option>
-            <option value="Produce">Produce</option>
-            <option value="Dairy">Dairy</option>
-            <option value="Pantry">Pantry</option>
-            <option value="Frozen">Frozen</option>
-            <option value="Drinks">Drinks</option>
-            <option value="Household">Household</option>
-            <option value="Personal care">Personal care</option>
-          </select>
-        </div>
+      <button id="addRecipeIngredientButton" class="primary-button">
+        Add ingredient
+      </button>
+    </div>
 
-        <button id="resetFiltersButton" class="secondary-button">
-          Reset filters
-        </button>
-      </div>
-    </section>
+    <button id="clearRecipeButton" class="secondary-button">
+      Clear recipe
+    </button>
+  </div>
 
+  <ul id="recipeIngredientsList" class="shopping-list"></ul>
+
+  <p id="recipeEmptyMessage" class="empty-message">
+    No ingredients in the recipe yet.
+  </p>
+
+  <p id="recipeTotals" class="item-meta"></p>
+</section>
+    
     <section class="card">
       <div class="list-header">
         <h2>Your shopping list</h2>
