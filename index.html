@@ -177,9 +177,9 @@
       <p id="status" class="status-text">Ready.</p>
     </section>
 
-   <section class="card">
-  <h2>Recipe builder</h2>
-  <p class="hint-text">Build a temporary recipe from saved items with nutrition data.</p>
+<h2>Recipe builder</h2>
+<p class="hint-text">Build a temporary recipe from saved items with nutrition data.</p>
+<p id="recipeEditorModeText" class="status-text">Creating a new recipe.</p>
 
   <div class="form-stack">
  <input
@@ -217,15 +217,24 @@
     </button>
   </div>
 
-  <div class="action-row">
-    <button id="saveRecipeButton" class="primary-button">
-      Save recipe
-    </button>
+<div class="action-row">
+  <button id="saveRecipeButton" class="primary-button">
+    Save recipe
+  </button>
 
-    <button id="clearRecipeButton" class="secondary-button">
-      Clear recipe
-    </button>
-  </div>
+  <button id="clearRecipeButton" class="secondary-button">
+    Clear recipe
+  </button>
+</div>
+
+<div class="action-row">
+  <button id="duplicateRecipeButton" class="secondary-button hidden">
+    Duplicate recipe
+  </button>
+
+  <button id="cancelRecipeEditButton" class="secondary-button hidden">
+    Cancel recipe edit
+  </button>
 </div>
 
 <ul id="recipeIngredientsList" class="shopping-list"></ul>
