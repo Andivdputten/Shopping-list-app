@@ -37,6 +37,9 @@ const recipeNameInput = document.getElementById("recipeNameInput");
 const recipeServingsInput = document.getElementById("recipeServingsInput");
 const recipeItemSelect = document.getElementById("recipeItemSelect");
 const recipeGramsInput = document.getElementById("recipeGramsInput");
+const recipeEditorModeText = document.getElementById("recipeEditorModeText");
+const duplicateRecipeButton = document.getElementById("duplicateRecipeButton");
+const cancelRecipeEditButton = document.getElementById("cancelRecipeEditButton");
 const addRecipeIngredientButton = document.getElementById("addRecipeIngredientButton");
 const saveRecipeButton = document.getElementById("saveRecipeButton");
 const clearRecipeButton = document.getElementById("clearRecipeButton");
@@ -86,6 +89,9 @@ if (
 !recipeIngredientsList ||
 !recipeEmptyMessage ||
 !recipeTotals ||  
+!recipeEditorModeText ||
+!duplicateRecipeButton ||
+!cancelRecipeEditButton ||
 !searchInput ||
 !clearButton ||
 !shoppingSections ||
@@ -105,7 +111,8 @@ let scannerRunning = false;
 let scanLock = false;
 let recipeIngredients = [];
 let savedRecipes = loadRecipes();
-
+let editingSavedRecipeIndex = null;
+  
 renderList();
 updateFormMode();
 updatePendingBarcodeUI();
@@ -113,6 +120,7 @@ setStatus("App loaded successfully.");
 renderRecipeItemOptions();
 renderRecipeBuilder();
 renderSavedRecipes();
+updateRecipeEditorMode();
 
 if (recipeServingsInput.value.trim() === "") recipeServingsInput.value = "1";
 
@@ -128,6 +136,8 @@ saveRecipeButton.addEventListener("click", saveCurrentRecipe);
 recipeNameInput.addEventListener("keydown", handleEnterToSubmit);
 recipeServingsInput.addEventListener("input", renderRecipeBuilder);
 recipeServingsInput.addEventListener("keydown", handleEnterToSubmit);
+duplicateRecipeButton.addEventListener("click", duplicateCurrentRecipe);
+cancelRecipeEditButton.addEventListener("click", cancelRecipeEdit);
 
 startScannerButton.addEventListener("click", () => {
 void startScanner();
@@ -881,14 +891,18 @@ function addRecipeIngredient() {
 }
 
 function clearRecipeIngredients() {
-  if (recipeIngredients.length === 0) {
+  const hasAnything =
+    recipeIngredients.length > 0 ||
+    recipeNameInput.value.trim() !== "" ||
+    recipeServingsInput.value.trim() !== "";
+
+  if (!hasAnything) {
     setStatus("There is no recipe to clear.");
     return;
   }
 
-  recipeIngredients = [];
-  renderRecipeBuilder();
-  setStatus("Recipe cleared.");
+  resetRecipeBuilder();
+  setStatus("Recipe builder cleared.");
 }
 
 function removeRecipeIngredient(index) {
@@ -1010,16 +1024,28 @@ function saveCurrentRecipe() {
     return recipe.name.toLowerCase() === recipeName.toLowerCase();
   });
 
-  if (existingIndex === -1) {
+  if (editingSavedRecipeIndex === null) {
+    if (existingIndex !== -1) {
+      setStatus("A saved recipe already uses that name. Load it to edit, or rename this one.");
+      return;
+    }
+
     savedRecipes.push(recipeData);
+    editingSavedRecipeIndex = savedRecipes.length - 1;
     setStatus(`Saved recipe "${recipeName}".`);
   } else {
-    savedRecipes[existingIndex] = recipeData;
+    if (existingIndex !== -1 && existingIndex !== editingSavedRecipeIndex) {
+      setStatus("Another saved recipe already uses that name. Rename this recipe or duplicate it.");
+      return;
+    }
+
+    savedRecipes[editingSavedRecipeIndex] = recipeData;
     setStatus(`Updated recipe "${recipeName}".`);
   }
 
   saveRecipes();
   renderSavedRecipes();
+  updateRecipeEditorMode();
 }
 
 function renderSavedRecipes() {
@@ -1095,6 +1121,7 @@ function loadSavedRecipe(index) {
     return;
   }
 
+  editingSavedRecipeIndex = index;
   recipeNameInput.value = recipe.name;
   recipeServingsInput.value = formatNutritionValue(
     typeof recipe.servings === "number" && recipe.servings > 0 ? recipe.servings : 1
@@ -1109,7 +1136,9 @@ function loadSavedRecipe(index) {
   });
 
   renderRecipeBuilder();
-  setStatus(`Loaded recipe "${recipe.name}".`);
+  renderSavedRecipes();
+  updateRecipeEditorMode();
+  setStatus(`Loaded recipe "${recipe.name}" for editing.`);
 }
 
 function deleteSavedRecipe(index) {
@@ -1121,8 +1150,19 @@ function deleteSavedRecipe(index) {
 
   const removedName = recipe.name;
   savedRecipes.splice(index, 1);
+
+  if (editingSavedRecipeIndex === index) {
+    resetRecipeBuilder();
+  } else if (
+    editingSavedRecipeIndex !== null &&
+    index < editingSavedRecipeIndex
+  ) {
+    editingSavedRecipeIndex -= 1;
+  }
+
   saveRecipes();
   renderSavedRecipes();
+  updateRecipeEditorMode();
   setStatus(`Deleted recipe "${removedName}".`);
 }
 
@@ -1306,6 +1346,71 @@ function buildRecipePerServingSummaryFromIngredients(ingredients, servings) {
     `C ${formatNutritionValue(totalCarbs / servings)}g · ` +
     `F ${formatNutritionValue(totalFat / servings)}g`
   );
+}
+function updateRecipeEditorMode() {
+  if (editingSavedRecipeIndex === null) {
+    recipeEditorModeText.textContent = "Creating a new recipe.";
+    saveRecipeButton.textContent = "Save recipe";
+    duplicateRecipeButton.classList.add("hidden");
+    cancelRecipeEditButton.classList.add("hidden");
+  } else {
+    recipeEditorModeText.textContent = "Editing a saved recipe.";
+    saveRecipeButton.textContent = "Save changes";
+    duplicateRecipeButton.classList.remove("hidden");
+    cancelRecipeEditButton.classList.remove("hidden");
+  }
+}
+
+function resetRecipeBuilder() {
+  recipeNameInput.value = "";
+  recipeServingsInput.value = "1";
+  recipeItemSelect.value = "";
+  recipeGramsInput.value = "";
+  recipeIngredients = [];
+  editingSavedRecipeIndex = null;
+
+  renderRecipeBuilder();
+  renderSavedRecipes();
+  updateRecipeEditorMode();
+}
+
+function cancelRecipeEdit() {
+  if (editingSavedRecipeIndex === null) {
+    setStatus("No saved recipe is being edited.");
+    return;
+  }
+
+  resetRecipeBuilder();
+  setStatus("Recipe edit cancelled.");
+}
+
+function duplicateCurrentRecipe() {
+  if (recipeIngredients.length === 0) {
+    setStatus("There is no recipe to duplicate.");
+    return;
+  }
+
+  editingSavedRecipeIndex = null;
+  recipeNameInput.value = makeRecipeCopyName(recipeNameInput.value);
+  updateRecipeEditorMode();
+  setStatus("Recipe duplicated into a new unsaved copy.");
+}
+
+function makeRecipeCopyName(baseName) {
+  const trimmed = typeof baseName === "string" ? baseName.trim() : "";
+  const base = trimmed === "" ? "Recipe" : trimmed;
+
+  let candidate = `${base} Copy`;
+  let counter = 2;
+
+  while (
+    savedRecipes.some((recipe) => recipe.name.toLowerCase() === candidate.toLowerCase())
+  ) {
+    candidate = `${base} Copy ${counter}`;
+    counter += 1;
+  }
+
+  return candidate;
 }
   
 function findItemIndexByBarcode(barcode) {
