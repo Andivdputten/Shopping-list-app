@@ -198,6 +198,15 @@
   placeholder="Servings, e.g. 2"
 />
 
+<input
+  id="recipeServingLabelInput"
+  type="text"
+  placeholder="Optional serving label, e.g. bowl"
+  autocomplete="off"
+/>
+
+<select id="recipeItemSelect">
+
 <select id="recipeItemSelect">
   <option value="">Select an item</option>
 </select>
@@ -242,8 +251,10 @@
 <p id="recipeEmptyMessage" class="empty-message">
   No ingredients in the recipe yet.
 </p>
-
+  
 <p id="recipeTotals" class="item-meta"></p>
+<p id="recipeWeightTotals" class="item-meta"></p>
+<p id="recipePer100gTotals" class="item-meta"></p>
 <p id="recipePerServingTotals" class="item-meta"></p>
 
 <h3>Saved recipes</h3>
