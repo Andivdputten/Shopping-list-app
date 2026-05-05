@@ -49,6 +49,9 @@ const recipeTotals = document.getElementById("recipeTotals");
 const recipePerServingTotals = document.getElementById("recipePerServingTotals");
 const savedRecipesList = document.getElementById("savedRecipesList");
 const savedRecipesEmptyMessage = document.getElementById("savedRecipesEmptyMessage");
+const recipeServingLabelInput = document.getElementById("recipeServingLabelInput");
+const recipeWeightTotals = document.getElementById("recipeWeightTotals");
+const recipePer100gTotals = document.getElementById("recipePer100gTotals");
 const searchInput = document.getElementById("searchInput");
 
 const clearButton = document.getElementById("clearButton");
@@ -96,6 +99,9 @@ if (
 !clearButton ||
 !shoppingSections ||
 !emptyMessage ||
+!recipeServingLabelInput ||
+!recipeWeightTotals ||
+!recipePer100gTotals ||
 !statusEl
 ) {
 alert("HTML element missing. Check your index.html IDs.");
@@ -138,7 +144,10 @@ recipeServingsInput.addEventListener("input", renderRecipeBuilder);
 recipeServingsInput.addEventListener("keydown", handleEnterToSubmit);
 duplicateRecipeButton.addEventListener("click", duplicateCurrentRecipe);
 cancelRecipeEditButton.addEventListener("click", cancelRecipeEdit);
-
+recipeServingLabelInput.addEventListener("input", renderRecipeBuilder);
+recipeServingLabelInput.addEventListener("keydown", handleEnterToSubmit);
+recipeServingsInput.addEventListener("input", renderRecipeBuilder);
+  
 startScannerButton.addEventListener("click", () => {
 void startScanner();
 });
@@ -922,6 +931,8 @@ function renderRecipeBuilder() {
   if (recipeIngredients.length === 0) {
     recipeEmptyMessage.style.display = "block";
     recipeTotals.textContent = "";
+    recipeWeightTotals.textContent = "";
+    recipePer100gTotals.textContent = "";
     recipePerServingTotals.textContent = "";
     return;
   }
@@ -965,6 +976,8 @@ function renderRecipeBuilder() {
   });
 
   recipeTotals.textContent = buildRecipeTotalsSummary();
+  recipeWeightTotals.textContent = buildRecipeWeightSummary();
+  recipePer100gTotals.textContent = buildRecipePer100gSummary();
   recipePerServingTotals.textContent = buildRecipePerServingSummary();
 }
 
@@ -1009,9 +1022,10 @@ function saveCurrentRecipe() {
   }
 
   const recipeData = {
-    name: recipeName,
-    servings,
-    ingredients: recipeIngredients.map((ingredient) => {
+  name: recipeName,
+  servings,
+  servingLabel: recipeServingLabelInput.value.trim(),
+  ingredients: recipeIngredients.map((ingredient) => {
       return {
         name: ingredient.name,
         grams: ingredient.grams,
@@ -1070,22 +1084,33 @@ function renderSavedRecipes() {
 const ingredientCountSpan = document.createElement("span");
 ingredientCountSpan.className = "item-meta";
 ingredientCountSpan.textContent =
-  `${recipe.ingredients.length} ingredient(s) · ${formatNutritionValue(recipe.servings || 1)} serving(s)`;
+  `${recipe.ingredients.length} ingredient(s) · ${formatRecipeServingsLabel(recipe.servings || 1, recipe.servingLabel)}`;
 
 const totalsSpan = document.createElement("span");
 totalsSpan.className = "item-meta";
-totalsSpan.textContent = buildRecipeTotalsSummaryFromIngredients(recipe.ingredients);
+totalsSpan.textContent = `Total: ${buildRecipeTotalsSummaryFromIngredients(recipe.ingredients)}`;
+
+const weightSpan = document.createElement("span");
+weightSpan.className = "item-meta";
+weightSpan.textContent = buildRecipeWeightSummaryFromIngredients(recipe.ingredients);
+
+const per100gSpan = document.createElement("span");
+per100gSpan.className = "item-meta";
+per100gSpan.textContent = buildRecipePer100gSummaryFromIngredients(recipe.ingredients);
 
 const perServingSpan = document.createElement("span");
 perServingSpan.className = "item-meta";
-perServingSpan.textContent = buildRecipePerServingSummaryFromIngredients(
+perServingSpan.textContent = buildRecipePerServingDisplayFromIngredients(
   recipe.ingredients,
-  recipe.servings || 1
+  recipe.servings || 1,
+  recipe.servingLabel || ""
 );
 
 infoWrap.appendChild(nameSpan);
 infoWrap.appendChild(ingredientCountSpan);
 infoWrap.appendChild(totalsSpan);
+infoWrap.appendChild(weightSpan);
+infoWrap.appendChild(per100gSpan);
 infoWrap.appendChild(perServingSpan);
 
     const actions = document.createElement("div");
@@ -1126,6 +1151,9 @@ function loadSavedRecipe(index) {
   recipeServingsInput.value = formatNutritionValue(
     typeof recipe.servings === "number" && recipe.servings > 0 ? recipe.servings : 1
   );
+  recipeServingLabelInput.value =
+  typeof recipe.servingLabel === "string" ? recipe.servingLabel : "";
+  
 
   recipeIngredients = recipe.ingredients.map((ingredient) => {
     return {
@@ -1226,10 +1254,12 @@ function loadRecipes() {
           .filter(Boolean);
 
         return {
-          name,
-          servings,
-          ingredients
-        };
+  name,
+  servings,
+  servingLabel:
+    typeof recipe.servingLabel === "string" ? recipe.servingLabel : "",
+  ingredients
+};
       })
       .filter(Boolean);
   } catch (error) {
@@ -1288,16 +1318,11 @@ function buildRecipePerServingSummary() {
     return "";
   }
 
-  const summary = buildRecipePerServingSummaryFromIngredients(
+  return buildRecipePerServingDisplayFromIngredients(
     recipeIngredients,
-    servings
+    servings,
+    recipeServingLabelInput.value.trim()
   );
-
-  if (summary === "") {
-    return "";
-  }
-
-  return `Per serving: ${summary}`;
 }
 
 function buildRecipePerServingSummaryFromIngredients(ingredients, servings) {
@@ -1364,6 +1389,7 @@ function updateRecipeEditorMode() {
 function resetRecipeBuilder() {
   recipeNameInput.value = "";
   recipeServingsInput.value = "1";
+  recipeServingLabelInput.value = "";
   recipeItemSelect.value = "";
   recipeGramsInput.value = "";
   recipeIngredients = [];
@@ -1411,6 +1437,107 @@ function makeRecipeCopyName(baseName) {
   }
 
   return candidate;
+}
+  function buildRecipeWeightSummary() {
+  return buildRecipeWeightSummaryFromIngredients(recipeIngredients);
+}
+
+function buildRecipeWeightSummaryFromIngredients(ingredients) {
+  const totalWeight = ingredients.reduce((sum, ingredient) => {
+    return sum + ingredient.grams;
+  }, 0);
+
+  if (totalWeight <= 0) {
+    return "";
+  }
+
+  return `Total weight: ${formatNutritionValue(totalWeight)}g`;
+}
+
+function buildRecipePer100gSummary() {
+  return buildRecipePer100gSummaryFromIngredients(recipeIngredients);
+}
+
+function buildRecipePer100gSummaryFromIngredients(ingredients) {
+  const totalWeight = ingredients.reduce((sum, ingredient) => {
+    return sum + ingredient.grams;
+  }, 0);
+
+  if (totalWeight <= 0) {
+    return "";
+  }
+
+  let totalKcal = 0;
+  let totalProtein = 0;
+  let totalCarbs = 0;
+  let totalFat = 0;
+  let hasAny = false;
+
+  ingredients.forEach((ingredient) => {
+    const nutrition = normalizeNutrition(ingredient.nutrition);
+    const factor = ingredient.grams / 100;
+
+    if (nutrition.kcal100g !== null) {
+      totalKcal += nutrition.kcal100g * factor;
+      hasAny = true;
+    }
+
+    if (nutrition.protein100g !== null) {
+      totalProtein += nutrition.protein100g * factor;
+      hasAny = true;
+    }
+
+    if (nutrition.carbs100g !== null) {
+      totalCarbs += nutrition.carbs100g * factor;
+      hasAny = true;
+    }
+
+    if (nutrition.fat100g !== null) {
+      totalFat += nutrition.fat100g * factor;
+      hasAny = true;
+    }
+  });
+
+  if (!hasAny) {
+    return "";
+  }
+
+  const factorTo100g = 100 / totalWeight;
+
+  return (
+    `Per 100g: ` +
+    `${formatNutritionValue(totalKcal * factorTo100g)} kcal · ` +
+    `P ${formatNutritionValue(totalProtein * factorTo100g)}g · ` +
+    `C ${formatNutritionValue(totalCarbs * factorTo100g)}g · ` +
+    `F ${formatNutritionValue(totalFat * factorTo100g)}g`
+  );
+}
+
+function buildRecipePerServingDisplayFromIngredients(ingredients, servings, servingLabel) {
+  const summary = buildRecipePerServingSummaryFromIngredients(ingredients, servings);
+
+  if (summary === "") {
+    return "";
+  }
+
+  const label = typeof servingLabel === "string" ? servingLabel.trim() : "";
+
+  if (label === "") {
+    return `Per serving: ${summary}`;
+  }
+
+  return `Per ${label}: ${summary}`;
+}
+
+function formatRecipeServingsLabel(servings, servingLabel) {
+  const label = typeof servingLabel === "string" ? servingLabel.trim() : "";
+  const servingCount = formatNutritionValue(servings);
+
+  if (label === "") {
+    return `${servingCount} serving(s)`;
+  }
+
+  return `${servingCount} ${label}(s)`;
 }
   
 function findItemIndexByBarcode(barcode) {
