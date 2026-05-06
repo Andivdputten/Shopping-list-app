@@ -1753,14 +1753,14 @@ function renderStockList() {
     const actions = document.createElement("div");
     actions.className = "item-actions";
 
-    const deleteButton = document.createElement("button");
-    deleteButton.className = "delete-button";
-    deleteButton.textContent = "Delete";
-    deleteButton.addEventListener("click", () => {
-      deleteStockItem(index);
-    });
+    const returnButton = document.createElement("button");
+returnButton.className = "edit-button";
+returnButton.textContent = "Return";
+returnButton.addEventListener("click", () => {
+  deleteStockItem(index);
+});
 
-    actions.appendChild(deleteButton);
+actions.appendChild(returnButton);
 
     li.appendChild(infoWrap);
     li.appendChild(actions);
