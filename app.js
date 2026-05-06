@@ -1776,13 +1776,23 @@ function deleteStockItem(index) {
   }
 
   const returnedName = item.name;
-  const shoppingIndex = findMatchingShoppingIndexForStock(item);
 
-  if (shoppingIndex === null) {
-    items.push(createShoppingItemFromStockItem(item));
-  } else {
-    items[shoppingIndex] = mergeShoppingItems(items[shoppingIndex], item);
-  }
+  items.push({
+    name: typeof item.name === "string" ? item.name : "",
+    quantity:
+      typeof item.quantity === "number" &&
+      Number.isFinite(item.quantity) &&
+      item.quantity > 0
+        ? item.quantity
+        : null,
+    unit: typeof item.unit === "string" ? item.unit : "",
+    category: typeof item.category === "string" ? item.category : "",
+    note: typeof item.note === "string" ? item.note : "",
+    barcode: typeof item.barcode === "string" ? item.barcode : "",
+    nutrition: normalizeNutrition(item.nutrition),
+    nutritionAmount: normalizeNutritionNumber(item.nutritionAmount),
+    bought: false
+  });
 
   stockItems.splice(index, 1);
 
