@@ -1134,14 +1134,14 @@ infoWrap.appendChild(perServingSpan);
       loadSavedRecipe(index);
     });
 
-    const deleteButton = document.createElement("button");
-    deleteButton.className = "delete-button";
-    deleteButton.textContent = "Delete";
-    deleteButton.addEventListener("click", () => {
-      deleteSavedRecipe(index);
-    });
+   const returnButton = document.createElement("button");
+returnButton.className = "edit-button";
+returnButton.textContent = "Return";
+returnButton.addEventListener("click", () => {
+  deleteStockItem(index);
+});
 
-    actions.appendChild(loadButton);
+actions.appendChild(returnButton);
     actions.appendChild(deleteButton);
 
     li.appendChild(infoWrap);
@@ -1775,13 +1775,23 @@ function deleteStockItem(index) {
     return;
   }
 
-  const removedName = item.name;
-  stockItems.splice(index, 1);
-  saveStockItems();
-  renderStockList();
-  setStatus(`Removed "${removedName}" from pantry stock.`);
-}
+  const returnedName = item.name;
+  const shoppingIndex = findMatchingShoppingIndexForStock(item);
 
+  if (shoppingIndex === null) {
+    items.push(createShoppingItemFromStockItem(item));
+  } else {
+    items[shoppingIndex] = mergeShoppingItems(items[shoppingIndex], item);
+  }
+
+  stockItems.splice(index, 1);
+
+  saveItems();
+  saveStockItems();
+  renderList();
+  renderStockList();
+  setStatus(`Returned "${returnedName}" to the shopping list.`);
+}
 function clearStockItems() {
   if (stockItems.length === 0) {
     setStatus("There is no pantry stock to clear.");
@@ -1848,6 +1858,122 @@ function loadStockItems() {
   } catch (error) {
     return [];
   }
+}
+
+function createShoppingItemFromStockItem(item) {
+  return {
+    name: typeof item.name === "string" ? item.name : "",
+    quantity:
+      typeof item.quantity === "number" &&
+      Number.isFinite(item.quantity) &&
+      item.quantity > 0
+        ? item.quantity
+        : null,
+    unit: typeof item.unit === "string" ? item.unit : "",
+    category: typeof item.category === "string" ? item.category : "",
+    note: typeof item.note === "string" ? item.note : "",
+    barcode: typeof item.barcode === "string" ? item.barcode : "",
+    nutrition: normalizeNutrition(item.nutrition),
+    nutritionAmount: normalizeNutritionNumber(item.nutritionAmount),
+    bought: false
+  };
+}
+
+function findMatchingShoppingIndexForStock(item) {
+  if (typeof item.barcode === "string" && item.barcode.trim() !== "") {
+    const barcode = item.barcode.trim();
+
+    const barcodeIndex = items.findIndex((shoppingItem) => {
+      return (
+        typeof shoppingItem.barcode === "string" &&
+        shoppingItem.barcode.trim() === barcode
+      );
+    });
+
+    if (barcodeIndex !== -1) {
+      return barcodeIndex;
+    }
+  }
+
+  const name =
+    typeof item.name === "string" ? item.name.trim().toLowerCase() : "";
+  const unit =
+    typeof item.unit === "string" ? item.unit.trim().toLowerCase() : "";
+  const category =
+    typeof item.category === "string" ? item.category.trim().toLowerCase() : "";
+
+  const index = items.findIndex((shoppingItem) => {
+    const shoppingName =
+      typeof shoppingItem.name === "string"
+        ? shoppingItem.name.trim().toLowerCase()
+        : "";
+    const shoppingUnit =
+      typeof shoppingItem.unit === "string"
+        ? shoppingItem.unit.trim().toLowerCase()
+        : "";
+    const shoppingCategory =
+      typeof shoppingItem.category === "string"
+        ? shoppingItem.category.trim().toLowerCase()
+        : "";
+
+    return (
+      shoppingName === name &&
+      shoppingUnit === unit &&
+      shoppingCategory === category
+    );
+  });
+
+  return index === -1 ? null : index;
+}
+
+function mergeShoppingItems(existingItem, stockItem) {
+  const merged = {
+    ...existingItem
+  };
+
+  if (
+    typeof merged.quantity === "number" &&
+    Number.isFinite(merged.quantity) &&
+    merged.quantity > 0 &&
+    typeof stockItem.quantity === "number" &&
+    Number.isFinite(stockItem.quantity) &&
+    stockItem.quantity > 0 &&
+    merged.unit === stockItem.unit
+  ) {
+    merged.quantity += stockItem.quantity;
+  } else if (
+    (merged.quantity === null || typeof merged.quantity !== "number") &&
+    typeof stockItem.quantity === "number" &&
+    Number.isFinite(stockItem.quantity) &&
+    stockItem.quantity > 0
+  ) {
+    merged.quantity = stockItem.quantity;
+  }
+
+  if (
+    (typeof merged.note !== "string" || merged.note.trim() === "") &&
+    typeof stockItem.note === "string"
+  ) {
+    merged.note = stockItem.note;
+  }
+
+  if (
+    !hasAnyNutrition(merged.nutrition) &&
+    hasAnyNutrition(stockItem.nutrition)
+  ) {
+    merged.nutrition = normalizeNutrition(stockItem.nutrition);
+  }
+
+  if (
+    normalizeNutritionNumber(merged.nutritionAmount) === null &&
+    normalizeNutritionNumber(stockItem.nutritionAmount) !== null
+  ) {
+    merged.nutritionAmount = normalizeNutritionNumber(stockItem.nutritionAmount);
+  }
+
+  merged.bought = false;
+
+  return merged;
 }
   
 function findItemIndexByBarcode(barcode) {
