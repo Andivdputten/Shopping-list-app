@@ -727,6 +727,699 @@ function pickFirstNumber(...values) {
 }
 
 function formatNutritionSummary(nutrition) {
+  const data = normalizeNutriconst recipeNameInput = document.getElementById("recipeNameInput");
+const recipeServingsInput = document.getElementById("recipeServingsInput");
+const recipeItemSelect = document.getElementById("recipeItemSelect");
+const recipeGramsInput = document.getElementById("recipeGramsInput");
+const recipeEditorModeText = document.getElementById("recipeEditorModeText");
+const duplicateRecipeButton = document.getElementById("duplicateRecipeButton");
+const cancelRecipeEditButton = document.getElementById("cancelRecipeEditButton");
+const addRecipeIngredientButton = document.getElementById("addRecipeIngredientButton");
+const saveRecipeButton = document.getElementById("saveRecipeButton");
+const clearRecipeButton = document.getElementById("clearRecipeButton");
+const recipeIngredientsList = document.getElementById("recipeIngredientsList");
+const recipeEmptyMessage = document.getElementById("recipeEmptyMessage");
+const recipeTotals = document.getElementById("recipeTotals");
+const recipePerServingTotals = document.getElementById("recipePerServingTotals");
+const savedRecipesList = document.getElementById("savedRecipesList");
+const savedRecipesEmptyMessage = document.getElementById("savedRecipesEmptyMessage");
+const recipeServingLabelInput = document.getElementById("recipeServingLabelInput");
+const recipeWeightTotals = document.getElementById("recipeWeightTotals");
+const recipePer100gTotals = document.getElementById("recipePer100gTotals");
+const searchInput = document.getElementById("searchInput");
+
+const clearStockButton = document.getElementById("clearStockButton");
+const stockList = document.getElementById("stockList");
+const stockEmptyMessage = document.getElementById("stockEmptyMessage");
+
+const clearButton = document.getElementById("clearButton");
+const shoppingSections = document.getElementById("shoppingSections");
+const emptyMessage = document.getElementById("emptyMessage");
+const statusEl = document.getElementById("status");
+
+if (
+!formTitle ||
+!itemInput ||
+!quantityInput ||
+!unitInput ||
+!categoryInput ||
+!noteInput ||
+!nutritionKcalInput ||
+!nutritionProteinInput ||
+!nutritionCarbsInput ||
+!nutritionFatInput ||
+!nutritionAmountInput ||
+!barcodePreview ||
+!clearBarcodeButton ||
+!addButton ||
+!cancelEditButton ||
+!startScannerButton ||
+!stopScannerButton ||
+!scannerMessage ||
+!readerWrapper ||
+!recipeItemSelect ||
+!recipeGramsInput ||
+!recipeNameInput ||
+!saveRecipeButton ||
+!savedRecipesList ||
+!recipeServingsInput ||
+!recipePerServingTotals ||
+!savedRecipesEmptyMessage ||
+!addRecipeIngredientButton ||
+!clearRecipeButton ||
+!recipeIngredientsList ||
+!recipeEmptyMessage ||
+!recipeTotals ||  
+!recipeEditorModeText ||
+!duplicateRecipeButton ||
+!cancelRecipeEditButton ||
+!searchInput ||
+!clearButton ||
+!shoppingSections ||
+!emptyMessage ||
+!clearStockButton ||
+!stockList ||
+!stockEmptyMessage ||
+!recipeServingLabelInput ||
+!recipeWeightTotals ||
+!recipePer100gTotals ||
+!statusEl
+) {
+alert("HTML element missing. Check your index.html IDs.");
+return;
+}
+
+let items = loadItems();
+let editIndex = null;
+let pendingBarcode = "";
+let pendingNutrition = createEmptyNutrition();
+let html5QrCode = null;
+let scannerRunning = false;
+let scanLock = false;
+let recipeIngredients = [];
+let savedRecipes = loadRecipes();
+let editingSavedRecipeIndex = null;
+let stockItems = loadStockItems();
+  
+renderList();
+updateFormMode();
+updatePendingBarcodeUI();
+setStatus("App loaded successfully.");
+renderRecipeItemOptions();
+renderRecipeBuilder();
+renderSavedRecipes();
+renderStockList();
+updateRecipeEditorMode();
+
+if (recipeServingsInput.value.trim() === "") recipeServingsInput.value = "1";
+
+addButton.addEventListener("click", submitForm);
+cancelEditButton.addEventListener("click", cancelEdit);
+clearButton.addEventListener("click", clearAllItems);
+clearBarcodeButton.addEventListener("click", clearPendingBarcode);
+addRecipeIngredientButton.addEventListener("click", addRecipeIngredient);
+clearRecipeButton.addEventListener("click", clearRecipeIngredients);
+recipeGramsInput.addEventListener("keydown", handleEnterToSubmit);
+recipeItemSelect.addEventListener("keydown", handleEnterToSubmit);
+saveRecipeButton.addEventListener("click", saveCurrentRecipe);
+recipeNameInput.addEventListener("keydown", handleEnterToSubmit);
+recipeServingsInput.addEventListener("input", renderRecipeBuilder);
+recipeServingsInput.addEventListener("keydown", handleEnterToSubmit);
+duplicateRecipeButton.addEventListener("click", duplicateCurrentRecipe);
+cancelRecipeEditButton.addEventListener("click", cancelRecipeEdit);
+recipeServingLabelInput.addEventListener("input", renderRecipeBuilder);
+recipeServingLabelInput.addEventListener("keydown", handleEnterToSubmit);
+recipeServingsInput.addEventListener("input", renderRecipeBuilder);
+clearStockButton.addEventListener("click", clearStockItems);
+  
+startScannerButton.addEventListener("click", () => {
+void startScanner();
+});
+
+stopScannerButton.addEventListener("click", () => {
+void stopScanner(false);
+});
+  
+searchInput.addEventListener("input", renderList);
+
+itemInput.addEventListener("keydown", handleEnterToSubmit);
+quantityInput.addEventListener("keydown", handleEnterToSubmit);
+unitInput.addEventListener("keydown", handleEnterToSubmit);
+categoryInput.addEventListener("keydown", handleEnterToSubmit);
+nutritionKcalInput.addEventListener("keydown", handleEnterToSubmit);
+nutritionProteinInput.addEventListener("keydown", handleEnterToSubmit);
+nutritionCarbsInput.addEventListener("keydown", handleEnterToSubmit);
+nutritionFatInput.addEventListener("keydown", handleEnterToSubmit);
+nutritionAmountInput.addEventListener("keydown", handleEnterToSubmit);
+  
+function handleEnterToSubmit(event) {
+if (event.key === "Enter") {
+submitForm();
+}
+}
+
+function submitForm() {
+  const name = itemInput.value.trim();
+  const quantityRaw = quantityInput.value.trim();
+  const unit = unitInput.value.trim();
+  const category = categoryInput.value.trim();
+  const note = noteInput.value.trim();
+
+  if (name === "") {
+    setStatus("Type an item name first.");
+    return;
+  }
+
+  let quantity = null;
+
+  if (quantityRaw !== "") {
+    quantity = Number(quantityRaw);
+
+    if (!Number.isFinite(quantity) || quantity <= 0) {
+      setStatus("Quantity must be greater than 0.");
+      return;
+    }
+  }
+  
+  pendingNutrition = readNutritionFromInputs();
+  const nutritionAmount = parseOptionalNumberInput(nutritionAmountInput.value);
+  
+  const duplicateBarcodeIndex = findDuplicateBarcodeIndex(
+    pendingBarcode,
+    editIndex
+  );
+
+  if (duplicateBarcodeIndex !== null) {
+    const existingItem = items[duplicateBarcodeIndex];
+    startEdit(duplicateBarcodeIndex);
+    setStatus(
+      `Barcode already belongs to "${existingItem.name}". Loaded existing item for editing instead of creating a duplicate.`
+    );
+    return;
+  }
+
+  const itemData = {
+    name,
+    quantity,
+    unit,
+    category,
+    note,
+    barcode: pendingBarcode,
+   nutrition: normalizeNutrition(pendingNutrition),
+   nutritionAmount,
+   bought: false
+  };
+
+  if (editIndex === null) {
+    items.push(itemData);
+    setStatus(`Added "${name}".`);
+  } else {
+    itemData.bought = items[editIndex].bought;
+    items[editIndex] = itemData;
+    setStatus(`Updated "${name}".`);
+  }
+
+  saveItems();
+  renderList();
+  resetForm();
+}
+
+function startEdit(index) {
+  const item = items[index];
+
+  editIndex = index;
+  itemInput.value = item.name;
+  quantityInput.value = item.quantity === null ? "" : String(item.quantity);
+  unitInput.value = item.unit;
+  categoryInput.value = item.category;
+  noteInput.value = item.note || "";
+  pendingBarcode = typeof item.barcode === "string" ? item.barcode : "";
+  pendingNutrition = normalizeNutrition(item.nutrition);
+  syncNutritionInputsFromPending();
+  nutritionAmountInput.value = formatNutritionInputValue(item.nutritionAmount);
+  updatePendingBarcodeUI();
+  updateFormMode();
+
+  itemInput.focus();
+  setStatus(`Editing "${item.name}".`);
+}
+
+function cancelEdit() {
+if (editIndex === null) {
+return;
+}
+
+const itemName = items[editIndex] ? items[editIndex].name : "item";
+resetForm();
+setStatus(`Edit cancelled for "${itemName}".`);
+}
+
+function resetForm() {
+  editIndex = null;
+  itemInput.value = "";
+  quantityInput.value = "";
+  unitInput.value = "";
+  categoryInput.value = "";
+  noteInput.value = "";
+  pendingBarcode = "";
+  pendingNutrition = createEmptyNutrition();
+  syncNutritionInputsFromPending();
+  nutritionAmountInput.value = "";
+  updatePendingBarcodeUI();
+  updateFormMode();
+  itemInput.focus();
+}
+function updateFormMode() {
+if (editIndex === null) {
+formTitle.textContent = "Add item";
+addButton.textContent = "Add item";
+cancelEditButton.classList.add("hidden");
+} else {
+formTitle.textContent = "Edit item";
+addButton.textContent = "Save changes";
+cancelEditButton.classList.remove("hidden");
+}
+}
+
+function updatePendingBarcodeUI() {
+barcodePreview.value = pendingBarcode;
+clearBarcodeButton.disabled = pendingBarcode === "";
+}
+
+function clearPendingBarcode() {
+  if (pendingBarcode === "") {
+    setStatus("There is no barcode to clear.");
+    return;
+  }
+
+  pendingBarcode = "";
+  pendingNutrition = createEmptyNutrition();
+  updatePendingBarcodeUI();
+  setStatus("Pending barcode cleared.");
+}
+
+async function startScanner() {
+if (scannerRunning) {
+setStatus("Scanner already running.");
+return;
+}
+
+if (!window.isSecureContext) {
+scannerMessage.textContent = "Scanner unavailable: page is not using HTTPS.";
+setStatus("Camera scanning requires HTTPS.");
+return;
+}
+
+if (typeof Html5Qrcode === "undefined") {
+scannerMessage.textContent = "Scanner unavailable: library failed to load.";
+setStatus("Scanner library did not load.");
+return;
+}
+
+readerWrapper.classList.remove("hidden");
+startScannerButton.disabled = true;
+stopScannerButton.disabled = true;
+scannerMessage.textContent = "Requesting camera access...";
+
+scanLock = false;
+html5QrCode = new Html5Qrcode("reader");
+
+try {
+await html5QrCode.start(
+{ facingMode: "environment" },
+{
+fps: 10,
+qrbox: { width: 280, height: 120 },
+aspectRatio: 1.7777778
+},
+onScanSuccess,
+() => {
+// Ignore per-frame scan misses.
+}
+);
+
+scannerRunning = true;
+stopScannerButton.disabled = false;
+scannerMessage.textContent =
+"Scanner running. Point the back camera at a barcode.";
+setStatus("Scanner started.");
+} catch (error) {
+html5QrCode = null;
+readerWrapper.classList.add("hidden");
+startScannerButton.disabled = false;
+stopScannerButton.disabled = true;
+scannerMessage.textContent = "Could not start scanner.";
+setStatus(getScannerStartErrorMessage(error));
+}
+}
+
+function onScanSuccess(decodedText) {
+if (scanLock) {
+return;
+}
+
+scanLock = true;
+void handleDetectedBarcode(decodedText);
+}
+
+async function handleDetectedBarcode(decodedText) {
+pendingBarcode = decodedText;
+updatePendingBarcodeUI();
+
+await stopScanner(true);
+
+const existingIndex = findItemIndexByBarcode(decodedText);
+
+if (existingIndex !== null) {
+const existingItem = items[existingIndex];
+startEdit(existingIndex);
+scannerMessage.textContent = `Matched existing item: ${existingItem.name}`;
+setStatus(
+`Barcode matched "${existingItem.name}". Existing item loaded for editing.`
+);
+return;
+}
+
+scannerMessage.textContent = "Looking up product data...";
+setStatus("Barcode scanned. Looking up external product data...");
+
+try {
+const productData = await lookupProductByBarcode(decodedText);
+
+if (productData !== null) {
+applyLookupToForm(productData);
+
+scannerMessage.textContent =
+productData.name !== ""
+? `External match: ${productData.name}`
+: `External match for barcode ${decodedText}`;
+
+setStatus("External product match found. Review the autofill and save.");
+return;
+}
+
+scannerMessage.textContent = `New barcode ready: ${decodedText}`;
+setStatus(
+"Barcode not found in your list or external lookup. Fill in the item details manually."
+);
+} catch (error) {
+scannerMessage.textContent = `New barcode ready: ${decodedText}`;
+setStatus(
+"Barcode scanned, but external lookup failed. Fill in the item details manually."
+);
+}
+}
+
+async function stopScanner(autoStopped) {
+if (!html5QrCode) {
+scannerRunning = false;
+startScannerButton.disabled = false;
+stopScannerButton.disabled = true;
+readerWrapper.classList.add("hidden");
+
+if (autoStopped) {
+scannerMessage.textContent = `Barcode ready for next save: ${pendingBarcode}`;
+} else {
+scannerMessage.textContent = "Scanner stopped.";
+setStatus("Scanner stopped.");
+}
+
+return;
+}
+
+try {
+if (scannerRunning) {
+await html5QrCode.stop();
+}
+} catch (error) {
+// Ignore stop errors and continue cleanup.
+}
+
+try {
+html5QrCode.clear();
+} catch (error) {
+// Ignore clear errors during cleanup.
+}
+
+html5QrCode = null;
+scannerRunning = false;
+scanLock = false;
+startScannerButton.disabled = false;
+stopScannerButton.disabled = true;
+readerWrapper.classList.add("hidden");
+
+if (autoStopped) {
+scannerMessage.textContent = `Barcode ready for next save: ${pendingBarcode}`;
+} else {
+scannerMessage.textContent = "Scanner stopped.";
+setStatus("Scanner stopped.");
+}
+}
+
+function getScannerStartErrorMessage(error) {
+const message =
+error && typeof error.message === "string"
+? error.message
+: String(error || "");
+
+if (message.includes("NotAllowedError")) {
+return "Camera permission was denied.";
+}
+
+if (message.includes("NotFoundError")) {
+return "No usable camera was found.";
+}
+
+if (message.includes("NotReadableError")) {
+return "Camera is busy or blocked by another app.";
+}
+
+return "Could not start the scanner.";
+}
+
+async function lookupProductByBarcode(barcode) {
+  const fields = [
+    "product_name",
+    "product_name_en",
+    "brands",
+    "quantity",
+    "categories_tags",
+    "nutrition_grades",
+    "nutriments"
+  ].join(",");
+
+  const url =
+    `https://world.openfoodfacts.org/api/v2/product/${encodeURIComponent(barcode)}` +
+    `?fields=${encodeURIComponent(fields)}`;
+
+  const response = await fetch(url);
+
+  if (!response.ok) {
+    throw new Error(`Lookup failed with status ${response.status}`);
+  }
+
+  const data = await response.json();
+
+  if (!data || data.status !== 1 || !data.product) {
+    return null;
+  }
+
+  const product = data.product;
+
+  return {
+    name: firstNonEmpty(
+      normalizeText(product.product_name),
+      normalizeText(product.product_name_en),
+      ""
+    ),
+    brand: normalizeText(product.brands),
+    packageQuantity: normalizeText(product.quantity),
+    category: mapOffCategoryToAppCategory(product.categories_tags),
+    nutriScore: normalizeNutriScore(product.nutrition_grades),
+    nutrition: extractNutritionFromOffProduct(product)
+  };
+}
+
+function applyLookupToForm(productData) {
+  if (productData.name !== "" && itemInput.value.trim() === "") {
+    itemInput.value = productData.name;
+  }
+
+  if (productData.category !== "" && categoryInput.value.trim() === "") {
+    categoryInput.value = productData.category;
+  }
+
+  const generatedNote = buildLookupNote(productData);
+
+  if (generatedNote !== "" && noteInput.value.trim() === "") {
+    noteInput.value = generatedNote;
+  }
+
+  pendingNutrition = normalizeNutrition(productData.nutrition);
+  syncNutritionInputsFromPending();
+}
+
+function buildLookupNote(productData) {
+const lines = [];
+
+if (productData.brand !== "") {
+lines.push(`Brand: ${productData.brand}`);
+}
+
+if (productData.packageQuantity !== "") {
+lines.push(`Pack size: ${productData.packageQuantity}`);
+}
+
+if (productData.nutriScore !== "") {
+lines.push(`Nutri-Score: ${productData.nutriScore.toUpperCase()}`);
+}
+
+return lines.join("\n");
+}
+
+function mapOffCategoryToAppCategory(categoriesTags) {
+if (!Array.isArray(categoriesTags) || categoriesTags.length === 0) {
+return "";
+}
+
+const text = categoriesTags.join(" ").toLowerCase();
+
+if (
+text.includes("en:fruits") ||
+text.includes("en:vegetables") ||
+text.includes("en:fresh-vegetables") ||
+text.includes("en:fresh-fruits") ||
+text.includes("en:produce")
+) {
+return "Produce";
+}
+
+if (
+text.includes("en:milk") ||
+text.includes("en:cheeses") ||
+text.includes("en:yogurts") ||
+text.includes("en:butter") ||
+text.includes("en:cream") ||
+text.includes("en:dairy")
+) {
+return "Dairy";
+}
+
+if (
+text.includes("en:frozen-foods") ||
+text.includes("en:frozen-pizzas") ||
+text.includes("en:frozen-desserts") ||
+text.includes("en:ice-creams")
+) {
+return "Frozen";
+}
+
+if (
+text.includes("en:beverages") ||
+text.includes("en:drinks") ||
+text.includes("en:waters") ||
+text.includes("en:juices") ||
+text.includes("en:sodas") ||
+text.includes("en:soft-drinks") ||
+text.includes("en:teas") ||
+text.includes("en:coffees") ||
+text.includes("en:energy-drinks")
+) {
+return "Drinks";
+}
+
+return "Pantry";
+}
+
+function normalizeNutriScore(value) {
+if (typeof value !== "string") {
+return "";
+}
+
+const trimmed = value.trim().toLowerCase();
+
+if (["a", "b", "c", "d", "e"].includes(trimmed)) {
+return trimmed;
+}
+
+return "";
+}
+
+function normalizeText(value) {
+return typeof value === "string" ? value.trim() : "";
+}
+
+function firstNonEmpty(...values) {
+for (const value of values) {
+if (typeof value === "string" && value.trim() !== "") {
+return value.trim();
+}
+}
+
+return "";
+}
+
+function createEmptyNutrition() {
+  return {
+    kcal100g: null,
+    protein100g: null,
+    carbs100g: null,
+    fat100g: null
+  };
+}
+
+function normalizeNutrition(value) {
+  if (typeof value !== "object" || value === null) {
+    return createEmptyNutrition();
+  }
+
+  return {
+    kcal100g: normalizeNutritionNumber(value.kcal100g),
+    protein100g: normalizeNutritionNumber(value.protein100g),
+    carbs100g: normalizeNutritionNumber(value.carbs100g),
+    fat100g: normalizeNutritionNumber(value.fat100g)
+  };
+}
+
+function normalizeNutritionNumber(value) {
+  if (typeof value !== "number" || !Number.isFinite(value) || value < 0) {
+    return null;
+  }
+
+  return value;
+}
+
+function extractNutritionFromOffProduct(product) {
+  const nutriments =
+    product &&
+    typeof product === "object" &&
+    product.nutriments &&
+    typeof product.nutriments === "object"
+      ? product.nutriments
+      : {};
+
+  return normalizeNutrition({
+    kcal100g: pickFirstNumber(
+      nutriments["energy-kcal_100g"],
+      nutriments["energy-kcal"]
+    ),
+    protein100g: pickFirstNumber(nutriments.proteins_100g),
+    carbs100g: pickFirstNumber(nutriments.carbohydrates_100g),
+    fat100g: pickFirstNumber(nutriments.fat_100g)
+  });
+}
+
+function pickFirstNumber(...values) {
+  for (const value of values) {
+    if (typeof value === "number" && Number.isFinite(value) && value >= 0) {
+      return value;
+    }
+  }
+
+  return null;
+}
+
+function formatNutritionSummary(nutrition) {
   const data = normalizeNutrition(nutrition);
   const parts = [];
 
