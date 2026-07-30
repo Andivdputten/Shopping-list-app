@@ -375,8 +375,9 @@ html5QrCode = null;
 readerWrapper.classList.add("hidden");
 startScannerButton.disabled = false;
 stopScannerButton.disabled = true;
-scannerMessage.textContent = "Could not start scanner.";
-setStatus(getScannerStartErrorMessage(error));
+const reason = getScannerStartErrorMessage(error);
+scannerMessage.textContent = reason;
+setStatus(reason);
 }
 }
 
@@ -484,21 +485,32 @@ setStatus("Scanner stopped.");
 }
 
 function getScannerStartErrorMessage(error) {
+const name =
+  error && typeof error.name === "string" ? error.name : "";
 const message =
-error && typeof error.message === "string"
-? error.message
-: String(error || "");
+  error && typeof error.message === "string"
+    ? error.message
+    : String(error || "");
+const combined = `${name} ${message}`;
 
-if (message.includes("NotAllowedError")) {
-return "Camera permission was denied.";
+if (combined.includes("NotAllowedError") || combined.includes("Permission denied")) {
+  return "Camera permission was denied. Check the site permission (tap the lock/info icon in the address bar) and your phone's app-level camera permission for this browser.";
 }
 
-if (message.includes("NotFoundError")) {
-return "No usable camera was found.";
+if (combined.includes("NotFoundError") || combined.includes("Requested device not found")) {
+  return "No usable camera was found on this device.";
 }
 
-if (message.includes("NotReadableError")) {
-return "Camera is busy or blocked by another app.";
+if (combined.includes("NotReadableError") || combined.includes("Could not start video source")) {
+  return "Camera is busy or blocked by another app. Close other apps/tabs using the camera and try again.";
+}
+
+if (combined.includes("OverconstrainedError")) {
+  return "No camera matched the requested settings (back camera). Try a different device.";
+}
+
+if (combined.trim()) {
+  return `Could not start the scanner: ${combined.trim()}`;
 }
 
 return "Could not start the scanner.";
