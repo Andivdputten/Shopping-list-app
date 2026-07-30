@@ -16,278 +16,340 @@
 </head>
 <body>
   <header class="app-header">
-    <h1>Grocery Scanner</h1>
-    <p class="subtitle">Shopping list - barcode scanner foundation</p>
+    <h1 id="pageTitle">Scanner</h1>
+    <p class="subtitle" id="pageSubtitle">Scan a barcode or add an item by hand</p>
   </header>
 
   <main class="container">
-    <section class="card">
-      <h2>Barcode scanner</h2>
-      <p class="hint-text">
-        Tap start, allow camera access, then point the back camera at a product barcode.
-      </p>
 
-      <div class="action-row">
-        <button id="startScannerButton" class="primary-button">Start scanner</button>
-        <button id="stopScannerButton" class="secondary-button" disabled>Stop scanner</button>
-      </div>
+    <!-- ================= SCANNER TAB ================= -->
+    <section class="tab-panel" id="panel-scanner" data-panel="scanner">
+      <section class="card">
+        <h2>Barcode scanner</h2>
+        <p class="hint-text">
+          Tap start, allow camera access, then point the back camera at a product barcode.
+        </p>
 
-      <p id="scannerMessage" class="status-text">Scanner idle.</p>
+        <div class="action-row">
+          <button id="startScannerButton" class="primary-button">Start scanner</button>
+          <button id="stopScannerButton" class="secondary-button" disabled>Stop scanner</button>
+        </div>
 
-      <div id="readerWrapper" class="reader-wrapper hidden">
-        <div id="reader"></div>
-      </div>
-    </section>
+        <p id="scannerMessage" class="status-text">Scanner idle.</p>
 
-    <section class="card">
-      <h2 id="formTitle">Add item</h2>
+        <div id="readerWrapper" class="reader-wrapper hidden">
+          <div id="reader"></div>
+        </div>
+      </section>
 
-      <div class="form-stack">
-        <input
-          id="itemInput"
-          type="text"
-          placeholder="Item name, e.g. Bananas"
-          autocomplete="off"
-        />
+      <section class="card">
+        <h2 id="formTitle">Add item</h2>
 
-        <div class="input-row">
+        <div class="form-stack">
           <input
-            id="quantityInput"
+            id="itemInput"
+            type="text"
+            placeholder="Item name, e.g. Bananas"
+            autocomplete="off"
+          />
+
+          <div class="input-row">
+            <input
+              id="quantityInput"
+              type="number"
+              inputmode="decimal"
+              min="0"
+              step="any"
+              placeholder="Quantity"
+            />
+
+            <select id="unitInput">
+              <option value="">No unit</option>
+              <option value="pcs">pcs</option>
+              <option value="g">g</option>
+              <option value="kg">kg</option>
+              <option value="ml">ml</option>
+              <option value="l">l</option>
+              <option value="pack">pack</option>
+              <option value="bottle">bottle</option>
+              <option value="can">can</option>
+            </select>
+          </div>
+
+          <select id="categoryInput">
+            <option value="">Uncategorised</option>
+            <option value="Produce">Produce</option>
+            <option value="Dairy">Dairy</option>
+            <option value="Pantry">Pantry</option>
+            <option value="Frozen">Frozen</option>
+            <option value="Drinks">Drinks</option>
+            <option value="Household">Household</option>
+            <option value="Personal care">Personal care</option>
+          </select>
+
+          <div class="barcode-row">
+            <input
+              id="barcodePreview"
+              type="text"
+              placeholder="No barcode scanned yet"
+              readonly
+            />
+            <button id="clearBarcodeButton" class="secondary-button">Clear barcode</button>
+          </div>
+
+          <textarea
+            id="noteInput"
+            placeholder="Optional note, e.g. fridge aisle or cheapest brand"
+            rows="3"
+          ></textarea>
+
+          <p class="hint-text">Optional nutrition per 100g</p>
+
+          <div class="input-row">
+            <input
+              id="nutritionKcalInput"
+              type="number"
+              inputmode="decimal"
+              min="0"
+              step="any"
+              placeholder="kcal"
+            />
+
+            <input
+              id="nutritionProteinInput"
+              type="number"
+              inputmode="decimal"
+              min="0"
+              step="any"
+              placeholder="protein (g)"
+            />
+          </div>
+
+          <div class="input-row">
+            <input
+              id="nutritionCarbsInput"
+              type="number"
+              inputmode="decimal"
+              min="0"
+              step="any"
+              placeholder="carbs (g)"
+            />
+
+            <input
+              id="nutritionFatInput"
+              type="number"
+              inputmode="decimal"
+              min="0"
+              step="any"
+              placeholder="fat (g)"
+            />
+          </div>
+
+          <input
+            id="nutritionAmountInput"
             type="number"
             inputmode="decimal"
             min="0"
             step="any"
-            placeholder="Quantity"
+            placeholder="Optional nutrition amount in grams, e.g. 50"
           />
 
-          <select id="unitInput">
-            <option value="">No unit</option>
-            <option value="pcs">pcs</option>
-            <option value="g">g</option>
-            <option value="kg">kg</option>
-            <option value="ml">ml</option>
-            <option value="l">l</option>
-            <option value="pack">pack</option>
-            <option value="bottle">bottle</option>
-            <option value="can">can</option>
-          </select>
+          <div class="action-row">
+            <button id="addButton" class="primary-button">Add item</button>
+            <button id="cancelEditButton" class="secondary-button hidden">Cancel edit</button>
+          </div>
         </div>
 
-        <select id="categoryInput">
-          <option value="">Uncategorised</option>
-          <option value="Produce">Produce</option>
-          <option value="Dairy">Dairy</option>
-          <option value="Pantry">Pantry</option>
-          <option value="Frozen">Frozen</option>
-          <option value="Drinks">Drinks</option>
-          <option value="Household">Household</option>
-          <option value="Personal care">Personal care</option>
-        </select>
+        <p id="status" class="status-text">Ready.</p>
+      </section>
+    </section>
 
-        <div class="barcode-row">
+    <!-- ================= LIST TAB ================= -->
+    <section class="tab-panel" id="panel-list" data-panel="list">
+      <section class="card">
+        <h2>Search</h2>
+
+        <div class="form-stack">
           <input
-            id="barcodePreview"
+            id="searchInput"
             type="text"
-            placeholder="No barcode scanned yet"
-            readonly
+            placeholder="Search name, note or barcode"
+            autocomplete="off"
           />
-          <button id="clearBarcodeButton" class="secondary-button">Clear barcode</button>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="list-header">
+          <h2>Your shopping list</h2>
+          <button id="clearButton" class="secondary-button">Clear all</button>
         </div>
 
-        <textarea
-  id="noteInput"
-  placeholder="Optional note, e.g. fridge aisle or cheapest brand"
-  rows="3"
-></textarea>
+        <p class="hint-text">Tap an item to mark it bought or unbought.</p>
 
-<p class="hint-text">Optional nutrition per 100g</p>
+        <div id="shoppingSections"></div>
 
-<div class="input-row">
-  <input
-    id="nutritionKcalInput"
-    type="number"
-    inputmode="decimal"
-    min="0"
-    step="any"
-    placeholder="kcal"
-  />
-
-  <input
-    id="nutritionProteinInput"
-    type="number"
-    inputmode="decimal"
-    min="0"
-    step="any"
-    placeholder="protein (g)"
-  />
-</div>
-
-<div class="input-row">
-  <input
-    id="nutritionCarbsInput"
-    type="number"
-    inputmode="decimal"
-    min="0"
-    step="any"
-    placeholder="carbs (g)"
-  />
-
-  <input
-    id="nutritionFatInput"
-    type="number"
-    inputmode="decimal"
-    min="0"
-    step="any"
-    placeholder="fat (g)"
-  />
-</div>
-
-<input
-  id="nutritionAmountInput"
-  type="number"
-  inputmode="decimal"
-  min="0"
-  step="any"
-  placeholder="Optional nutrition amount in grams, e.g. 50"
-/>
-
-<div class="action-row">
-  <button id="addButton" class="primary-button">Add item</button>
-  <button id="cancelEditButton" class="secondary-button hidden">Cancel edit</button>
-</div>
-      </div>
-
-      <p id="status" class="status-text">Ready.</p>
+        <p id="emptyMessage" class="empty-message">
+          No items match the current filters.
+        </p>
+      </section>
     </section>
 
-    <section class="card">
-<h2>Recipe builder</h2>
-<p class="hint-text">Build a temporary recipe from saved items with nutrition data.</p>
-<p id="recipeEditorModeText" class="status-text">Creating a new recipe.</p>
+    <!-- ================= PANTRY TAB ================= -->
+    <section class="tab-panel" id="panel-pantry" data-panel="pantry">
+      <section class="card">
+        <div class="list-header">
+          <h2>Pantry stock</h2>
+          <button id="clearStockButton" class="secondary-button">Clear stock</button>
+        </div>
 
-  <div class="form-stack">
- <input
-  id="recipeNameInput"
-  type="text"
-  placeholder="Recipe name, e.g. Protein oats"
-  autocomplete="off"
-/>
+        <ul id="stockList" class="shopping-list"></ul>
 
-<input
-  id="recipeServingsInput"
-  type="number"
-  inputmode="decimal"
-  min="0"
-  step="any"
-  placeholder="Servings, e.g. 2"
-/>
-
-<input
-  id="recipeServingLabelInput"
-  type="text"
-  placeholder="Optional serving label, e.g. bowl"
-  autocomplete="off"
-/>
-
-<select id="recipeItemSelect">
-  <option value="">Select an item</option>
-</select>
-
-  <div class="input-row">
-    <input
-      id="recipeGramsInput"
-      type="number"
-      inputmode="decimal"
-      min="0"
-      step="any"
-      placeholder="Grams used in recipe"
-    />
-
-    <button id="addRecipeIngredientButton" class="primary-button">
-      Add ingredient
-    </button>
-  </div>
-
-<div class="action-row">
-  <button id="saveRecipeButton" class="primary-button">
-    Save recipe
-  </button>
-
-  <button id="clearRecipeButton" class="secondary-button">
-    Clear recipe
-  </button>
-</div>
-
-<div class="action-row">
-  <button id="duplicateRecipeButton" class="secondary-button hidden">
-    Duplicate recipe
-  </button>
-
-  <button id="cancelRecipeEditButton" class="secondary-button hidden">
-    Cancel recipe edit
-  </button>
-</div>
-  </div>
-
-<ul id="recipeIngredientsList" class="shopping-list"></ul>
-
-<p id="recipeEmptyMessage" class="empty-message">
-  No ingredients in the recipe yet.
-</p>
-  
-<p id="recipeTotals" class="item-meta"></p>
-<p id="recipeWeightTotals" class="item-meta"></p>
-<p id="recipePer100gTotals" class="item-meta"></p>
-<p id="recipePerServingTotals" class="item-meta"></p>
-
-<h3>Saved recipes</h3>
-<ul id="savedRecipesList" class="shopping-list"></ul>
-
-<p id="savedRecipesEmptyMessage" class="empty-message">
-  No saved recipes yet.
-</p>
-</section>
-
-<section class="card">
-  <h2>Search</h2>
-
-  <div class="form-stack">
-    <input
-      id="searchInput"
-      type="text"
-      placeholder="Search name, note or barcode"
-      autocomplete="off"
-    />
-  </div>
-</section>
-    
-    <section class="card">
-      <div class="list-header">
-        <h2>Your shopping list</h2>
-        <button id="clearButton" class="secondary-button">Clear all</button>
-      </div>
-
-      <p class="hint-text">Tap an item to mark it bought or unbought.</p>
-
-      <div id="shoppingSections"></div>
-
-      <p id="emptyMessage" class="empty-message">
-        No items match the current filters.
-      </p>
+        <p id="stockEmptyMessage" class="empty-message">
+          No stock items yet.
+        </p>
+      </section>
     </section>
-<section class="card">
-  <div class="list-header">
-    <h2>Pantry stock</h2>
-    <button id="clearStockButton" class="secondary-button">Clear stock</button>
-  </div>
 
-  <ul id="stockList" class="shopping-list"></ul>
+    <!-- ================= RECIPES TAB ================= -->
+    <section class="tab-panel" id="panel-recipes" data-panel="recipes">
+      <section class="card">
+        <h2>Recipe builder</h2>
+        <p class="hint-text">Build a temporary recipe from saved items with nutrition data.</p>
+        <p id="recipeEditorModeText" class="status-text">Creating a new recipe.</p>
 
-  <p id="stockEmptyMessage" class="empty-message">
-    No stock items yet.
-  </p>
-</section>
+        <div class="form-stack">
+          <input
+            id="recipeNameInput"
+            type="text"
+            placeholder="Recipe name, e.g. Protein oats"
+            autocomplete="off"
+          />
+
+          <input
+            id="recipeServingsInput"
+            type="number"
+            inputmode="decimal"
+            min="0"
+            step="any"
+            placeholder="Servings, e.g. 2"
+          />
+
+          <input
+            id="recipeServingLabelInput"
+            type="text"
+            placeholder="Optional serving label, e.g. bowl"
+            autocomplete="off"
+          />
+
+          <select id="recipeItemSelect">
+            <option value="">Select an item</option>
+          </select>
+
+          <div class="input-row">
+            <input
+              id="recipeGramsInput"
+              type="number"
+              inputmode="decimal"
+              min="0"
+              step="any"
+              placeholder="Grams used in recipe"
+            />
+
+            <button id="addRecipeIngredientButton" class="primary-button">
+              Add ingredient
+            </button>
+          </div>
+
+          <div class="action-row">
+            <button id="saveRecipeButton" class="primary-button">
+              Save recipe
+            </button>
+
+            <button id="clearRecipeButton" class="secondary-button">
+              Clear recipe
+            </button>
+          </div>
+
+          <div class="action-row">
+            <button id="duplicateRecipeButton" class="secondary-button hidden">
+              Duplicate recipe
+            </button>
+
+            <button id="cancelRecipeEditButton" class="secondary-button hidden">
+              Cancel recipe edit
+            </button>
+          </div>
+        </div>
+
+        <ul id="recipeIngredientsList" class="shopping-list"></ul>
+
+        <p id="recipeEmptyMessage" class="empty-message">
+          No ingredients in the recipe yet.
+        </p>
+
+        <p id="recipeTotals" class="item-meta"></p>
+        <p id="recipeWeightTotals" class="item-meta"></p>
+        <p id="recipePer100gTotals" class="item-meta"></p>
+        <p id="recipePerServingTotals" class="item-meta"></p>
+
+        <h3>Saved recipes</h3>
+        <ul id="savedRecipesList" class="shopping-list"></ul>
+
+        <p id="savedRecipesEmptyMessage" class="empty-message">
+          No saved recipes yet.
+        </p>
+      </section>
+    </section>
+
   </main>
+
+  <nav class="bottom-tabs" id="bottomTabs" aria-label="Main navigation">
+    <button class="tab-button" data-tab="scanner" aria-current="page">
+      <span class="tab-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <path d="M4 7V5a1 1 0 0 1 1-1h2M20 7V5a1 1 0 0 0-1-1h-2M4 17v2a1 1 0 0 0 1 1h2M20 17v2a1 1 0 0 1-1 1h-2" />
+          <path d="M6 8v8M9 8v8M12 8v8M14 8v8M17 8v8" stroke-width="2" />
+        </svg>
+      </span>
+      <span class="tab-label">Scanner</span>
+    </button>
+
+    <button class="tab-button" data-tab="list">
+      <span class="tab-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 6h11M9 12h11M9 18h11" />
+          <path d="M4.5 6l.75.75L6.5 5" />
+          <path d="M4.5 12l.75.75L6.5 11" />
+          <path d="M4.5 18l.75.75L6.5 17" />
+        </svg>
+      </span>
+      <span class="tab-label">List</span>
+      <span class="tab-badge hidden" id="listTabBadge">0</span>
+    </button>
+
+    <button class="tab-button" data-tab="pantry">
+      <span class="tab-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 3h16v18H4z" />
+          <path d="M4 9h16M4 15h16" />
+          <path d="M8 3v6M8 9v6M8 15v6" />
+        </svg>
+      </span>
+      <span class="tab-label">Pantry</span>
+      <span class="tab-badge hidden" id="pantryTabBadge">0</span>
+    </button>
+
+    <button class="tab-button" data-tab="recipes">
+      <span class="tab-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M6 3v18M6 3c-1.5 1.5-1.5 4.5 0 6M6 3c1.5 1.5 1.5 4.5 0 6" />
+          <path d="M15 3v7a2 2 0 0 0 2 2v8M15 3a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2" />
+        </svg>
+      </span>
+      <span class="tab-label">Recipes</span>
+    </button>
+  </nav>
 
   <script src="https://cdn.jsdelivr.net/npm/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
   <script src="app.js"></script>

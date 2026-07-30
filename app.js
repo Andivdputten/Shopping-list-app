@@ -64,6 +64,14 @@ const shoppingSections = document.getElementById("shoppingSections");
 const emptyMessage = document.getElementById("emptyMessage");
 const statusEl = document.getElementById("status");
 
+const bottomTabs = document.getElementById("bottomTabs");
+const tabButtons = document.querySelectorAll(".tab-button");
+const tabPanels = document.querySelectorAll(".tab-panel");
+const pageTitle = document.getElementById("pageTitle");
+const pageSubtitle = document.getElementById("pageSubtitle");
+const listTabBadge = document.getElementById("listTabBadge");
+const pantryTabBadge = document.getElementById("pantryTabBadge");
+
 if (
 !formTitle ||
 !itemInput ||
@@ -110,7 +118,12 @@ if (
 !recipeServingLabelInput ||
 !recipeWeightTotals ||
 !recipePer100gTotals ||
-!statusEl
+!statusEl ||
+!bottomTabs ||
+!pageTitle ||
+!pageSubtitle ||
+!listTabBadge ||
+!pantryTabBadge
 ) {
 alert("HTML element missing. Check your index.html IDs.");
 return;
@@ -137,6 +150,7 @@ renderRecipeBuilder();
 renderSavedRecipes();
 renderStockList();
 updateRecipeEditorMode();
+initTabs();
 
 if (recipeServingsInput.value.trim() === "") recipeServingsInput.value = "1";
 
@@ -1697,6 +1711,7 @@ function mergeStockItems(existingItem, incomingItem) {
 }
 
 function renderStockList() {
+  updateTabBadges();
   stockList.innerHTML = "";
 
   if (stockItems.length === 0) {
@@ -2069,6 +2084,7 @@ setStatus("All items cleared.");
 
 
 function renderList() {
+updateTabBadges();
 renderRecipeItemOptions();
 renderRecipeBuilder();
 renderSavedRecipes();
@@ -2365,6 +2381,78 @@ function loadItems() {
     return [];
   }
 }
+
+  const TAB_INFO = {
+    scanner: {
+      title: "Scanner",
+      subtitle: "Scan a barcode or add an item by hand"
+    },
+    list: {
+      title: "Shopping list",
+      subtitle: "What you still need to buy"
+    },
+    pantry: {
+      title: "Pantry",
+      subtitle: "What you already have in stock"
+    },
+    recipes: {
+      title: "Recipes",
+      subtitle: "Build and save recipes from your items"
+    }
+  };
+
+  function initTabs() {
+    tabButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        switchTab(button.dataset.tab);
+      });
+    });
+
+    // Stop the camera automatically when leaving the scanner tab,
+    // so it doesn't keep running (and draining battery) in the background.
+    switchTab("scanner");
+  }
+
+  function switchTab(tabName) {
+    const info = TAB_INFO[tabName] || TAB_INFO.scanner;
+
+    tabPanels.forEach((panel) => {
+      panel.classList.toggle("active", panel.dataset.panel === tabName);
+    });
+
+    tabButtons.forEach((button) => {
+      const isActive = button.dataset.tab === tabName;
+      if (isActive) {
+        button.setAttribute("aria-current", "page");
+      } else {
+        button.removeAttribute("aria-current");
+      }
+    });
+
+    pageTitle.textContent = info.title;
+    pageSubtitle.textContent = info.subtitle;
+
+    if (tabName !== "scanner" && scannerRunning) {
+      void stopScanner(false);
+    }
+
+    window.scrollTo({ top: 0, behavior: "instant" in window ? "instant" : "auto" });
+  }
+
+  function updateTabBadges() {
+    const toBuyCount = items.filter((item) => !item.bought).length;
+    setBadge(listTabBadge, toBuyCount);
+    setBadge(pantryTabBadge, stockItems.length);
+  }
+
+  function setBadge(badgeEl, count) {
+    if (count > 0) {
+      badgeEl.textContent = count > 99 ? "99+" : String(count);
+      badgeEl.classList.remove("hidden");
+    } else {
+      badgeEl.classList.add("hidden");
+    }
+  }
 
   function setStatus(message) {
     statusEl.textContent = message;
