@@ -1768,6 +1768,56 @@ function mergeStockItems(existingItem, incomingItem) {
   return merged;
 }
 
+function getQuantityStep(unit) {
+  const normalized = typeof unit === "string" ? unit.trim().toLowerCase() : "";
+
+  if (normalized === "g" || normalized === "ml") {
+    return 50;
+  }
+
+  if (normalized === "kg" || normalized === "l") {
+    return 0.1;
+  }
+
+  // Countable units (pcs, pack, bottle, can) and anything unrecognised.
+  return 1;
+}
+
+function adjustStockQuantity(index, delta) {
+  const item = stockItems[index];
+  if (!item) {
+    return;
+  }
+
+  const current =
+    typeof item.quantity === "number" && Number.isFinite(item.quantity)
+      ? item.quantity
+      : 0;
+
+  setStockQuantity(index, current + delta);
+}
+
+function setStockQuantity(index, rawValue) {
+  const item = stockItems[index];
+  if (!item) {
+    return;
+  }
+
+  let value = typeof rawValue === "number" ? rawValue : parseFloat(rawValue);
+
+  if (!Number.isFinite(value) || value < 0) {
+    value = 0;
+  }
+
+  // Avoid float drift like 0.1 + 0.1 + 0.1 !== 0.3 from repeated +/- taps.
+  value = Math.round(value * 100) / 100;
+
+  item.quantity = value > 0 ? value : null;
+
+  saveStockItems();
+  renderStockList();
+}
+
 function renderStockList() {
   updateTabBadges();
   stockList.innerHTML = "";
@@ -1789,13 +1839,59 @@ function renderStockList() {
     nameSpan.textContent = item.name;
     infoWrap.appendChild(nameSpan);
 
-    const metaText = buildMetaText(item);
-    if (metaText !== "") {
-      const metaSpan = document.createElement("span");
-      metaSpan.className = "item-meta";
-      metaSpan.textContent = metaText;
-      infoWrap.appendChild(metaSpan);
+    const quantityControl = document.createElement("div");
+    quantityControl.className = "quantity-control";
+
+    const step = getQuantityStep(item.unit);
+
+    const minusButton = document.createElement("button");
+    minusButton.type = "button";
+    minusButton.className = "quantity-step-button";
+    minusButton.textContent = "−";
+    minusButton.setAttribute("aria-label", `Decrease ${item.name} quantity`);
+    minusButton.addEventListener("click", () => {
+      adjustStockQuantity(index, -step);
+    });
+
+    const quantityInput = document.createElement("input");
+    quantityInput.type = "number";
+    quantityInput.inputMode = "decimal";
+    quantityInput.min = "0";
+    quantityInput.step = "any";
+    quantityInput.className = "quantity-input";
+    quantityInput.value = typeof item.quantity === "number" ? String(item.quantity) : "";
+    quantityInput.placeholder = "0";
+    quantityInput.setAttribute("aria-label", `${item.name} quantity`);
+    quantityInput.addEventListener("change", () => {
+      setStockQuantity(index, quantityInput.value);
+    });
+    quantityInput.addEventListener("keydown", (event) => {
+      if (event.key === "Enter") {
+        quantityInput.blur();
+      }
+    });
+
+    const plusButton = document.createElement("button");
+    plusButton.type = "button";
+    plusButton.className = "quantity-step-button";
+    plusButton.textContent = "+";
+    plusButton.setAttribute("aria-label", `Increase ${item.name} quantity`);
+    plusButton.addEventListener("click", () => {
+      adjustStockQuantity(index, step);
+    });
+
+    quantityControl.appendChild(minusButton);
+    quantityControl.appendChild(quantityInput);
+    quantityControl.appendChild(plusButton);
+
+    if (item.unit.trim() !== "") {
+      const unitLabel = document.createElement("span");
+      unitLabel.className = "quantity-unit-label";
+      unitLabel.textContent = item.unit;
+      quantityControl.appendChild(unitLabel);
     }
+
+    infoWrap.appendChild(quantityControl);
 
     if (item.note !== "") {
       const noteSpan = document.createElement("span");

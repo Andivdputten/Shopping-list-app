@@ -16,8 +16,13 @@
 </head>
 <body>
   <header class="app-header">
-    <h1 id="pageTitle">Scanner</h1>
-    <p class="subtitle" id="pageSubtitle">Scan a barcode or add an item by hand</p>
+    <div class="app-header-row">
+      <div>
+        <h1 id="pageTitle">Scanner</h1>
+        <p class="subtitle" id="pageSubtitle">Scan a barcode or add an item by hand</p>
+      </div>
+      <span id="swVersionBadge" class="version-badge" title="Active service worker cache version">…</span>
+    </div>
   </header>
 
   <main class="container">
@@ -354,12 +359,49 @@
   <script src="https://cdn.jsdelivr.net/npm/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
   <script src="app.js"></script>
   <script>
+    function setVersionBadge(text) {
+      const badge = document.getElementById("swVersionBadge");
+      if (badge) {
+        badge.textContent = text;
+      }
+    }
+
+    function requestSwVersion() {
+      if (navigator.serviceWorker.controller) {
+        navigator.serviceWorker.controller.postMessage({ type: "GET_VERSION" });
+      } else {
+        // No service worker controlling this load yet (e.g. very first
+        // visit before install finishes) — nothing to report.
+        setVersionBadge("no SW");
+      }
+    }
+
     if ("serviceWorker" in navigator) {
-      window.addEventListener("load", () => {
-        navigator.serviceWorker.register("sw.js").catch((error) => {
-          console.warn("Service worker registration failed:", error);
-        });
+      navigator.serviceWorker.addEventListener("message", (event) => {
+        if (event.data && event.data.type === "VERSION") {
+          setVersionBadge(event.data.version);
+        }
       });
+
+      // If a new service worker takes over while the page is open
+      // (e.g. right after an update finishes installing), refresh the badge.
+      navigator.serviceWorker.addEventListener("controllerchange", () => {
+        requestSwVersion();
+      });
+
+      window.addEventListener("load", () => {
+        navigator.serviceWorker
+          .register("sw.js")
+          .then(() => {
+            requestSwVersion();
+          })
+          .catch((error) => {
+            console.warn("Service worker registration failed:", error);
+            setVersionBadge("error");
+          });
+      });
+    } else {
+      setVersionBadge("unsupported");
     }
   </script>
 </body>

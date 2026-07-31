@@ -1,6 +1,6 @@
 // Bump this version string any time app.js/index.html/style.css change,
 // so returning users get the new files instead of a stale cached copy.
-const CACHE_VERSION = "v7";
+const CACHE_VERSION = "v8";
 const CACHE_NAME = `grocery-scanner-${CACHE_VERSION}`;
 
 // Core files needed for the app to load and run with no network.
@@ -42,6 +42,12 @@ self.addEventListener("activate", (event) => {
     )
   );
   self.clients.claim();
+});
+
+self.addEventListener("message", (event) => {
+  if (event.data && event.data.type === "GET_VERSION") {
+    event.source.postMessage({ type: "VERSION", version: CACHE_VERSION });
+  }
 });
 
 self.addEventListener("fetch", (event) => {
