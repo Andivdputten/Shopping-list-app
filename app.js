@@ -140,6 +140,25 @@ let recipeIngredients = [];
 let savedRecipes = loadRecipes();
 let editingSavedRecipeIndex = null;
 let stockItems = loadStockItems();
+
+const TAB_INFO = {
+  scanner: {
+    title: "Scanner",
+    subtitle: "Scan a barcode or add an item by hand"
+  },
+  list: {
+    title: "Shopping list",
+    subtitle: "What you still need to buy"
+  },
+  pantry: {
+    title: "Pantry",
+    subtitle: "What you already have in stock"
+  },
+  recipes: {
+    title: "Recipes",
+    subtitle: "Build and save recipes from your items"
+  }
+};
   
 renderList();
 updateFormMode();
@@ -2381,25 +2400,6 @@ function loadItems() {
     return [];
   }
 }
-
-  const TAB_INFO = {
-    scanner: {
-      title: "Scanner",
-      subtitle: "Scan a barcode or add an item by hand"
-    },
-    list: {
-      title: "Shopping list",
-      subtitle: "What you still need to buy"
-    },
-    pantry: {
-      title: "Pantry",
-      subtitle: "What you already have in stock"
-    },
-    recipes: {
-      title: "Recipes",
-      subtitle: "Build and save recipes from your items"
-    }
-  };
 
   function initTabs() {
     tabButtons.forEach((button) => {
