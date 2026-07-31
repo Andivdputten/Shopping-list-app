@@ -307,6 +307,11 @@ function startEdit(index) {
   updatePendingBarcodeUI();
   updateFormMode();
 
+  // The add/edit form lives on the Scanner tab. Switch there so the
+  // populated form is actually visible, no matter which tab the edit
+  // was triggered from (e.g. the List tab's "Edit" button).
+  switchTab("scanner");
+
   itemInput.focus();
   setStatus(`Editing "${item.name}".`);
 }
@@ -1210,17 +1215,18 @@ infoWrap.appendChild(perServingSpan);
     loadButton.textContent = "Load";
     loadButton.addEventListener("click", () => {
       loadSavedRecipe(index);
+      switchTab("recipes");
     });
 
-   const returnButton = document.createElement("button");
-returnButton.className = "edit-button";
-returnButton.textContent = "Return";
-returnButton.addEventListener("click", () => {
-  deleteStockItem(index);
-});
+    const deleteRecipeButton = document.createElement("button");
+    deleteRecipeButton.className = "delete-button";
+    deleteRecipeButton.textContent = "Delete";
+    deleteRecipeButton.addEventListener("click", () => {
+      deleteSavedRecipe(index);
+    });
 
-actions.appendChild(returnButton);
-    actions.appendChild(deleteButton);
+    actions.appendChild(loadButton);
+    actions.appendChild(deleteRecipeButton);
 
     li.appendChild(infoWrap);
     li.appendChild(actions);
