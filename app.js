@@ -2,6 +2,12 @@ document.addEventListener("DOMContentLoaded", () => {
 const STORAGE_KEY = "grocery_scanner_items_v6";
 const STOCK_STORAGE_KEY = "grocery_scanner_stock_v1";
 const RECIPE_STORAGE_KEY = "grocery_scanner_recipes_v1";
+const BARCODE_CACHE_STORAGE_KEY = "grocery_scanner_barcode_cache_v1";
+const BARCODE_CACHE_MAX_ENTRIES = 500;
+// Cached "not found" results expire after a while in case a product gets
+// added to Open Food Facts later; successful matches are cached indefinitely
+// since a product's barcode/nutrition data rarely changes.
+const BARCODE_CACHE_NOT_FOUND_TTL_MS = 30 * 24 * 60 * 60 * 1000; // 30 days
 const CATEGORY_ORDER = [
 "",
 "Produce",
@@ -140,6 +146,7 @@ let recipeIngredients = [];
 let savedRecipes = loadRecipes();
 let editingSavedRecipeIndex = null;
 let stockItems = loadStockItems();
+let barcodeCache = loadBarcodeCache();
 
 const TAB_INFO = {
   scanner: {
@@ -441,11 +448,31 @@ setStatus(
 return;
 }
 
+const cached = getCachedBarcodeLookup(decodedText);
+
+if (cached !== undefined) {
+if (cached !== null) {
+applyLookupToForm(cached);
+scannerMessage.textContent =
+cached.name !== ""
+? `Match from local cache: ${cached.name}`
+: `Match from local cache for barcode ${decodedText}`;
+setStatus("Loaded from a previous scan (no network request needed). Review and save.");
+} else {
+scannerMessage.textContent = `New barcode ready: ${decodedText}`;
+setStatus(
+"This barcode wasn't found in Open Food Facts last time it was scanned. Fill in the item details manually."
+);
+}
+return;
+}
+
 scannerMessage.textContent = "Looking up product data...";
 setStatus("Barcode scanned. Looking up external product data...");
 
 try {
 const productData = await lookupProductByBarcode(decodedText);
+setCachedBarcodeLookup(decodedText, productData);
 
 if (productData !== null) {
 applyLookupToForm(productData);
@@ -461,7 +488,7 @@ return;
 
 scannerMessage.textContent = `New barcode ready: ${decodedText}`;
 setStatus(
-"Barcode not found in your list or external lookup. Fill in the item details manually."
+"Barcode not found in Open Food Facts. Fill in the item details manually."
 );
 } catch (error) {
 scannerMessage.textContent = `New barcode ready: ${decodedText}`;
@@ -565,6 +592,12 @@ async function lookupProductByBarcode(barcode) {
     `?fields=${encodeURIComponent(fields)}`;
 
   const response = await fetch(url);
+
+  if (response.status === 404) {
+    // Open Food Facts uses 404 for "no product with this barcode",
+    // which is a normal, expected outcome — not a lookup failure.
+    return null;
+  }
 
   if (!response.ok) {
     throw new Error(`Lookup failed with status ${response.status}`);
@@ -1858,6 +1891,70 @@ function clearStockItems() {
   saveStockItems();
   renderStockList();
   setStatus("Pantry stock cleared.");
+}
+
+function saveBarcodeCache(cache) {
+  try {
+    localStorage.setItem(BARCODE_CACHE_STORAGE_KEY, JSON.stringify(cache));
+  } catch (error) {
+    // Storage can fail (quota exceeded, private browsing, etc).
+    // The cache is a pure optimization, so silently skip saving on failure.
+  }
+}
+
+function loadBarcodeCache() {
+  const saved = localStorage.getItem(BARCODE_CACHE_STORAGE_KEY);
+
+  if (!saved) {
+    return {};
+  }
+
+  try {
+    const parsed = JSON.parse(saved);
+    return typeof parsed === "object" && parsed !== null && !Array.isArray(parsed)
+      ? parsed
+      : {};
+  } catch (error) {
+    return {};
+  }
+}
+
+function getCachedBarcodeLookup(barcode) {
+  const entry = barcodeCache[barcode];
+
+  if (!entry) {
+    return undefined;
+  }
+
+  if (entry.found === false && typeof entry.cachedAt === "number") {
+    const age = Date.now() - entry.cachedAt;
+    if (age > BARCODE_CACHE_NOT_FOUND_TTL_MS) {
+      delete barcodeCache[barcode];
+      saveBarcodeCache(barcodeCache);
+      return undefined;
+    }
+  }
+
+  return entry.found ? entry.data : null;
+}
+
+function setCachedBarcodeLookup(barcode, productData) {
+  barcodeCache[barcode] = {
+    found: productData !== null,
+    data: productData,
+    cachedAt: Date.now()
+  };
+
+  const keys = Object.keys(barcodeCache);
+  if (keys.length > BARCODE_CACHE_MAX_ENTRIES) {
+    // Simple bound so the cache can't grow forever: drop the oldest entries.
+    keys
+      .sort((a, b) => (barcodeCache[a].cachedAt || 0) - (barcodeCache[b].cachedAt || 0))
+      .slice(0, keys.length - BARCODE_CACHE_MAX_ENTRIES)
+      .forEach((key) => delete barcodeCache[key]);
+  }
+
+  saveBarcodeCache(barcodeCache);
 }
 
 function saveStockItems() {
