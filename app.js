@@ -60,6 +60,7 @@ const recipeServingLabelInput = document.getElementById("recipeServingLabelInput
 const recipeWeightTotals = document.getElementById("recipeWeightTotals");
 const recipePer100gTotals = document.getElementById("recipePer100gTotals");
 const searchInput = document.getElementById("searchInput");
+const quickAddButton = document.getElementById("quickAddButton");
 
 const clearStockButton = document.getElementById("clearStockButton");
 const stockList = document.getElementById("stockList");
@@ -129,7 +130,8 @@ if (
 !pageTitle ||
 !pageSubtitle ||
 !listTabBadge ||
-!pantryTabBadge
+!pantryTabBadge ||
+!quickAddButton
 ) {
 alert("HTML element missing. Check your index.html IDs.");
 return;
@@ -170,6 +172,7 @@ const TAB_INFO = {
 renderList();
 updateFormMode();
 updatePendingBarcodeUI();
+updateQuickAddButtonState();
 setStatus("App loaded successfully.");
 renderRecipeItemOptions();
 renderRecipeBuilder();
@@ -207,7 +210,18 @@ stopScannerButton.addEventListener("click", () => {
 void stopScanner(false);
 });
   
-searchInput.addEventListener("input", renderList);
+searchInput.addEventListener("input", () => {
+  renderList();
+  updateQuickAddButtonState();
+});
+
+quickAddButton.addEventListener("click", quickAddItem);
+
+searchInput.addEventListener("keydown", (event) => {
+  if (event.key === "Enter" && !quickAddButton.disabled) {
+    quickAddItem();
+  }
+});
 
 itemInput.addEventListener("keydown", handleEnterToSubmit);
 quantityInput.addEventListener("keydown", handleEnterToSubmit);
@@ -223,6 +237,36 @@ function handleEnterToSubmit(event) {
 if (event.key === "Enter") {
 submitForm();
 }
+}
+
+function updateQuickAddButtonState() {
+  quickAddButton.disabled = searchInput.value.trim() === "";
+}
+
+function quickAddItem() {
+  const name = searchInput.value.trim();
+
+  if (name === "") {
+    return;
+  }
+
+  items.push({
+    name,
+    quantity: null,
+    unit: "",
+    category: "",
+    note: "",
+    barcode: "",
+    nutrition: createEmptyNutrition(),
+    nutritionAmount: null,
+    bought: false
+  });
+
+  saveItems();
+  searchInput.value = "";
+  updateQuickAddButtonState();
+  renderList();
+  setStatus(`Added "${name}" to your shopping list.`);
 }
 
 function submitForm() {

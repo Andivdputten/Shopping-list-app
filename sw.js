@@ -1,14 +1,18 @@
 // Bump this version string any time app.js/index.html/style.css change,
 // so returning users get the new files instead of a stale cached copy.
-const CACHE_VERSION = "v8";
+const CACHE_VERSION = "v9";
 const CACHE_NAME = `grocery-scanner-${CACHE_VERSION}`;
 
-// Core files needed for the app to load and run with no network.
-const APP_SHELL = [
-  "./",
-  "./index.html",
-  "./app.js",
-  "./style.css",
+// Core app files: these change often during development. They're fetched
+// network-first (falling back to cache only when offline) so a page load
+// can never get stuck serving a stale copy just because it happened to be
+// cached once — the cache here is purely an offline fallback, not a source
+// of truth while online.
+const CORE_FILES = ["./", "./index.html", "./app.js", "./style.css"];
+
+// Static assets: these essentially never change once created, so caching
+// them aggressively (cache-first) is safe and saves a network round trip.
+const STATIC_FILES = [
   "./manifest.json",
   "./icons/icon-192.png",
   "./icons/icon-512.png",
@@ -17,6 +21,8 @@ const APP_SHELL = [
   "./icons/apple-touch-icon.png",
   "https://cdn.jsdelivr.net/npm/html5-qrcode@2.3.8/html5-qrcode.min.js"
 ];
+
+const APP_SHELL = [...CORE_FILES, ...STATIC_FILES];
 
 self.addEventListener("install", (event) => {
   event.waitUntil(
@@ -50,6 +56,15 @@ self.addEventListener("message", (event) => {
   }
 });
 
+function isCoreFile(url) {
+  if (url.pathname.endsWith("/app.js")) return true;
+  if (url.pathname.endsWith("/style.css")) return true;
+  if (url.pathname.endsWith("/index.html")) return true;
+  // "./" and any path ending in "/" resolve to index.html on GitHub Pages.
+  if (url.pathname.endsWith("/")) return true;
+  return false;
+}
+
 self.addEventListener("fetch", (event) => {
   const { request } = event;
 
@@ -60,20 +75,33 @@ self.addEventListener("fetch", (event) => {
   const url = new URL(request.url);
   const isSameOrigin = url.origin === self.location.origin;
 
+  if (isSameOrigin && isCoreFile(url)) {
+    // Network-first: always try to get the latest version. Only fall back
+    // to the cache (so the app still works offline) if the network fails.
+    event.respondWith(
+      fetch(request)
+        .then((response) => {
+          const copy = response.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put(request, copy));
+          return response;
+        })
+        .catch(() => caches.match(request).then((cached) => cached || caches.match("./index.html")))
+    );
+    return;
+  }
+
   if (isSameOrigin) {
-    // App shell: cache-first, falling back to network, then updating the cache.
+    // Static assets: cache-first, falling back to network, then updating the cache.
     event.respondWith(
       caches.match(request).then((cached) => {
         if (cached) {
           return cached;
         }
-        return fetch(request)
-          .then((response) => {
-            const copy = response.clone();
-            caches.open(CACHE_NAME).then((cache) => cache.put(request, copy));
-            return response;
-          })
-          .catch(() => caches.match("./index.html"));
+        return fetch(request).then((response) => {
+          const copy = response.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put(request, copy));
+          return response;
+        });
       })
     );
     return;

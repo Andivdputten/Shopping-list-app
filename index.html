@@ -172,16 +172,23 @@
     <!-- ================= LIST TAB ================= -->
     <section class="tab-panel" id="panel-list" data-panel="list">
       <section class="card">
-        <h2>Search</h2>
+        <h2>Search &amp; quick add</h2>
 
-        <div class="form-stack">
+        <div class="input-row">
           <input
             id="searchInput"
             type="text"
-            placeholder="Search name, note or barcode"
+            placeholder="Search, or type a new item name"
             autocomplete="off"
           />
+          <button id="quickAddButton" class="primary-button quick-add-button" disabled>
+            Add
+          </button>
         </div>
+
+        <p class="hint-text">
+          Typing something that isn't on your list yet? Tap Add (or press Enter) to add it by name only — you can scan or fill in details later from the Edit button.
+        </p>
       </section>
 
       <section class="card">

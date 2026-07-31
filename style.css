@@ -302,6 +302,16 @@ button:disabled {
   color: var(--ink-soft);
 }
 
+.quick-add-button {
+  flex: 0 0 auto;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.quick-add-button:disabled {
+  background: #cbd5e1;
+}
+
 .item-note {
   display: block;
   margin-top: 6px;
