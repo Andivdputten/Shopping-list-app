@@ -83,6 +83,10 @@ const saveApiKeyButton = document.getElementById("saveApiKeyButton");
 const clearApiKeyButton = document.getElementById("clearApiKeyButton");
 const testApiKeyButton = document.getElementById("testApiKeyButton");
 const apiKeyStatus = document.getElementById("apiKeyStatus");
+const aiPreferencesInput = document.getElementById("aiPreferencesInput");
+const suggestRecipesButton = document.getElementById("suggestRecipesButton");
+const aiSuggestStatus = document.getElementById("aiSuggestStatus");
+const aiRecipeResults = document.getElementById("aiRecipeResults");
 
 if (
 !formTitle ||
@@ -141,7 +145,11 @@ if (
 !saveApiKeyButton ||
 !clearApiKeyButton ||
 !testApiKeyButton ||
-!apiKeyStatus
+!apiKeyStatus ||
+!aiPreferencesInput ||
+!suggestRecipesButton ||
+!aiSuggestStatus ||
+!aiRecipeResults
 ) {
 alert("HTML element missing. Check your index.html IDs.");
 return;
@@ -188,6 +196,7 @@ updateFormMode();
 updatePendingBarcodeUI();
 updateQuickAddButtonState();
 initApiKeySettings();
+suggestRecipesButton.addEventListener("click", handleSuggestRecipesClick);
 setStatus("App loaded successfully.");
 renderRecipeItemOptions();
 renderRecipeBuilder();
@@ -334,6 +343,310 @@ function updateApiKeyStatusDisplay() {
   } else {
     apiKeyStatus.textContent = "No API key saved yet.";
   }
+}
+
+function normalizeIngredientName(name) {
+  let normalized = typeof name === "string" ? name.trim().toLowerCase() : "";
+  normalized = normalized.replace(/\s+/g, " ");
+  // Very small heuristic: treat "eggs" and "egg" as the same ingredient.
+  if (normalized.length > 3 && normalized.endsWith("s")) {
+    normalized = normalized.slice(0, -1);
+  }
+  return normalized;
+}
+
+function findMatchingStockItem(ingredientName) {
+  const target = normalizeIngredientName(ingredientName);
+
+  if (target === "") {
+    return null;
+  }
+
+  const exact = stockItems.find(
+    (item) => normalizeIngredientName(item.name) === target
+  );
+  if (exact) {
+    return exact;
+  }
+
+  // Loose fallback: one name contains the other (e.g. "olive oil" vs "oil").
+  return (
+    stockItems.find((item) => {
+      const stockName = normalizeIngredientName(item.name);
+      return stockName !== "" && (stockName.includes(target) || target.includes(stockName));
+    }) || null
+  );
+}
+
+function hasUsableNutrition(nutrition) {
+  if (!nutrition) {
+    return false;
+  }
+  return (
+    typeof nutrition.kcal100g === "number" ||
+    typeof nutrition.protein100g === "number" ||
+    typeof nutrition.carbs100g === "number" ||
+    typeof nutrition.fat100g === "number"
+  );
+}
+
+function matchRecipeIngredients(recipe) {
+  return recipe.ingredients.map((ingredient) => {
+    const stockMatch = findMatchingStockItem(ingredient.name);
+    return {
+      ...ingredient,
+      stockMatch,
+      inStock: stockMatch !== null,
+      hasNutrition: stockMatch ? hasUsableNutrition(stockMatch.nutrition) : false
+    };
+  });
+}
+
+function computeRecipeMacros(recipe, matchedIngredients) {
+  const allHaveNutrition = matchedIngredients.every(
+    (ing) => ing.hasNutrition && typeof ing.amount === "number"
+  );
+
+  if (allHaveNutrition && matchedIngredients.length > 0) {
+    const totals = matchedIngredients.reduce(
+      (acc, ing) => {
+        const factor = ing.amount / 100;
+        const n = ing.stockMatch.nutrition;
+        acc.kcal += (n.kcal100g || 0) * factor;
+        acc.protein += (n.protein100g || 0) * factor;
+        acc.carbs += (n.carbs100g || 0) * factor;
+        acc.fat += (n.fat100g || 0) * factor;
+        return acc;
+      },
+      { kcal: 0, protein: 0, carbs: 0, fat: 0 }
+    );
+
+    const servings = recipe.servings > 0 ? recipe.servings : 1;
+    return {
+      source: "calculated",
+      perServing: {
+        kcal: Math.round(totals.kcal / servings),
+        protein: Math.round((totals.protein / servings) * 10) / 10,
+        carbs: Math.round((totals.carbs / servings) * 10) / 10,
+        fat: Math.round((totals.fat / servings) * 10) / 10
+      }
+    };
+  }
+
+  const est = recipe.estimatedMacrosPerServing;
+  if (est && (est.kcal !== null || est.protein !== null || est.carbs !== null || est.fat !== null)) {
+    return { source: "estimated", perServing: est };
+  }
+
+  return { source: "unknown", perServing: null };
+}
+
+function macroPillsHtml(macros) {
+  if (!macros || macros.kcal === null) {
+    return "";
+  }
+  const parts = [];
+  if (macros.kcal !== null) parts.push(`${Math.round(macros.kcal)} kcal`);
+  if (macros.protein !== null) parts.push(`${macros.protein}g protein`);
+  if (macros.carbs !== null) parts.push(`${macros.carbs}g carbs`);
+  if (macros.fat !== null) parts.push(`${macros.fat}g fat`);
+  return parts;
+}
+
+function renderAiRecipes(recipes) {
+  aiRecipeResults.innerHTML = "";
+
+  recipes.forEach((recipe) => {
+    const matchedIngredients = matchRecipeIngredients(recipe);
+    const macroResult = computeRecipeMacros(recipe, matchedIngredients);
+    const missingIngredients = matchedIngredients.filter((ing) => !ing.inStock);
+
+    const card = document.createElement("div");
+    card.className = "ai-recipe-card";
+
+    const heading = document.createElement("h3");
+    heading.textContent = recipe.name;
+    card.appendChild(heading);
+
+    if (recipe.description !== "") {
+      const desc = document.createElement("p");
+      desc.className = "ai-recipe-description";
+      desc.textContent = recipe.description;
+      card.appendChild(desc);
+    }
+
+    const servingsLine = document.createElement("p");
+    servingsLine.className = "item-meta";
+    servingsLine.textContent = `Serves ${recipe.servings}${
+      missingIngredients.length > 0 ? ` — needs ${missingIngredients.length} extra ingredient${missingIngredients.length === 1 ? "" : "s"}` : " — you have everything"
+    }`;
+    card.appendChild(servingsLine);
+
+    const pills = macroPillsHtml(macroResult.perServing);
+    if (pills) {
+      const macroRow = document.createElement("div");
+      macroRow.className = "ai-macro-row";
+      pills.forEach((text) => {
+        const pill = document.createElement("span");
+        pill.className = "ai-macro-pill";
+        pill.textContent = text;
+        macroRow.appendChild(pill);
+      });
+      card.appendChild(macroRow);
+
+      const sourceLine = document.createElement("p");
+      sourceLine.className = "ai-macro-source";
+      sourceLine.textContent =
+        macroResult.source === "calculated"
+          ? "Per serving — calculated from your saved nutrition data."
+          : "Per serving — estimated by AI (add nutrition data to matching items for precise numbers).";
+      card.appendChild(sourceLine);
+    }
+
+    const ingredientList = document.createElement("ul");
+    ingredientList.className = "ai-ingredient-list";
+    matchedIngredients.forEach((ing) => {
+      const li = document.createElement("li");
+      const flag = document.createElement("span");
+      flag.className = `ai-ingredient-flag ${ing.inStock ? "have" : "need"}`;
+      flag.textContent = ing.inStock ? "✓" : "+";
+      const label = document.createElement("span");
+      const amountText =
+        typeof ing.amount === "number" ? `${ing.amount}${ing.unit} ` : "";
+      label.textContent = `${amountText}${ing.name}`;
+      li.appendChild(flag);
+      li.appendChild(label);
+      ingredientList.appendChild(li);
+    });
+    card.appendChild(ingredientList);
+
+    if (recipe.instructions.length > 0) {
+      const steps = document.createElement("ol");
+      steps.className = "ai-instructions";
+      recipe.instructions.forEach((step) => {
+        const li = document.createElement("li");
+        li.textContent = step;
+        steps.appendChild(li);
+      });
+      card.appendChild(steps);
+    }
+
+    const actions = document.createElement("div");
+    actions.className = "ai-recipe-actions";
+
+    const saveButton = document.createElement("button");
+    saveButton.className = "secondary-button";
+    saveButton.textContent = "Save recipe";
+    saveButton.addEventListener("click", () => {
+      saveAiRecipe(recipe, matchedIngredients);
+    });
+    actions.appendChild(saveButton);
+
+    if (missingIngredients.length > 0) {
+      const addMissingButton = document.createElement("button");
+      addMissingButton.className = "secondary-button";
+      addMissingButton.textContent = "Add missing to list";
+      addMissingButton.addEventListener("click", () => {
+        addMissingIngredientsToShoppingList(missingIngredients);
+      });
+      actions.appendChild(addMissingButton);
+    }
+
+    card.appendChild(actions);
+    aiRecipeResults.appendChild(card);
+  });
+}
+
+function saveAiRecipe(recipe, matchedIngredients) {
+  const recipeData = {
+    name: recipe.name,
+    servings: recipe.servings,
+    servingLabel: "",
+    ingredients: matchedIngredients.map((ing) => ({
+      name: ing.name,
+      grams: typeof ing.amount === "number" ? ing.amount : 0,
+      nutrition: ing.hasNutrition
+        ? normalizeNutrition(ing.stockMatch.nutrition)
+        : createEmptyNutrition()
+    }))
+  };
+
+  const existingIndex = savedRecipes.findIndex(
+    (r) => r.name.toLowerCase() === recipe.name.toLowerCase()
+  );
+
+  if (existingIndex !== -1) {
+    aiSuggestStatus.textContent = `A saved recipe named "${recipe.name}" already exists.`;
+    return;
+  }
+
+  savedRecipes.push(recipeData);
+  saveRecipes();
+  renderSavedRecipes();
+  aiSuggestStatus.textContent = `Saved "${recipe.name}" to your recipes.`;
+}
+
+function addMissingIngredientsToShoppingList(missingIngredients) {
+  let addedCount = 0;
+
+  missingIngredients.forEach((ing) => {
+    const alreadyOnList = items.some(
+      (item) => normalizeIngredientName(item.name) === normalizeIngredientName(ing.name)
+    );
+    if (alreadyOnList) {
+      return;
+    }
+
+    items.push({
+      name: ing.name,
+      quantity: typeof ing.amount === "number" ? ing.amount : null,
+      unit: ing.unit || "",
+      category: "",
+      note: "",
+      barcode: "",
+      nutrition: createEmptyNutrition(),
+      nutritionAmount: null,
+      bought: false
+    });
+    addedCount++;
+  });
+
+  saveItems();
+  renderList();
+  aiSuggestStatus.textContent =
+    addedCount > 0
+      ? `Added ${addedCount} missing ingredient${addedCount === 1 ? "" : "s"} to your shopping list.`
+      : "Those ingredients are already on your shopping list.";
+}
+
+async function handleSuggestRecipesClick() {
+  if (!window.RecipeAI || !window.RecipeAI.hasApiKey()) {
+    aiSuggestStatus.textContent = "Add an API key in Settings first.";
+    switchTab("settings");
+    return;
+  }
+
+  suggestRecipesButton.disabled = true;
+  const previousLabel = suggestRecipesButton.textContent;
+  suggestRecipesButton.textContent = "Thinking...";
+  aiSuggestStatus.textContent = "Asking the AI for recipe ideas based on your stock...";
+  aiRecipeResults.innerHTML = "";
+
+  const result = await window.RecipeAI.generateRecipes(
+    stockItems,
+    aiPreferencesInput.value
+  );
+
+  suggestRecipesButton.disabled = false;
+  suggestRecipesButton.textContent = previousLabel;
+
+  if (!result.ok) {
+    aiSuggestStatus.textContent = result.message;
+    return;
+  }
+
+  aiSuggestStatus.textContent = `Got ${result.recipes.length} recipe idea${result.recipes.length === 1 ? "" : "s"}.`;
+  renderAiRecipes(result.recipes);
 }
 
 function submitForm() {

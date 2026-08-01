@@ -380,6 +380,92 @@ button:disabled {
   color: var(--ink-soft);
 }
 
+.ai-recipe-card {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 14px;
+  margin-top: 14px;
+}
+
+.ai-recipe-card h3 {
+  margin: 0 0 4px;
+}
+
+.ai-recipe-description {
+  margin: 0 0 10px;
+  font-size: 14px;
+  color: var(--ink-soft);
+}
+
+.ai-macro-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.ai-macro-pill {
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 9px;
+  border-radius: 999px;
+  background: var(--brand-tint);
+  color: var(--brand-dark);
+}
+
+.ai-macro-source {
+  margin: -4px 0 10px;
+  font-size: 12px;
+  color: var(--ink-soft);
+  font-style: italic;
+}
+
+.ai-ingredient-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 10px;
+}
+
+.ai-ingredient-list li {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  padding: 4px 0;
+  font-size: 14px;
+  border-bottom: none;
+}
+
+.ai-ingredient-flag {
+  font-size: 12px;
+  font-weight: 700;
+  flex-shrink: 0;
+  width: 16px;
+}
+
+.ai-ingredient-flag.have {
+  color: var(--brand);
+}
+
+.ai-ingredient-flag.need {
+  color: #b45309;
+}
+
+.ai-instructions {
+  margin: 0 0 12px;
+  padding-left: 20px;
+  font-size: 14px;
+  color: var(--ink);
+}
+
+.ai-instructions li {
+  margin-bottom: 4px;
+}
+
+.ai-recipe-actions {
+  display: flex;
+  gap: 10px;
+}
+
 /* ================= Bottom tab bar ================= */
 
 .bottom-tabs {

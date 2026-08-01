@@ -1,6 +1,6 @@
 // Bump this version string any time app.js/index.html/style.css change,
 // so returning users get the new files instead of a stale cached copy.
-const CACHE_VERSION = "v10";
+const CACHE_VERSION = "v11";
 const CACHE_NAME = `grocery-scanner-${CACHE_VERSION}`;
 
 // Core app files: these change often during development. They're fetched

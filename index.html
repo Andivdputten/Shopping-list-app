@@ -226,6 +226,30 @@
     <!-- ================= RECIPES TAB ================= -->
     <section class="tab-panel" id="panel-recipes" data-panel="recipes">
       <section class="card">
+        <h2>AI recipe suggestions</h2>
+        <p class="hint-text">
+          Get recipe ideas based on what's currently in your pantry stock.
+        </p>
+
+        <div class="form-stack">
+          <input
+            id="aiPreferencesInput"
+            type="text"
+            placeholder="Optional: e.g. vegetarian, quick meals, spicy"
+            autocomplete="off"
+          />
+
+          <button id="suggestRecipesButton" class="primary-button">
+            Suggest recipes from my stock
+          </button>
+        </div>
+
+        <p id="aiSuggestStatus" class="status-text"></p>
+
+        <div id="aiRecipeResults"></div>
+      </section>
+
+      <section class="card">
         <h2>Recipe builder</h2>
         <p class="hint-text">Build a temporary recipe from saved items with nutrition data.</p>
         <p id="recipeEditorModeText" class="status-text">Creating a new recipe.</p>

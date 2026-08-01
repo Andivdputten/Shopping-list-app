@@ -147,12 +147,172 @@
     return { ok: true, message: "Connected successfully." };
   }
 
+  function stripJsonFences(text) {
+    return text
+      .trim()
+      .replace(/^```(?:json)?\s*/i, "")
+      .replace(/\s*```$/, "")
+      .trim();
+  }
+
+  function isFiniteNumber(value) {
+    return typeof value === "number" && Number.isFinite(value);
+  }
+
+  function sanitizeRecipe(raw) {
+    if (typeof raw !== "object" || raw === null) {
+      return null;
+    }
+
+    const name = typeof raw.name === "string" ? raw.name.trim() : "";
+    if (name === "") {
+      return null;
+    }
+
+    const servings = isFiniteNumber(raw.servings) && raw.servings > 0 ? raw.servings : 1;
+
+    const ingredients = Array.isArray(raw.ingredients)
+      ? raw.ingredients
+          .map((ing) => {
+            if (typeof ing !== "object" || ing === null) {
+              return null;
+            }
+            const ingName = typeof ing.name === "string" ? ing.name.trim() : "";
+            if (ingName === "") {
+              return null;
+            }
+            return {
+              name: ingName,
+              amount: isFiniteNumber(ing.amount) ? ing.amount : null,
+              unit: typeof ing.unit === "string" ? ing.unit.trim() : "g"
+            };
+          })
+          .filter(Boolean)
+      : [];
+
+    if (ingredients.length === 0) {
+      return null;
+    }
+
+    const instructions = Array.isArray(raw.instructions)
+      ? raw.instructions.filter((step) => typeof step === "string" && step.trim() !== "")
+      : [];
+
+    const macros = raw.estimatedMacrosPerServing;
+    const estimatedMacrosPerServing =
+      typeof macros === "object" && macros !== null
+        ? {
+            kcal: isFiniteNumber(macros.kcal) ? macros.kcal : null,
+            protein: isFiniteNumber(macros.protein) ? macros.protein : null,
+            carbs: isFiniteNumber(macros.carbs) ? macros.carbs : null,
+            fat: isFiniteNumber(macros.fat) ? macros.fat : null
+          }
+        : { kcal: null, protein: null, carbs: null, fat: null };
+
+    return {
+      name,
+      description: typeof raw.description === "string" ? raw.description.trim() : "",
+      servings,
+      ingredients,
+      instructions,
+      estimatedMacrosPerServing
+    };
+  }
+
+  async function generateRecipes(stockItems, preferences) {
+    const stockList = Array.isArray(stockItems) ? stockItems : [];
+
+    if (stockList.length === 0) {
+      return {
+        ok: false,
+        errorType: "no_stock",
+        message: "Add some items to your pantry stock first, then try again."
+      };
+    }
+
+    const stockLines = stockList
+      .map((item) => {
+        const qty = typeof item.quantity === "number" ? item.quantity : "";
+        const unit = typeof item.unit === "string" ? item.unit : "";
+        const amountText = [qty, unit].filter((part) => part !== "").join(" ");
+        return amountText !== "" ? `- ${item.name} (${amountText})` : `- ${item.name}`;
+      })
+      .join("\n");
+
+    const preferenceText =
+      typeof preferences === "string" && preferences.trim() !== ""
+        ? `\n\nUser preferences to respect if possible: ${preferences.trim()}`
+        : "";
+
+    const prompt = `Here is the food currently in my kitchen stock:
+${stockLines}
+${preferenceText}
+
+Suggest 5 recipes I could cook. Prefer recipes that use only ingredients I already have. Include at most 2 recipes that need a small number (1-3) of extra ingredients I don't currently have.
+
+For every ingredient, give the amount as a plain number of grams (unit "g") — convert things like cups or tablespoons to an approximate gram weight yourself, since these amounts will be used for nutrition calculations. Use your best culinary knowledge for reasonable serving sizes.
+
+Respond with ONLY a JSON array (no markdown code fences, no commentary before or after) matching exactly this shape:
+[
+  {
+    "name": "Recipe name",
+    "description": "One sentence description",
+    "servings": 2,
+    "ingredients": [
+      { "name": "Ingredient name", "amount": 150, "unit": "g" }
+    ],
+    "instructions": ["Step 1", "Step 2"],
+    "estimatedMacrosPerServing": { "kcal": 450, "protein": 20, "carbs": 55, "fat": 15 }
+  }
+]
+
+The ingredient "name" values should closely match the stock item names above when you mean to use that stock item, so they can be matched automatically.`;
+
+    const result = await callClaude([{ role: "user", content: prompt }], 4000);
+
+    if (!result.ok) {
+      return result;
+    }
+
+    let parsed;
+    try {
+      parsed = JSON.parse(stripJsonFences(result.text));
+    } catch (error) {
+      return {
+        ok: false,
+        errorType: "parse_error",
+        message: "The AI's response wasn't valid JSON. Try again."
+      };
+    }
+
+    if (!Array.isArray(parsed)) {
+      return {
+        ok: false,
+        errorType: "parse_error",
+        message: "The AI's response wasn't in the expected format. Try again."
+      };
+    }
+
+    const recipes = parsed.map(sanitizeRecipe).filter(Boolean);
+
+    if (recipes.length === 0) {
+      return {
+        ok: false,
+        errorType: "parse_error",
+        message: "No usable recipes came back. Try again."
+      };
+    }
+
+    return { ok: true, recipes };
+  }
+
   // Exposed as window.RecipeAI — the only surface app.js should talk to.
   window.RecipeAI = {
     hasApiKey,
     getApiKey,
     setApiKey,
     clearApiKey,
-    testConnection
+    testConnection,
+    generateRecipes
   };
 })();
