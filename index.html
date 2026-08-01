@@ -314,6 +314,42 @@
       </section>
     </section>
 
+    <!-- ================= SETTINGS TAB ================= -->
+    <section class="tab-panel" id="panel-settings" data-panel="settings">
+      <section class="card">
+        <h2>AI recipe suggestions</h2>
+        <p class="hint-text">
+          Recipe suggestions are generated using your own Anthropic API key, stored
+          only on this device. Anyone with access to this device/browser could read
+          it from local storage, so only use this on a device you trust.
+        </p>
+
+        <div class="form-stack">
+          <label class="field-label" for="apiKeyInput">Anthropic API key</label>
+          <input
+            id="apiKeyInput"
+            type="password"
+            placeholder="sk-ant-..."
+            autocomplete="off"
+            autocapitalize="off"
+            autocorrect="off"
+            spellcheck="false"
+          />
+
+          <div class="action-row">
+            <button id="saveApiKeyButton" class="primary-button">Save key</button>
+            <button id="clearApiKeyButton" class="secondary-button">Remove key</button>
+          </div>
+
+          <div class="action-row">
+            <button id="testApiKeyButton" class="secondary-button">Test connection</button>
+          </div>
+
+          <p id="apiKeyStatus" class="status-text">No API key saved yet.</p>
+        </div>
+      </section>
+    </section>
+
   </main>
 
   <nav class="bottom-tabs" id="bottomTabs" aria-label="Main navigation">
@@ -361,9 +397,20 @@
       </span>
       <span class="tab-label">Recipes</span>
     </button>
+
+    <button class="tab-button" data-tab="settings">
+      <span class="tab-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="3" />
+          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" />
+        </svg>
+      </span>
+      <span class="tab-label">Settings</span>
+    </button>
   </nav>
 
   <script src="https://cdn.jsdelivr.net/npm/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+  <script src="ai.js"></script>
   <script src="app.js"></script>
   <script>
     function setVersionBadge(text) {

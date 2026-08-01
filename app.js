@@ -78,6 +78,11 @@ const pageTitle = document.getElementById("pageTitle");
 const pageSubtitle = document.getElementById("pageSubtitle");
 const listTabBadge = document.getElementById("listTabBadge");
 const pantryTabBadge = document.getElementById("pantryTabBadge");
+const apiKeyInput = document.getElementById("apiKeyInput");
+const saveApiKeyButton = document.getElementById("saveApiKeyButton");
+const clearApiKeyButton = document.getElementById("clearApiKeyButton");
+const testApiKeyButton = document.getElementById("testApiKeyButton");
+const apiKeyStatus = document.getElementById("apiKeyStatus");
 
 if (
 !formTitle ||
@@ -131,7 +136,12 @@ if (
 !pageSubtitle ||
 !listTabBadge ||
 !pantryTabBadge ||
-!quickAddButton
+!quickAddButton ||
+!apiKeyInput ||
+!saveApiKeyButton ||
+!clearApiKeyButton ||
+!testApiKeyButton ||
+!apiKeyStatus
 ) {
 alert("HTML element missing. Check your index.html IDs.");
 return;
@@ -166,6 +176,10 @@ const TAB_INFO = {
   recipes: {
     title: "Recipes",
     subtitle: "Build and save recipes from your items"
+  },
+  settings: {
+    title: "Settings",
+    subtitle: "Manage your AI connection"
   }
 };
   
@@ -173,6 +187,7 @@ renderList();
 updateFormMode();
 updatePendingBarcodeUI();
 updateQuickAddButtonState();
+initApiKeySettings();
 setStatus("App loaded successfully.");
 renderRecipeItemOptions();
 renderRecipeBuilder();
@@ -267,6 +282,58 @@ function quickAddItem() {
   updateQuickAddButtonState();
   renderList();
   setStatus(`Added "${name}" to your shopping list.`);
+}
+
+function initApiKeySettings() {
+  if (!window.RecipeAI) {
+    apiKeyStatus.textContent = "AI module failed to load. Try reloading the app.";
+    saveApiKeyButton.disabled = true;
+    clearApiKeyButton.disabled = true;
+    testApiKeyButton.disabled = true;
+    return;
+  }
+
+  apiKeyInput.value = window.RecipeAI.getApiKey();
+  updateApiKeyStatusDisplay();
+
+  saveApiKeyButton.addEventListener("click", () => {
+    const value = apiKeyInput.value.trim();
+
+    if (value === "") {
+      apiKeyStatus.textContent = "Enter a key before saving.";
+      return;
+    }
+
+    window.RecipeAI.setApiKey(value);
+    updateApiKeyStatusDisplay();
+  });
+
+  clearApiKeyButton.addEventListener("click", () => {
+    window.RecipeAI.clearApiKey();
+    apiKeyInput.value = "";
+    apiKeyStatus.textContent = "API key removed.";
+  });
+
+  testApiKeyButton.addEventListener("click", async () => {
+    testApiKeyButton.disabled = true;
+    const previousLabel = testApiKeyButton.textContent;
+    testApiKeyButton.textContent = "Testing...";
+    apiKeyStatus.textContent = "Testing connection...";
+
+    const result = await window.RecipeAI.testConnection();
+
+    testApiKeyButton.disabled = false;
+    testApiKeyButton.textContent = previousLabel;
+    apiKeyStatus.textContent = result.message;
+  });
+}
+
+function updateApiKeyStatusDisplay() {
+  if (window.RecipeAI && window.RecipeAI.hasApiKey()) {
+    apiKeyStatus.textContent = 'API key saved. Tap "Test connection" to verify it works.';
+  } else {
+    apiKeyStatus.textContent = "No API key saved yet.";
+  }
 }
 
 function submitForm() {

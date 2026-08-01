@@ -178,6 +178,15 @@ button:disabled {
   color: var(--ink-soft);
 }
 
+.field-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink-soft);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  margin-bottom: -2px;
+}
+
 .reader-wrapper {
   margin-top: 12px;
   border-radius: 14px;
