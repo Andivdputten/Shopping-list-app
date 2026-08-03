@@ -87,6 +87,12 @@ const aiPreferencesInput = document.getElementById("aiPreferencesInput");
 const suggestRecipesButton = document.getElementById("suggestRecipesButton");
 const aiSuggestStatus = document.getElementById("aiSuggestStatus");
 const aiRecipeResults = document.getElementById("aiRecipeResults");
+const pantryMacroChart = document.getElementById("pantryMacroChart");
+const pantryMacroLegend = document.getElementById("pantryMacroLegend");
+const pantryMacroCoverage = document.getElementById("pantryMacroCoverage");
+const listMacroChart = document.getElementById("listMacroChart");
+const listMacroLegend = document.getElementById("listMacroLegend");
+const listMacroCoverage = document.getElementById("listMacroCoverage");
 
 if (
 !formTitle ||
@@ -149,7 +155,13 @@ if (
 !aiPreferencesInput ||
 !suggestRecipesButton ||
 !aiSuggestStatus ||
-!aiRecipeResults
+!aiRecipeResults ||
+!pantryMacroChart ||
+!pantryMacroLegend ||
+!pantryMacroCoverage ||
+!listMacroChart ||
+!listMacroLegend ||
+!listMacroCoverage
 ) {
 alert("HTML element missing. Check your index.html IDs.");
 return;
@@ -2244,6 +2256,7 @@ function setStockQuantity(index, rawValue) {
 
 function renderStockList() {
   updateTabBadges();
+  renderNutritionStatistics();
   stockList.innerHTML = "";
 
   if (stockItems.length === 0) {
@@ -2727,6 +2740,7 @@ setStatus("All items cleared.");
 
 function renderList() {
 updateTabBadges();
+renderMacroStatBlock(items, listMacroChart, listMacroLegend, listMacroCoverage);
 renderRecipeItemOptions();
 renderRecipeBuilder();
 renderSavedRecipes();
@@ -3075,6 +3089,168 @@ function loadItems() {
     } else {
       badgeEl.classList.add("hidden");
     }
+  }
+
+  function estimateItemGrams(item) {
+    if (typeof item.nutritionAmount === "number" && item.nutritionAmount > 0) {
+      return item.nutritionAmount;
+    }
+
+    if (typeof item.quantity !== "number" || item.quantity <= 0) {
+      return null;
+    }
+
+    const unit = typeof item.unit === "string" ? item.unit.trim().toLowerCase() : "";
+
+    if (unit === "g" || unit === "ml") {
+      return item.quantity;
+    }
+
+    if (unit === "kg" || unit === "l") {
+      return item.quantity * 1000;
+    }
+
+    // Countable units (pcs, pack, bottle, can) or no unit: we don't know
+    // the gram weight, so this item can't be included in totals.
+    return null;
+  }
+
+  function calculateMacroTotals(itemArray) {
+    const totals = { kcal: 0, protein: 0, carbs: 0, fat: 0 };
+    let includedCount = 0;
+
+    itemArray.forEach((item) => {
+      const nutrition = item.nutrition;
+      const hasAnyNutrition =
+        nutrition &&
+        (typeof nutrition.kcal100g === "number" ||
+          typeof nutrition.protein100g === "number" ||
+          typeof nutrition.carbs100g === "number" ||
+          typeof nutrition.fat100g === "number");
+
+      if (!hasAnyNutrition) {
+        return;
+      }
+
+      const grams = estimateItemGrams(item);
+      if (grams === null) {
+        return;
+      }
+
+      const factor = grams / 100;
+      totals.kcal += (nutrition.kcal100g || 0) * factor;
+      totals.protein += (nutrition.protein100g || 0) * factor;
+      totals.carbs += (nutrition.carbs100g || 0) * factor;
+      totals.fat += (nutrition.fat100g || 0) * factor;
+      includedCount++;
+    });
+
+    return {
+      totals,
+      includedCount,
+      totalCount: itemArray.length
+    };
+  }
+
+  function buildMacroDonutSvg(proteinKcal, carbsKcal, fatKcal) {
+    const size = 140;
+    const center = size / 2;
+    const radius = 54;
+    const strokeWidth = 22;
+    const circumference = 2 * Math.PI * radius;
+
+    const segments = [
+      { kcal: proteinKcal, color: "#2e7d32" },
+      { kcal: carbsKcal, color: "#f59e0b" },
+      { kcal: fatKcal, color: "#dc2626" }
+    ];
+
+    const totalKcal = proteinKcal + carbsKcal + fatKcal;
+
+    let cumulative = 0;
+    const circles = segments
+      .map((segment) => {
+        if (segment.kcal <= 0 || totalKcal <= 0) {
+          return "";
+        }
+        const fraction = segment.kcal / totalKcal;
+        const dash = fraction * circumference;
+        const gap = circumference - dash;
+        const offset = -cumulative;
+        cumulative += dash;
+        return `<circle cx="${center}" cy="${center}" r="${radius}" fill="none" stroke="${segment.color}" stroke-width="${strokeWidth}" stroke-dasharray="${dash} ${gap}" stroke-dashoffset="${offset}" />`;
+      })
+      .join("");
+
+    return `<svg viewBox="0 0 ${size} ${size}" role="img" aria-label="Macro breakdown pie chart">
+      <g transform="rotate(-90 ${center} ${center})">${circles}</g>
+    </svg>`;
+  }
+
+  function renderMacroStatBlock(itemArray, chartEl, legendEl, coverageEl) {
+    const { totals, includedCount, totalCount } = calculateMacroTotals(itemArray);
+
+    const proteinKcal = totals.protein * 4;
+    const carbsKcal = totals.carbs * 4;
+    const fatKcal = totals.fat * 9;
+    const macroKcalTotal = proteinKcal + carbsKcal + fatKcal;
+
+    if (macroKcalTotal <= 0) {
+      chartEl.innerHTML = '<div class="macro-chart-empty">No nutrition data available yet</div>';
+      legendEl.innerHTML = "";
+      coverageEl.textContent =
+        totalCount === 0
+          ? ""
+          : `0 of ${totalCount} item${totalCount === 1 ? "" : "s"} counted.`;
+      return;
+    }
+
+    chartEl.innerHTML = buildMacroDonutSvg(proteinKcal, carbsKcal, fatKcal);
+
+    const round1 = (value) => Math.round(value * 10) / 10;
+    const pct = (kcal) => Math.round((kcal / macroKcalTotal) * 100);
+
+    legendEl.innerHTML = "";
+
+    const totalRow = document.createElement("div");
+    totalRow.className = "macro-legend-total";
+    totalRow.textContent = `${Math.round(totals.kcal)} kcal total`;
+    legendEl.appendChild(totalRow);
+
+    const rows = [
+      { label: "Protein", value: totals.protein, color: "#2e7d32", kcal: proteinKcal },
+      { label: "Carbs", value: totals.carbs, color: "#f59e0b", kcal: carbsKcal },
+      { label: "Fat", value: totals.fat, color: "#dc2626", kcal: fatKcal }
+    ];
+
+    rows.forEach((row) => {
+      const rowEl = document.createElement("div");
+      rowEl.className = "macro-legend-row";
+
+      const dot = document.createElement("span");
+      dot.className = "macro-legend-dot";
+      dot.style.background = row.color;
+
+      const label = document.createElement("span");
+      label.className = "macro-legend-label";
+      label.textContent = row.label;
+
+      const value = document.createElement("span");
+      value.className = "macro-legend-value";
+      value.textContent = `${round1(row.value)}g (${pct(row.kcal)}%)`;
+
+      rowEl.appendChild(dot);
+      rowEl.appendChild(label);
+      rowEl.appendChild(value);
+      legendEl.appendChild(rowEl);
+    });
+
+    coverageEl.textContent = `Based on ${includedCount} of ${totalCount} item${totalCount === 1 ? "" : "s"} with known amount and nutrition data.`;
+  }
+
+  function renderNutritionStatistics() {
+    renderMacroStatBlock(stockItems, pantryMacroChart, pantryMacroLegend, pantryMacroCoverage);
+    renderMacroStatBlock(items, listMacroChart, listMacroLegend, listMacroCoverage);
   }
 
   function setStatus(message) {

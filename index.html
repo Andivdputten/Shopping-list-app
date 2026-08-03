@@ -372,6 +372,32 @@
           <p id="apiKeyStatus" class="status-text">No API key saved yet.</p>
         </div>
       </section>
+
+      <section class="card">
+        <h2>Nutrition statistics</h2>
+        <p class="hint-text">
+          Totals only include items with a known amount (grams/kg/ml/l, or a
+          manually entered nutrition amount) and saved nutrition data.
+        </p>
+
+        <h3>Pantry stock</h3>
+        <div class="macro-stat-block">
+          <div class="macro-chart-wrap">
+            <div id="pantryMacroChart"></div>
+          </div>
+          <div class="macro-legend" id="pantryMacroLegend"></div>
+        </div>
+        <p id="pantryMacroCoverage" class="hint-text"></p>
+
+        <h3>Shopping list</h3>
+        <div class="macro-stat-block">
+          <div class="macro-chart-wrap">
+            <div id="listMacroChart"></div>
+          </div>
+          <div class="macro-legend" id="listMacroLegend"></div>
+        </div>
+        <p id="listMacroCoverage" class="hint-text"></p>
+      </section>
     </section>
 
   </main>
