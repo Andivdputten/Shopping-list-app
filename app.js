@@ -37,6 +37,18 @@ const cancelEditButton = document.getElementById("cancelEditButton");
 
 const startScannerButton = document.getElementById("startScannerButton");
 const stopScannerButton = document.getElementById("stopScannerButton");
+const addMoreRow = document.getElementById("addMoreRow");
+const addMoreItemsButton = document.getElementById("addMoreItemsButton");
+const pantryScanButton = document.getElementById("pantryScanButton");
+const pantryScanStopButton = document.getElementById("pantryScanStopButton");
+const pantryScanMessage = document.getElementById("pantryScanMessage");
+const pantryReaderWrapper = document.getElementById("pantryReaderWrapper");
+const pantryUnknownForm = document.getElementById("pantryUnknownForm");
+const pantryUnknownText = document.getElementById("pantryUnknownText");
+const pantryUnknownNameInput = document.getElementById("pantryUnknownNameInput");
+const pantryUnknownAddButton = document.getElementById("pantryUnknownAddButton");
+const pantryUnknownSkipButton = document.getElementById("pantryUnknownSkipButton");
+const toastEl = document.getElementById("toast");
 const scannerMessage = document.getElementById("scannerMessage");
 const readerWrapper = document.getElementById("readerWrapper");
 
@@ -112,6 +124,18 @@ if (
 !cancelEditButton ||
 !startScannerButton ||
 !stopScannerButton ||
+!addMoreRow ||
+!addMoreItemsButton ||
+!pantryScanButton ||
+!pantryScanStopButton ||
+!pantryScanMessage ||
+!pantryReaderWrapper ||
+!pantryUnknownForm ||
+!pantryUnknownText ||
+!pantryUnknownNameInput ||
+!pantryUnknownAddButton ||
+!pantryUnknownSkipButton ||
+!toastEl ||
 !scannerMessage ||
 !readerWrapper ||
 !recipeItemSelect ||
@@ -174,6 +198,16 @@ let pendingNutrition = createEmptyNutrition();
 let html5QrCode = null;
 let scannerRunning = false;
 let scanLock = false;
+let pantryScanner = null;
+let pantryScannerRunning = false;
+let pantryScanBusy = false;
+let pantryLastBarcode = "";
+let pantryCooldownUntil = 0;
+let pantryPendingBarcode = "";
+let pantryPendingProduct = null;
+let toastTimer = null;
+const PANTRY_SCAN_COOLDOWN_MS = 3000;
+const PANTRY_SKIP_COOLDOWN_MS = 8000;
 let recipeIngredients = [];
 let savedRecipes = loadRecipes();
 let aiRecipeEntries = [];
@@ -247,6 +281,24 @@ void startScanner();
 stopScannerButton.addEventListener("click", () => {
 void stopScanner(false);
 });
+
+addMoreItemsButton.addEventListener("click", handleAddMoreItems);
+
+pantryScanButton.addEventListener("click", () => {
+void startPantryScanner();
+});
+
+pantryScanStopButton.addEventListener("click", () => {
+void stopPantryScanner();
+});
+
+pantryUnknownAddButton.addEventListener("click", submitPantryUnknown);
+pantryUnknownSkipButton.addEventListener("click", skipPantryUnknown);
+pantryUnknownNameInput.addEventListener("keydown", (event) => {
+  if (event.key === "Enter") {
+    submitPantryUnknown();
+  }
+});
   
 searchInput.addEventListener("input", () => {
   renderList();
@@ -305,6 +357,7 @@ function quickAddItem() {
   updateQuickAddButtonState();
   renderList();
   setStatus(`Added "${name}" to your shopping list.`);
+  showToast(`${name} added to your list`);
 }
 
 function initApiKeySettings() {
@@ -873,15 +926,18 @@ function submitForm() {
   if (editIndex === null) {
     items.push(itemData);
     setStatus(`Added "${name}".`);
+    showToast(`${name} added to your list`);
   } else {
     itemData.bought = items[editIndex].bought;
     items[editIndex] = itemData;
     setStatus(`Updated "${name}".`);
+    showToast(`${name} updated`);
   }
 
   saveItems();
   renderList();
   resetForm();
+  showAddMoreButton();
 }
 
 function startEdit(index) {
@@ -903,6 +959,7 @@ function startEdit(index) {
   // The add/edit form lives on the Scanner tab. Switch there so the
   // populated form is actually visible, no matter which tab the edit
   // was triggered from (e.g. the List tab's "Edit" button).
+  hideAddMoreButton();
   switchTab("scanner");
 
   itemInput.focus();
@@ -981,6 +1038,7 @@ setStatus("Scanner library did not load.");
 return;
 }
 
+hideAddMoreButton();
 readerWrapper.classList.remove("hidden");
 startScannerButton.disabled = true;
 stopScannerButton.disabled = true;
@@ -1140,6 +1198,331 @@ scannerMessage.textContent = `Barcode ready for next save: ${pendingBarcode}`;
 scannerMessage.textContent = "Scanner stopped.";
 setStatus("Scanner stopped.");
 }
+}
+
+function showToast(message) {
+  toastEl.textContent = `✓ ${message}`;
+  toastEl.classList.add("visible");
+
+  if (toastTimer !== null) {
+    clearTimeout(toastTimer);
+  }
+
+  toastTimer = setTimeout(() => {
+    toastEl.classList.remove("visible");
+    toastTimer = null;
+  }, 2600);
+}
+
+function showAddMoreButton() {
+  addMoreRow.classList.remove("hidden");
+}
+
+function hideAddMoreButton() {
+  addMoreRow.classList.add("hidden");
+}
+
+// Batch scanning: the form is already reset after saving, so just jump back
+// to the top of the page and start the camera again.
+function handleAddMoreItems() {
+  hideAddMoreButton();
+
+  if (document.activeElement && typeof document.activeElement.blur === "function") {
+    document.activeElement.blur();
+  }
+
+  window.scrollTo({ top: 0, behavior: "smooth" });
+  void startScanner();
+}
+
+// ---------------------------------------------------------------------------
+// Pantry scanner: scanned items go straight into pantry stock, and the camera
+// stays on so several items can be scanned in a row.
+// ---------------------------------------------------------------------------
+
+function parsePackageQuantity(text) {
+  const fallback = { quantity: 1, unit: "pack" };
+
+  if (typeof text !== "string") {
+    return fallback;
+  }
+
+  const match = text
+    .trim()
+    .toLowerCase()
+    .match(/^(\d+(?:[.,]\d+)?)\s*(kg|g|ml|cl|l)\b/);
+
+  if (!match) {
+    return fallback;
+  }
+
+  let quantity = parseFloat(match[1].replace(",", "."));
+  let unit = match[2];
+
+  if (!Number.isFinite(quantity) || quantity <= 0) {
+    return fallback;
+  }
+
+  if (unit === "cl") {
+    quantity *= 10;
+    unit = "ml";
+  }
+
+  return { quantity: Math.round(quantity * 100) / 100, unit };
+}
+
+function addScannedItemToPantry(barcode, productData, nameOverride) {
+  const typedName = typeof nameOverride === "string" ? nameOverride.trim() : "";
+  const name = typedName !== "" ? typedName : productData ? productData.name : "";
+
+  if (name === "") {
+    return false;
+  }
+
+  const pack = productData
+    ? parsePackageQuantity(productData.packageQuantity)
+    : { quantity: 1, unit: "pcs" };
+
+  const incoming = {
+    name,
+    quantity: pack.quantity,
+    unit: pack.unit,
+    category: productData ? productData.category : "",
+    note: productData ? buildLookupNote(productData) : "",
+    barcode,
+    nutrition: normalizeNutrition(productData ? productData.nutrition : null),
+    nutritionAmount: null
+  };
+
+  const existingIndex = findMatchingStockIndex(incoming);
+  let message;
+
+  if (existingIndex === null) {
+    stockItems.push(createStockItemFromShoppingItem(incoming));
+    message = `${name} added to pantry`;
+  } else {
+    const quantityBefore = stockItems[existingIndex].quantity;
+    stockItems[existingIndex] = mergeStockItems(stockItems[existingIndex], incoming);
+    const merged = stockItems[existingIndex];
+    const unitText = merged.unit ? ` ${merged.unit}` : "";
+
+    if (typeof merged.quantity !== "number") {
+      message = `${name} added to pantry`;
+    } else if (merged.quantity === quantityBefore) {
+      // Units didn't match, so nothing could be added up.
+      message = `${name} is already in your pantry (quantity unchanged)`;
+    } else {
+      message = `${name} added to pantry (now ${merged.quantity}${unitText})`;
+    }
+  }
+
+  saveStockItems();
+  renderStockList();
+  showToast(message);
+  return true;
+}
+
+async function startPantryScanner() {
+  if (pantryScannerRunning || pantryScanner) {
+    return;
+  }
+
+  if (!window.isSecureContext) {
+    pantryScanMessage.textContent = "Scanner unavailable: page is not using HTTPS.";
+    return;
+  }
+
+  if (typeof Html5Qrcode === "undefined") {
+    pantryScanMessage.textContent = "Scanner unavailable: library failed to load.";
+    return;
+  }
+
+  pantryReaderWrapper.classList.remove("hidden");
+  pantryScanButton.disabled = true;
+  pantryScanStopButton.disabled = true;
+  pantryScanMessage.textContent = "Requesting camera access...";
+
+  pantryScanBusy = false;
+  pantryLastBarcode = "";
+  pantryCooldownUntil = 0;
+  pantryScanner = new Html5Qrcode("pantryReader");
+
+  try {
+    await pantryScanner.start(
+      { facingMode: "environment" },
+      {
+        fps: 10,
+        qrbox: { width: 280, height: 120 },
+        aspectRatio: 1.7777778
+      },
+      onPantryScanSuccess,
+      () => {
+        // Ignore per-frame scan misses.
+      }
+    );
+
+    pantryScannerRunning = true;
+    pantryScanStopButton.disabled = false;
+    pantryScanMessage.textContent =
+      "Scanning. Each barcode you scan is added to your pantry.";
+  } catch (error) {
+    pantryScanner = null;
+    pantryReaderWrapper.classList.add("hidden");
+    pantryScanButton.disabled = false;
+    pantryScanStopButton.disabled = true;
+    pantryScanMessage.textContent = getScannerStartErrorMessage(error);
+  }
+}
+
+async function stopPantryScanner() {
+  const scanner = pantryScanner;
+  const wasRunning = pantryScannerRunning;
+
+  pantryScanner = null;
+  pantryScannerRunning = false;
+  pantryScanBusy = false;
+
+  if (scanner) {
+    try {
+      if (wasRunning) {
+        await scanner.stop();
+      }
+    } catch (error) {
+      // Ignore stop errors and continue cleanup.
+    }
+
+    try {
+      scanner.clear();
+    } catch (error) {
+      // Ignore clear errors during cleanup.
+    }
+  }
+
+  hidePantryUnknownForm();
+  pantryReaderWrapper.classList.add("hidden");
+  pantryScanButton.disabled = false;
+  pantryScanStopButton.disabled = true;
+  pantryScanMessage.textContent = "Scanner stopped.";
+}
+
+function onPantryScanSuccess(decodedText) {
+  if (pantryScanBusy) {
+    return;
+  }
+
+  // The camera keeps seeing the same barcode for a moment; don't add it twice.
+  if (decodedText === pantryLastBarcode && Date.now() < pantryCooldownUntil) {
+    return;
+  }
+
+  pantryScanBusy = true;
+  void handlePantryBarcode(decodedText);
+}
+
+function finishPantryScan(barcode, message, cooldownMs) {
+  pantryLastBarcode = barcode;
+  pantryCooldownUntil = Date.now() + cooldownMs;
+  pantryScanBusy = false;
+  pantryScanMessage.textContent = message;
+}
+
+async function handlePantryBarcode(barcode) {
+  pantryScanMessage.textContent = "Looking up product...";
+
+  let product = null;
+  let lookupFailed = false;
+  const cached = getCachedBarcodeLookup(barcode);
+
+  if (cached !== undefined) {
+    product = cached;
+  } else {
+    try {
+      product = await lookupProductByBarcode(barcode);
+      setCachedBarcodeLookup(barcode, product);
+    } catch (error) {
+      product = null;
+      lookupFailed = true;
+    }
+  }
+
+  if (product && product.name !== "") {
+    addScannedItemToPantry(barcode, product, "");
+    finishPantryScan(
+      barcode,
+      "Added. Point at the next barcode.",
+      PANTRY_SCAN_COOLDOWN_MS
+    );
+    return;
+  }
+
+  // Already in the pantry under this barcode (e.g. named by hand earlier):
+  // just add to that entry instead of asking for a name again.
+  const stockIndex = stockItems.findIndex(
+    (stockItem) =>
+      typeof stockItem.barcode === "string" && stockItem.barcode.trim() === barcode
+  );
+
+  if (stockIndex !== -1) {
+    addScannedItemToPantry(barcode, product, stockItems[stockIndex].name);
+    finishPantryScan(
+      barcode,
+      "Added. Point at the next barcode.",
+      PANTRY_SCAN_COOLDOWN_MS
+    );
+    return;
+  }
+
+  // Unknown barcode (or a product without a name): ask for a name instead of
+  // silently dropping the scan. Scanning pauses until this is resolved.
+  if (!pantryScannerRunning) {
+    pantryScanBusy = false;
+    return;
+  }
+
+  pantryPendingBarcode = barcode;
+  pantryPendingProduct = product;
+  pantryUnknownText.textContent = lookupFailed
+    ? `Couldn't look up ${barcode} (are you offline?). Enter a name to add it anyway.`
+    : `Barcode ${barcode} wasn't found. Enter a name to add it to your pantry.`;
+  pantryUnknownNameInput.value = "";
+  pantryUnknownForm.classList.remove("hidden");
+  pantryScanMessage.textContent = "Waiting for a name...";
+  pantryUnknownNameInput.focus();
+}
+
+function hidePantryUnknownForm() {
+  pantryUnknownForm.classList.add("hidden");
+  pantryUnknownNameInput.value = "";
+  pantryPendingBarcode = "";
+  pantryPendingProduct = null;
+}
+
+function submitPantryUnknown() {
+  const name = pantryUnknownNameInput.value.trim();
+
+  if (name === "") {
+    pantryScanMessage.textContent = "Enter a name first, or tap Skip.";
+    return;
+  }
+
+  const barcode = pantryPendingBarcode;
+  addScannedItemToPantry(barcode, pantryPendingProduct, name);
+  hidePantryUnknownForm();
+  finishPantryScan(
+    barcode,
+    "Added. Point at the next barcode.",
+    PANTRY_SCAN_COOLDOWN_MS
+  );
+}
+
+function skipPantryUnknown() {
+  const barcode = pantryPendingBarcode;
+  hidePantryUnknownForm();
+  finishPantryScan(
+    barcode,
+    "Skipped. Point at the next barcode.",
+    PANTRY_SKIP_COOLDOWN_MS
+  );
 }
 
 function getScannerStartErrorMessage(error) {
@@ -3228,6 +3611,10 @@ function loadItems() {
 
     if (tabName !== "scanner" && scannerRunning) {
       void stopScanner(false);
+    }
+
+    if (tabName !== "pantry" && (pantryScannerRunning || pantryScanner)) {
+      void stopPantryScanner();
     }
 
     window.scrollTo({ top: 0, behavior: "instant" in window ? "instant" : "auto" });

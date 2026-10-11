@@ -163,6 +163,10 @@
             <button id="addButton" class="primary-button">Add item</button>
             <button id="cancelEditButton" class="secondary-button hidden">Cancel edit</button>
           </div>
+
+          <div id="addMoreRow" class="action-row hidden">
+            <button id="addMoreItemsButton" class="primary-button">Add more items</button>
+          </div>
         </div>
 
         <p id="status" class="status-text">Ready.</p>
@@ -209,6 +213,38 @@
 
     <!-- ================= PANTRY TAB ================= -->
     <section class="tab-panel" id="panel-pantry" data-panel="pantry">
+      <section class="card">
+        <h2>Scan to add</h2>
+        <p class="hint-text">
+          Scanned items go straight into your pantry. Keep the scanner running to add several items in a row.
+        </p>
+
+        <div class="action-row">
+          <button id="pantryScanButton" class="primary-button">Scan to add</button>
+          <button id="pantryScanStopButton" class="secondary-button" disabled>Stop scanner</button>
+        </div>
+
+        <p id="pantryScanMessage" class="status-text">Scanner idle.</p>
+
+        <div id="pantryReaderWrapper" class="reader-wrapper hidden">
+          <div id="pantryReader"></div>
+        </div>
+
+        <div id="pantryUnknownForm" class="form-stack hidden">
+          <p id="pantryUnknownText" class="status-text"></p>
+          <input
+            id="pantryUnknownNameInput"
+            type="text"
+            placeholder="Item name"
+            autocomplete="off"
+          />
+          <div class="action-row">
+            <button id="pantryUnknownAddButton" class="primary-button">Add to pantry</button>
+            <button id="pantryUnknownSkipButton" class="secondary-button">Skip</button>
+          </div>
+        </div>
+      </section>
+
       <section class="card">
         <div class="list-header">
           <h2>Pantry stock</h2>
@@ -401,6 +437,8 @@
     </section>
 
   </main>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
   <nav class="bottom-tabs" id="bottomTabs" aria-label="Main navigation">
     <button class="tab-button" data-tab="scanner" aria-current="page">
