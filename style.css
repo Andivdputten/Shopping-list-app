@@ -391,6 +391,60 @@ button:disabled {
   margin: 0 0 4px;
 }
 
+.ai-recipe-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 4px;
+}
+
+.ai-recipe-header h3 {
+  margin: 0;
+}
+
+/* Checkboxes need their own sizing: the global input rule makes inputs
+   full-width with large padding, which would stretch them. */
+.ai-select-checkbox {
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  margin: 0;
+  flex: 0 0 auto;
+  accent-color: var(--brand);
+}
+
+.ai-recipe-toolbar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 14px;
+  padding: 10px 12px;
+  background: var(--brand-tint);
+  border-radius: 12px;
+}
+
+.ai-select-all {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--brand-dark);
+  margin-right: auto;
+}
+
+.ai-toolbar-button {
+  flex: 0 0 auto;
+  padding: 10px 14px;
+  font-size: 14px;
+}
+
+.ai-toolbar-button:disabled {
+  background: #cbd5e1;
+  color: #64748b;
+}
+
 .ai-recipe-description {
   margin: 0 0 10px;
   font-size: 14px;

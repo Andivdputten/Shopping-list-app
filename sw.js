@@ -1,6 +1,6 @@
 // Bump this version string any time app.js/index.html/style.css change,
 // so returning users get the new files instead of a stale cached copy.
-const CACHE_VERSION = "v12";
+const CACHE_VERSION = "v13";
 const CACHE_NAME = `grocery-scanner-${CACHE_VERSION}`;
 
 // Core app files: these change often during development. They're fetched
@@ -14,11 +14,11 @@ const CORE_FILES = ["./", "./index.html", "./app.js", "./ai.js", "./style.css"];
 // them aggressively (cache-first) is safe and saves a network round trip.
 const STATIC_FILES = [
   "./manifest.json",
-  "./icons/icon-192.png",
-  "./icons/icon-512.png",
-  "./icons/icon-maskable-192.png",
-  "./icons/icon-maskable-512.png",
-  "./icons/apple-touch-icon.png",
+  "./Icons/icon-192.png",
+  "./Icons/icon-512.png",
+  "./Icons/icon-maskable-192.png",
+  "./Icons/icon-maskable-512.png",
+  "./Icons/apple-touch-icon.png",
   "https://cdn.jsdelivr.net/npm/html5-qrcode@2.3.8/html5-qrcode.min.js"
 ];
 

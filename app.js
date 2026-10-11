@@ -176,6 +176,8 @@ let scannerRunning = false;
 let scanLock = false;
 let recipeIngredients = [];
 let savedRecipes = loadRecipes();
+let aiRecipeEntries = [];
+let aiToolbar = null;
 let editingSavedRecipeIndex = null;
 let stockItems = loadStockItems();
 let barcodeCache = loadBarcodeCache();
@@ -467,6 +469,12 @@ function macroPillsHtml(macros) {
 
 function renderAiRecipes(recipes) {
   aiRecipeResults.innerHTML = "";
+  aiRecipeEntries = [];
+  aiToolbar = null;
+
+  if (recipes.length > 0) {
+    buildAiToolbar();
+  }
 
   recipes.forEach((recipe) => {
     const matchedIngredients = matchRecipeIngredients(recipe);
@@ -476,9 +484,20 @@ function renderAiRecipes(recipes) {
     const card = document.createElement("div");
     card.className = "ai-recipe-card";
 
+    const headerRow = document.createElement("div");
+    headerRow.className = "ai-recipe-header";
+
+    const checkbox = document.createElement("input");
+    checkbox.type = "checkbox";
+    checkbox.className = "ai-select-checkbox";
+    checkbox.setAttribute("aria-label", `Select ${recipe.name}`);
+
     const heading = document.createElement("h3");
     heading.textContent = recipe.name;
-    card.appendChild(heading);
+
+    headerRow.appendChild(checkbox);
+    headerRow.appendChild(heading);
+    card.appendChild(headerRow);
 
     if (recipe.description !== "") {
       const desc = document.createElement("p");
@@ -549,10 +568,19 @@ function renderAiRecipes(recipes) {
     const saveButton = document.createElement("button");
     saveButton.className = "secondary-button";
     saveButton.textContent = "Save recipe";
-    saveButton.addEventListener("click", () => {
-      saveAiRecipe(recipe, matchedIngredients);
-    });
     actions.appendChild(saveButton);
+
+    const entry = { recipe, matchedIngredients, checkbox, saveButton };
+    aiRecipeEntries.push(entry);
+
+    saveButton.addEventListener("click", () => {
+      saveAiRecipes([entry]);
+    });
+    checkbox.addEventListener("change", updateAiSelectionUi);
+
+    if (isRecipeAlreadySaved(recipe.name)) {
+      markAiEntrySaved(entry, "Already saved");
+    }
 
     if (missingIngredients.length > 0) {
       const addMissingButton = document.createElement("button");
@@ -567,10 +595,90 @@ function renderAiRecipes(recipes) {
     card.appendChild(actions);
     aiRecipeResults.appendChild(card);
   });
+
+  updateAiSelectionUi();
 }
 
-function saveAiRecipe(recipe, matchedIngredients) {
-  const recipeData = {
+function isRecipeAlreadySaved(name) {
+  const lower = name.toLowerCase();
+  return savedRecipes.some((r) => r.name.toLowerCase() === lower);
+}
+
+function markAiEntrySaved(entry, label) {
+  entry.saveButton.textContent = label;
+  entry.saveButton.disabled = true;
+  entry.checkbox.checked = false;
+  entry.checkbox.disabled = true;
+}
+
+function buildAiToolbar() {
+  const toolbar = document.createElement("div");
+  toolbar.className = "ai-recipe-toolbar";
+
+  const selectAllLabel = document.createElement("label");
+  selectAllLabel.className = "ai-select-all";
+  const selectAllCheckbox = document.createElement("input");
+  selectAllCheckbox.type = "checkbox";
+  selectAllCheckbox.className = "ai-select-checkbox";
+  selectAllLabel.appendChild(selectAllCheckbox);
+  selectAllLabel.appendChild(document.createTextNode(" Select all"));
+
+  const saveSelectedButton = document.createElement("button");
+  saveSelectedButton.className = "primary-button ai-toolbar-button";
+  saveSelectedButton.textContent = "Save selected";
+
+  const saveAllButton = document.createElement("button");
+  saveAllButton.className = "secondary-button ai-toolbar-button";
+  saveAllButton.textContent = "Save all";
+
+  selectAllCheckbox.addEventListener("change", () => {
+    aiRecipeEntries.forEach((entry) => {
+      if (!entry.checkbox.disabled) {
+        entry.checkbox.checked = selectAllCheckbox.checked;
+      }
+    });
+    updateAiSelectionUi();
+  });
+
+  saveSelectedButton.addEventListener("click", () => {
+    saveAiRecipes(aiRecipeEntries.filter((entry) => entry.checkbox.checked));
+  });
+
+  saveAllButton.addEventListener("click", () => {
+    saveAiRecipes(aiRecipeEntries);
+  });
+
+  toolbar.appendChild(selectAllLabel);
+  toolbar.appendChild(saveSelectedButton);
+  toolbar.appendChild(saveAllButton);
+  aiRecipeResults.appendChild(toolbar);
+
+  aiToolbar = { selectAllCheckbox, saveSelectedButton, saveAllButton };
+}
+
+function updateAiSelectionUi() {
+  if (!aiToolbar) {
+    return;
+  }
+
+  const selectable = aiRecipeEntries.filter((entry) => !entry.checkbox.disabled);
+  const selectedCount = selectable.filter((entry) => entry.checkbox.checked).length;
+
+  aiToolbar.saveSelectedButton.textContent =
+    selectedCount > 0 ? `Save selected (${selectedCount})` : "Save selected";
+  aiToolbar.saveSelectedButton.disabled = selectedCount === 0;
+
+  aiToolbar.saveAllButton.textContent =
+    selectable.length > 0 ? `Save all (${selectable.length})` : "Save all";
+  aiToolbar.saveAllButton.disabled = selectable.length === 0;
+
+  aiToolbar.selectAllCheckbox.disabled = selectable.length === 0;
+  aiToolbar.selectAllCheckbox.checked =
+    selectable.length > 0 && selectedCount === selectable.length;
+}
+
+function buildSavedRecipeData(recipe, matchedIngredients) {
+  return {
     name: recipe.name,
     servings: recipe.servings,
     servingLabel: "",
@@ -582,20 +690,69 @@ function saveAiRecipe(recipe, matchedIngredients) {
         : createEmptyNutrition()
     }))
   };
+}
 
-  const existingIndex = savedRecipes.findIndex(
-    (r) => r.name.toLowerCase() === recipe.name.toLowerCase()
-  );
+// Saves any number of suggested recipes in one go (used by the per-card
+// button, "Save selected" and "Save all"). Recipes whose name is already
+// saved are skipped rather than duplicated.
+function saveAiRecipes(entries) {
+  // Entries already marked as saved (button disabled) are ignored quietly.
+  const pending = entries.filter((entry) => !entry.saveButton.disabled);
 
-  if (existingIndex !== -1) {
-    aiSuggestStatus.textContent = `A saved recipe named "${recipe.name}" already exists.`;
+  if (entries.length === 0) {
+    aiSuggestStatus.textContent = "Select at least one recipe first.";
     return;
   }
 
-  savedRecipes.push(recipeData);
-  saveRecipes();
-  renderSavedRecipes();
-  aiSuggestStatus.textContent = `Saved "${recipe.name}" to your recipes.`;
+  if (pending.length === 0) {
+    aiSuggestStatus.textContent =
+      entries.length === 1
+        ? `"${entries[0].recipe.name}" is already saved.`
+        : "Those recipes are already saved.";
+    return;
+  }
+
+  let savedCount = 0;
+  let duplicateCount = 0;
+  let lastSavedName = "";
+
+  pending.forEach((entry) => {
+    // Name already exists (e.g. saved from the manual builder meanwhile).
+    if (isRecipeAlreadySaved(entry.recipe.name)) {
+      duplicateCount++;
+      markAiEntrySaved(entry, "Already saved");
+      return;
+    }
+
+    savedRecipes.push(buildSavedRecipeData(entry.recipe, entry.matchedIngredients));
+    markAiEntrySaved(entry, "Saved ✓");
+    savedCount++;
+    lastSavedName = entry.recipe.name;
+  });
+
+  if (savedCount > 0) {
+    saveRecipes();
+    renderSavedRecipes();
+  }
+
+  const plural = (n) => (n === 1 ? "recipe" : "recipes");
+
+  if (savedCount === 0) {
+    aiSuggestStatus.textContent =
+      pending.length === 1
+        ? `A saved recipe named "${pending[0].recipe.name}" already exists.`
+        : "Those recipes are already saved.";
+  } else if (savedCount === 1 && duplicateCount === 0) {
+    aiSuggestStatus.textContent = `Saved "${lastSavedName}" to your recipes.`;
+  } else {
+    aiSuggestStatus.textContent =
+      `Saved ${savedCount} ${plural(savedCount)}` +
+      (duplicateCount > 0
+        ? ` (${duplicateCount} already existed, skipped).`
+        : ".");
+  }
+
+  updateAiSelectionUi();
 }
 
 function addMissingIngredientsToShoppingList(missingIngredients) {
