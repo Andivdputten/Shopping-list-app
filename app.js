@@ -69,6 +69,7 @@ const recipePerServingTotals = document.getElementById("recipePerServingTotals")
 const savedRecipesList = document.getElementById("savedRecipesList");
 const savedRecipesEmptyMessage = document.getElementById("savedRecipesEmptyMessage");
 const recipeServingLabelInput = document.getElementById("recipeServingLabelInput");
+const recipeInstructionsInput = document.getElementById("recipeInstructionsInput");
 const recipeWeightTotals = document.getElementById("recipeWeightTotals");
 const recipePer100gTotals = document.getElementById("recipePer100gTotals");
 const searchInput = document.getElementById("searchInput");
@@ -162,6 +163,7 @@ if (
 !stockList ||
 !stockEmptyMessage ||
 !recipeServingLabelInput ||
+!recipeInstructionsInput ||
 !recipeWeightTotals ||
 !recipePer100gTotals ||
 !statusEl ||
@@ -211,6 +213,7 @@ const PANTRY_SKIP_COOLDOWN_MS = 8000;
 let recipeIngredients = [];
 let savedRecipes = loadRecipes();
 let aiRecipeEntries = [];
+const expandedSavedRecipes = new Set();
 let aiToolbar = null;
 let editingSavedRecipeIndex = null;
 let stockItems = loadStockItems();
@@ -457,9 +460,38 @@ function hasUsableNutrition(nutrition) {
   );
 }
 
+// Decides which pantry item (if any) a recipe ingredient corresponds to.
+// The AI is asked to name the exact stock item for each ingredient, because
+// it understands meaning and other languages ("Halfvolle melk" = milk, and
+// "tomato sauce" is not "tomato"). The plain text matching below is only a
+// fallback for responses that don't include that mapping.
+function resolveStockMatch(ingredient) {
+  if (ingredient.stockItem === null) {
+    return null;
+  }
+
+  if (typeof ingredient.stockItem === "string") {
+    const wanted = ingredient.stockItem.trim().toLowerCase();
+    const exact = stockItems.find(
+      (item) => item.name.trim().toLowerCase() === wanted
+    );
+
+    if (exact) {
+      return exact;
+    }
+
+    // The AI named a stock item slightly differently than it's stored.
+    // Try that name loosely; if it still can't be verified, treat the
+    // ingredient as not in stock (the safer assumption when shopping).
+    return findMatchingStockItem(ingredient.stockItem);
+  }
+
+  return findMatchingStockItem(ingredient.name);
+}
+
 function matchRecipeIngredients(recipe) {
   return recipe.ingredients.map((ingredient) => {
-    const stockMatch = findMatchingStockItem(ingredient.name);
+    const stockMatch = resolveStockMatch(ingredient);
     return {
       ...ingredient,
       stockMatch,
@@ -529,10 +561,36 @@ function renderAiRecipes(recipes) {
     buildAiToolbar();
   }
 
-  recipes.forEach((recipe) => {
+  // Group by what is actually missing (checked against your pantry), not by
+  // what the AI claimed, so the headings can't be wrong.
+  const prepared = recipes.map((recipe) => {
     const matchedIngredients = matchRecipeIngredients(recipe);
+    const missingCount = matchedIngredients.filter((ing) => !ing.inStock).length;
+    return { recipe, matchedIngredients, missingCount };
+  });
+  prepared.sort(
+    (a, b) => (a.missingCount === 0 ? 0 : 1) - (b.missingCount === 0 ? 0 : 1)
+  );
+
+  const readyCount = prepared.filter((p) => p.missingCount === 0).length;
+  const extrasCount = prepared.length - readyCount;
+  let lastGroup = null;
+
+  prepared.forEach(({ recipe, matchedIngredients, missingCount }) => {
     const macroResult = computeRecipeMacros(recipe, matchedIngredients);
     const missingIngredients = matchedIngredients.filter((ing) => !ing.inStock);
+
+    const group = missingCount === 0 ? "ready" : "extras";
+    if (group !== lastGroup) {
+      const groupHeading = document.createElement("h4");
+      groupHeading.className = "ai-group-heading";
+      groupHeading.textContent =
+        group === "ready"
+          ? `Ready to cook (${readyCount})`
+          : `Needs a few extra ingredients (${extrasCount})`;
+      aiRecipeResults.appendChild(groupHeading);
+      lastGroup = group;
+    }
 
     const card = document.createElement("div");
     card.className = "ai-recipe-card";
@@ -650,6 +708,7 @@ function renderAiRecipes(recipes) {
   });
 
   updateAiSelectionUi();
+  return { readyCount, extrasCount };
 }
 
 function isRecipeAlreadySaved(name) {
@@ -733,6 +792,8 @@ function updateAiSelectionUi() {
 function buildSavedRecipeData(recipe, matchedIngredients) {
   return {
     name: recipe.name,
+    description: typeof recipe.description === "string" ? recipe.description : "",
+    instructions: Array.isArray(recipe.instructions) ? recipe.instructions.slice() : [],
     servings: recipe.servings,
     servingLabel: "",
     ingredients: matchedIngredients.map((ing) => ({
@@ -867,8 +928,15 @@ async function handleSuggestRecipesClick() {
     return;
   }
 
-  aiSuggestStatus.textContent = `Got ${result.recipes.length} recipe idea${result.recipes.length === 1 ? "" : "s"}.`;
-  renderAiRecipes(result.recipes);
+  const counts = renderAiRecipes(result.recipes);
+  const total = result.recipes.length;
+  let message = `Got ${total} recipe idea${total === 1 ? "" : "s"}: ${counts.readyCount} ready to cook, ${counts.extrasCount} needing extras.`;
+
+  if (counts.extrasCount === 0) {
+    message += " None needed extra ingredients this time. Tap the button again for more variety.";
+  }
+
+  aiSuggestStatus.textContent = message;
 }
 
 function submitForm() {
@@ -2091,8 +2159,16 @@ function saveCurrentRecipe() {
     return;
   }
 
+  const previousRecipe =
+    editingSavedRecipeIndex !== null ? savedRecipes[editingSavedRecipeIndex] : null;
+
   const recipeData = {
   name: recipeName,
+  description:
+    previousRecipe && typeof previousRecipe.description === "string"
+      ? previousRecipe.description
+      : "",
+  instructions: parseInstructionsText(recipeInstructionsInput.value),
   servings,
   servingLabel: recipeServingLabelInput.value.trim(),
   ingredients: recipeIngredients.map((ingredient) => {
@@ -2132,6 +2208,74 @@ function saveCurrentRecipe() {
   updateRecipeEditorMode();
 }
 
+function parseInstructionsText(text) {
+  return String(text || "")
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .filter((line) => line !== "");
+}
+
+function instructionsToText(instructions) {
+  return Array.isArray(instructions) ? instructions.join("\n") : "";
+}
+
+function buildSavedRecipeDetails(recipe) {
+  const details = document.createElement("div");
+  details.className = "saved-recipe-details";
+
+  if (typeof recipe.description === "string" && recipe.description !== "") {
+    const description = document.createElement("p");
+    description.className = "ai-recipe-description";
+    description.textContent = recipe.description;
+    details.appendChild(description);
+  }
+
+  const ingredientsHeading = document.createElement("h4");
+  ingredientsHeading.className = "saved-recipe-subheading";
+  ingredientsHeading.textContent = "Ingredients";
+  details.appendChild(ingredientsHeading);
+
+  recipe.ingredients.forEach((ingredient) => {
+    const line = document.createElement("div");
+    line.className = "saved-recipe-line";
+    line.textContent = `${formatNutritionValue(ingredient.grams)} g ${ingredient.name}`;
+    details.appendChild(line);
+  });
+
+  const stepsHeading = document.createElement("h4");
+  stepsHeading.className = "saved-recipe-subheading";
+  stepsHeading.textContent = "Cooking instructions";
+  details.appendChild(stepsHeading);
+
+  const steps = Array.isArray(recipe.instructions) ? recipe.instructions : [];
+
+  if (steps.length === 0) {
+    const none = document.createElement("p");
+    none.className = "hint-text";
+    none.textContent =
+      "No cooking instructions saved for this recipe. Tap Load to add some.";
+    details.appendChild(none);
+  } else {
+    steps.forEach((step, stepIndex) => {
+      const row = document.createElement("div");
+      row.className = "saved-step";
+
+      const number = document.createElement("span");
+      number.className = "saved-step-number";
+      number.textContent = String(stepIndex + 1);
+
+      const text = document.createElement("span");
+      text.textContent = step;
+
+      row.appendChild(number);
+      row.appendChild(text);
+      details.appendChild(row);
+    });
+  }
+
+  return details;
+}
+
 function renderSavedRecipes() {
   savedRecipesList.innerHTML = "";
 
@@ -2144,6 +2288,7 @@ function renderSavedRecipes() {
 
   savedRecipes.forEach((recipe, index) => {
     const li = document.createElement("li");
+    li.className = "saved-recipe-item";
 
     const infoWrap = document.createElement("div");
 
@@ -2186,6 +2331,22 @@ infoWrap.appendChild(perServingSpan);
     const actions = document.createElement("div");
     actions.className = "item-actions";
 
+    const recipeKey = recipe.name.toLowerCase();
+    const isOpen = expandedSavedRecipes.has(recipeKey);
+
+    const viewButton = document.createElement("button");
+    viewButton.className = "edit-button view-button";
+    viewButton.textContent = isOpen ? "Hide" : "View";
+    viewButton.setAttribute("aria-expanded", String(isOpen));
+    viewButton.addEventListener("click", () => {
+      if (expandedSavedRecipes.has(recipeKey)) {
+        expandedSavedRecipes.delete(recipeKey);
+      } else {
+        expandedSavedRecipes.add(recipeKey);
+      }
+      renderSavedRecipes();
+    });
+
     const loadButton = document.createElement("button");
     loadButton.className = "edit-button";
     loadButton.textContent = "Load";
@@ -2201,11 +2362,17 @@ infoWrap.appendChild(perServingSpan);
       deleteSavedRecipe(index);
     });
 
+    actions.appendChild(viewButton);
     actions.appendChild(loadButton);
     actions.appendChild(deleteRecipeButton);
 
     li.appendChild(infoWrap);
     li.appendChild(actions);
+
+    if (isOpen) {
+      li.appendChild(buildSavedRecipeDetails(recipe));
+    }
+
     savedRecipesList.appendChild(li);
   });
 }
@@ -2224,6 +2391,7 @@ function loadSavedRecipe(index) {
   );
   recipeServingLabelInput.value =
   typeof recipe.servingLabel === "string" ? recipe.servingLabel : "";
+  recipeInstructionsInput.value = instructionsToText(recipe.instructions);
   
 
   recipeIngredients = recipe.ingredients.map((ingredient) => {
@@ -2326,6 +2494,12 @@ function loadRecipes() {
 
         return {
   name,
+  description: typeof recipe.description === "string" ? recipe.description : "",
+  instructions: Array.isArray(recipe.instructions)
+    ? recipe.instructions
+        .filter((step) => typeof step === "string" && step.trim() !== "")
+        .map((step) => step.trim())
+    : [],
   servings,
   servingLabel:
     typeof recipe.servingLabel === "string" ? recipe.servingLabel : "",
@@ -2461,6 +2635,7 @@ function resetRecipeBuilder() {
   recipeNameInput.value = "";
   recipeServingsInput.value = "1";
   recipeServingLabelInput.value = "";
+  recipeInstructionsInput.value = "";
   recipeItemSelect.value = "";
   recipeGramsInput.value = "";
   recipeIngredients = [];

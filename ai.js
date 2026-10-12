@@ -159,7 +159,26 @@
     return typeof value === "number" && Number.isFinite(value);
   }
 
-  function sanitizeRecipe(raw) {
+  function normalizeStockItemField(value) {
+    if (value === null) {
+      return null;
+    }
+
+    if (typeof value !== "string") {
+      return undefined;
+    }
+
+    const trimmed = value.trim();
+    const lower = trimmed.toLowerCase();
+
+    if (lower === "" || lower === "null" || lower === "none" || lower === "n/a") {
+      return null;
+    }
+
+    return trimmed;
+  }
+
+  function sanitizeRecipe(raw, group) {
     if (typeof raw !== "object" || raw === null) {
       return null;
     }
@@ -184,7 +203,11 @@
             return {
               name: ingName,
               amount: isFiniteNumber(ing.amount) ? ing.amount : null,
-              unit: typeof ing.unit === "string" ? ing.unit.trim() : "g"
+              unit: typeof ing.unit === "string" ? ing.unit.trim() : "g",
+              // string = the exact stock item the AI says this is,
+              // null = the AI says it's not in stock,
+              // undefined = the AI didn't say (older response format)
+              stockItem: normalizeStockItemField(ing.stockItem)
             };
           })
           .filter(Boolean)
@@ -211,6 +234,7 @@
 
     return {
       name,
+      group: group === "needsExtras" ? "needsExtras" : "ready",
       description: typeof raw.description === "string" ? raw.description.trim() : "",
       servings,
       ingredients,
@@ -244,31 +268,38 @@
         ? `\n\nUser preferences to respect if possible: ${preferences.trim()}`
         : "";
 
-    const prompt = `Here is the food currently in my kitchen stock:
+    const prompt = `Here is the food currently in my kitchen stock (name and amount):
 ${stockLines}
 ${preferenceText}
 
-Suggest 5 recipes I could cook. Prefer recipes that use only ingredients I already have. Include at most 2 recipes that need a small number (1-3) of extra ingredients I don't currently have.
+Suggest 6 recipes in two groups:
+1. "ready": 3 recipes that use ONLY items from my stock list above. Do not list water, salt or black pepper as ingredients (I always have those).
+2. "needsExtras": 3 recipes built around what I have in stock, where each recipe also needs 1 to 3 ingredients that are NOT in my stock list (for example a fresh vegetable, a sauce or a spice). Every recipe in this group must contain at least one ingredient that is not in my stock list.
 
-For every ingredient, give the amount as a plain number of grams (unit "g") — convert things like cups or tablespoons to an approximate gram weight yourself, since these amounts will be used for nutrition calculations. Use your best culinary knowledge for reasonable serving sizes.
+Make the recipes varied (different cuisines or meal types) and practical for home cooking. Use reasonable serving sizes.
 
-Respond with ONLY a JSON array (no markdown code fences, no commentary before or after) matching exactly this shape:
-[
-  {
-    "name": "Recipe name",
-    "description": "One sentence description",
-    "servings": 2,
-    "ingredients": [
-      { "name": "Ingredient name", "amount": 150, "unit": "g" }
-    ],
-    "instructions": ["Step 1", "Step 2"],
-    "estimatedMacrosPerServing": { "kcal": 450, "protein": 20, "carbs": 55, "fat": 15 }
-  }
-]
+For every ingredient, give "amount" as a plain number of grams (unit "g"). Convert things like cups or tablespoons to an approximate gram weight yourself, since these amounts are used for nutrition calculations.
 
-The ingredient "name" values should closely match the stock item names above when you mean to use that stock item, so they can be matched automatically.`;
+For every ingredient also give "stockItem": the exact name of the matching item from my stock list above, copied exactly as written, or null if I don't have it. Stock names can be in a different language than your recipe, so match by meaning (for example "Halfvolle melk" is milk). Only match when it really is the same ingredient: "tomato sauce" is not "tomato", and "peanut butter" is not "butter".
 
-    const result = await callClaude([{ role: "user", content: prompt }], 4000);
+Respond with ONLY a JSON object (no markdown code fences, no commentary before or after) in exactly this shape:
+{
+  "ready": [
+    {
+      "name": "Recipe name",
+      "description": "One sentence description",
+      "servings": 2,
+      "ingredients": [
+        { "name": "Ingredient name", "amount": 150, "unit": "g", "stockItem": "Exact stock name or null" }
+      ],
+      "instructions": ["Step 1", "Step 2"],
+      "estimatedMacrosPerServing": { "kcal": 450, "protein": 20, "carbs": 55, "fat": 15 }
+    }
+  ],
+  "needsExtras": [ /* same recipe shape */ ]
+}`;
+
+    const result = await callClaude([{ role: "user", content: prompt }], 6000);
 
     if (!result.ok) {
       return result;
@@ -285,7 +316,18 @@ The ingredient "name" values should closely match the stock item names above whe
       };
     }
 
-    if (!Array.isArray(parsed)) {
+    const rawRecipes = [];
+
+    if (Array.isArray(parsed)) {
+      // Older/simple format: a flat array of recipes.
+      parsed.forEach((raw) => rawRecipes.push({ raw, group: "ready" }));
+    } else if (typeof parsed === "object" && parsed !== null) {
+      ["ready", "needsExtras"].forEach((group) => {
+        if (Array.isArray(parsed[group])) {
+          parsed[group].forEach((raw) => rawRecipes.push({ raw, group }));
+        }
+      });
+    } else {
       return {
         ok: false,
         errorType: "parse_error",
@@ -293,7 +335,9 @@ The ingredient "name" values should closely match the stock item names above whe
       };
     }
 
-    const recipes = parsed.map(sanitizeRecipe).filter(Boolean);
+    const recipes = rawRecipes
+      .map((entry) => sanitizeRecipe(entry.raw, entry.group))
+      .filter(Boolean);
 
     if (recipes.length === 0) {
       return {

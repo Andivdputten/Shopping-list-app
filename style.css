@@ -381,6 +381,15 @@ button:disabled {
   color: var(--ink-soft);
 }
 
+.ai-group-heading {
+  margin: 18px 0 0;
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--ink-soft);
+}
+
 .ai-recipe-card {
   border: 1px solid var(--border);
   border-radius: 12px;
@@ -519,6 +528,57 @@ button:disabled {
 .ai-recipe-actions {
   display: flex;
   gap: 10px;
+}
+
+/* ================= Saved recipe details ================= */
+
+.saved-recipe-item {
+  flex-wrap: wrap;
+}
+
+.view-button {
+  background: var(--brand);
+}
+
+.saved-recipe-details {
+  flex: 0 0 100%;
+  width: 100%;
+  padding-top: 4px;
+}
+
+.saved-recipe-subheading {
+  margin: 12px 0 6px;
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--ink-soft);
+}
+
+.saved-recipe-line {
+  font-size: 14px;
+  padding: 2px 0;
+}
+
+.saved-step {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  font-size: 14px;
+  line-height: 1.4;
+  padding: 4px 0;
+}
+
+.saved-step-number {
+  flex: 0 0 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--brand-tint);
+  color: var(--brand-dark);
+  font-size: 12px;
+  font-weight: 700;
+  text-align: center;
+  line-height: 22px;
 }
 
 /* ================= Nutrition statistics ================= */
