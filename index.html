@@ -318,6 +318,24 @@
             <option value="">Select an item</option>
           </select>
 
+          <div id="customIngredientBlock" class="form-stack hidden">
+            <input
+              id="customIngredientNameInput"
+              type="text"
+              placeholder="Ingredient name, e.g. Spinach"
+              autocomplete="off"
+            />
+            <p class="hint-text">Nutrition per 100 g (optional, leave empty if unknown)</p>
+            <div class="input-row">
+              <input id="customIngredientKcalInput" type="number" inputmode="decimal" min="0" step="any" placeholder="kcal" />
+              <input id="customIngredientProteinInput" type="number" inputmode="decimal" min="0" step="any" placeholder="protein (g)" />
+            </div>
+            <div class="input-row">
+              <input id="customIngredientCarbsInput" type="number" inputmode="decimal" min="0" step="any" placeholder="carbs (g)" />
+              <input id="customIngredientFatInput" type="number" inputmode="decimal" min="0" step="any" placeholder="fat (g)" />
+            </div>
+          </div>
+
           <div class="input-row">
             <input
               id="recipeGramsInput"
@@ -359,6 +377,8 @@
               Cancel recipe edit
             </button>
           </div>
+
+          <p id="recipeBuilderMessage" class="status-text"></p>
         </div>
 
         <ul id="recipeIngredientsList" class="shopping-list"></ul>
@@ -371,6 +391,7 @@
         <p id="recipeWeightTotals" class="item-meta"></p>
         <p id="recipePer100gTotals" class="item-meta"></p>
         <p id="recipePerServingTotals" class="item-meta"></p>
+        <p id="recipeMissingNutritionNote" class="hint-text"></p>
 
         <h3>Saved recipes</h3>
         <ul id="savedRecipesList" class="shopping-list"></ul>

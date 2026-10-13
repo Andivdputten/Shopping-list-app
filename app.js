@@ -70,6 +70,14 @@ const savedRecipesList = document.getElementById("savedRecipesList");
 const savedRecipesEmptyMessage = document.getElementById("savedRecipesEmptyMessage");
 const recipeServingLabelInput = document.getElementById("recipeServingLabelInput");
 const recipeInstructionsInput = document.getElementById("recipeInstructionsInput");
+const customIngredientBlock = document.getElementById("customIngredientBlock");
+const customIngredientNameInput = document.getElementById("customIngredientNameInput");
+const customIngredientKcalInput = document.getElementById("customIngredientKcalInput");
+const customIngredientProteinInput = document.getElementById("customIngredientProteinInput");
+const customIngredientCarbsInput = document.getElementById("customIngredientCarbsInput");
+const customIngredientFatInput = document.getElementById("customIngredientFatInput");
+const recipeBuilderMessage = document.getElementById("recipeBuilderMessage");
+const recipeMissingNutritionNote = document.getElementById("recipeMissingNutritionNote");
 const recipeWeightTotals = document.getElementById("recipeWeightTotals");
 const recipePer100gTotals = document.getElementById("recipePer100gTotals");
 const searchInput = document.getElementById("searchInput");
@@ -164,6 +172,14 @@ if (
 !stockEmptyMessage ||
 !recipeServingLabelInput ||
 !recipeInstructionsInput ||
+!customIngredientBlock ||
+!customIngredientNameInput ||
+!customIngredientKcalInput ||
+!customIngredientProteinInput ||
+!customIngredientCarbsInput ||
+!customIngredientFatInput ||
+!recipeBuilderMessage ||
+!recipeMissingNutritionNote ||
 !recipeWeightTotals ||
 !recipePer100gTotals ||
 !statusEl ||
@@ -263,6 +279,7 @@ cancelEditButton.addEventListener("click", cancelEdit);
 clearButton.addEventListener("click", clearAllItems);
 clearBarcodeButton.addEventListener("click", clearPendingBarcode);
 addRecipeIngredientButton.addEventListener("click", addRecipeIngredient);
+recipeItemSelect.addEventListener("change", updateCustomIngredientVisibility);
 clearRecipeButton.addEventListener("click", clearRecipeIngredients);
 recipeGramsInput.addEventListener("keydown", handleEnterToSubmit);
 recipeItemSelect.addEventListener("keydown", handleEnterToSubmit);
@@ -1970,71 +1987,151 @@ function formatNutritionTotalSummary(nutrition, amountGrams) {
   return `For ${formatNutritionValue(amountGrams)}g: ${parts.join(" · ")}`;
 }
 
+function addRecipeOption(parent, value, item) {
+  const option = document.createElement("option");
+  option.value = value;
+  option.textContent = hasAnyNutrition(item.nutrition)
+    ? item.name
+    : `${item.name} (no nutrition data)`;
+  parent.appendChild(option);
+}
+
 function renderRecipeItemOptions() {
   const previousValue = recipeItemSelect.value;
+  const previousOption = recipeItemSelect.options[recipeItemSelect.selectedIndex];
+  const previousLabel = previousOption ? previousOption.textContent : "";
 
   recipeItemSelect.innerHTML = "";
 
   const placeholderOption = document.createElement("option");
   placeholderOption.value = "";
-  placeholderOption.textContent = "Select an item";
+  placeholderOption.textContent = "Select an ingredient";
   recipeItemSelect.appendChild(placeholderOption);
 
-  items.forEach((item, index) => {
-    if (!hasAnyNutrition(item.nutrition)) {
-      return;
-    }
+  const byName = (a, b) => a.item.name.localeCompare(b.item.name);
+  const pantryNames = new Set();
 
-    const option = document.createElement("option");
-    option.value = String(index);
-    option.textContent = item.name;
-    recipeItemSelect.appendChild(option);
+  const pantryEntries = stockItems
+    .map((item, index) => ({ item, index }))
+    .sort(byName);
+
+  if (pantryEntries.length > 0) {
+    const group = document.createElement("optgroup");
+    group.label = "In your pantry";
+    pantryEntries.forEach(({ item, index }) => {
+      pantryNames.add(normalizeIngredientName(item.name));
+      addRecipeOption(group, `stock:${index}`, item);
+    });
+    recipeItemSelect.appendChild(group);
+  }
+
+  // Skip list items that are already offered from the pantry.
+  const listEntries = items
+    .map((item, index) => ({ item, index }))
+    .filter(({ item }) => !pantryNames.has(normalizeIngredientName(item.name)))
+    .sort(byName);
+
+  if (listEntries.length > 0) {
+    const group = document.createElement("optgroup");
+    group.label = "On your shopping list";
+    listEntries.forEach(({ item, index }) => {
+      addRecipeOption(group, `list:${index}`, item);
+    });
+    recipeItemSelect.appendChild(group);
+  }
+
+  const customOption = document.createElement("option");
+  customOption.value = "custom";
+  customOption.textContent = "+ Other ingredient (not in pantry)";
+  recipeItemSelect.appendChild(customOption);
+
+  // Keep the previous choice only if it still points at the same thing
+  // (list positions shift when items are added or removed).
+  const stillThere = Array.from(recipeItemSelect.options).some((option) => {
+    return option.value === previousValue && option.textContent === previousLabel;
   });
 
-  const stillExists = Array.from(recipeItemSelect.options).some((option) => {
-    return option.value === previousValue;
-  });
-
-  recipeItemSelect.value = stillExists ? previousValue : "";
+  recipeItemSelect.value = stillThere ? previousValue : "";
+  updateCustomIngredientVisibility();
 }
 
+function updateCustomIngredientVisibility() {
+  customIngredientBlock.classList.toggle("hidden", recipeItemSelect.value !== "custom");
+}
+
+function setRecipeStatus(message) {
+  recipeBuilderMessage.textContent = message;
+  setStatus(message);
+}
+
+
 function addRecipeIngredient() {
-  const selectedIndexRaw = recipeItemSelect.value;
+  const selected = recipeItemSelect.value;
   const grams = parseOptionalNumberInput(recipeGramsInput.value);
 
-  if (selectedIndexRaw === "") {
-    setStatus("Select an item for the recipe first.");
+  if (selected === "") {
+    setRecipeStatus("Choose an ingredient first, or pick \"Other ingredient\" to add something new.");
     return;
   }
 
   if (grams === null || grams <= 0) {
-    setStatus("Recipe grams must be greater than 0.");
+    setRecipeStatus("Enter how many grams the recipe uses (more than 0).");
     return;
   }
 
-  const selectedIndex = Number(selectedIndexRaw);
-  const item = items[selectedIndex];
+  let name;
+  let nutrition;
 
-  if (!item) {
-    setStatus("Selected recipe item no longer exists.");
-    renderRecipeItemOptions();
-    return;
+  if (selected === "custom") {
+    name = customIngredientNameInput.value.trim();
+
+    if (name === "") {
+      setRecipeStatus("Type a name for the ingredient first.");
+      customIngredientNameInput.focus();
+      return;
+    }
+
+    nutrition = normalizeNutrition({
+      kcal100g: parseOptionalNumberInput(customIngredientKcalInput.value),
+      protein100g: parseOptionalNumberInput(customIngredientProteinInput.value),
+      carbs100g: parseOptionalNumberInput(customIngredientCarbsInput.value),
+      fat100g: parseOptionalNumberInput(customIngredientFatInput.value)
+    });
+  } else {
+    const [kind, indexText] = selected.split(":");
+    const index = Number(indexText);
+    const source =
+      kind === "stock" ? stockItems[index] : kind === "list" ? items[index] : null;
+
+    if (!source) {
+      setRecipeStatus("That item no longer exists. Pick another ingredient.");
+      renderRecipeItemOptions();
+      return;
+    }
+
+    name = source.name;
+    nutrition = normalizeNutrition(source.nutrition);
   }
 
-  if (!hasAnyNutrition(item.nutrition)) {
-    setStatus(`"${item.name}" has no nutrition data yet.`);
-    return;
-  }
-
-  recipeIngredients.push({
-    name: item.name,
-    grams,
-    nutrition: normalizeNutrition(item.nutrition)
-  });
+  recipeIngredients.push({ name, grams, nutrition });
 
   recipeGramsInput.value = "";
+
+  if (selected === "custom") {
+    customIngredientNameInput.value = "";
+    customIngredientKcalInput.value = "";
+    customIngredientProteinInput.value = "";
+    customIngredientCarbsInput.value = "";
+    customIngredientFatInput.value = "";
+  }
+
   renderRecipeBuilder();
-  setStatus(`Added "${item.name}" to the recipe.`);
+  showToast(`${name} added to the recipe`);
+  setRecipeStatus(
+    hasAnyNutrition(nutrition)
+      ? `Added "${name}" to the recipe.`
+      : `Added "${name}" to the recipe. It has no nutrition data, so it isn't counted in the totals.`
+  );
 }
 
 function clearRecipeIngredients() {
@@ -2044,12 +2141,12 @@ function clearRecipeIngredients() {
     recipeServingsInput.value.trim() !== "";
 
   if (!hasAnything) {
-    setStatus("There is no recipe to clear.");
+    setRecipeStatus("There is no recipe to clear.");
     return;
   }
 
   resetRecipeBuilder();
-  setStatus("Recipe builder cleared.");
+  setRecipeStatus("Recipe builder cleared.");
 }
 
 function removeRecipeIngredient(index) {
@@ -2060,7 +2157,7 @@ function removeRecipeIngredient(index) {
   const removedName = recipeIngredients[index].name;
   recipeIngredients.splice(index, 1);
   renderRecipeBuilder();
-  setStatus(`Removed "${removedName}" from the recipe.`);
+  setRecipeStatus(`Removed "${removedName}" from the recipe.`);
 }
 
 function renderRecipeBuilder() {
@@ -2072,6 +2169,7 @@ function renderRecipeBuilder() {
     recipeWeightTotals.textContent = "";
     recipePer100gTotals.textContent = "";
     recipePerServingTotals.textContent = "";
+    recipeMissingNutritionNote.textContent = "";
     return;
   }
 
@@ -2092,10 +2190,9 @@ function renderRecipeBuilder() {
 
     const totalsSpan = document.createElement("span");
     totalsSpan.className = "item-meta";
-    totalsSpan.textContent = formatNutritionTotalSummary(
-      ingredient.nutrition,
-      ingredient.grams
-    );
+    totalsSpan.textContent = hasAnyNutrition(ingredient.nutrition)
+      ? formatNutritionTotalSummary(ingredient.nutrition, ingredient.grams)
+      : "No nutrition data (not counted in totals)";
 
     infoWrap.appendChild(nameSpan);
     infoWrap.appendChild(gramsSpan);
@@ -2117,6 +2214,14 @@ function renderRecipeBuilder() {
   recipeWeightTotals.textContent = buildRecipeWeightSummary();
   recipePer100gTotals.textContent = buildRecipePer100gSummary();
   recipePerServingTotals.textContent = buildRecipePerServingSummary();
+
+  const missingNutritionCount = recipeIngredients.filter(
+    (ingredient) => !hasAnyNutrition(ingredient.nutrition)
+  ).length;
+  recipeMissingNutritionNote.textContent =
+    missingNutritionCount > 0
+      ? `${missingNutritionCount} of ${recipeIngredients.length} ingredient${recipeIngredients.length === 1 ? "" : "s"} ha${missingNutritionCount === 1 ? "s" : "ve"} no nutrition data, so the totals are incomplete.`
+      : "";
 }
 
 function buildRecipeTotalsSummary() {
@@ -2145,17 +2250,17 @@ function saveCurrentRecipe() {
   const servings = parseOptionalNumberInput(recipeServingsInput.value);
 
   if (recipeName === "") {
-    setStatus("Type a recipe name first.");
+    setRecipeStatus("Type a recipe name first.");
     return;
   }
 
   if (recipeIngredients.length === 0) {
-    setStatus("Add at least one ingredient before saving the recipe.");
+    setRecipeStatus("Add at least one ingredient before saving the recipe.");
     return;
   }
 
   if (servings === null || servings <= 0) {
-    setStatus("Servings must be greater than 0.");
+    setRecipeStatus("Servings must be greater than 0.");
     return;
   }
 
@@ -2186,21 +2291,21 @@ function saveCurrentRecipe() {
 
   if (editingSavedRecipeIndex === null) {
     if (existingIndex !== -1) {
-      setStatus("A saved recipe already uses that name. Load it to edit, or rename this one.");
+      setRecipeStatus("A saved recipe already uses that name. Load it to edit, or rename this one.");
       return;
     }
 
     savedRecipes.push(recipeData);
     editingSavedRecipeIndex = savedRecipes.length - 1;
-    setStatus(`Saved recipe "${recipeName}".`);
+    setRecipeStatus(`Saved recipe "${recipeName}".`);
   } else {
     if (existingIndex !== -1 && existingIndex !== editingSavedRecipeIndex) {
-      setStatus("Another saved recipe already uses that name. Rename this recipe or duplicate it.");
+      setRecipeStatus("Another saved recipe already uses that name. Rename this recipe or duplicate it.");
       return;
     }
 
     savedRecipes[editingSavedRecipeIndex] = recipeData;
-    setStatus(`Updated recipe "${recipeName}".`);
+    setRecipeStatus(`Updated recipe "${recipeName}".`);
   }
 
   saveRecipes();
@@ -2405,7 +2510,7 @@ function loadSavedRecipe(index) {
   renderRecipeBuilder();
   renderSavedRecipes();
   updateRecipeEditorMode();
-  setStatus(`Loaded recipe "${recipe.name}" for editing.`);
+  setRecipeStatus(`Loaded recipe "${recipe.name}" for editing.`);
 }
 
 function deleteSavedRecipe(index) {
@@ -2430,7 +2535,7 @@ function deleteSavedRecipe(index) {
   saveRecipes();
   renderSavedRecipes();
   updateRecipeEditorMode();
-  setStatus(`Deleted recipe "${removedName}".`);
+  setRecipeStatus(`Deleted recipe "${removedName}".`);
 }
 
 function saveRecipes() {
@@ -2648,24 +2753,24 @@ function resetRecipeBuilder() {
 
 function cancelRecipeEdit() {
   if (editingSavedRecipeIndex === null) {
-    setStatus("No saved recipe is being edited.");
+    setRecipeStatus("No saved recipe is being edited.");
     return;
   }
 
   resetRecipeBuilder();
-  setStatus("Recipe edit cancelled.");
+  setRecipeStatus("Recipe edit cancelled.");
 }
 
 function duplicateCurrentRecipe() {
   if (recipeIngredients.length === 0) {
-    setStatus("There is no recipe to duplicate.");
+    setRecipeStatus("There is no recipe to duplicate.");
     return;
   }
 
   editingSavedRecipeIndex = null;
   recipeNameInput.value = makeRecipeCopyName(recipeNameInput.value);
   updateRecipeEditorMode();
-  setStatus("Recipe duplicated into a new unsaved copy.");
+  setRecipeStatus("Recipe duplicated into a new unsaved copy.");
 }
 
 function makeRecipeCopyName(baseName) {
@@ -2971,6 +3076,7 @@ function setStockQuantity(index, rawValue) {
 
 function renderStockList() {
   updateTabBadges();
+  renderRecipeItemOptions();
   renderNutritionStatistics();
   stockList.innerHTML = "";
 
