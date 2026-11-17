@@ -449,19 +449,10 @@ function findMatchingStockItem(ingredientName) {
     return null;
   }
 
-  const exact = stockItems.find(
-    (item) => normalizeIngredientName(item.name) === target
-  );
-  if (exact) {
-    return exact;
-  }
-
-  // Loose fallback: one name contains the other (e.g. "olive oil" vs "oil").
+  // Only normalized exact matches count (case, spacing and a plural "s" are ignored).
+  // The old substring fallback matched "egg" to "eggplant" and "butter" to "peanut butter", wrongly marking items as in stock.
   return (
-    stockItems.find((item) => {
-      const stockName = normalizeIngredientName(item.name);
-      return stockName !== "" && (stockName.includes(target) || target.includes(stockName));
-    }) || null
+    stockItems.find((item) => normalizeIngredientName(item.name) === target) || null
   );
 }
 
@@ -498,7 +489,7 @@ function resolveStockMatch(ingredient) {
     }
 
     // The AI named a stock item slightly differently than it's stored.
-    // Try that name loosely; if it still can't be verified, treat the
+    // Retry with normalized matching; if it still can't be verified, treat the
     // ingredient as not in stock (the safer assumption when shopping).
     return findMatchingStockItem(ingredient.stockItem);
   }
@@ -815,7 +806,8 @@ function buildSavedRecipeData(recipe, matchedIngredients) {
     servingLabel: "",
     ingredients: matchedIngredients.map((ing) => ({
       name: ing.name,
-      grams: typeof ing.amount === "number" ? ing.amount : 0,
+      // Unknown amounts are stored as null rather than 0, because loadRecipes() used to discard 0-gram ingredients on reload.
+      grams: typeof ing.amount === "number" && ing.amount > 0 ? ing.amount : null,
       nutrition: ing.hasNutrition
         ? normalizeNutrition(ing.stockMatch.nutrition)
         : createEmptyNutrition()
@@ -1366,7 +1358,8 @@ function addScannedItemToPantry(barcode, productData, nameOverride) {
 
   const pack = productData
     ? parsePackageQuantity(productData.packageQuantity)
-    : { quantity: 1, unit: "pcs" };
+    // Same fallback unit as parsePackageQuantity(), so repeat scans merge instead of creating a duplicate entry.
+    : { quantity: 1, unit: "pack" };
 
   const incoming = {
     name,
@@ -1909,6 +1902,14 @@ function formatNutritionValue(value) {
   return String(Math.round(value * 10) / 10);
 }
 
+// Shows an ingredient's gram amount, or "amount unknown" when it is null.
+// Needed because recipe ingredients may now be saved without an amount instead of being discarded.
+function formatIngredientAmount(grams) {
+  return typeof grams === "number" && Number.isFinite(grams) && grams > 0
+    ? `${formatNutritionValue(grams)} g`
+    : "amount unknown";
+}
+
 function syncNutritionInputsFromPending() {
   const nutrition = normalizeNutrition(pendingNutrition);
 
@@ -2186,7 +2187,7 @@ function renderRecipeBuilder() {
 
     const gramsSpan = document.createElement("span");
     gramsSpan.className = "item-meta";
-    gramsSpan.textContent = `${formatNutritionValue(ingredient.grams)}g`;
+    gramsSpan.textContent = formatIngredientAmount(ingredient.grams);
 
     const totalsSpan = document.createElement("span");
     totalsSpan.className = "item-meta";
@@ -2343,7 +2344,7 @@ function buildSavedRecipeDetails(recipe) {
   recipe.ingredients.forEach((ingredient) => {
     const line = document.createElement("div");
     line.className = "saved-recipe-line";
-    line.textContent = `${formatNutritionValue(ingredient.grams)} g ${ingredient.name}`;
+    line.textContent = `${formatIngredientAmount(ingredient.grams)} ${ingredient.name}`;
     details.appendChild(line);
   });
 
@@ -2585,13 +2586,11 @@ function loadRecipes() {
 
             const grams = parseOptionalNumberInput(String(ingredient.grams));
 
-            if (grams === null || grams <= 0) {
-              return null;
-            }
-
+            // Keep ingredients without a usable amount (grams = null) instead of dropping them.
+            // Dropping them silently deleted ingredients from AI-saved recipes on every reload.
             return {
               name: ingredientName,
-              grams,
+              grams: grams !== null && grams > 0 ? grams : null,
               nutrition: normalizeNutrition(ingredient.nutrition)
             };
           })
@@ -3247,6 +3246,12 @@ function clearStockItems() {
     return;
   }
 
+  // Ask before wiping the whole pantry, because there is no undo and no backup.
+  if (!window.confirm(`Delete all ${stockItems.length} item${stockItems.length === 1 ? "" : "s"} from your pantry? This can't be undone.`)) {
+    setStatus("Clear cancelled.");
+    return;
+  }
+
   stockItems = [];
   saveStockItems();
   renderStockList();
@@ -3548,6 +3553,12 @@ setStatus(`Removed "${removedItem}".`);
 function clearAllItems() {
 if (items.length === 0) {
 setStatus("There is nothing to clear.");
+return;
+}
+
+// Ask before wiping the whole list, because there is no undo and no backup.
+if (!window.confirm(`Delete all ${items.length} item${items.length === 1 ? "" : "s"} from your shopping list? This can't be undone.`)) {
+setStatus("Clear cancelled.");
 return;
 }
 
