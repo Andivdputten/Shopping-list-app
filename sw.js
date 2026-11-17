@@ -1,6 +1,6 @@
 // Bump this version string any time app.js/index.html/style.css change,
 // so returning users get the new files instead of a stale cached copy.
-const CACHE_VERSION = "v17";
+const CACHE_VERSION = "v18";
 const CACHE_NAME = `grocery-scanner-${CACHE_VERSION}`;
 
 // Core app files: these change often during development. They're fetched
@@ -8,7 +8,7 @@ const CACHE_NAME = `grocery-scanner-${CACHE_VERSION}`;
 // can never get stuck serving a stale copy just because it happened to be
 // cached once — the cache here is purely an offline fallback, not a source
 // of truth while online.
-const CORE_FILES = ["./", "./index.html", "./app.js", "./ai.js", "./style.css"];
+const CORE_FILES = ["./", "./index.html", "./app.js", "./ai.js", "./sw-register.js", "./style.css"];
 
 // Static assets: these essentially never change once created, so caching
 // them aggressively (cache-first) is safe and saves a network round trip.
@@ -19,7 +19,9 @@ const STATIC_FILES = [
   "./Icons/icon-maskable-192.png",
   "./Icons/icon-maskable-512.png",
   "./Icons/apple-touch-icon.png",
-  "https://cdn.jsdelivr.net/npm/html5-qrcode@2.3.8/html5-qrcode.min.js"
+  // Self-hosted copy of the scanner library (was loaded from a CDN).
+  // Serving it from our own origin removes the third-party script that could read the stored API key.
+  "./vendor/html5-qrcode/html5-qrcode.min.js"
 ];
 
 const APP_SHELL = [...CORE_FILES, ...STATIC_FILES];
@@ -59,6 +61,8 @@ self.addEventListener("message", (event) => {
 function isCoreFile(url) {
   if (url.pathname.endsWith("/app.js")) return true;
   if (url.pathname.endsWith("/ai.js")) return true;
+  // Treated as a core file because it was inline in index.html and should update just as promptly.
+  if (url.pathname.endsWith("/sw-register.js")) return true;
   if (url.pathname.endsWith("/style.css")) return true;
   if (url.pathname.endsWith("/index.html")) return true;
   // "./" and any path ending in "/" resolve to index.html on GitHub Pages.
@@ -82,8 +86,11 @@ self.addEventListener("fetch", (event) => {
     event.respondWith(
       fetch(request)
         .then((response) => {
-          const copy = response.clone();
-          caches.open(CACHE_NAME).then((cache) => cache.put(request, copy));
+          // Only cache successful responses, so a temporary 404/500 can't overwrite the good offline copy.
+          if (response.ok) {
+            const copy = response.clone();
+            caches.open(CACHE_NAME).then((cache) => cache.put(request, copy));
+          }
           return response;
         })
         .catch(() => caches.match(request).then((cached) => cached || caches.match("./index.html")))
@@ -99,8 +106,11 @@ self.addEventListener("fetch", (event) => {
           return cached;
         }
         return fetch(request).then((response) => {
-          const copy = response.clone();
-          caches.open(CACHE_NAME).then((cache) => cache.put(request, copy));
+          // Same rule as above: never store error responses in the cache.
+          if (response.ok) {
+            const copy = response.clone();
+            caches.open(CACHE_NAME).then((cache) => cache.put(request, copy));
+          }
           return response;
         });
       })
@@ -108,15 +118,6 @@ self.addEventListener("fetch", (event) => {
     return;
   }
 
-  // Cross-origin (e.g. Open Food Facts lookups, the qrcode script):
-  // network-first so data stays fresh, falling back to cache if offline.
-  event.respondWith(
-    fetch(request)
-      .then((response) => {
-        const copy = response.clone();
-        caches.open(CACHE_NAME).then((cache) => cache.put(request, copy));
-        return response;
-      })
-      .catch(() => caches.match(request))
-  );
+  // Cross-origin requests (Open Food Facts, the AI API) pass straight to the network without caching.
+  // app.js already keeps its own bounded barcode cache, so caching them here only grew Cache Storage without limit.
 });

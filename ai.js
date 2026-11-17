@@ -159,6 +159,19 @@
     return typeof value === "number" && Number.isFinite(value);
   }
 
+  // Turns a number or a numeric string (e.g. "150") into a number, otherwise null.
+  // The model sometimes returns quoted numbers, and dropping those left ingredients without an amount.
+  function toFiniteNumber(value) {
+    if (isFiniteNumber(value)) {
+      return value;
+    }
+    if (typeof value === "string" && value.trim() !== "") {
+      const parsed = Number(value.trim().replace(",", "."));
+      return Number.isFinite(parsed) ? parsed : null;
+    }
+    return null;
+  }
+
   function normalizeStockItemField(value) {
     if (value === null) {
       return null;
@@ -202,7 +215,7 @@
             }
             return {
               name: ingName,
-              amount: isFiniteNumber(ing.amount) ? ing.amount : null,
+              amount: toFiniteNumber(ing.amount),
               unit: typeof ing.unit === "string" ? ing.unit.trim() : "g",
               // string = the exact stock item the AI says this is,
               // null = the AI says it's not in stock,
