@@ -864,3 +864,15 @@ button:disabled {
   color: #1f2937;
   font-weight: 700;
 }
+
+/* Daily targets: label and input side by side, one target per row. */
+.target-grid {
+  display: grid;
+  grid-template-columns: 1fr 120px;
+  align-items: center;
+  gap: 8px 12px;
+}
+
+.target-grid .field-label {
+  margin: 0;
+}

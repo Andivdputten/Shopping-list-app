@@ -7473,7 +7473,30 @@
             }
           ]
         }
-      ]
+      ],
+      "targetSettings": {
+        "body": {
+          "sex": "",
+          "age": null,
+          "heightCm": null,
+          "weightKg": null,
+          "activity": "",
+          "goal": "keep"
+        },
+        "targets": {
+          "kcal": null,
+          "protein": null,
+          "carbs": null,
+          "fat": null,
+          "fiber": null
+        },
+        "mealSplit": {
+          "breakfast": 25,
+          "lunch": 30,
+          "dinner": 35,
+          "snack": 10
+        }
+      }
     }
   },
   {
@@ -8726,7 +8749,30 @@
           },
           "nutritionAmount": null
         }
-      ]
+      ],
+      "grocery_scanner_targets_v1": {
+        "body": {
+          "sex": "",
+          "age": null,
+          "heightCm": null,
+          "weightKg": null,
+          "activity": "",
+          "goal": "keep"
+        },
+        "targets": {
+          "kcal": null,
+          "protein": null,
+          "carbs": null,
+          "fat": null,
+          "fiber": null
+        },
+        "mealSplit": {
+          "breakfast": 25,
+          "lunch": 30,
+          "dinner": 35,
+          "snack": 10
+        }
+      }
     }
   }
 ]

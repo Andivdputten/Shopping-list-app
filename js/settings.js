@@ -6,7 +6,8 @@ import {
   RECIPE_LANGUAGE_STORAGE_KEY,
   RECIPE_STORAGE_KEY,
   STOCK_STORAGE_KEY,
-  STORAGE_KEY
+  STORAGE_KEY,
+  TARGETS_STORAGE_KEY
 } from "./constants.js";
 import {
   aiPreferencesInput,
@@ -172,7 +173,9 @@ export function exportBackup(statusElement) {
     exportedAt: new Date().toISOString(),
     items: state.items,
     stockItems: state.stockItems,
-    savedRecipes: state.savedRecipes
+    savedRecipes: state.savedRecipes,
+    // Optional: older backups have no targets, and older app versions ignore this field.
+    targetSettings: state.targetSettings
   };
 
   const blob = new Blob([JSON.stringify(backup, null, 2)], { type: "application/json" });
@@ -232,13 +235,17 @@ export async function importBackup(file, statusElement) {
   }
 
   // Remember the current stored values so a failed write (e.g. storage full) can be undone instead of leaving half-imported data.
-  const keys = [STORAGE_KEY, STOCK_STORAGE_KEY, RECIPE_STORAGE_KEY];
+  const keys = [STORAGE_KEY, STOCK_STORAGE_KEY, RECIPE_STORAGE_KEY, TARGETS_STORAGE_KEY];
   const previousValues = keys.map((key) => localStorage.getItem(key));
 
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(backup.items));
     localStorage.setItem(STOCK_STORAGE_KEY, JSON.stringify(backup.stockItems));
     localStorage.setItem(RECIPE_STORAGE_KEY, JSON.stringify(backup.savedRecipes));
+    // A backup made before targets existed leaves the current targets as they are.
+    if (backup.targetSettings && typeof backup.targetSettings === "object") {
+      localStorage.setItem(TARGETS_STORAGE_KEY, JSON.stringify(backup.targetSettings));
+    }
   } catch (error) {
     keys.forEach((key, i) => {
       try {

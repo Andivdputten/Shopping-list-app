@@ -40,6 +40,8 @@ const CORE_FILES = [
   "./js/statistics.js",
   "./js/storage.js",
   "./js/tabs.js",
+  "./js/targets-settings.js",
+  "./js/targets.js",
   "./js/ui.js"
 ];
 

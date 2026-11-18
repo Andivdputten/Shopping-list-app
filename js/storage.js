@@ -3,11 +3,13 @@ import {
   BARCODE_CACHE_STORAGE_KEY,
   RECIPE_STORAGE_KEY,
   STOCK_STORAGE_KEY,
-  STORAGE_KEY
+  STORAGE_KEY,
+  TARGETS_STORAGE_KEY
 } from "./constants.js";
 import { normalizeDisplayAmount, parseOptionalNumberInput } from "./format.js";
 import { createShoppingItem, createStockItem, normalizeStockLink } from "./items.js";
 import { normalizeNutrition } from "./nutrition.js";
+import { normalizeTargetSettings } from "./targets.js";
 
 export function loadRecipes() {
   return loadStoredList(RECIPE_STORAGE_KEY, (recipe) => {
@@ -133,4 +135,13 @@ export function loadItems() {
       bought: typeof item.bought === "boolean" ? item.bought : false
     };
   });
+}
+
+// Reads the daily target settings; missing or damaged data gives empty targets and the default meal split.
+export function loadTargetSettings() {
+  try {
+    return normalizeTargetSettings(JSON.parse(localStorage.getItem(TARGETS_STORAGE_KEY)));
+  } catch (error) {
+    return normalizeTargetSettings(null);
+  }
 }

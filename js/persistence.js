@@ -4,7 +4,8 @@ import {
   BARCODE_CACHE_NOT_FOUND_TTL_MS,
   RECIPE_STORAGE_KEY,
   STOCK_STORAGE_KEY,
-  STORAGE_KEY
+  STORAGE_KEY,
+  TARGETS_STORAGE_KEY
 } from "./constants.js";
 import { state } from "./state.js";
 import { saveBarcodeCache } from "./storage.js";
@@ -57,4 +58,13 @@ export function saveStockItems() {
 
 export function saveItems() {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(state.items));
+}
+
+// Saves the daily target settings; storage can fail (full or private browsing), which only loses this change.
+export function saveTargetSettings() {
+  try {
+    localStorage.setItem(TARGETS_STORAGE_KEY, JSON.stringify(state.targetSettings));
+  } catch (error) {
+    // Nothing else to do: the settings still apply until the page reloads.
+  }
 }
