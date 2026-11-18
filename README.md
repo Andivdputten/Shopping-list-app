@@ -6,6 +6,8 @@ and get AI recipe suggestions from your own Anthropic API key.
 
 The app has **no build step**: GitHub Pages serves the files in this repository as they are.
 
+Planned work and its order are in [ROADMAP.md](ROADMAP.md).
+
 ## Structure
 
 | Path                                                                                                         | What it holds                                                                                                                      |
