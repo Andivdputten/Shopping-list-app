@@ -1,6 +1,7 @@
-// Bump this version string any time app.js/index.html/style.css change,
-// so returning users get the new files instead of a stale cached copy.
-const CACHE_VERSION = "v18";
+// Bump this version on every release. It is required whenever a cache-first file
+// (icons, manifest.json, vendor/) changes, because returning users otherwise keep the old copy;
+// bumping also deletes old caches. Network-first core files (see CORE_FILES) update without it.
+const CACHE_VERSION = "v19";
 const CACHE_NAME = `grocery-scanner-${CACHE_VERSION}`;
 
 // Core app files: these change often during development. They're fetched

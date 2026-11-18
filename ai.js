@@ -21,6 +21,10 @@
   const API_URL = "https://api.anthropic.com/v1/messages";
   const MODEL = "claude-haiku-4-5-20251001";
   const ANTHROPIC_VERSION = "2023-06-01";
+  // How long to wait for the API before giving up, so a weak connection can't leave the button stuck on "Thinking...".
+  // Recipe generation writes a long JSON answer, so it gets more time than the quick connection test.
+  const RECIPE_TIMEOUT_MS = 90 * 1000;
+  const TEST_TIMEOUT_MS = 20 * 1000;
 
   function getApiKey() {
     return localStorage.getItem(API_KEY_STORAGE_KEY) || "";
@@ -43,17 +47,22 @@
     localStorage.removeItem(API_KEY_STORAGE_KEY);
   }
 
-  async function callClaude(messages, maxTokens) {
+  async function callClaude(messages, maxTokens, timeoutMs) {
     const apiKey = getApiKey();
 
     if (apiKey === "") {
       return { ok: false, errorType: "no_key", message: "No API key saved yet." };
     }
 
+    // Aborts the request after timeoutMs; the catch below reports it as a timeout instead of a generic network error.
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), timeoutMs);
+
     let response;
     try {
       response = await fetch(API_URL, {
         method: "POST",
+        signal: controller.signal,
         headers: {
           "content-type": "application/json",
           "x-api-key": apiKey,
@@ -67,6 +76,14 @@
         })
       });
     } catch (error) {
+      clearTimeout(timer);
+      if (error && error.name === "AbortError") {
+        return {
+          ok: false,
+          errorType: "timeout",
+          message: "The AI took too long to respond. Check your connection and try again."
+        };
+      }
       // Network failure, offline, or a CORS-level rejection.
       return {
         ok: false,
@@ -112,10 +129,32 @@
     try {
       data = await response.json();
     } catch (error) {
+      // Covers both an unreadable body and the timeout firing while the body was still downloading.
       return {
         ok: false,
         errorType: "parse_error",
         message: "Got a response but couldn't read it."
+      };
+    } finally {
+      clearTimeout(timer);
+    }
+
+    // The answer was cut off at the token limit, so its JSON would be incomplete.
+    // Saying so explicitly avoids the misleading "wasn't valid JSON" error.
+    if (data.stop_reason === "max_tokens") {
+      return {
+        ok: false,
+        errorType: "truncated",
+        message: "The AI's answer was too long and got cut off. Try again, or add preferences that narrow it down."
+      };
+    }
+
+    // The model declined the request for safety reasons; its text (if any) is not a usable answer.
+    if (data.stop_reason === "refusal") {
+      return {
+        ok: false,
+        errorType: "refusal",
+        message: "The AI declined this request. Try different preferences."
       };
     }
 
@@ -137,7 +176,8 @@
   async function testConnection() {
     const result = await callClaude(
       [{ role: "user", content: "Reply with exactly one word: OK" }],
-      16
+      16,
+      TEST_TIMEOUT_MS
     );
 
     if (!result.ok) {
@@ -312,7 +352,7 @@ Respond with ONLY a JSON object (no markdown code fences, no commentary before o
   "needsExtras": [ /* same recipe shape */ ]
 }`;
 
-    const result = await callClaude([{ role: "user", content: prompt }], 6000);
+    const result = await callClaude([{ role: "user", content: prompt }], 6000, RECIPE_TIMEOUT_MS);
 
     if (!result.ok) {
       return result;
