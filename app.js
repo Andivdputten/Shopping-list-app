@@ -439,6 +439,35 @@ function getRecipeLanguage() {
   return readStoredRecipeLanguage();
 }
 
+// Puts the AI recipe card's fixed texts (heading, hint, input placeholder, button) into the chosen recipe language.
+// Runs at startup and whenever the language changes, so the generator reads in one language throughout.
+function applyRecipeSectionLanguage() {
+  const t = aiText();
+  const title = document.getElementById("aiSectionTitle");
+  const hint = document.getElementById("aiSectionHint");
+
+  if (title) {
+    title.textContent = t.sectionTitle;
+  }
+  if (hint) {
+    hint.textContent = t.sectionHint;
+  }
+  aiPreferencesInput.placeholder = t.preferencesPlaceholder;
+  // Not while a request is running, when the button temporarily shows the "thinking" label.
+  if (!suggestRecipesButton.disabled) {
+    suggestRecipesButton.textContent = t.suggestButton;
+  }
+}
+
+// Texts for the AI recipe section in the chosen recipe language (see recipe-ui-text.js).
+// That file loads before app.js; if it ever fails to load, this throws a clear error instead of showing blank labels.
+function aiText() {
+  if (window.RecipeUiText) {
+    return window.RecipeUiText.forLanguage(getRecipeLanguage());
+  }
+  throw new Error("recipe-ui-text.js did not load");
+}
+
 // Reads the saved language straight from storage; used when the dropdown is first filled,
 // because at that moment its value is still the default first option rather than the saved choice.
 function readStoredRecipeLanguage() {
@@ -467,8 +496,10 @@ function initRecipeLanguageSetting() {
   });
 
   select.value = readStoredRecipeLanguage();
+  applyRecipeSectionLanguage();
 
   select.addEventListener("change", () => {
+    applyRecipeSectionLanguage();
     try {
       localStorage.setItem(RECIPE_LANGUAGE_STORAGE_KEY, select.value);
     } catch (error) {
@@ -736,13 +767,15 @@ function macroPillsHtml(macros) {
   }
   const parts = [];
   if (macros.kcal !== null) parts.push(`${Math.round(macros.kcal)} kcal`);
-  if (macros.protein !== null) parts.push(`${macros.protein}g protein`);
-  if (macros.carbs !== null) parts.push(`${macros.carbs}g carbs`);
-  if (macros.fat !== null) parts.push(`${macros.fat}g fat`);
+  const t = aiText();
+  if (macros.protein !== null) parts.push(`${macros.protein}g ${t.protein}`);
+  if (macros.carbs !== null) parts.push(`${macros.carbs}g ${t.carbs}`);
+  if (macros.fat !== null) parts.push(`${macros.fat}g ${t.fat}`);
   return parts;
 }
 
 function renderAiRecipes(recipes) {
+  const t = aiText();
   aiRecipeResults.innerHTML = "";
   aiRecipeEntries = [];
   aiToolbar = null;
@@ -775,9 +808,7 @@ function renderAiRecipes(recipes) {
       const groupHeading = document.createElement("h4");
       groupHeading.className = "ai-group-heading";
       groupHeading.textContent =
-        group === "ready"
-          ? `Ready to cook (${readyCount})`
-          : `Needs a few extra ingredients (${extrasCount})`;
+        group === "ready" ? t.groupReady(readyCount) : t.groupExtras(extrasCount);
       aiRecipeResults.appendChild(groupHeading);
       lastGroup = group;
     }
@@ -791,7 +822,7 @@ function renderAiRecipes(recipes) {
     const checkbox = document.createElement("input");
     checkbox.type = "checkbox";
     checkbox.className = "ai-select-checkbox";
-    checkbox.setAttribute("aria-label", `Select ${recipe.name}`);
+    checkbox.setAttribute("aria-label", t.selectRecipe(recipe.name));
 
     const heading = document.createElement("h3");
     heading.textContent = recipe.name;
@@ -809,9 +840,7 @@ function renderAiRecipes(recipes) {
 
     const servingsLine = document.createElement("p");
     servingsLine.className = "item-meta";
-    servingsLine.textContent = `Serves ${recipe.servings}${
-      missingIngredients.length > 0 ? ` — needs ${missingIngredients.length} extra ingredient${missingIngredients.length === 1 ? "" : "s"}` : " — you have everything"
-    }`;
+    servingsLine.textContent = t.serves(recipe.servings, missingIngredients.length);
     card.appendChild(servingsLine);
 
     const pills = macroPillsHtml(macroResult.perServing);
@@ -829,9 +858,7 @@ function renderAiRecipes(recipes) {
       const sourceLine = document.createElement("p");
       sourceLine.className = "ai-macro-source";
       sourceLine.textContent =
-        macroResult.source === "calculated"
-          ? "Per serving — calculated from your saved nutrition data."
-          : "Per serving — estimated by AI (add nutrition data to matching items for precise numbers).";
+        macroResult.source === "calculated" ? t.sourceCalculated : t.sourceEstimated;
       card.appendChild(sourceLine);
     }
 
@@ -866,7 +893,7 @@ function renderAiRecipes(recipes) {
 
     const saveButton = document.createElement("button");
     saveButton.className = "secondary-button";
-    saveButton.textContent = "Save recipe";
+    saveButton.textContent = t.saveRecipe;
     actions.appendChild(saveButton);
 
     const entry = { recipe, matchedIngredients, checkbox, saveButton };
@@ -878,15 +905,19 @@ function renderAiRecipes(recipes) {
     checkbox.addEventListener("change", updateAiSelectionUi);
 
     if (isRecipeAlreadySaved(recipe.name)) {
-      markAiEntrySaved(entry, "Already saved");
+      markAiEntrySaved(entry, t.alreadySaved);
     }
 
     if (missingIngredients.length > 0) {
       const addMissingButton = document.createElement("button");
       addMissingButton.className = "secondary-button";
-      addMissingButton.textContent = "Add missing to list";
+      addMissingButton.textContent = t.addMissing;
       addMissingButton.addEventListener("click", () => {
-        addMissingIngredientsToShoppingList(missingIngredients, recipe.name);
+        const addedCount = addMissingIngredientsToShoppingList(missingIngredients, recipe.name);
+        // Visible confirmation on the button itself, since the status line at the top is usually scrolled out of view.
+        // Disabled afterwards so a second tap can't look like it did nothing.
+        addMissingButton.textContent = addedCount > 0 ? t.addedToList : t.alreadyOnList;
+        addMissingButton.disabled = true;
       });
       actions.appendChild(addMissingButton);
     }
@@ -921,15 +952,16 @@ function buildAiToolbar() {
   selectAllCheckbox.type = "checkbox";
   selectAllCheckbox.className = "ai-select-checkbox";
   selectAllLabel.appendChild(selectAllCheckbox);
-  selectAllLabel.appendChild(document.createTextNode(" Select all"));
+  const t = aiText();
+  selectAllLabel.appendChild(document.createTextNode(` ${t.selectAll}`));
 
   const saveSelectedButton = document.createElement("button");
   saveSelectedButton.className = "primary-button ai-toolbar-button";
-  saveSelectedButton.textContent = "Save selected";
+  saveSelectedButton.textContent = t.saveSelected(0);
 
   const saveAllButton = document.createElement("button");
   saveAllButton.className = "secondary-button ai-toolbar-button";
-  saveAllButton.textContent = "Save all";
+  saveAllButton.textContent = t.saveAll(0);
 
   selectAllCheckbox.addEventListener("change", () => {
     aiRecipeEntries.forEach((entry) => {
@@ -964,12 +996,11 @@ function updateAiSelectionUi() {
   const selectable = aiRecipeEntries.filter((entry) => !entry.checkbox.disabled);
   const selectedCount = selectable.filter((entry) => entry.checkbox.checked).length;
 
-  aiToolbar.saveSelectedButton.textContent =
-    selectedCount > 0 ? `Save selected (${selectedCount})` : "Save selected";
+  const t = aiText();
+  aiToolbar.saveSelectedButton.textContent = t.saveSelected(selectedCount);
   aiToolbar.saveSelectedButton.disabled = selectedCount === 0;
 
-  aiToolbar.saveAllButton.textContent =
-    selectable.length > 0 ? `Save all (${selectable.length})` : "Save all";
+  aiToolbar.saveAllButton.textContent = t.saveAll(selectable.length);
   aiToolbar.saveAllButton.disabled = selectable.length === 0;
 
   aiToolbar.selectAllCheckbox.disabled = selectable.length === 0;
@@ -1000,19 +1031,18 @@ function buildSavedRecipeData(recipe, matchedIngredients) {
 // button, "Save selected" and "Save all"). Recipes whose name is already
 // saved are skipped rather than duplicated.
 function saveAiRecipes(entries) {
+  const t = aiText();
   // Entries already marked as saved (button disabled) are ignored quietly.
   const pending = entries.filter((entry) => !entry.saveButton.disabled);
 
   if (entries.length === 0) {
-    aiSuggestStatus.textContent = "Select at least one recipe first.";
+    aiSuggestStatus.textContent = t.selectFirst;
     return;
   }
 
   if (pending.length === 0) {
     aiSuggestStatus.textContent =
-      entries.length === 1
-        ? `"${entries[0].recipe.name}" is already saved.`
-        : "Those recipes are already saved.";
+      entries.length === 1 ? t.oneAlreadySaved(entries[0].recipe.name) : t.thoseAlreadySaved;
     return;
   }
 
@@ -1024,12 +1054,12 @@ function saveAiRecipes(entries) {
     // Name already exists (e.g. saved from the manual builder meanwhile).
     if (isRecipeAlreadySaved(entry.recipe.name)) {
       duplicateCount++;
-      markAiEntrySaved(entry, "Already saved");
+      markAiEntrySaved(entry, t.alreadySaved);
       return;
     }
 
     savedRecipes.push(buildSavedRecipeData(entry.recipe, entry.matchedIngredients));
-    markAiEntrySaved(entry, "Saved ✓");
+    markAiEntrySaved(entry, t.saved);
     savedCount++;
     lastSavedName = entry.recipe.name;
   });
@@ -1039,21 +1069,13 @@ function saveAiRecipes(entries) {
     renderSavedRecipes();
   }
 
-  const plural = (n) => (n === 1 ? "recipe" : "recipes");
-
   if (savedCount === 0) {
     aiSuggestStatus.textContent =
-      pending.length === 1
-        ? `A saved recipe named "${pending[0].recipe.name}" already exists.`
-        : "Those recipes are already saved.";
+      pending.length === 1 ? t.nameExists(pending[0].recipe.name) : t.thoseAlreadySaved;
   } else if (savedCount === 1 && duplicateCount === 0) {
-    aiSuggestStatus.textContent = `Saved "${lastSavedName}" to your recipes.`;
+    aiSuggestStatus.textContent = t.savedOne(lastSavedName);
   } else {
-    aiSuggestStatus.textContent =
-      `Saved ${savedCount} ${plural(savedCount)}` +
-      (duplicateCount > 0
-        ? ` (${duplicateCount} already existed, skipped).`
-        : ".");
+    aiSuggestStatus.textContent = t.savedMany(savedCount, duplicateCount);
   }
 
   updateAiSelectionUi();
@@ -1061,7 +1083,9 @@ function saveAiRecipes(entries) {
 
 // Adds a recipe's missing ingredients to the shopping list in the amount you'd buy ("1" onion rather than 150 g).
 // The kitchen measure and gram weight go into the item's note, so the recipe amount is still visible while shopping.
+// Returns how many ingredients were added, so the button can show the right confirmation.
 function addMissingIngredientsToShoppingList(missingIngredients, recipeName) {
+  const t = aiText();
   let addedCount = 0;
 
   missingIngredients.forEach((ing) => {
@@ -1091,7 +1115,7 @@ function addMissingIngredientsToShoppingList(missingIngredients, recipeName) {
     const amountNote = display !== "" ? formatIngredientAmountText(grams, display) : "";
     const noteParts = [];
     if (recipeName) {
-      noteParts.push(`For ${recipeName}`);
+      noteParts.push(t.forRecipe(recipeName));
     }
     if (amountNote !== "" && unit !== "pcs") {
       noteParts.push(amountNote);
@@ -1115,23 +1139,25 @@ function addMissingIngredientsToShoppingList(missingIngredients, recipeName) {
 
   saveItems();
   renderList();
-  aiSuggestStatus.textContent =
-    addedCount > 0
-      ? `Added ${addedCount} missing ingredient${addedCount === 1 ? "" : "s"} to your shopping list.`
-      : "Those ingredients are already on your shopping list.";
+  const message = addedCount > 0 ? t.addedCount(addedCount) : t.allOnList;
+  aiSuggestStatus.textContent = message;
+  // Short pop-up at the bottom of the screen, because the status line above may be out of view.
+  showToast(message);
+  return addedCount;
 }
 
 async function handleSuggestRecipesClick() {
   if (!window.RecipeAI || !window.RecipeAI.hasApiKey()) {
-    aiSuggestStatus.textContent = "Add an API key in Settings first.";
+    aiSuggestStatus.textContent = aiText().needKey;
     switchTab("settings");
     return;
   }
 
   suggestRecipesButton.disabled = true;
   const previousLabel = suggestRecipesButton.textContent;
-  suggestRecipesButton.textContent = "Thinking...";
-  aiSuggestStatus.textContent = "Asking the AI for recipe ideas based on your stock...";
+  const t = aiText();
+  suggestRecipesButton.textContent = t.thinking;
+  aiSuggestStatus.textContent = t.asking;
   aiRecipeResults.innerHTML = "";
 
   const result = await window.RecipeAI.generateRecipes(
@@ -1154,10 +1180,10 @@ async function handleSuggestRecipesClick() {
 
   const counts = renderAiRecipes(result.recipes);
   const total = result.recipes.length;
-  let message = `Got ${total} recipe idea${total === 1 ? "" : "s"}: ${counts.readyCount} ready to cook, ${counts.extrasCount} needing extras.`;
+  let message = t.gotRecipes(total, counts.readyCount, counts.extrasCount);
 
   if (counts.extrasCount === 0) {
-    message += " None needed extra ingredients this time. Tap the button again for more variety.";
+    message += t.noneExtras;
   }
 
   aiSuggestStatus.textContent = message;

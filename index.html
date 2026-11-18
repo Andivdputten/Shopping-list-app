@@ -268,8 +268,9 @@
     <!-- ================= RECIPES TAB ================= -->
     <section class="tab-panel" id="panel-recipes" data-panel="recipes">
       <section class="card">
-        <h2>AI recipe suggestions</h2>
-        <p class="hint-text">
+        <!-- Texts in this card are replaced by app.js with the chosen recipe language; the English here is the default. -->
+        <h2 id="aiSectionTitle">AI recipe suggestions</h2>
+        <p id="aiSectionHint" class="hint-text">
           Get recipe ideas based on what's currently in your pantry stock.
         </p>
 
@@ -556,6 +557,8 @@
   <!-- Scanner library is self-hosted so no third-party script runs on the page with access to the stored API key. -->
   <script src="vendor/html5-qrcode/html5-qrcode.min.js"></script>
   <script src="ai.js"></script>
+  <!-- Translations for the AI recipe section; loaded before app.js, which uses them. -->
+  <script src="recipe-ui-text.js"></script>
   <script src="app.js"></script>
   <script src="sw-register.js"></script>
 </body>
