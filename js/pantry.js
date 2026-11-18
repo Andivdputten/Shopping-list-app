@@ -1,5 +1,5 @@
 // The pantry stock list: rendering, quantities, returning items and clearing stock.
-import { quantityInput, stockEmptyMessage, stockList } from "./dom.js";
+import { stockEmptyMessage, stockList } from "./dom.js";
 import { formatNutritionSummary, formatNutritionTotalSummary } from "./format.js";
 import { createShoppingItem, getCategoryLabel, normalizeIngredientName } from "./items.js";
 import { getQuantityStep } from "./nutrition.js";

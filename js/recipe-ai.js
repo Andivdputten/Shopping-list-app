@@ -1,5 +1,5 @@
 // ============================================================================
-import { stockList } from "./dom.js";
+
 // RecipeAI service module
 // ----------------------------------------------------------------------------
 // This file is the ONLY place that knows how recipe suggestions actually get
