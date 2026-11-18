@@ -3403,7 +3403,7 @@
     ],
     "recipeIngredientsList": "Volkoren pasta250 gFor 250g: 875 kcal · P 32.5g · C 160g · F 6.3gRemoveTomatensaus200 gFor 200g: 80 kcal · P 3g · C 14g · F 1gRemove",
     "recipeTotals": "Recipe total: 955 kcal · P 35.5g · C 174g · F 7.3g",
-    "savedRecipesList": "Pasta rood2 ingredient(s) · 2 bord(s)Total: 955 kcal · P 35.5g · C 174g · F 7.3gTotal weight: 450gPer 100g: 212.2 kcal · P 7.9g · C 38.7g · F 1.6gPer bord: 477.5 kcal · P 17.8g · C 87g · F 3.6gViewLoadDelete",
+    "savedRecipesList": "Pasta rood2 ingredient(s) · 2 bord(s)Total: 955 kcal · P 35.5g · C 174g · F 7.3gTotal weight: 450gPer 100g: 212.2 kcal · P 7.9g · C 38.7g · F 1.6gPer bord: 477.5 kcal · P 17.8g · C 87g · F 3.6gCook thisViewLoadDelete",
     "aiSection": [
       "AI recipe suggestions",
       "Get recipe ideas based on what's currently in your pantry stock.",
@@ -3521,6 +3521,7 @@
               "name": "Volkoren pasta",
               "grams": 250,
               "displayAmount": null,
+              "stockItem": "Volkoren pasta",
               "nutrition": {
                 "kcal100g": 350,
                 "protein100g": 13,
@@ -3532,6 +3533,7 @@
               "name": "Tomatensaus",
               "grams": 200,
               "displayAmount": null,
+              "stockItem": null,
               "nutrition": {
                 "kcal100g": 40,
                 "protein100g": 1.5,
@@ -3615,7 +3617,7 @@
     ],
     "recipeIngredientsList": "Volkoren pasta250 gFor 250g: 875 kcal · P 32.5g · C 160g · F 6.3gRemoveTomatensaus200 gFor 200g: 80 kcal · P 3g · C 14g · F 1gRemove",
     "recipeTotals": "Recipe total: 955 kcal · P 35.5g · C 174g · F 7.3g",
-    "savedRecipesList": "Pasta rood2 ingredient(s) · 2 bord(s)Total: 955 kcal · P 35.5g · C 174g · F 7.3gTotal weight: 450gPer 100g: 212.2 kcal · P 7.9g · C 38.7g · F 1.6gPer bord: 477.5 kcal · P 17.8g · C 87g · F 3.6gViewLoadDelete",
+    "savedRecipesList": "Pasta rood2 ingredient(s) · 2 bord(s)Total: 955 kcal · P 35.5g · C 174g · F 7.3gTotal weight: 450gPer 100g: 212.2 kcal · P 7.9g · C 38.7g · F 1.6gPer bord: 477.5 kcal · P 17.8g · C 87g · F 3.6gCook thisViewLoadDelete",
     "aiSection": [
       "AI recipe suggestions",
       "Get recipe ideas based on what's currently in your pantry stock.",
@@ -3733,6 +3735,7 @@
               "name": "Volkoren pasta",
               "grams": 250,
               "displayAmount": null,
+              "stockItem": "Volkoren pasta",
               "nutrition": {
                 "kcal100g": 350,
                 "protein100g": 13,
@@ -3744,6 +3747,7 @@
               "name": "Tomatensaus",
               "grams": 200,
               "displayAmount": null,
+              "stockItem": null,
               "nutrition": {
                 "kcal100g": 40,
                 "protein100g": 1.5,
@@ -3827,7 +3831,7 @@
     ],
     "recipeIngredientsList": "Volkoren pasta250 gFor 250g: 875 kcal · P 32.5g · C 160g · F 6.3gRemoveTomatensaus200 gFor 200g: 80 kcal · P 3g · C 14g · F 1gRemove",
     "recipeTotals": "Recipe total: 955 kcal · P 35.5g · C 174g · F 7.3g",
-    "savedRecipesList": "Pasta rood2 ingredient(s) · 2 bord(s)Total: 955 kcal · P 35.5g · C 174g · F 7.3gTotal weight: 450gPer 100g: 212.2 kcal · P 7.9g · C 38.7g · F 1.6gPer bord: 477.5 kcal · P 17.8g · C 87g · F 3.6gViewLoadDeletePasta rood Copy2 ingredient(s) · 2 bord(s)Total: 955 kcal · P 35.5g · C 174g · F 7.3gTotal weight: 450gPer 100g: 212.2 kcal · P 7.9g · C 38.7g · F 1.6gPer bord: 477.5 kcal · P 17.8g · C 87g · F 3.6gViewLoadDelete",
+    "savedRecipesList": "Pasta rood2 ingredient(s) · 2 bord(s)Total: 955 kcal · P 35.5g · C 174g · F 7.3gTotal weight: 450gPer 100g: 212.2 kcal · P 7.9g · C 38.7g · F 1.6gPer bord: 477.5 kcal · P 17.8g · C 87g · F 3.6gCook thisViewLoadDeletePasta rood Copy2 ingredient(s) · 2 bord(s)Total: 955 kcal · P 35.5g · C 174g · F 7.3gTotal weight: 450gPer 100g: 212.2 kcal · P 7.9g · C 38.7g · F 1.6gPer bord: 477.5 kcal · P 17.8g · C 87g · F 3.6gCook thisViewLoadDelete",
     "aiSection": [
       "AI recipe suggestions",
       "Get recipe ideas based on what's currently in your pantry stock.",
@@ -3945,6 +3949,7 @@
               "name": "Volkoren pasta",
               "grams": 250,
               "displayAmount": null,
+              "stockItem": "Volkoren pasta",
               "nutrition": {
                 "kcal100g": 350,
                 "protein100g": 13,
@@ -3956,6 +3961,7 @@
               "name": "Tomatensaus",
               "grams": 200,
               "displayAmount": null,
+              "stockItem": null,
               "nutrition": {
                 "kcal100g": 40,
                 "protein100g": 1.5,
@@ -3979,6 +3985,7 @@
               "name": "Volkoren pasta",
               "grams": 250,
               "displayAmount": null,
+              "stockItem": "Volkoren pasta",
               "nutrition": {
                 "kcal100g": 350,
                 "protein100g": 13,
@@ -3990,6 +3997,7 @@
               "name": "Tomatensaus",
               "grams": 200,
               "displayAmount": null,
+              "stockItem": null,
               "nutrition": {
                 "kcal100g": 40,
                 "protein100g": 1.5,
@@ -4073,7 +4081,7 @@
     ],
     "recipeIngredientsList": "Volkoren pasta250 gFor 250g: 875 kcal · P 32.5g · C 160g · F 6.3gRemoveTomatensaus200 gFor 200g: 80 kcal · P 3g · C 14g · F 1gRemove",
     "recipeTotals": "Recipe total: 955 kcal · P 35.5g · C 174g · F 7.3g",
-    "savedRecipesList": "Pasta rood2 ingredient(s) · 2 bord(s)Total: 955 kcal · P 35.5g · C 174g · F 7.3gTotal weight: 450gPer 100g: 212.2 kcal · P 7.9g · C 38.7g · F 1.6gPer bord: 477.5 kcal · P 17.8g · C 87g · F 3.6gHideLoadDeleteIngredients250 g Volkoren pasta200 g TomatensausCooking instructions1Kook de pasta.2Verwarm de saus.Pasta rood Copy2 ingredient(s) · 2 bord(s)Total: 955 kcal · P 35.5g · C 174g · F 7.3gTotal weight: 450gPer 100g: 212.2 kcal · P 7.9g · C 38.7g · F 1.6gPer bord: 477.5 kcal · P 17.8g · C 87g · F 3.6gViewLoadDelete",
+    "savedRecipesList": "Pasta rood2 ingredient(s) · 2 bord(s)Total: 955 kcal · P 35.5g · C 174g · F 7.3gTotal weight: 450gPer 100g: 212.2 kcal · P 7.9g · C 38.7g · F 1.6gPer bord: 477.5 kcal · P 17.8g · C 87g · F 3.6gCook thisHideLoadDeleteIngredients250 g Volkoren pasta200 g TomatensausCooking instructions1Kook de pasta.2Verwarm de saus.Pasta rood Copy2 ingredient(s) · 2 bord(s)Total: 955 kcal · P 35.5g · C 174g · F 7.3gTotal weight: 450gPer 100g: 212.2 kcal · P 7.9g · C 38.7g · F 1.6gPer bord: 477.5 kcal · P 17.8g · C 87g · F 3.6gCook thisViewLoadDelete",
     "aiSection": [
       "AI recipe suggestions",
       "Get recipe ideas based on what's currently in your pantry stock.",
@@ -4191,6 +4199,7 @@
               "name": "Volkoren pasta",
               "grams": 250,
               "displayAmount": null,
+              "stockItem": "Volkoren pasta",
               "nutrition": {
                 "kcal100g": 350,
                 "protein100g": 13,
@@ -4202,6 +4211,7 @@
               "name": "Tomatensaus",
               "grams": 200,
               "displayAmount": null,
+              "stockItem": null,
               "nutrition": {
                 "kcal100g": 40,
                 "protein100g": 1.5,
@@ -4225,6 +4235,7 @@
               "name": "Volkoren pasta",
               "grams": 250,
               "displayAmount": null,
+              "stockItem": "Volkoren pasta",
               "nutrition": {
                 "kcal100g": 350,
                 "protein100g": 13,
@@ -4236,6 +4247,7 @@
               "name": "Tomatensaus",
               "grams": 200,
               "displayAmount": null,
+              "stockItem": null,
               "nutrition": {
                 "kcal100g": 40,
                 "protein100g": 1.5,
@@ -4319,7 +4331,7 @@
     ],
     "recipeIngredientsList": "Volkoren pasta250 gFor 250g: 875 kcal · P 32.5g · C 160g · F 6.3gRemoveTomatensaus200 gFor 200g: 80 kcal · P 3g · C 14g · F 1gRemove",
     "recipeTotals": "Recipe total: 955 kcal · P 35.5g · C 174g · F 7.3g",
-    "savedRecipesList": "Pasta rood2 ingredient(s) · 3 bord(s)Total: 955 kcal · P 35.5g · C 174g · F 7.3gTotal weight: 450gPer 100g: 212.2 kcal · P 7.9g · C 38.7g · F 1.6gPer bord: 318.3 kcal · P 11.8g · C 58g · F 2.4gHideLoadDeleteIngredients250 g Volkoren pasta200 g TomatensausCooking instructions1Kook de pasta.2Verwarm de saus.Pasta rood Copy2 ingredient(s) · 2 bord(s)Total: 955 kcal · P 35.5g · C 174g · F 7.3gTotal weight: 450gPer 100g: 212.2 kcal · P 7.9g · C 38.7g · F 1.6gPer bord: 477.5 kcal · P 17.8g · C 87g · F 3.6gViewLoadDelete",
+    "savedRecipesList": "Pasta rood2 ingredient(s) · 3 bord(s)Total: 955 kcal · P 35.5g · C 174g · F 7.3gTotal weight: 450gPer 100g: 212.2 kcal · P 7.9g · C 38.7g · F 1.6gPer bord: 318.3 kcal · P 11.8g · C 58g · F 2.4gCook thisHideLoadDeleteIngredients250 g Volkoren pasta200 g TomatensausCooking instructions1Kook de pasta.2Verwarm de saus.Pasta rood Copy2 ingredient(s) · 2 bord(s)Total: 955 kcal · P 35.5g · C 174g · F 7.3gTotal weight: 450gPer 100g: 212.2 kcal · P 7.9g · C 38.7g · F 1.6gPer bord: 477.5 kcal · P 17.8g · C 87g · F 3.6gCook thisViewLoadDelete",
     "aiSection": [
       "AI recipe suggestions",
       "Get recipe ideas based on what's currently in your pantry stock.",
@@ -4437,6 +4449,7 @@
               "name": "Volkoren pasta",
               "grams": 250,
               "displayAmount": null,
+              "stockItem": "Volkoren pasta",
               "nutrition": {
                 "kcal100g": 350,
                 "protein100g": 13,
@@ -4448,6 +4461,7 @@
               "name": "Tomatensaus",
               "grams": 200,
               "displayAmount": null,
+              "stockItem": null,
               "nutrition": {
                 "kcal100g": 40,
                 "protein100g": 1.5,
@@ -4471,6 +4485,7 @@
               "name": "Volkoren pasta",
               "grams": 250,
               "displayAmount": null,
+              "stockItem": "Volkoren pasta",
               "nutrition": {
                 "kcal100g": 350,
                 "protein100g": 13,
@@ -4482,6 +4497,7 @@
               "name": "Tomatensaus",
               "grams": 200,
               "displayAmount": null,
+              "stockItem": null,
               "nutrition": {
                 "kcal100g": 40,
                 "protein100g": 1.5,
@@ -4565,7 +4581,7 @@
     ],
     "recipeIngredientsList": "Volkoren pasta250 gFor 250g: 875 kcal · P 32.5g · C 160g · F 6.3gRemoveTomatensaus200 gFor 200g: 80 kcal · P 3g · C 14g · F 1gRemove",
     "recipeTotals": "Recipe total: 955 kcal · P 35.5g · C 174g · F 7.3g",
-    "savedRecipesList": "Pasta rood2 ingredient(s) · 3 bord(s)Total: 955 kcal · P 35.5g · C 174g · F 7.3gTotal weight: 450gPer 100g: 212.2 kcal · P 7.9g · C 38.7g · F 1.6gPer bord: 318.3 kcal · P 11.8g · C 58g · F 2.4gHideLoadDeleteIngredients250 g Volkoren pasta200 g TomatensausCooking instructions1Kook de pasta.2Verwarm de saus.",
+    "savedRecipesList": "Pasta rood2 ingredient(s) · 3 bord(s)Total: 955 kcal · P 35.5g · C 174g · F 7.3gTotal weight: 450gPer 100g: 212.2 kcal · P 7.9g · C 38.7g · F 1.6gPer bord: 318.3 kcal · P 11.8g · C 58g · F 2.4gCook thisHideLoadDeleteIngredients250 g Volkoren pasta200 g TomatensausCooking instructions1Kook de pasta.2Verwarm de saus.",
     "aiSection": [
       "AI recipe suggestions",
       "Get recipe ideas based on what's currently in your pantry stock.",
@@ -4683,6 +4699,7 @@
               "name": "Volkoren pasta",
               "grams": 250,
               "displayAmount": null,
+              "stockItem": "Volkoren pasta",
               "nutrition": {
                 "kcal100g": 350,
                 "protein100g": 13,
@@ -4694,6 +4711,7 @@
               "name": "Tomatensaus",
               "grams": 200,
               "displayAmount": null,
+              "stockItem": null,
               "nutrition": {
                 "kcal100g": 40,
                 "protein100g": 1.5,
@@ -4777,7 +4795,7 @@
     ],
     "recipeIngredientsList": "Tomatensaus200 gFor 200g: 80 kcal · P 3g · C 14g · F 1gRemove",
     "recipeTotals": "Recipe total: 80 kcal · P 3g · C 14g · F 1g",
-    "savedRecipesList": "Pasta rood2 ingredient(s) · 3 bord(s)Total: 955 kcal · P 35.5g · C 174g · F 7.3gTotal weight: 450gPer 100g: 212.2 kcal · P 7.9g · C 38.7g · F 1.6gPer bord: 318.3 kcal · P 11.8g · C 58g · F 2.4gHideLoadDeleteIngredients250 g Volkoren pasta200 g TomatensausCooking instructions1Kook de pasta.2Verwarm de saus.",
+    "savedRecipesList": "Pasta rood2 ingredient(s) · 3 bord(s)Total: 955 kcal · P 35.5g · C 174g · F 7.3gTotal weight: 450gPer 100g: 212.2 kcal · P 7.9g · C 38.7g · F 1.6gPer bord: 318.3 kcal · P 11.8g · C 58g · F 2.4gCook thisHideLoadDeleteIngredients250 g Volkoren pasta200 g TomatensausCooking instructions1Kook de pasta.2Verwarm de saus.",
     "aiSection": [
       "AI recipe suggestions",
       "Get recipe ideas based on what's currently in your pantry stock.",
@@ -4895,6 +4913,7 @@
               "name": "Volkoren pasta",
               "grams": 250,
               "displayAmount": null,
+              "stockItem": "Volkoren pasta",
               "nutrition": {
                 "kcal100g": 350,
                 "protein100g": 13,
@@ -4906,6 +4925,7 @@
               "name": "Tomatensaus",
               "grams": 200,
               "displayAmount": null,
+              "stockItem": null,
               "nutrition": {
                 "kcal100g": 40,
                 "protein100g": 1.5,
@@ -4989,7 +5009,7 @@
     ],
     "recipeIngredientsList": "",
     "recipeTotals": "",
-    "savedRecipesList": "Pasta rood2 ingredient(s) · 3 bord(s)Total: 955 kcal · P 35.5g · C 174g · F 7.3gTotal weight: 450gPer 100g: 212.2 kcal · P 7.9g · C 38.7g · F 1.6gPer bord: 318.3 kcal · P 11.8g · C 58g · F 2.4gHideLoadDeleteIngredients250 g Volkoren pasta200 g TomatensausCooking instructions1Kook de pasta.2Verwarm de saus.",
+    "savedRecipesList": "Pasta rood2 ingredient(s) · 3 bord(s)Total: 955 kcal · P 35.5g · C 174g · F 7.3gTotal weight: 450gPer 100g: 212.2 kcal · P 7.9g · C 38.7g · F 1.6gPer bord: 318.3 kcal · P 11.8g · C 58g · F 2.4gCook thisHideLoadDeleteIngredients250 g Volkoren pasta200 g TomatensausCooking instructions1Kook de pasta.2Verwarm de saus.",
     "aiSection": [
       "AI recipe suggestions",
       "Get recipe ideas based on what's currently in your pantry stock.",
@@ -5107,6 +5127,7 @@
               "name": "Volkoren pasta",
               "grams": 250,
               "displayAmount": null,
+              "stockItem": "Volkoren pasta",
               "nutrition": {
                 "kcal100g": 350,
                 "protein100g": 13,
@@ -5118,6 +5139,7 @@
               "name": "Tomatensaus",
               "grams": 200,
               "displayAmount": null,
+              "stockItem": null,
               "nutrition": {
                 "kcal100g": 40,
                 "protein100g": 1.5,
@@ -5201,7 +5223,7 @@
     ],
     "recipeIngredientsList": "",
     "recipeTotals": "",
-    "savedRecipesList": "Pasta rood2 ingredient(s) · 3 bord(s)Total: 955 kcal · P 35.5g · C 174g · F 7.3gTotal weight: 450gPer 100g: 212.2 kcal · P 7.9g · C 38.7g · F 1.6gPer bord: 318.3 kcal · P 11.8g · C 58g · F 2.4gHideLoadDeleteIngredients250 g Volkoren pasta200 g TomatensausCooking instructions1Kook de pasta.2Verwarm de saus.",
+    "savedRecipesList": "Pasta rood2 ingredient(s) · 3 bord(s)Total: 955 kcal · P 35.5g · C 174g · F 7.3gTotal weight: 450gPer 100g: 212.2 kcal · P 7.9g · C 38.7g · F 1.6gPer bord: 318.3 kcal · P 11.8g · C 58g · F 2.4gCook thisHideLoadDeleteIngredients250 g Volkoren pasta200 g TomatensausCooking instructions1Kook de pasta.2Verwarm de saus.",
     "aiSection": [
       "AI recipe suggestions",
       "Get recipe ideas based on what's currently in your pantry stock.",
@@ -5319,6 +5341,7 @@
               "name": "Volkoren pasta",
               "grams": 250,
               "displayAmount": null,
+              "stockItem": "Volkoren pasta",
               "nutrition": {
                 "kcal100g": 350,
                 "protein100g": 13,
@@ -5330,6 +5353,7 @@
               "name": "Tomatensaus",
               "grams": 200,
               "displayAmount": null,
+              "stockItem": null,
               "nutrition": {
                 "kcal100g": 40,
                 "protein100g": 1.5,
@@ -5413,7 +5437,7 @@
     ],
     "recipeIngredientsList": "",
     "recipeTotals": "",
-    "savedRecipesList": "Pasta rood2 ingredient(s) · 3 bord(s)Total: 955 kcal · P 35.5g · C 174g · F 7.3gTotal weight: 450gPer 100g: 212.2 kcal · P 7.9g · C 38.7g · F 1.6gPer bord: 318.3 kcal · P 11.8g · C 58g · F 2.4gHideLoadDeleteIngredients250 g Volkoren pasta200 g TomatensausCooking instructions1Kook de pasta.2Verwarm de saus.",
+    "savedRecipesList": "Pasta rood2 ingredient(s) · 3 bord(s)Total: 955 kcal · P 35.5g · C 174g · F 7.3gTotal weight: 450gPer 100g: 212.2 kcal · P 7.9g · C 38.7g · F 1.6gPer bord: 318.3 kcal · P 11.8g · C 58g · F 2.4gCook thisHideLoadDeleteIngredients250 g Volkoren pasta200 g TomatensausCooking instructions1Kook de pasta.2Verwarm de saus.",
     "aiSection": [
       "AI recipe suggestions",
       "Get recipe ideas based on what's currently in your pantry stock.",
@@ -5532,6 +5556,7 @@
               "name": "Volkoren pasta",
               "grams": 250,
               "displayAmount": null,
+              "stockItem": "Volkoren pasta",
               "nutrition": {
                 "kcal100g": 350,
                 "protein100g": 13,
@@ -5543,6 +5568,7 @@
               "name": "Tomatensaus",
               "grams": 200,
               "displayAmount": null,
+              "stockItem": null,
               "nutrition": {
                 "kcal100g": 40,
                 "protein100g": 1.5,
@@ -5626,14 +5652,14 @@
     ],
     "recipeIngredientsList": "",
     "recipeTotals": "",
-    "savedRecipesList": "Pasta rood2 ingredient(s) · 3 bord(s)Total: 955 kcal · P 35.5g · C 174g · F 7.3gTotal weight: 450gPer 100g: 212.2 kcal · P 7.9g · C 38.7g · F 1.6gPer bord: 318.3 kcal · P 11.8g · C 58g · F 2.4gHideLoadDeleteIngredients250 g Volkoren pasta200 g TomatensausCooking instructions1Kook de pasta.2Verwarm de saus.",
+    "savedRecipesList": "Pasta rood2 ingredient(s) · 3 bord(s)Total: 955 kcal · P 35.5g · C 174g · F 7.3gTotal weight: 450gPer 100g: 212.2 kcal · P 7.9g · C 38.7g · F 1.6gPer bord: 318.3 kcal · P 11.8g · C 58g · F 2.4gCook thisHideLoadDeleteIngredients250 g Volkoren pasta200 g TomatensausCooking instructions1Kook de pasta.2Verwarm de saus.",
     "aiSection": [
       "AI recipe suggestions",
       "Get recipe ideas based on what's currently in your pantry stock.",
       "Suggest recipes from my stock"
     ],
     "aiSuggestStatus": "Got 2 recipe ideas: 1 ready to cook, 1 needing extras.",
-    "aiRecipeResults": "Select allSave selectedSave all (2)Ready to cook (1)Pasta met melkRomige pasta.Serves 2 — you have everything373 kcal14.8g protein66.4g carbs3.3g fatPer serving — calculated from your saved nutrition data.✓200 g Pasta✓1 dl Melk (100 g)Kook de pasta 10 minuten.Roer de melk erdoor.Save recipeNeeds a few extra ingredients (1)Pasta met uiPasta met gebakken ui.Serves 2 — needs 2 extra ingredients450 kcal14g protein72g carbs12g fatPer serving — estimated by AI (add nutrition data to matching items for precise numbers).✓200 g Pasta+1 Ui (150 g)+2 el Olijfolie (28 g)Bak de ui.Meng met de pasta.Save recipeAdd missing to list",
+    "aiRecipeResults": "Select allSave selectedSave all (2)Ready to cook (1)Pasta met melkRomige pasta.Serves 2 — you have everything373 kcal14.8g protein66.4g carbs3.3g fatPer serving — calculated from your saved nutrition data.✓200 g Pasta✓1 dl Melk (100 g)Kook de pasta 10 minuten.Roer de melk erdoor.Save recipeCook thisNeeds a few extra ingredients (1)Pasta met uiPasta met gebakken ui.Serves 2 — needs 2 extra ingredients450 kcal14g protein72g carbs12g fatPer serving — estimated by AI (add nutrition data to matching items for precise numbers).✓200 g Pasta+1 Ui (150 g)+2 el Olijfolie (28 g)Bak de ui.Meng met de pasta.Save recipeCook thisAdd missing to list",
     "apiKeyStatus": "Connected successfully.",
     "backupStatus": "",
     "stats": [
@@ -5745,6 +5771,7 @@
               "name": "Volkoren pasta",
               "grams": 250,
               "displayAmount": null,
+              "stockItem": "Volkoren pasta",
               "nutrition": {
                 "kcal100g": 350,
                 "protein100g": 13,
@@ -5756,6 +5783,7 @@
               "name": "Tomatensaus",
               "grams": 200,
               "displayAmount": null,
+              "stockItem": null,
               "nutrition": {
                 "kcal100g": 40,
                 "protein100g": 1.5,
@@ -5839,14 +5867,14 @@
     ],
     "recipeIngredientsList": "",
     "recipeTotals": "",
-    "savedRecipesList": "Pasta rood2 ingredient(s) · 3 bord(s)Total: 955 kcal · P 35.5g · C 174g · F 7.3gTotal weight: 450gPer 100g: 212.2 kcal · P 7.9g · C 38.7g · F 1.6gPer bord: 318.3 kcal · P 11.8g · C 58g · F 2.4gHideLoadDeleteIngredients250 g Volkoren pasta200 g TomatensausCooking instructions1Kook de pasta.2Verwarm de saus.Pasta met melk2 ingredient(s) · 2 serving(s)Total: 746 kcal · P 29.5g · C 132.8g · F 6.5gTotal weight: 300gPer 100g: 248.7 kcal · P 9.8g · C 44.3g · F 2.2gPer serving: 373 kcal · P 14.8g · C 66.4g · F 3.3gViewLoadDelete",
+    "savedRecipesList": "Pasta rood2 ingredient(s) · 3 bord(s)Total: 955 kcal · P 35.5g · C 174g · F 7.3gTotal weight: 450gPer 100g: 212.2 kcal · P 7.9g · C 38.7g · F 1.6gPer bord: 318.3 kcal · P 11.8g · C 58g · F 2.4gCook thisHideLoadDeleteIngredients250 g Volkoren pasta200 g TomatensausCooking instructions1Kook de pasta.2Verwarm de saus.Pasta met melk2 ingredient(s) · 2 serving(s)Total: 746 kcal · P 29.5g · C 132.8g · F 6.5gTotal weight: 300gPer 100g: 248.7 kcal · P 9.8g · C 44.3g · F 2.2gPer serving: 373 kcal · P 14.8g · C 66.4g · F 3.3gCook thisViewLoadDelete",
     "aiSection": [
       "AI recipe suggestions",
       "Get recipe ideas based on what's currently in your pantry stock.",
       "Suggest recipes from my stock"
     ],
     "aiSuggestStatus": "Saved \"Pasta met melk\" to your recipes.",
-    "aiRecipeResults": "Select allSave selectedSave all (1)Ready to cook (1)Pasta met melkRomige pasta.Serves 2 — you have everything373 kcal14.8g protein66.4g carbs3.3g fatPer serving — calculated from your saved nutrition data.✓200 g Pasta✓1 dl Melk (100 g)Kook de pasta 10 minuten.Roer de melk erdoor.Saved ✓Needs a few extra ingredients (1)Pasta met uiPasta met gebakken ui.Serves 2 — needs 2 extra ingredients450 kcal14g protein72g carbs12g fatPer serving — estimated by AI (add nutrition data to matching items for precise numbers).✓200 g Pasta+1 Ui (150 g)+2 el Olijfolie (28 g)Bak de ui.Meng met de pasta.Save recipeAdd missing to list",
+    "aiRecipeResults": "Select allSave selectedSave all (1)Ready to cook (1)Pasta met melkRomige pasta.Serves 2 — you have everything373 kcal14.8g protein66.4g carbs3.3g fatPer serving — calculated from your saved nutrition data.✓200 g Pasta✓1 dl Melk (100 g)Kook de pasta 10 minuten.Roer de melk erdoor.Saved ✓Cook thisNeeds a few extra ingredients (1)Pasta met uiPasta met gebakken ui.Serves 2 — needs 2 extra ingredients450 kcal14g protein72g carbs12g fatPer serving — estimated by AI (add nutrition data to matching items for precise numbers).✓200 g Pasta+1 Ui (150 g)+2 el Olijfolie (28 g)Bak de ui.Meng met de pasta.Save recipeCook thisAdd missing to list",
     "apiKeyStatus": "Connected successfully.",
     "backupStatus": "",
     "stats": [
@@ -5958,6 +5986,7 @@
               "name": "Volkoren pasta",
               "grams": 250,
               "displayAmount": null,
+              "stockItem": "Volkoren pasta",
               "nutrition": {
                 "kcal100g": 350,
                 "protein100g": 13,
@@ -5969,6 +5998,7 @@
               "name": "Tomatensaus",
               "grams": 200,
               "displayAmount": null,
+              "stockItem": null,
               "nutrition": {
                 "kcal100g": 40,
                 "protein100g": 1.5,
@@ -5992,6 +6022,7 @@
               "name": "Pasta",
               "grams": 200,
               "displayAmount": null,
+              "stockItem": "Volkoren pasta",
               "nutrition": {
                 "kcal100g": 350,
                 "protein100g": 13,
@@ -6003,6 +6034,7 @@
               "name": "Melk",
               "grams": 100,
               "displayAmount": "1 dl",
+              "stockItem": "Halfvolle melk",
               "nutrition": {
                 "kcal100g": 46,
                 "protein100g": 3.5,
@@ -6088,14 +6120,14 @@
     ],
     "recipeIngredientsList": "",
     "recipeTotals": "",
-    "savedRecipesList": "Pasta rood2 ingredient(s) · 3 bord(s)Total: 955 kcal · P 35.5g · C 174g · F 7.3gTotal weight: 450gPer 100g: 212.2 kcal · P 7.9g · C 38.7g · F 1.6gPer bord: 318.3 kcal · P 11.8g · C 58g · F 2.4gHideLoadDeleteIngredients250 g Volkoren pasta200 g TomatensausCooking instructions1Kook de pasta.2Verwarm de saus.Pasta met melk2 ingredient(s) · 2 serving(s)Total: 746 kcal · P 29.5g · C 132.8g · F 6.5gTotal weight: 300gPer 100g: 248.7 kcal · P 9.8g · C 44.3g · F 2.2gPer serving: 373 kcal · P 14.8g · C 66.4g · F 3.3gViewLoadDelete",
+    "savedRecipesList": "Pasta rood2 ingredient(s) · 3 bord(s)Total: 955 kcal · P 35.5g · C 174g · F 7.3gTotal weight: 450gPer 100g: 212.2 kcal · P 7.9g · C 38.7g · F 1.6gPer bord: 318.3 kcal · P 11.8g · C 58g · F 2.4gCook thisHideLoadDeleteIngredients250 g Volkoren pasta200 g TomatensausCooking instructions1Kook de pasta.2Verwarm de saus.Pasta met melk2 ingredient(s) · 2 serving(s)Total: 746 kcal · P 29.5g · C 132.8g · F 6.5gTotal weight: 300gPer 100g: 248.7 kcal · P 9.8g · C 44.3g · F 2.2gPer serving: 373 kcal · P 14.8g · C 66.4g · F 3.3gCook thisViewLoadDelete",
     "aiSection": [
       "AI recipe suggestions",
       "Get recipe ideas based on what's currently in your pantry stock.",
       "Suggest recipes from my stock"
     ],
     "aiSuggestStatus": "Added 2 missing ingredients to your shopping list.",
-    "aiRecipeResults": "Select allSave selectedSave all (1)Ready to cook (1)Pasta met melkRomige pasta.Serves 2 — you have everything373 kcal14.8g protein66.4g carbs3.3g fatPer serving — calculated from your saved nutrition data.✓200 g Pasta✓1 dl Melk (100 g)Kook de pasta 10 minuten.Roer de melk erdoor.Saved ✓Needs a few extra ingredients (1)Pasta met uiPasta met gebakken ui.Serves 2 — needs 2 extra ingredients450 kcal14g protein72g carbs12g fatPer serving — estimated by AI (add nutrition data to matching items for precise numbers).✓200 g Pasta+1 Ui (150 g)+2 el Olijfolie (28 g)Bak de ui.Meng met de pasta.Save recipeAdded to list ✓",
+    "aiRecipeResults": "Select allSave selectedSave all (1)Ready to cook (1)Pasta met melkRomige pasta.Serves 2 — you have everything373 kcal14.8g protein66.4g carbs3.3g fatPer serving — calculated from your saved nutrition data.✓200 g Pasta✓1 dl Melk (100 g)Kook de pasta 10 minuten.Roer de melk erdoor.Saved ✓Cook thisNeeds a few extra ingredients (1)Pasta met uiPasta met gebakken ui.Serves 2 — needs 2 extra ingredients450 kcal14g protein72g carbs12g fatPer serving — estimated by AI (add nutrition data to matching items for precise numbers).✓200 g Pasta+1 Ui (150 g)+2 el Olijfolie (28 g)Bak de ui.Meng met de pasta.Save recipeCook thisAdded to list ✓",
     "apiKeyStatus": "Connected successfully.",
     "backupStatus": "",
     "stats": [
@@ -6239,6 +6271,7 @@
               "name": "Volkoren pasta",
               "grams": 250,
               "displayAmount": null,
+              "stockItem": "Volkoren pasta",
               "nutrition": {
                 "kcal100g": 350,
                 "protein100g": 13,
@@ -6250,6 +6283,7 @@
               "name": "Tomatensaus",
               "grams": 200,
               "displayAmount": null,
+              "stockItem": null,
               "nutrition": {
                 "kcal100g": 40,
                 "protein100g": 1.5,
@@ -6273,6 +6307,7 @@
               "name": "Pasta",
               "grams": 200,
               "displayAmount": null,
+              "stockItem": "Volkoren pasta",
               "nutrition": {
                 "kcal100g": 350,
                 "protein100g": 13,
@@ -6284,6 +6319,7 @@
               "name": "Melk",
               "grams": 100,
               "displayAmount": "1 dl",
+              "stockItem": "Halfvolle melk",
               "nutrition": {
                 "kcal100g": 46,
                 "protein100g": 3.5,
@@ -6369,14 +6405,14 @@
     ],
     "recipeIngredientsList": "",
     "recipeTotals": "",
-    "savedRecipesList": "Pasta rood2 ingredient(s) · 3 bord(s)Total: 955 kcal · P 35.5g · C 174g · F 7.3gTotal weight: 450gPer 100g: 212.2 kcal · P 7.9g · C 38.7g · F 1.6gPer bord: 318.3 kcal · P 11.8g · C 58g · F 2.4gHideLoadDeleteIngredients250 g Volkoren pasta200 g TomatensausCooking instructions1Kook de pasta.2Verwarm de saus.Pasta met melk2 ingredient(s) · 2 serving(s)Total: 746 kcal · P 29.5g · C 132.8g · F 6.5gTotal weight: 300gPer 100g: 248.7 kcal · P 9.8g · C 44.3g · F 2.2gPer serving: 373 kcal · P 14.8g · C 66.4g · F 3.3gViewLoadDelete",
+    "savedRecipesList": "Pasta rood2 ingredient(s) · 3 bord(s)Total: 955 kcal · P 35.5g · C 174g · F 7.3gTotal weight: 450gPer 100g: 212.2 kcal · P 7.9g · C 38.7g · F 1.6gPer bord: 318.3 kcal · P 11.8g · C 58g · F 2.4gCook thisHideLoadDeleteIngredients250 g Volkoren pasta200 g TomatensausCooking instructions1Kook de pasta.2Verwarm de saus.Pasta met melk2 ingredient(s) · 2 serving(s)Total: 746 kcal · P 29.5g · C 132.8g · F 6.5gTotal weight: 300gPer 100g: 248.7 kcal · P 9.8g · C 44.3g · F 2.2gPer serving: 373 kcal · P 14.8g · C 66.4g · F 3.3gCook thisViewLoadDelete",
     "aiSection": [
       "AI-receptsuggesties",
       "Krijg receptideeën op basis van wat er nu in je voorraad staat.",
       "Recepten voorstellen uit mijn voorraad"
     ],
     "aiSuggestStatus": "2 receptideeën: 1 klaar om te koken, 1 met extra ingrediënten.",
-    "aiRecipeResults": "Alles selecterenSelectie opslaanAlles opslaan (1)Klaar om te koken (1)Pasta met melkRomige pasta.Voor 2 personen — je hebt alles in huis373 kcal14.8g eiwit66.4g koolhydraten3.3g vetPer portie — berekend met je opgeslagen voedingswaarden.✓200 g Pasta✓1 dl Melk (100 g)Kook de pasta 10 minuten.Roer de melk erdoor.Al opgeslagenNog een paar ingrediënten nodig (1)Pasta met uiPasta met gebakken ui.Voor 2 personen — nog 2 ingrediënten nodig450 kcal14g eiwit72g koolhydraten12g vetPer portie — geschat door AI (voeg voedingswaarden toe aan je producten voor exacte cijfers).✓200 g Pasta+1 Ui (150 g)+2 el Olijfolie (28 g)Bak de ui.Meng met de pasta.Recept opslaanOntbrekende op lijst zetten",
+    "aiRecipeResults": "Alles selecterenSelectie opslaanAlles opslaan (1)Klaar om te koken (1)Pasta met melkRomige pasta.Voor 2 personen — je hebt alles in huis373 kcal14.8g eiwit66.4g koolhydraten3.3g vetPer portie — berekend met je opgeslagen voedingswaarden.✓200 g Pasta✓1 dl Melk (100 g)Kook de pasta 10 minuten.Roer de melk erdoor.Al opgeslagenDit kokenNog een paar ingrediënten nodig (1)Pasta met uiPasta met gebakken ui.Voor 2 personen — nog 2 ingrediënten nodig450 kcal14g eiwit72g koolhydraten12g vetPer portie — geschat door AI (voeg voedingswaarden toe aan je producten voor exacte cijfers).✓200 g Pasta+1 Ui (150 g)+2 el Olijfolie (28 g)Bak de ui.Meng met de pasta.Recept opslaanDit kokenOntbrekende op lijst zetten",
     "apiKeyStatus": "Connected successfully.",
     "backupStatus": "",
     "stats": [
@@ -6521,6 +6557,7 @@
               "name": "Volkoren pasta",
               "grams": 250,
               "displayAmount": null,
+              "stockItem": "Volkoren pasta",
               "nutrition": {
                 "kcal100g": 350,
                 "protein100g": 13,
@@ -6532,6 +6569,7 @@
               "name": "Tomatensaus",
               "grams": 200,
               "displayAmount": null,
+              "stockItem": null,
               "nutrition": {
                 "kcal100g": 40,
                 "protein100g": 1.5,
@@ -6555,6 +6593,7 @@
               "name": "Pasta",
               "grams": 200,
               "displayAmount": null,
+              "stockItem": "Volkoren pasta",
               "nutrition": {
                 "kcal100g": 350,
                 "protein100g": 13,
@@ -6566,6 +6605,7 @@
               "name": "Melk",
               "grams": 100,
               "displayAmount": "1 dl",
+              "stockItem": "Halfvolle melk",
               "nutrition": {
                 "kcal100g": 46,
                 "protein100g": 3.5,
@@ -6651,14 +6691,14 @@
     ],
     "recipeIngredientsList": "",
     "recipeTotals": "",
-    "savedRecipesList": "Pasta rood2 ingredient(s) · 3 bord(s)Total: 955 kcal · P 35.5g · C 174g · F 7.3gTotal weight: 450gPer 100g: 212.2 kcal · P 7.9g · C 38.7g · F 1.6gPer bord: 318.3 kcal · P 11.8g · C 58g · F 2.4gHideLoadDeleteIngredients250 g Volkoren pasta200 g TomatensausCooking instructions1Kook de pasta.2Verwarm de saus.Pasta met melk2 ingredient(s) · 2 serving(s)Total: 746 kcal · P 29.5g · C 132.8g · F 6.5gTotal weight: 300gPer 100g: 248.7 kcal · P 9.8g · C 44.3g · F 2.2gPer serving: 373 kcal · P 14.8g · C 66.4g · F 3.3gViewLoadDeletePasta met ui3 ingredient(s) · 2 serving(s)Total: 700 kcal · P 26g · C 128g · F 5gTotal weight: 378gPer 100g: 185.2 kcal · P 6.9g · C 33.9g · F 1.3gPer serving: 350 kcal · P 13g · C 64g · F 2.5gViewLoadDelete",
+    "savedRecipesList": "Pasta rood2 ingredient(s) · 3 bord(s)Total: 955 kcal · P 35.5g · C 174g · F 7.3gTotal weight: 450gPer 100g: 212.2 kcal · P 7.9g · C 38.7g · F 1.6gPer bord: 318.3 kcal · P 11.8g · C 58g · F 2.4gDit kokenHideLoadDeleteIngredients250 g Volkoren pasta200 g TomatensausCooking instructions1Kook de pasta.2Verwarm de saus.Pasta met melk2 ingredient(s) · 2 serving(s)Total: 746 kcal · P 29.5g · C 132.8g · F 6.5gTotal weight: 300gPer 100g: 248.7 kcal · P 9.8g · C 44.3g · F 2.2gPer serving: 373 kcal · P 14.8g · C 66.4g · F 3.3gDit kokenViewLoadDeletePasta met ui3 ingredient(s) · 2 serving(s)Total: 700 kcal · P 26g · C 128g · F 5gTotal weight: 378gPer 100g: 185.2 kcal · P 6.9g · C 33.9g · F 1.3gPer serving: 350 kcal · P 13g · C 64g · F 2.5gDit kokenViewLoadDelete",
     "aiSection": [
       "AI-receptsuggesties",
       "Krijg receptideeën op basis van wat er nu in je voorraad staat.",
       "Recepten voorstellen uit mijn voorraad"
     ],
     "aiSuggestStatus": "\"Pasta met ui\" opgeslagen bij je recepten.",
-    "aiRecipeResults": "Alles selecterenSelectie opslaanAlles opslaanKlaar om te koken (1)Pasta met melkRomige pasta.Voor 2 personen — je hebt alles in huis373 kcal14.8g eiwit66.4g koolhydraten3.3g vetPer portie — berekend met je opgeslagen voedingswaarden.✓200 g Pasta✓1 dl Melk (100 g)Kook de pasta 10 minuten.Roer de melk erdoor.Al opgeslagenNog een paar ingrediënten nodig (1)Pasta met uiPasta met gebakken ui.Voor 2 personen — nog 2 ingrediënten nodig450 kcal14g eiwit72g koolhydraten12g vetPer portie — geschat door AI (voeg voedingswaarden toe aan je producten voor exacte cijfers).✓200 g Pasta+1 Ui (150 g)+2 el Olijfolie (28 g)Bak de ui.Meng met de pasta.Opgeslagen ✓Ontbrekende op lijst zetten",
+    "aiRecipeResults": "Alles selecterenSelectie opslaanAlles opslaanKlaar om te koken (1)Pasta met melkRomige pasta.Voor 2 personen — je hebt alles in huis373 kcal14.8g eiwit66.4g koolhydraten3.3g vetPer portie — berekend met je opgeslagen voedingswaarden.✓200 g Pasta✓1 dl Melk (100 g)Kook de pasta 10 minuten.Roer de melk erdoor.Al opgeslagenDit kokenNog een paar ingrediënten nodig (1)Pasta met uiPasta met gebakken ui.Voor 2 personen — nog 2 ingrediënten nodig450 kcal14g eiwit72g koolhydraten12g vetPer portie — geschat door AI (voeg voedingswaarden toe aan je producten voor exacte cijfers).✓200 g Pasta+1 Ui (150 g)+2 el Olijfolie (28 g)Bak de ui.Meng met de pasta.Opgeslagen ✓Dit kokenOntbrekende op lijst zetten",
     "apiKeyStatus": "Connected successfully.",
     "backupStatus": "",
     "stats": [
@@ -6803,6 +6843,7 @@
               "name": "Volkoren pasta",
               "grams": 250,
               "displayAmount": null,
+              "stockItem": "Volkoren pasta",
               "nutrition": {
                 "kcal100g": 350,
                 "protein100g": 13,
@@ -6814,6 +6855,7 @@
               "name": "Tomatensaus",
               "grams": 200,
               "displayAmount": null,
+              "stockItem": null,
               "nutrition": {
                 "kcal100g": 40,
                 "protein100g": 1.5,
@@ -6837,6 +6879,7 @@
               "name": "Pasta",
               "grams": 200,
               "displayAmount": null,
+              "stockItem": "Volkoren pasta",
               "nutrition": {
                 "kcal100g": 350,
                 "protein100g": 13,
@@ -6848,6 +6891,7 @@
               "name": "Melk",
               "grams": 100,
               "displayAmount": "1 dl",
+              "stockItem": "Halfvolle melk",
               "nutrition": {
                 "kcal100g": 46,
                 "protein100g": 3.5,
@@ -6871,6 +6915,7 @@
               "name": "Pasta",
               "grams": 200,
               "displayAmount": null,
+              "stockItem": "Volkoren pasta",
               "nutrition": {
                 "kcal100g": 350,
                 "protein100g": 13,
@@ -6882,6 +6927,7 @@
               "name": "Ui",
               "grams": 150,
               "displayAmount": "1",
+              "stockItem": null,
               "nutrition": {
                 "kcal100g": null,
                 "protein100g": null,
@@ -6893,6 +6939,7 @@
               "name": "Olijfolie",
               "grams": 28,
               "displayAmount": "2 el",
+              "stockItem": null,
               "nutrition": {
                 "kcal100g": null,
                 "protein100g": null,
@@ -7057,6 +7104,7 @@
               "name": "Volkoren pasta",
               "grams": 250,
               "displayAmount": null,
+              "stockItem": "Volkoren pasta",
               "nutrition": {
                 "kcal100g": 350,
                 "protein100g": 13,
@@ -7068,6 +7116,7 @@
               "name": "Tomatensaus",
               "grams": 200,
               "displayAmount": null,
+              "stockItem": null,
               "nutrition": {
                 "kcal100g": 40,
                 "protein100g": 1.5,
@@ -7091,6 +7140,7 @@
               "name": "Pasta",
               "grams": 200,
               "displayAmount": null,
+              "stockItem": "Volkoren pasta",
               "nutrition": {
                 "kcal100g": 350,
                 "protein100g": 13,
@@ -7102,6 +7152,7 @@
               "name": "Melk",
               "grams": 100,
               "displayAmount": "1 dl",
+              "stockItem": "Halfvolle melk",
               "nutrition": {
                 "kcal100g": 46,
                 "protein100g": 3.5,
@@ -7125,6 +7176,7 @@
               "name": "Pasta",
               "grams": 200,
               "displayAmount": null,
+              "stockItem": "Volkoren pasta",
               "nutrition": {
                 "kcal100g": 350,
                 "protein100g": 13,
@@ -7136,6 +7188,7 @@
               "name": "Ui",
               "grams": 150,
               "displayAmount": "1",
+              "stockItem": null,
               "nutrition": {
                 "kcal100g": null,
                 "protein100g": null,
@@ -7147,6 +7200,7 @@
               "name": "Olijfolie",
               "grams": 28,
               "displayAmount": "2 el",
+              "stockItem": null,
               "nutrition": {
                 "kcal100g": null,
                 "protein100g": null,
@@ -7200,14 +7254,14 @@
     ],
     "recipeIngredientsList": "",
     "recipeTotals": "",
-    "savedRecipesList": "Pasta rood2 ingredient(s) · 3 bord(s)Total: 955 kcal · P 35.5g · C 174g · F 7.3gTotal weight: 450gPer 100g: 212.2 kcal · P 7.9g · C 38.7g · F 1.6gPer bord: 318.3 kcal · P 11.8g · C 58g · F 2.4gHideLoadDeleteIngredients250 g Volkoren pasta200 g TomatensausCooking instructions1Kook de pasta.2Verwarm de saus.Pasta met melk2 ingredient(s) · 2 serving(s)Total: 746 kcal · P 29.5g · C 132.8g · F 6.5gTotal weight: 300gPer 100g: 248.7 kcal · P 9.8g · C 44.3g · F 2.2gPer serving: 373 kcal · P 14.8g · C 66.4g · F 3.3gViewLoadDeletePasta met ui3 ingredient(s) · 2 serving(s)Total: 700 kcal · P 26g · C 128g · F 5gTotal weight: 378gPer 100g: 185.2 kcal · P 6.9g · C 33.9g · F 1.3gPer serving: 350 kcal · P 13g · C 64g · F 2.5gViewLoadDelete",
+    "savedRecipesList": "Pasta rood2 ingredient(s) · 3 bord(s)Total: 955 kcal · P 35.5g · C 174g · F 7.3gTotal weight: 450gPer 100g: 212.2 kcal · P 7.9g · C 38.7g · F 1.6gPer bord: 318.3 kcal · P 11.8g · C 58g · F 2.4gDit kokenHideLoadDeleteIngredients250 g Volkoren pasta200 g TomatensausCooking instructions1Kook de pasta.2Verwarm de saus.Pasta met melk2 ingredient(s) · 2 serving(s)Total: 746 kcal · P 29.5g · C 132.8g · F 6.5gTotal weight: 300gPer 100g: 248.7 kcal · P 9.8g · C 44.3g · F 2.2gPer serving: 373 kcal · P 14.8g · C 66.4g · F 3.3gDit kokenViewLoadDeletePasta met ui3 ingredient(s) · 2 serving(s)Total: 700 kcal · P 26g · C 128g · F 5gTotal weight: 378gPer 100g: 185.2 kcal · P 6.9g · C 33.9g · F 1.3gPer serving: 350 kcal · P 13g · C 64g · F 2.5gDit kokenViewLoadDelete",
     "aiSection": [
       "AI-receptsuggesties",
       "Krijg receptideeën op basis van wat er nu in je voorraad staat.",
       "Recepten voorstellen uit mijn voorraad"
     ],
     "aiSuggestStatus": "\"Pasta met ui\" opgeslagen bij je recepten.",
-    "aiRecipeResults": "Alles selecterenSelectie opslaanAlles opslaanKlaar om te koken (1)Pasta met melkRomige pasta.Voor 2 personen — je hebt alles in huis373 kcal14.8g eiwit66.4g koolhydraten3.3g vetPer portie — berekend met je opgeslagen voedingswaarden.✓200 g Pasta✓1 dl Melk (100 g)Kook de pasta 10 minuten.Roer de melk erdoor.Al opgeslagenNog een paar ingrediënten nodig (1)Pasta met uiPasta met gebakken ui.Voor 2 personen — nog 2 ingrediënten nodig450 kcal14g eiwit72g koolhydraten12g vetPer portie — geschat door AI (voeg voedingswaarden toe aan je producten voor exacte cijfers).✓200 g Pasta+1 Ui (150 g)+2 el Olijfolie (28 g)Bak de ui.Meng met de pasta.Opgeslagen ✓Ontbrekende op lijst zetten",
+    "aiRecipeResults": "Alles selecterenSelectie opslaanAlles opslaanKlaar om te koken (1)Pasta met melkRomige pasta.Voor 2 personen — je hebt alles in huis373 kcal14.8g eiwit66.4g koolhydraten3.3g vetPer portie — berekend met je opgeslagen voedingswaarden.✓200 g Pasta✓1 dl Melk (100 g)Kook de pasta 10 minuten.Roer de melk erdoor.Al opgeslagenDit kokenNog een paar ingrediënten nodig (1)Pasta met uiPasta met gebakken ui.Voor 2 personen — nog 2 ingrediënten nodig450 kcal14g eiwit72g koolhydraten12g vetPer portie — geschat door AI (voeg voedingswaarden toe aan je producten voor exacte cijfers).✓200 g Pasta+1 Ui (150 g)+2 el Olijfolie (28 g)Bak de ui.Meng met de pasta.Opgeslagen ✓Dit kokenOntbrekende op lijst zetten",
     "apiKeyStatus": "Connected successfully.",
     "backupStatus": "Exported 4 list item(s), 2 pantry item(s) and 3 recipe(s).",
     "stats": [
@@ -7352,6 +7406,7 @@
               "name": "Volkoren pasta",
               "grams": 250,
               "displayAmount": null,
+              "stockItem": "Volkoren pasta",
               "nutrition": {
                 "kcal100g": 350,
                 "protein100g": 13,
@@ -7363,6 +7418,7 @@
               "name": "Tomatensaus",
               "grams": 200,
               "displayAmount": null,
+              "stockItem": null,
               "nutrition": {
                 "kcal100g": 40,
                 "protein100g": 1.5,
@@ -7386,6 +7442,7 @@
               "name": "Pasta",
               "grams": 200,
               "displayAmount": null,
+              "stockItem": "Volkoren pasta",
               "nutrition": {
                 "kcal100g": 350,
                 "protein100g": 13,
@@ -7397,6 +7454,7 @@
               "name": "Melk",
               "grams": 100,
               "displayAmount": "1 dl",
+              "stockItem": "Halfvolle melk",
               "nutrition": {
                 "kcal100g": 46,
                 "protein100g": 3.5,
@@ -7420,6 +7478,7 @@
               "name": "Pasta",
               "grams": 200,
               "displayAmount": null,
+              "stockItem": "Volkoren pasta",
               "nutrition": {
                 "kcal100g": 350,
                 "protein100g": 13,
@@ -7431,6 +7490,7 @@
               "name": "Ui",
               "grams": 150,
               "displayAmount": "1",
+              "stockItem": null,
               "nutrition": {
                 "kcal100g": null,
                 "protein100g": null,
@@ -7442,6 +7502,7 @@
               "name": "Olijfolie",
               "grams": 28,
               "displayAmount": "2 el",
+              "stockItem": null,
               "nutrition": {
                 "kcal100g": null,
                 "protein100g": null,
@@ -7525,14 +7586,14 @@
     ],
     "recipeIngredientsList": "",
     "recipeTotals": "",
-    "savedRecipesList": "Pasta rood2 ingredient(s) · 3 bord(s)Total: 955 kcal · P 35.5g · C 174g · F 7.3gTotal weight: 450gPer 100g: 212.2 kcal · P 7.9g · C 38.7g · F 1.6gPer bord: 318.3 kcal · P 11.8g · C 58g · F 2.4gHideLoadDeleteIngredients250 g Volkoren pasta200 g TomatensausCooking instructions1Kook de pasta.2Verwarm de saus.Pasta met melk2 ingredient(s) · 2 serving(s)Total: 746 kcal · P 29.5g · C 132.8g · F 6.5gTotal weight: 300gPer 100g: 248.7 kcal · P 9.8g · C 44.3g · F 2.2gPer serving: 373 kcal · P 14.8g · C 66.4g · F 3.3gViewLoadDeletePasta met ui3 ingredient(s) · 2 serving(s)Total: 700 kcal · P 26g · C 128g · F 5gTotal weight: 378gPer 100g: 185.2 kcal · P 6.9g · C 33.9g · F 1.3gPer serving: 350 kcal · P 13g · C 64g · F 2.5gViewLoadDelete",
+    "savedRecipesList": "Pasta rood2 ingredient(s) · 3 bord(s)Total: 955 kcal · P 35.5g · C 174g · F 7.3gTotal weight: 450gPer 100g: 212.2 kcal · P 7.9g · C 38.7g · F 1.6gPer bord: 318.3 kcal · P 11.8g · C 58g · F 2.4gDit kokenHideLoadDeleteIngredients250 g Volkoren pasta200 g TomatensausCooking instructions1Kook de pasta.2Verwarm de saus.Pasta met melk2 ingredient(s) · 2 serving(s)Total: 746 kcal · P 29.5g · C 132.8g · F 6.5gTotal weight: 300gPer 100g: 248.7 kcal · P 9.8g · C 44.3g · F 2.2gPer serving: 373 kcal · P 14.8g · C 66.4g · F 3.3gDit kokenViewLoadDeletePasta met ui3 ingredient(s) · 2 serving(s)Total: 700 kcal · P 26g · C 128g · F 5gTotal weight: 378gPer 100g: 185.2 kcal · P 6.9g · C 33.9g · F 1.3gPer serving: 350 kcal · P 13g · C 64g · F 2.5gDit kokenViewLoadDelete",
     "aiSection": [
       "AI-receptsuggesties",
       "Krijg receptideeën op basis van wat er nu in je voorraad staat.",
       "Recepten voorstellen uit mijn voorraad"
     ],
     "aiSuggestStatus": "\"Pasta met ui\" opgeslagen bij je recepten.",
-    "aiRecipeResults": "Alles selecterenSelectie opslaanAlles opslaanKlaar om te koken (1)Pasta met melkRomige pasta.Voor 2 personen — je hebt alles in huis373 kcal14.8g eiwit66.4g koolhydraten3.3g vetPer portie — berekend met je opgeslagen voedingswaarden.✓200 g Pasta✓1 dl Melk (100 g)Kook de pasta 10 minuten.Roer de melk erdoor.Al opgeslagenNog een paar ingrediënten nodig (1)Pasta met uiPasta met gebakken ui.Voor 2 personen — nog 2 ingrediënten nodig450 kcal14g eiwit72g koolhydraten12g vetPer portie — geschat door AI (voeg voedingswaarden toe aan je producten voor exacte cijfers).✓200 g Pasta+1 Ui (150 g)+2 el Olijfolie (28 g)Bak de ui.Meng met de pasta.Opgeslagen ✓Ontbrekende op lijst zetten",
+    "aiRecipeResults": "Alles selecterenSelectie opslaanAlles opslaanKlaar om te koken (1)Pasta met melkRomige pasta.Voor 2 personen — je hebt alles in huis373 kcal14.8g eiwit66.4g koolhydraten3.3g vetPer portie — berekend met je opgeslagen voedingswaarden.✓200 g Pasta✓1 dl Melk (100 g)Kook de pasta 10 minuten.Roer de melk erdoor.Al opgeslagenDit kokenNog een paar ingrediënten nodig (1)Pasta met uiPasta met gebakken ui.Voor 2 personen — nog 2 ingrediënten nodig450 kcal14g eiwit72g koolhydraten12g vetPer portie — geschat door AI (voeg voedingswaarden toe aan je producten voor exacte cijfers).✓200 g Pasta+1 Ui (150 g)+2 el Olijfolie (28 g)Bak de ui.Meng met de pasta.Opgeslagen ✓Dit kokenOntbrekende op lijst zetten",
     "apiKeyStatus": "Connected successfully.",
     "backupStatus": "Exported 4 list item(s), 2 pantry item(s) and 3 recipe(s).",
     "stats": [
@@ -7677,6 +7738,7 @@
               "name": "Volkoren pasta",
               "grams": 250,
               "displayAmount": null,
+              "stockItem": "Volkoren pasta",
               "nutrition": {
                 "kcal100g": 350,
                 "protein100g": 13,
@@ -7688,6 +7750,7 @@
               "name": "Tomatensaus",
               "grams": 200,
               "displayAmount": null,
+              "stockItem": null,
               "nutrition": {
                 "kcal100g": 40,
                 "protein100g": 1.5,
@@ -7711,6 +7774,7 @@
               "name": "Pasta",
               "grams": 200,
               "displayAmount": null,
+              "stockItem": "Volkoren pasta",
               "nutrition": {
                 "kcal100g": 350,
                 "protein100g": 13,
@@ -7722,6 +7786,7 @@
               "name": "Melk",
               "grams": 100,
               "displayAmount": "1 dl",
+              "stockItem": "Halfvolle melk",
               "nutrition": {
                 "kcal100g": 46,
                 "protein100g": 3.5,
@@ -7745,6 +7810,7 @@
               "name": "Pasta",
               "grams": 200,
               "displayAmount": null,
+              "stockItem": "Volkoren pasta",
               "nutrition": {
                 "kcal100g": 350,
                 "protein100g": 13,
@@ -7756,6 +7822,7 @@
               "name": "Ui",
               "grams": 150,
               "displayAmount": "1",
+              "stockItem": null,
               "nutrition": {
                 "kcal100g": null,
                 "protein100g": null,
@@ -7767,6 +7834,7 @@
               "name": "Olijfolie",
               "grams": 28,
               "displayAmount": "2 el",
+              "stockItem": null,
               "nutrition": {
                 "kcal100g": null,
                 "protein100g": null,
@@ -7815,14 +7883,14 @@
     ],
     "recipeIngredientsList": "",
     "recipeTotals": "",
-    "savedRecipesList": "Pasta rood2 ingredient(s) · 3 bord(s)Total: 955 kcal · P 35.5g · C 174g · F 7.3gTotal weight: 450gPer 100g: 212.2 kcal · P 7.9g · C 38.7g · F 1.6gPer bord: 318.3 kcal · P 11.8g · C 58g · F 2.4gHideLoadDeleteIngredients250 g Volkoren pasta200 g TomatensausCooking instructions1Kook de pasta.2Verwarm de saus.Pasta met melk2 ingredient(s) · 2 serving(s)Total: 746 kcal · P 29.5g · C 132.8g · F 6.5gTotal weight: 300gPer 100g: 248.7 kcal · P 9.8g · C 44.3g · F 2.2gPer serving: 373 kcal · P 14.8g · C 66.4g · F 3.3gViewLoadDeletePasta met ui3 ingredient(s) · 2 serving(s)Total: 700 kcal · P 26g · C 128g · F 5gTotal weight: 378gPer 100g: 185.2 kcal · P 6.9g · C 33.9g · F 1.3gPer serving: 350 kcal · P 13g · C 64g · F 2.5gViewLoadDelete",
+    "savedRecipesList": "Pasta rood2 ingredient(s) · 3 bord(s)Total: 955 kcal · P 35.5g · C 174g · F 7.3gTotal weight: 450gPer 100g: 212.2 kcal · P 7.9g · C 38.7g · F 1.6gPer bord: 318.3 kcal · P 11.8g · C 58g · F 2.4gDit kokenHideLoadDeleteIngredients250 g Volkoren pasta200 g TomatensausCooking instructions1Kook de pasta.2Verwarm de saus.Pasta met melk2 ingredient(s) · 2 serving(s)Total: 746 kcal · P 29.5g · C 132.8g · F 6.5gTotal weight: 300gPer 100g: 248.7 kcal · P 9.8g · C 44.3g · F 2.2gPer serving: 373 kcal · P 14.8g · C 66.4g · F 3.3gDit kokenViewLoadDeletePasta met ui3 ingredient(s) · 2 serving(s)Total: 700 kcal · P 26g · C 128g · F 5gTotal weight: 378gPer 100g: 185.2 kcal · P 6.9g · C 33.9g · F 1.3gPer serving: 350 kcal · P 13g · C 64g · F 2.5gDit kokenViewLoadDelete",
     "aiSection": [
       "AI-receptsuggesties",
       "Krijg receptideeën op basis van wat er nu in je voorraad staat.",
       "Recepten voorstellen uit mijn voorraad"
     ],
     "aiSuggestStatus": "\"Pasta met ui\" opgeslagen bij je recepten.",
-    "aiRecipeResults": "Alles selecterenSelectie opslaanAlles opslaanKlaar om te koken (1)Pasta met melkRomige pasta.Voor 2 personen — je hebt alles in huis373 kcal14.8g eiwit66.4g koolhydraten3.3g vetPer portie — berekend met je opgeslagen voedingswaarden.✓200 g Pasta✓1 dl Melk (100 g)Kook de pasta 10 minuten.Roer de melk erdoor.Al opgeslagenNog een paar ingrediënten nodig (1)Pasta met uiPasta met gebakken ui.Voor 2 personen — nog 2 ingrediënten nodig450 kcal14g eiwit72g koolhydraten12g vetPer portie — geschat door AI (voeg voedingswaarden toe aan je producten voor exacte cijfers).✓200 g Pasta+1 Ui (150 g)+2 el Olijfolie (28 g)Bak de ui.Meng met de pasta.Opgeslagen ✓Ontbrekende op lijst zetten",
+    "aiRecipeResults": "Alles selecterenSelectie opslaanAlles opslaanKlaar om te koken (1)Pasta met melkRomige pasta.Voor 2 personen — je hebt alles in huis373 kcal14.8g eiwit66.4g koolhydraten3.3g vetPer portie — berekend met je opgeslagen voedingswaarden.✓200 g Pasta✓1 dl Melk (100 g)Kook de pasta 10 minuten.Roer de melk erdoor.Al opgeslagenDit kokenNog een paar ingrediënten nodig (1)Pasta met uiPasta met gebakken ui.Voor 2 personen — nog 2 ingrediënten nodig450 kcal14g eiwit72g koolhydraten12g vetPer portie — geschat door AI (voeg voedingswaarden toe aan je producten voor exacte cijfers).✓200 g Pasta+1 Ui (150 g)+2 el Olijfolie (28 g)Bak de ui.Meng met de pasta.Opgeslagen ✓Dit kokenOntbrekende op lijst zetten",
     "apiKeyStatus": "Connected successfully.",
     "backupStatus": "Exported 4 list item(s), 2 pantry item(s) and 3 recipe(s).",
     "stats": [
@@ -7902,6 +7970,7 @@
               "name": "Volkoren pasta",
               "grams": 250,
               "displayAmount": null,
+              "stockItem": "Volkoren pasta",
               "nutrition": {
                 "kcal100g": 350,
                 "protein100g": 13,
@@ -7913,6 +7982,7 @@
               "name": "Tomatensaus",
               "grams": 200,
               "displayAmount": null,
+              "stockItem": null,
               "nutrition": {
                 "kcal100g": 40,
                 "protein100g": 1.5,
@@ -7936,6 +8006,7 @@
               "name": "Pasta",
               "grams": 200,
               "displayAmount": null,
+              "stockItem": "Volkoren pasta",
               "nutrition": {
                 "kcal100g": 350,
                 "protein100g": 13,
@@ -7947,6 +8018,7 @@
               "name": "Melk",
               "grams": 100,
               "displayAmount": "1 dl",
+              "stockItem": "Halfvolle melk",
               "nutrition": {
                 "kcal100g": 46,
                 "protein100g": 3.5,
@@ -7970,6 +8042,7 @@
               "name": "Pasta",
               "grams": 200,
               "displayAmount": null,
+              "stockItem": "Volkoren pasta",
               "nutrition": {
                 "kcal100g": 350,
                 "protein100g": 13,
@@ -7981,6 +8054,7 @@
               "name": "Ui",
               "grams": 150,
               "displayAmount": "1",
+              "stockItem": null,
               "nutrition": {
                 "kcal100g": null,
                 "protein100g": null,
@@ -7992,6 +8066,7 @@
               "name": "Olijfolie",
               "grams": 28,
               "displayAmount": "2 el",
+              "stockItem": null,
               "nutrition": {
                 "kcal100g": null,
                 "protein100g": null,
@@ -8046,7 +8121,7 @@
     ],
     "recipeIngredientsList": "",
     "recipeTotals": "",
-    "savedRecipesList": "Pasta rood2 ingredient(s) · 3 bord(s)Total: 955 kcal · P 35.5g · C 174g · F 7.3gTotal weight: 450gPer 100g: 212.2 kcal · P 7.9g · C 38.7g · F 1.6gPer bord: 318.3 kcal · P 11.8g · C 58g · F 2.4gViewLoadDeletePasta met melk2 ingredient(s) · 2 serving(s)Total: 746 kcal · P 29.5g · C 132.8g · F 6.5gTotal weight: 300gPer 100g: 248.7 kcal · P 9.8g · C 44.3g · F 2.2gPer serving: 373 kcal · P 14.8g · C 66.4g · F 3.3gViewLoadDeletePasta met ui3 ingredient(s) · 2 serving(s)Total: 700 kcal · P 26g · C 128g · F 5gTotal weight: 378gPer 100g: 185.2 kcal · P 6.9g · C 33.9g · F 1.3gPer serving: 350 kcal · P 13g · C 64g · F 2.5gViewLoadDelete",
+    "savedRecipesList": "Pasta rood2 ingredient(s) · 3 bord(s)Total: 955 kcal · P 35.5g · C 174g · F 7.3gTotal weight: 450gPer 100g: 212.2 kcal · P 7.9g · C 38.7g · F 1.6gPer bord: 318.3 kcal · P 11.8g · C 58g · F 2.4gDit kokenViewLoadDeletePasta met melk2 ingredient(s) · 2 serving(s)Total: 746 kcal · P 29.5g · C 132.8g · F 6.5gTotal weight: 300gPer 100g: 248.7 kcal · P 9.8g · C 44.3g · F 2.2gPer serving: 373 kcal · P 14.8g · C 66.4g · F 3.3gDit kokenViewLoadDeletePasta met ui3 ingredient(s) · 2 serving(s)Total: 700 kcal · P 26g · C 128g · F 5gTotal weight: 378gPer 100g: 185.2 kcal · P 6.9g · C 33.9g · F 1.3gPer serving: 350 kcal · P 13g · C 64g · F 2.5gDit kokenViewLoadDelete",
     "aiSection": [
       "AI-receptsuggesties",
       "Krijg receptideeën op basis van wat er nu in je voorraad staat.",
@@ -8198,6 +8273,7 @@
               "name": "Volkoren pasta",
               "grams": 250,
               "displayAmount": null,
+              "stockItem": "Volkoren pasta",
               "nutrition": {
                 "kcal100g": 350,
                 "protein100g": 13,
@@ -8209,6 +8285,7 @@
               "name": "Tomatensaus",
               "grams": 200,
               "displayAmount": null,
+              "stockItem": null,
               "nutrition": {
                 "kcal100g": 40,
                 "protein100g": 1.5,
@@ -8232,6 +8309,7 @@
               "name": "Pasta",
               "grams": 200,
               "displayAmount": null,
+              "stockItem": "Volkoren pasta",
               "nutrition": {
                 "kcal100g": 350,
                 "protein100g": 13,
@@ -8243,6 +8321,7 @@
               "name": "Melk",
               "grams": 100,
               "displayAmount": "1 dl",
+              "stockItem": "Halfvolle melk",
               "nutrition": {
                 "kcal100g": 46,
                 "protein100g": 3.5,
@@ -8266,6 +8345,7 @@
               "name": "Pasta",
               "grams": 200,
               "displayAmount": null,
+              "stockItem": "Volkoren pasta",
               "nutrition": {
                 "kcal100g": 350,
                 "protein100g": 13,
@@ -8277,6 +8357,7 @@
               "name": "Ui",
               "grams": 150,
               "displayAmount": "1",
+              "stockItem": null,
               "nutrition": {
                 "kcal100g": null,
                 "protein100g": null,
@@ -8288,6 +8369,7 @@
               "name": "Olijfolie",
               "grams": 28,
               "displayAmount": "2 el",
+              "stockItem": null,
               "nutrition": {
                 "kcal100g": null,
                 "protein100g": null,

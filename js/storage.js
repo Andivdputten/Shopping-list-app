@@ -6,7 +6,7 @@ import {
   STORAGE_KEY
 } from "./constants.js";
 import { normalizeDisplayAmount, parseOptionalNumberInput } from "./format.js";
-import { createShoppingItem, createStockItem } from "./items.js";
+import { createShoppingItem, createStockItem, normalizeStockLink } from "./items.js";
 import { normalizeNutrition } from "./nutrition.js";
 
 export function loadRecipes() {
@@ -39,6 +39,7 @@ export function loadRecipes() {
           name: ingredientName,
           grams: grams !== null && grams > 0 ? grams : null,
           displayAmount: normalizeDisplayAmount(ingredient.displayAmount),
+          stockItem: normalizeStockLink(ingredient.stockItem),
           nutrition: normalizeNutrition(ingredient.nutrition)
         };
       })

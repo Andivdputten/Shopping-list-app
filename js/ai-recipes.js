@@ -1,4 +1,5 @@
 // AI recipe suggestions: requesting them, matching ingredients to stock, showing and saving them.
+import { openCookDialog } from "./cook-dialog.js";
 import {
   aiPreferencesInput,
   aiRecipeResults,
@@ -255,6 +256,18 @@ export function renderAiRecipes(recipes) {
       markAiEntrySaved(entry, t.alreadySaved);
     }
 
+    // Cooking a suggestion saves it first (unless it already is), then opens the confirmation screen.
+    const cookButton = document.createElement("button");
+    cookButton.className = "secondary-button";
+    cookButton.textContent = t.cookThis;
+    cookButton.addEventListener("click", () => {
+      if (!saveButton.disabled) {
+        saveAiRecipes([entry]);
+      }
+      openCookDialog(buildSavedRecipeData(recipe, matchedIngredients));
+    });
+    actions.appendChild(cookButton);
+
     if (missingIngredients.length > 0) {
       const addMissingButton = document.createElement("button");
       addMissingButton.className = "secondary-button";
@@ -367,6 +380,8 @@ export function buildSavedRecipeData(recipe, matchedIngredients) {
       // Unknown amounts are stored as null rather than 0, because loadRecipes() used to discard 0-gram ingredients on reload.
       grams: typeof ing.amount === "number" && ing.amount > 0 ? ing.amount : null,
       displayAmount: normalizeDisplayAmount(ing.displayAmount),
+      // Which pantry item this ingredient is, so "Cook this" on the saved recipe deducts the right one.
+      stockItem: ing.stockMatch ? ing.stockMatch.name : null,
       nutrition: ing.hasNutrition
         ? normalizeNutrition(ing.stockMatch.nutrition)
         : createEmptyNutrition()
