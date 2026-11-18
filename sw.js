@@ -1,7 +1,7 @@
 // Bump this version on every release. It is required whenever a cache-first file
 // (icons, manifest.json, vendor/) changes, because returning users otherwise keep the old copy;
 // bumping also deletes old caches. Network-first core files (see CORE_FILES) update without it.
-const CACHE_VERSION = "v20";
+const CACHE_VERSION = "v21";
 const CACHE_NAME = `grocery-scanner-${CACHE_VERSION}`;
 
 // Core app files: these change often during development. They're fetched
@@ -9,7 +9,7 @@ const CACHE_NAME = `grocery-scanner-${CACHE_VERSION}`;
 // can never get stuck serving a stale copy just because it happened to be
 // cached once — the cache here is purely an offline fallback, not a source
 // of truth while online.
-const CORE_FILES = ["./", "./index.html", "./app.js", "./ai.js", "./sw-register.js", "./style.css"];
+const CORE_FILES = ["./", "./index.html", "./app.js", "./ai.js", "./sw-register.js", "./recipe-ui-text.js", "./style.css"];
 
 // Static assets: these essentially never change once created, so caching
 // them aggressively (cache-first) is safe and saves a network round trip.
@@ -64,6 +64,8 @@ function isCoreFile(url) {
   if (url.pathname.endsWith("/ai.js")) return true;
   // Treated as a core file because it was inline in index.html and should update just as promptly.
   if (url.pathname.endsWith("/sw-register.js")) return true;
+  // Translation texts change along with app.js, so they are fetched network-first too.
+  if (url.pathname.endsWith("/recipe-ui-text.js")) return true;
   if (url.pathname.endsWith("/style.css")) return true;
   if (url.pathname.endsWith("/index.html")) return true;
   // "./" and any path ending in "/" resolve to index.html on GitHub Pages.
