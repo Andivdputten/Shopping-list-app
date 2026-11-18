@@ -211,6 +211,19 @@ test("logging food in every way adds up on the Today tab", { timeout: 90000 }, a
     const week = await page.$$eval("#weekChart table tr", (rows) => rows.map((r) => r.textContent));
     assert.deepEqual(week.slice(-2), ["2026-11-17900 kcal", "2026-11-181406 kcal"]);
 
+    // Changing the meal split in Settings shows on the Today tab straight away (lunch 40% of 2000 = 800).
+    await page.click('[data-tab="settings"]');
+    for (const [id, value] of [
+      ["#mealSplitLunchInput", "40"],
+      ["#mealSplitSnackInput", "0"]
+    ]) {
+      await page.fill(id, value);
+      await page.dispatchEvent(id, "change");
+    }
+    await page.click('[data-tab="today"]');
+    assert.match(await page.textContent("#todayMeals"), /Lunch\d+ \/ 800 kcal/);
+    assert.match(await page.textContent("#todayMeals"), /Snack\d+ kcal/);
+
     assert.deepEqual(errors, []);
   } finally {
     await browser.close();

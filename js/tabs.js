@@ -11,6 +11,7 @@ import {
 import { stopPantryScanner } from "./pantry-scanner.js";
 import { stopScanner } from "./scanner.js";
 import { state } from "./state.js";
+import { renderToday } from "./today.js";
 
 export function initTabs() {
   tabButtons.forEach((button) => {
@@ -42,6 +43,11 @@ export function switchTab(tabName) {
 
   pageTitle.textContent = info.title;
   pageSubtitle.textContent = info.subtitle;
+
+  // Redraw on opening, so changes made elsewhere (targets, meal split, cooking) always show.
+  if (tabName === "today") {
+    renderToday();
+  }
 
   if (tabName !== "scanner" && state.scannerRunning) {
     void stopScanner(false);
