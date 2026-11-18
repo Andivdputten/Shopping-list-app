@@ -1,8 +1,8 @@
 // The pantry stock list: rendering, quantities, returning items and clearing stock.
 import { quantityInput, stockEmptyMessage, stockList } from "./dom.js";
 import { formatNutritionSummary, formatNutritionTotalSummary } from "./format.js";
-import { getCategoryLabel, normalizeIngredientName } from "./items.js";
-import { getQuantityStep, normalizeNutrition, normalizeNutritionNumber } from "./nutrition.js";
+import { createShoppingItem, getCategoryLabel, normalizeIngredientName } from "./items.js";
+import { getQuantityStep } from "./nutrition.js";
 import { saveItems, saveStockItems } from "./persistence.js";
 import { renderRecipeItemOptions } from "./recipe-builder.js";
 import { renderList } from "./shopping-list.js";
@@ -226,20 +226,7 @@ export function returnStockItemToList(index) {
 
   const returnedName = item.name;
 
-  state.items.push({
-    name: typeof item.name === "string" ? item.name : "",
-    quantity:
-      typeof item.quantity === "number" && Number.isFinite(item.quantity) && item.quantity > 0
-        ? item.quantity
-        : null,
-    unit: typeof item.unit === "string" ? item.unit : "",
-    category: typeof item.category === "string" ? item.category : "",
-    note: typeof item.note === "string" ? item.note : "",
-    barcode: typeof item.barcode === "string" ? item.barcode : "",
-    nutrition: normalizeNutrition(item.nutrition),
-    nutritionAmount: normalizeNutritionNumber(item.nutritionAmount),
-    bought: false
-  });
+  state.items.push(createShoppingItem(item));
 
   state.stockItems.splice(index, 1);
 

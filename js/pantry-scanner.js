@@ -1,4 +1,11 @@
 // The continuous barcode scanner on the Pantry tab, which adds each scanned product to stock.
+import {
+  cameraUnavailableMessage,
+  createCamera,
+  getScannerStartErrorMessage,
+  startCamera,
+  stopCamera
+} from "./camera.js";
 import { PANTRY_SCAN_COOLDOWN_MS, PANTRY_SKIP_COOLDOWN_MS } from "./constants.js";
 import {
   pantryReaderWrapper,
@@ -9,12 +16,11 @@ import {
   pantryUnknownNameInput,
   pantryUnknownText
 } from "./dom.js";
-import { createStockItemFromShoppingItem, mergeStockItems, parsePackageQuantity } from "./items.js";
+import { createStockItem, mergeStockItems, parsePackageQuantity } from "./items.js";
 import { normalizeNutrition } from "./nutrition.js";
 import { findMatchingStockIndex, renderStockList } from "./pantry.js";
 import { getCachedBarcodeLookup, saveStockItems, setCachedBarcodeLookup } from "./persistence.js";
 import { buildLookupNote, lookupProductByBarcode } from "./product-lookup.js";
-import { getScannerStartErrorMessage } from "./scanner.js";
 import { state } from "./state.js";
 import { showToast } from "./ui.js";
 
@@ -46,7 +52,7 @@ export function addScannedItemToPantry(barcode, productData, nameOverride) {
   let message;
 
   if (existingIndex === null) {
-    state.stockItems.push(createStockItemFromShoppingItem(incoming));
+    state.stockItems.push(createStockItem(incoming));
     message = `${name} added to pantry`;
   } else {
     const quantityBefore = state.stockItems[existingIndex].quantity;
@@ -75,13 +81,9 @@ export async function startPantryScanner() {
     return;
   }
 
-  if (!window.isSecureContext) {
-    pantryScanMessage.textContent = "Scanner unavailable: page is not using HTTPS.";
-    return;
-  }
-
-  if (typeof Html5Qrcode === "undefined") {
-    pantryScanMessage.textContent = "Scanner unavailable: library failed to load.";
+  const unavailable = cameraUnavailableMessage();
+  if (unavailable !== "") {
+    pantryScanMessage.textContent = unavailable;
     return;
   }
 
@@ -93,21 +95,10 @@ export async function startPantryScanner() {
   state.pantryScanBusy = false;
   state.pantryLastBarcode = "";
   state.pantryCooldownUntil = 0;
-  state.pantryScanner = new Html5Qrcode("pantryReader");
+  state.pantryScanner = createCamera("pantryReader");
 
   try {
-    await state.pantryScanner.start(
-      { facingMode: "environment" },
-      {
-        fps: 10,
-        qrbox: { width: 280, height: 120 },
-        aspectRatio: 1.7777778
-      },
-      onPantryScanSuccess,
-      () => {
-        // Ignore per-frame scan misses.
-      }
-    );
+    await startCamera(state.pantryScanner, onPantryScanSuccess);
 
     state.pantryScannerRunning = true;
     pantryScanStopButton.disabled = false;
@@ -130,19 +121,7 @@ export async function stopPantryScanner() {
   state.pantryScanBusy = false;
 
   if (scanner) {
-    try {
-      if (wasRunning) {
-        await scanner.stop();
-      }
-    } catch (error) {
-      // Ignore stop errors and continue cleanup.
-    }
-
-    try {
-      scanner.clear();
-    } catch (error) {
-      // Ignore clear errors during cleanup.
-    }
+    await stopCamera(scanner, wasRunning);
   }
 
   hidePantryUnknownForm();

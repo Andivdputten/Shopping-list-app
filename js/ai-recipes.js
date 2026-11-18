@@ -11,7 +11,7 @@ import {
   formatNutritionValue,
   normalizeDisplayAmount
 } from "./format.js";
-import { normalizeIngredientName } from "./items.js";
+import { createShoppingItem, normalizeIngredientName } from "./items.js";
 import { createEmptyNutrition, hasUsableNutrition, normalizeNutrition } from "./nutrition.js";
 import { findMatchingStockItem } from "./pantry.js";
 import { saveItems, saveRecipes } from "./persistence.js";
@@ -472,17 +472,9 @@ export function addMissingIngredientsToShoppingList(missingIngredients, recipeNa
       noteParts.push(`${formatNutritionValue(grams)} g`);
     }
 
-    state.items.push({
-      name: ing.name,
-      quantity,
-      unit,
-      category: "",
-      note: noteParts.join(": "),
-      barcode: "",
-      nutrition: createEmptyNutrition(),
-      nutritionAmount: null,
-      bought: false
-    });
+    state.items.push(
+      createShoppingItem({ name: ing.name, quantity, unit, note: noteParts.join(": ") })
+    );
     addedCount++;
   });
 

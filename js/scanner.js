@@ -1,4 +1,11 @@
 // The camera barcode scanner on the Scanner tab.
+import {
+  cameraUnavailableMessage,
+  createCamera,
+  getScannerStartErrorMessage,
+  startCamera,
+  stopCamera
+} from "./camera.js";
 import { readerWrapper, scannerMessage, startScannerButton, stopScannerButton } from "./dom.js";
 import {
   applyLookupToForm,
@@ -18,15 +25,12 @@ export async function startScanner() {
     return;
   }
 
-  if (!window.isSecureContext) {
-    scannerMessage.textContent = "Scanner unavailable: page is not using HTTPS.";
-    setStatus("Camera scanning requires HTTPS.");
-    return;
-  }
-
-  if (typeof Html5Qrcode === "undefined") {
-    scannerMessage.textContent = "Scanner unavailable: library failed to load.";
-    setStatus("Scanner library did not load.");
+  const unavailable = cameraUnavailableMessage();
+  if (unavailable !== "") {
+    scannerMessage.textContent = unavailable;
+    setStatus(
+      window.isSecureContext ? "Scanner library did not load." : "Camera scanning requires HTTPS."
+    );
     return;
   }
 
@@ -37,21 +41,10 @@ export async function startScanner() {
   scannerMessage.textContent = "Requesting camera access...";
 
   state.scanLock = false;
-  state.html5QrCode = new Html5Qrcode("reader");
+  state.html5QrCode = createCamera("reader");
 
   try {
-    await state.html5QrCode.start(
-      { facingMode: "environment" },
-      {
-        fps: 10,
-        qrbox: { width: 280, height: 120 },
-        aspectRatio: 1.7777778
-      },
-      onScanSuccess,
-      () => {
-        // Ignore per-frame scan misses.
-      }
-    );
+    await startCamera(state.html5QrCode, onScanSuccess);
 
     state.scannerRunning = true;
     stopScannerButton.disabled = false;
@@ -156,19 +149,7 @@ export async function stopScanner(autoStopped) {
     return;
   }
 
-  try {
-    if (state.scannerRunning) {
-      await state.html5QrCode.stop();
-    }
-  } catch (error) {
-    // Ignore stop errors and continue cleanup.
-  }
-
-  try {
-    state.html5QrCode.clear();
-  } catch (error) {
-    // Ignore clear errors during cleanup.
-  }
+  await stopCamera(state.html5QrCode, state.scannerRunning);
 
   state.html5QrCode = null;
   state.scannerRunning = false;
@@ -183,32 +164,4 @@ export async function stopScanner(autoStopped) {
     scannerMessage.textContent = "Scanner stopped.";
     setStatus("Scanner stopped.");
   }
-}
-
-export function getScannerStartErrorMessage(error) {
-  const name = error && typeof error.name === "string" ? error.name : "";
-  const message = error && typeof error.message === "string" ? error.message : String(error || "");
-  const combined = `${name} ${message}`;
-
-  if (combined.includes("NotAllowedError") || combined.includes("Permission denied")) {
-    return "Camera permission was denied. Check the site permission (tap the lock/info icon in the address bar) and your phone's app-level camera permission for this browser.";
-  }
-
-  if (combined.includes("NotFoundError") || combined.includes("Requested device not found")) {
-    return "No usable camera was found on this device.";
-  }
-
-  if (combined.includes("NotReadableError") || combined.includes("Could not start video source")) {
-    return "Camera is busy or blocked by another app. Close other apps/tabs using the camera and try again.";
-  }
-
-  if (combined.includes("OverconstrainedError")) {
-    return "No camera matched the requested settings (back camera). Try a different device.";
-  }
-
-  if (combined.trim()) {
-    return `Could not start the scanner: ${combined.trim()}`;
-  }
-
-  return "Could not start the scanner.";
 }

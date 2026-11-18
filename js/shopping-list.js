@@ -12,12 +12,12 @@ import {
 import { buildMetaText, formatNutritionSummary, formatNutritionTotalSummary } from "./format.js";
 import { resetForm, startEdit, updateFormMode } from "./item-form.js";
 import {
-  createStockItemFromShoppingItem,
+  createShoppingItem,
+  createStockItem,
   getCategoryLabel,
   mergeStockItems,
   normalizeCategory
 } from "./items.js";
-import { createEmptyNutrition } from "./nutrition.js";
 import { findMatchingStockIndex, renderStockList } from "./pantry.js";
 import { saveItems, saveStockItems } from "./persistence.js";
 import { renderRecipeBuilder, renderRecipeItemOptions } from "./recipe-builder.js";
@@ -38,17 +38,7 @@ export function quickAddItem() {
     return;
   }
 
-  state.items.push({
-    name,
-    quantity: null,
-    unit: "",
-    category: "",
-    note: "",
-    barcode: "",
-    nutrition: createEmptyNutrition(),
-    nutritionAmount: null,
-    bought: false
-  });
+  state.items.push(createShoppingItem({ name }));
 
   saveItems();
   searchInput.value = "";
@@ -73,7 +63,7 @@ export function moveItemToStock(index) {
   const stockIndex = findMatchingStockIndex(item);
 
   if (stockIndex === null) {
-    state.stockItems.push(createStockItemFromShoppingItem(item));
+    state.stockItems.push(createStockItem(item));
   } else {
     state.stockItems[stockIndex] = mergeStockItems(state.stockItems[stockIndex], item);
   }

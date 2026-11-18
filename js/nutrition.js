@@ -54,48 +54,46 @@ export function hasAnyNutrition(nutrition) {
   );
 }
 
-export function buildRecipeTotalsSummaryFromIngredients(ingredients) {
-  let totalKcal = 0;
-  let totalProtein = 0;
-  let totalCarbs = 0;
-  let totalFat = 0;
+// Adds up kcal and macros over a recipe's ingredients (nutrition per 100 g times grams).
+// Returns null when no ingredient has any nutrition data, so callers can show nothing instead of zeros.
+export function sumRecipeNutrition(ingredients) {
+  const totals = { kcal: 0, protein: 0, carbs: 0, fat: 0 };
   let hasAny = false;
 
   ingredients.forEach((ingredient) => {
     const nutrition = normalizeNutrition(ingredient.nutrition);
     const factor = ingredient.grams / 100;
 
-    if (nutrition.kcal100g !== null) {
-      totalKcal += nutrition.kcal100g * factor;
-      hasAny = true;
-    }
-
-    if (nutrition.protein100g !== null) {
-      totalProtein += nutrition.protein100g * factor;
-      hasAny = true;
-    }
-
-    if (nutrition.carbs100g !== null) {
-      totalCarbs += nutrition.carbs100g * factor;
-      hasAny = true;
-    }
-
-    if (nutrition.fat100g !== null) {
-      totalFat += nutrition.fat100g * factor;
-      hasAny = true;
-    }
+    [
+      ["kcal", nutrition.kcal100g],
+      ["protein", nutrition.protein100g],
+      ["carbs", nutrition.carbs100g],
+      ["fat", nutrition.fat100g]
+    ].forEach(([key, per100g]) => {
+      if (per100g !== null) {
+        totals[key] += per100g * factor;
+        hasAny = true;
+      }
+    });
   });
 
-  if (!hasAny) {
-    return "";
-  }
+  return hasAny ? totals : null;
+}
 
+// Formats totals as "955 kcal · P 35.5g · C 174g · F 7.3g", each value multiplied by scale first.
+// One formatter for the recipe total, per-serving and per-100 g lines, so they always look the same.
+function formatMacroLine(totals, scale) {
   return (
-    `${formatNutritionValue(totalKcal)} kcal · ` +
-    `P ${formatNutritionValue(totalProtein)}g · ` +
-    `C ${formatNutritionValue(totalCarbs)}g · ` +
-    `F ${formatNutritionValue(totalFat)}g`
+    `${formatNutritionValue(totals.kcal * scale)} kcal · ` +
+    `P ${formatNutritionValue(totals.protein * scale)}g · ` +
+    `C ${formatNutritionValue(totals.carbs * scale)}g · ` +
+    `F ${formatNutritionValue(totals.fat * scale)}g`
   );
+}
+
+export function buildRecipeTotalsSummaryFromIngredients(ingredients) {
+  const totals = sumRecipeNutrition(ingredients);
+  return totals ? formatMacroLine(totals, 1) : "";
 }
 
 export function buildRecipePerServingSummaryFromIngredients(ingredients, servings) {
@@ -103,47 +101,8 @@ export function buildRecipePerServingSummaryFromIngredients(ingredients, serving
     return "";
   }
 
-  let totalKcal = 0;
-  let totalProtein = 0;
-  let totalCarbs = 0;
-  let totalFat = 0;
-  let hasAny = false;
-
-  ingredients.forEach((ingredient) => {
-    const nutrition = normalizeNutrition(ingredient.nutrition);
-    const factor = ingredient.grams / 100;
-
-    if (nutrition.kcal100g !== null) {
-      totalKcal += nutrition.kcal100g * factor;
-      hasAny = true;
-    }
-
-    if (nutrition.protein100g !== null) {
-      totalProtein += nutrition.protein100g * factor;
-      hasAny = true;
-    }
-
-    if (nutrition.carbs100g !== null) {
-      totalCarbs += nutrition.carbs100g * factor;
-      hasAny = true;
-    }
-
-    if (nutrition.fat100g !== null) {
-      totalFat += nutrition.fat100g * factor;
-      hasAny = true;
-    }
-  });
-
-  if (!hasAny) {
-    return "";
-  }
-
-  return (
-    `${formatNutritionValue(totalKcal / servings)} kcal · ` +
-    `P ${formatNutritionValue(totalProtein / servings)}g · ` +
-    `C ${formatNutritionValue(totalCarbs / servings)}g · ` +
-    `F ${formatNutritionValue(totalFat / servings)}g`
-  );
+  const totals = sumRecipeNutrition(ingredients);
+  return totals ? formatMacroLine(totals, 1 / servings) : "";
 }
 
 export function buildRecipeWeightSummaryFromIngredients(ingredients) {
@@ -167,50 +126,8 @@ export function buildRecipePer100gSummaryFromIngredients(ingredients) {
     return "";
   }
 
-  let totalKcal = 0;
-  let totalProtein = 0;
-  let totalCarbs = 0;
-  let totalFat = 0;
-  let hasAny = false;
-
-  ingredients.forEach((ingredient) => {
-    const nutrition = normalizeNutrition(ingredient.nutrition);
-    const factor = ingredient.grams / 100;
-
-    if (nutrition.kcal100g !== null) {
-      totalKcal += nutrition.kcal100g * factor;
-      hasAny = true;
-    }
-
-    if (nutrition.protein100g !== null) {
-      totalProtein += nutrition.protein100g * factor;
-      hasAny = true;
-    }
-
-    if (nutrition.carbs100g !== null) {
-      totalCarbs += nutrition.carbs100g * factor;
-      hasAny = true;
-    }
-
-    if (nutrition.fat100g !== null) {
-      totalFat += nutrition.fat100g * factor;
-      hasAny = true;
-    }
-  });
-
-  if (!hasAny) {
-    return "";
-  }
-
-  const factorTo100g = 100 / totalWeight;
-
-  return (
-    `Per 100g: ` +
-    `${formatNutritionValue(totalKcal * factorTo100g)} kcal · ` +
-    `P ${formatNutritionValue(totalProtein * factorTo100g)}g · ` +
-    `C ${formatNutritionValue(totalCarbs * factorTo100g)}g · ` +
-    `F ${formatNutritionValue(totalFat * factorTo100g)}g`
-  );
+  const totals = sumRecipeNutrition(ingredients);
+  return totals ? `Per 100g: ${formatMacroLine(totals, 100 / totalWeight)}` : "";
 }
 
 export function buildRecipePerServingDisplayFromIngredients(ingredients, servings, servingLabel) {

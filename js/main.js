@@ -127,7 +127,6 @@ function startApp() {
   cancelRecipeEditButton.addEventListener("click", cancelRecipeEdit);
   recipeServingLabelInput.addEventListener("input", renderRecipeBuilder);
   recipeServingLabelInput.addEventListener("keydown", handleEnterToSubmit);
-  recipeServingsInput.addEventListener("input", renderRecipeBuilder);
   clearStockButton.addEventListener("click", clearStockItems);
 
   startScannerButton.addEventListener("click", () => {

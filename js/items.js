@@ -47,13 +47,17 @@ export function parsePackageQuantity(text) {
   return { quantity: Math.round(quantity * 100) / 100, unit };
 }
 
-export function createStockItemFromShoppingItem(item) {
+// Turns a number into a positive quantity, or null when it is missing, zero, negative or not a number.
+export function positiveQuantityOrNull(value) {
+  return typeof value === "number" && Number.isFinite(value) && value > 0 ? value : null;
+}
+
+// Builds a pantry item from any item-like object, replacing missing or wrongly typed fields with safe defaults.
+// The single definition of a pantry item; shopping items are the same plus a "bought" flag.
+export function createStockItem(item) {
   return {
     name: typeof item.name === "string" ? item.name : "",
-    quantity:
-      typeof item.quantity === "number" && Number.isFinite(item.quantity) && item.quantity > 0
-        ? item.quantity
-        : null,
+    quantity: positiveQuantityOrNull(item.quantity),
     unit: typeof item.unit === "string" ? item.unit : "",
     category: typeof item.category === "string" ? item.category : "",
     note: typeof item.note === "string" ? item.note : "",
@@ -108,21 +112,9 @@ export function mergeStockItems(existingItem, incomingItem) {
   return merged;
 }
 
-export function createShoppingItemFromStockItem(item) {
-  return {
-    name: typeof item.name === "string" ? item.name : "",
-    quantity:
-      typeof item.quantity === "number" && Number.isFinite(item.quantity) && item.quantity > 0
-        ? item.quantity
-        : null,
-    unit: typeof item.unit === "string" ? item.unit : "",
-    category: typeof item.category === "string" ? item.category : "",
-    note: typeof item.note === "string" ? item.note : "",
-    barcode: typeof item.barcode === "string" ? item.barcode : "",
-    nutrition: normalizeNutrition(item.nutrition),
-    nutritionAmount: normalizeNutritionNumber(item.nutritionAmount),
-    bought: false
-  };
+// Builds a shopping-list item (not yet bought) from any item-like object, with the same defaults as createStockItem().
+export function createShoppingItem(item) {
+  return { ...createStockItem(item), bought: false };
 }
 
 export function mergeShoppingItems(existingItem, stockItem) {

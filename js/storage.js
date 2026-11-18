@@ -6,79 +6,57 @@ import {
   STORAGE_KEY
 } from "./constants.js";
 import { normalizeDisplayAmount, parseOptionalNumberInput } from "./format.js";
-import { normalizeNutrition, normalizeNutritionNumber } from "./nutrition.js";
+import { createShoppingItem, createStockItem } from "./items.js";
+import { normalizeNutrition } from "./nutrition.js";
 
 export function loadRecipes() {
-  const savedValue = localStorage.getItem(RECIPE_STORAGE_KEY);
+  return loadStoredList(RECIPE_STORAGE_KEY, (recipe) => {
+    const name = typeof recipe.name === "string" ? recipe.name.trim() : "";
 
-  if (!savedValue) {
-    return [];
-  }
-
-  try {
-    const parsed = JSON.parse(savedValue);
-
-    if (!Array.isArray(parsed)) {
-      return [];
+    if (name === "" || !Array.isArray(recipe.ingredients)) {
+      return null;
     }
 
-    return parsed
-      .map((recipe) => {
-        if (typeof recipe !== "object" || recipe === null) {
+    const servings = parseOptionalNumberInput(String(recipe.servings ?? "1")) || 1;
+
+    const ingredients = recipe.ingredients
+      .map((ingredient) => {
+        if (typeof ingredient !== "object" || ingredient === null) {
           return null;
         }
 
-        const name = typeof recipe.name === "string" ? recipe.name.trim() : "";
+        const ingredientName = typeof ingredient.name === "string" ? ingredient.name.trim() : "";
 
-        if (name === "" || !Array.isArray(recipe.ingredients)) {
+        if (ingredientName === "") {
           return null;
         }
 
-        const servings = parseOptionalNumberInput(String(recipe.servings ?? "1")) || 1;
+        const grams = parseOptionalNumberInput(String(ingredient.grams));
 
-        const ingredients = recipe.ingredients
-          .map((ingredient) => {
-            if (typeof ingredient !== "object" || ingredient === null) {
-              return null;
-            }
-
-            const ingredientName =
-              typeof ingredient.name === "string" ? ingredient.name.trim() : "";
-
-            if (ingredientName === "") {
-              return null;
-            }
-
-            const grams = parseOptionalNumberInput(String(ingredient.grams));
-
-            // Keep ingredients without a usable amount (grams = null) instead of dropping them.
-            // Dropping them silently deleted ingredients from AI-saved recipes on every reload.
-            return {
-              name: ingredientName,
-              grams: grams !== null && grams > 0 ? grams : null,
-              displayAmount: normalizeDisplayAmount(ingredient.displayAmount),
-              nutrition: normalizeNutrition(ingredient.nutrition)
-            };
-          })
-          .filter(Boolean);
-
+        // Keep ingredients without a usable amount (grams = null) instead of dropping them.
+        // Dropping them silently deleted ingredients from AI-saved recipes on every reload.
         return {
-          name,
-          description: typeof recipe.description === "string" ? recipe.description : "",
-          instructions: Array.isArray(recipe.instructions)
-            ? recipe.instructions
-                .filter((step) => typeof step === "string" && step.trim() !== "")
-                .map((step) => step.trim())
-            : [],
-          servings,
-          servingLabel: typeof recipe.servingLabel === "string" ? recipe.servingLabel : "",
-          ingredients
+          name: ingredientName,
+          grams: grams !== null && grams > 0 ? grams : null,
+          displayAmount: normalizeDisplayAmount(ingredient.displayAmount),
+          nutrition: normalizeNutrition(ingredient.nutrition)
         };
       })
       .filter(Boolean);
-  } catch (error) {
-    return [];
-  }
+
+    return {
+      name,
+      description: typeof recipe.description === "string" ? recipe.description : "",
+      instructions: Array.isArray(recipe.instructions)
+        ? recipe.instructions
+            .filter((step) => typeof step === "string" && step.trim() !== "")
+            .map((step) => step.trim())
+        : [],
+      servings,
+      servingLabel: typeof recipe.servingLabel === "string" ? recipe.servingLabel : "",
+      ingredients
+    };
+  });
 }
 
 export function saveBarcodeCache(cache) {
@@ -106,106 +84,52 @@ export function loadBarcodeCache() {
 }
 
 export function loadStockItems() {
-  const savedItems = localStorage.getItem(STOCK_STORAGE_KEY);
+  return loadStoredList(STOCK_STORAGE_KEY, (item) => {
+    const name = storedItemName(item);
+    return name === "" ? null : { ...createStockItem(item), name };
+  });
+}
 
-  if (!savedItems) {
+// Reads a JSON array from storage and turns each entry into a clean record with normalizeEntry,
+// dropping entries it returns null for. Missing, corrupt or non-array data gives an empty list.
+// One shared reader for the shopping list, pantry and recipes, so all three handle bad data the same way.
+export function loadStoredList(key, normalizeEntry) {
+  const saved = localStorage.getItem(key);
+
+  if (!saved) {
     return [];
   }
 
   try {
-    const parsedItems = JSON.parse(savedItems);
+    const parsed = JSON.parse(saved);
 
-    if (!Array.isArray(parsedItems)) {
+    if (!Array.isArray(parsed)) {
       return [];
     }
 
-    return parsedItems
-      .map((item) => {
-        if (typeof item !== "object" || item === null) {
-          return null;
-        }
-
-        const name = typeof item.name === "string" ? item.name.trim() : "";
-
-        if (name === "") {
-          return null;
-        }
-
-        let quantity = null;
-        if (
-          typeof item.quantity === "number" &&
-          Number.isFinite(item.quantity) &&
-          item.quantity > 0
-        ) {
-          quantity = item.quantity;
-        }
-
-        return {
-          name,
-          quantity,
-          unit: typeof item.unit === "string" ? item.unit : "",
-          category: typeof item.category === "string" ? item.category : "",
-          note: typeof item.note === "string" ? item.note : "",
-          barcode: typeof item.barcode === "string" ? item.barcode : "",
-          nutrition: normalizeNutrition(item.nutrition),
-          nutritionAmount: normalizeNutritionNumber(item.nutritionAmount)
-        };
-      })
+    return parsed
+      .map((entry) => (typeof entry === "object" && entry !== null ? normalizeEntry(entry) : null))
       .filter(Boolean);
   } catch (error) {
     return [];
   }
 }
 
+// Stored items need a non-empty name; everything else falls back to createStockItem()'s defaults.
+function storedItemName(item) {
+  return typeof item.name === "string" ? item.name.trim() : "";
+}
+
 export function loadItems() {
-  const savedItems = localStorage.getItem(STORAGE_KEY);
-
-  if (!savedItems) {
-    return [];
-  }
-
-  try {
-    const parsedItems = JSON.parse(savedItems);
-
-    if (!Array.isArray(parsedItems)) {
-      return [];
+  return loadStoredList(STORAGE_KEY, (item) => {
+    const name = storedItemName(item);
+    if (name === "") {
+      return null;
     }
-
-    return parsedItems
-      .map((item) => {
-        if (typeof item !== "object" || item === null) {
-          return null;
-        }
-
-        const name = typeof item.name === "string" ? item.name.trim() : "";
-
-        if (name === "") {
-          return null;
-        }
-
-        let quantity = null;
-        if (
-          typeof item.quantity === "number" &&
-          Number.isFinite(item.quantity) &&
-          item.quantity > 0
-        ) {
-          quantity = item.quantity;
-        }
-
-        return {
-          name,
-          quantity,
-          unit: typeof item.unit === "string" ? item.unit : "",
-          category: typeof item.category === "string" ? item.category : "",
-          note: typeof item.note === "string" ? item.note : "",
-          barcode: typeof item.barcode === "string" ? item.barcode : "",
-          nutrition: normalizeNutrition(item.nutrition),
-          nutritionAmount: normalizeNutritionNumber(item.nutritionAmount),
-          bought: typeof item.bought === "boolean" ? item.bought : false
-        };
-      })
-      .filter(Boolean);
-  } catch (error) {
-    return [];
-  }
+    return {
+      ...createShoppingItem(item),
+      name,
+      bought: typeof item.bought === "boolean" ? item.bought : false
+    };
+  });
 }
