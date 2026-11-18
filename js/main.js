@@ -12,6 +12,11 @@ import {
   clearButton,
   clearRecipeButton,
   clearStockButton,
+  customIngredientCarbsInput,
+  customIngredientFatInput,
+  customIngredientKcalInput,
+  customIngredientNameInput,
+  customIngredientProteinInput,
   duplicateRecipeButton,
   itemInput,
   nutritionAmountInput,
@@ -28,7 +33,6 @@ import {
   quickAddButton,
   recipeGramsInput,
   recipeItemSelect,
-  recipeNameInput,
   recipeServingLabelInput,
   recipeServingsInput,
   saveRecipeButton,
@@ -60,6 +64,7 @@ import {
   cancelRecipeEdit,
   clearRecipeIngredients,
   duplicateCurrentRecipe,
+  handleEnterToAddIngredient,
   renderRecipeBuilder,
   renderRecipeItemOptions,
   saveCurrentRecipe,
@@ -117,16 +122,22 @@ function startApp() {
   addRecipeIngredientButton.addEventListener("click", addRecipeIngredient);
   recipeItemSelect.addEventListener("change", updateCustomIngredientVisibility);
   clearRecipeButton.addEventListener("click", clearRecipeIngredients);
-  recipeGramsInput.addEventListener("keydown", handleEnterToSubmit);
-  recipeItemSelect.addEventListener("keydown", handleEnterToSubmit);
+  // Enter in the ingredient fields adds the ingredient. The recipe name, servings and label fields
+  // have no Enter action: saving stays on the button so a half-built recipe isn't saved by accident.
+  [
+    recipeGramsInput,
+    recipeItemSelect,
+    customIngredientNameInput,
+    customIngredientKcalInput,
+    customIngredientProteinInput,
+    customIngredientCarbsInput,
+    customIngredientFatInput
+  ].forEach((input) => input.addEventListener("keydown", handleEnterToAddIngredient));
   saveRecipeButton.addEventListener("click", saveCurrentRecipe);
-  recipeNameInput.addEventListener("keydown", handleEnterToSubmit);
   recipeServingsInput.addEventListener("input", renderRecipeBuilder);
-  recipeServingsInput.addEventListener("keydown", handleEnterToSubmit);
   duplicateRecipeButton.addEventListener("click", duplicateCurrentRecipe);
   cancelRecipeEditButton.addEventListener("click", cancelRecipeEdit);
   recipeServingLabelInput.addEventListener("input", renderRecipeBuilder);
-  recipeServingLabelInput.addEventListener("keydown", handleEnterToSubmit);
   clearStockButton.addEventListener("click", clearStockItems);
 
   startScannerButton.addEventListener("click", () => {
