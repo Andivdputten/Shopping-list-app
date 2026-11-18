@@ -443,6 +443,24 @@
         </div>
       </section>
 
+      <!-- Backup card: lets users save and restore all their data, since it otherwise only lives in this browser's storage. -->
+      <section class="card">
+        <h2>Backup</h2>
+        <p class="hint-text">
+          Your list, pantry and recipes are stored only in this browser. Export a
+          backup file now and then, so clearing browser data or switching phones
+          doesn't lose them. Your API key is not included.
+        </p>
+
+        <div class="action-row">
+          <button id="exportDataButton" class="secondary-button">Export backup</button>
+          <button id="importDataButton" class="secondary-button">Import backup</button>
+        </div>
+        <input id="importDataInput" type="file" accept="application/json,.json" class="hidden" />
+
+        <p id="backupStatus" class="status-text"></p>
+      </section>
+
       <section class="card">
         <h2>Nutrition statistics</h2>
         <p class="hint-text">
