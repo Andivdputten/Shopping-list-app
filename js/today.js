@@ -11,6 +11,7 @@ import {
   perServingFromRecipe,
   shiftDate
 } from "./intake.js";
+import { openAddProduct } from "./log-product.js";
 import { saveIntakeLog } from "./persistence.js";
 import { state } from "./state.js";
 import { MEAL_TYPES, mealTargets } from "./targets.js";
@@ -456,5 +457,6 @@ export function initToday() {
     }
   });
   byId("quickEntryButton").addEventListener("click", openQuickEntry);
+  byId("addProductButton").addEventListener("click", openAddProduct);
   renderToday();
 }

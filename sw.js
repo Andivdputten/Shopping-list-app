@@ -25,6 +25,7 @@ const CORE_FILES = [
   "./js/intake.js",
   "./js/item-form.js",
   "./js/items.js",
+  "./js/log-product.js",
   "./js/main.js",
   "./js/nutrition.js",
   "./js/pantry-scanner.js",
