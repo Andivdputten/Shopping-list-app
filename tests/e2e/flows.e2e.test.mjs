@@ -25,21 +25,31 @@ const FAKE_SCANNER = `
 
 // Open Food Facts answers for the barcodes used below; any other barcode is "not found".
 const PRODUCTS = {
-  "8710000000001": {
+  8710000000001: {
     product_name: "Halfvolle melk",
     brands: "Testmerk",
     quantity: "1 l",
     categories_tags: ["en:dairies", "en:milks"],
     nutrition_grades: "a",
-    nutriments: { "energy-kcal_100g": 46, proteins_100g: 3.5, carbohydrates_100g: 4.8, fat_100g: 1.5 }
+    nutriments: {
+      "energy-kcal_100g": 46,
+      proteins_100g: 3.5,
+      carbohydrates_100g: 4.8,
+      fat_100g: 1.5
+    }
   },
-  "8710000000002": {
+  8710000000002: {
     product_name: "Volkoren pasta",
     brands: "Testmerk",
     quantity: "500 g",
     categories_tags: ["en:pastas"],
     nutrition_grades: "a",
-    nutriments: { "energy-kcal_100g": 350, proteins_100g: 13, carbohydrates_100g: 64, fat_100g: 2.5 }
+    nutriments: {
+      "energy-kcal_100g": 350,
+      proteins_100g: 13,
+      carbohydrates_100g: 64,
+      fat_100g: 2.5
+    }
   }
 };
 
@@ -97,9 +107,18 @@ async function capture(page) {
       title: text("pageTitle"),
       status: text("status"),
       formTitle: text("formTitle"),
-      form: ["itemInput", "quantityInput", "unitInput", "categoryInput", "noteInput",
-        "nutritionKcalInput", "nutritionProteinInput", "nutritionCarbsInput", "nutritionFatInput",
-        "nutritionAmountInput"].map(value),
+      form: [
+        "itemInput",
+        "quantityInput",
+        "unitInput",
+        "categoryInput",
+        "noteInput",
+        "nutritionKcalInput",
+        "nutritionProteinInput",
+        "nutritionCarbsInput",
+        "nutritionFatInput",
+        "nutritionAmountInput"
+      ].map(value),
       barcodePreview: text("barcodePreview"),
       scannerMessage: text("scannerMessage"),
       shoppingSections: text("shoppingSections"),
@@ -109,7 +128,9 @@ async function capture(page) {
       pantryUnknownText: text("pantryUnknownText"),
       recipeEditorModeText: text("recipeEditorModeText"),
       recipeBuilderMessage: text("recipeBuilderMessage"),
-      recipeItemOptions: [...document.getElementById("recipeItemSelect").options].map((o) => o.textContent),
+      recipeItemOptions: [...document.getElementById("recipeItemSelect").options].map(
+        (o) => o.textContent
+      ),
       recipeIngredientsList: text("recipeIngredientsList"),
       recipeTotals: text("recipeTotals"),
       savedRecipesList: text("savedRecipesList"),
@@ -118,7 +139,12 @@ async function capture(page) {
       aiRecipeResults: text("aiRecipeResults"),
       apiKeyStatus: text("apiKeyStatus"),
       backupStatus: text("backupStatus"),
-      stats: [text("pantryMacroLegend"), text("pantryMacroCoverage"), text("listMacroLegend"), text("listMacroCoverage")],
+      stats: [
+        text("pantryMacroLegend"),
+        text("pantryMacroCoverage"),
+        text("listMacroLegend"),
+        text("listMacroCoverage")
+      ],
       toast: text("toast"),
       storage
     };
@@ -154,7 +180,13 @@ test("main flows match the recorded reference", { timeout: 120000 }, async () =>
     const text = body.output_config && body.output_config.format ? JSON.stringify(AI_REPLY) : "OK";
     return route.fulfill({
       headers: { "access-control-allow-origin": "*" },
-      json: { content: [{ type: "thinking", thinking: "", signature: "s" }, { type: "text", text }], stop_reason: "end_turn" }
+      json: {
+        content: [
+          { type: "thinking", thinking: "", signature: "s" },
+          { type: "text", text }
+        ],
+        stop_reason: "end_turn"
+      }
     });
   });
 
@@ -266,9 +298,13 @@ test("main flows match the recorded reference", { timeout: 120000 }, async () =>
 
     // Pantry: quantity controls, pantry scanner with known, unknown and skipped barcodes, return to list.
     await tab("pantry");
-    await page.evaluate(() => document.querySelector('[aria-label="Increase Halfvolle melk quantity"]').click());
+    await page.evaluate(() =>
+      document.querySelector('[aria-label="Increase Halfvolle melk quantity"]').click()
+    );
     await record("increase quantity");
-    await page.evaluate(() => document.querySelector('[aria-label="Decrease Volkoren pasta quantity"]').click());
+    await page.evaluate(() =>
+      document.querySelector('[aria-label="Decrease Volkoren pasta quantity"]').click()
+    );
     await record("decrease quantity");
     await page.evaluate(() => {
       const input = document.querySelector('[aria-label="Volkoren pasta quantity"]');
@@ -346,7 +382,9 @@ test("main flows match the recorded reference", { timeout: 120000 }, async () =>
     await record("settings test connection");
     await tab("recipes");
     await click("#suggestRecipesButton");
-    await page.waitForFunction(() => /recipe idea/.test(document.getElementById("aiSuggestStatus").textContent));
+    await page.waitForFunction(() =>
+      /recipe idea/.test(document.getElementById("aiSuggestStatus").textContent)
+    );
     await record("ai suggestions english");
     await clickButton("aiRecipeResults", "Save recipe");
     await record("ai save one");
@@ -354,14 +392,19 @@ test("main flows match the recorded reference", { timeout: 120000 }, async () =>
     await record("ai add missing");
     await setValue("recipeLanguageSelect", "nl");
     await click("#suggestRecipesButton");
-    await page.waitForFunction(() => /receptidee/.test(document.getElementById("aiSuggestStatus").textContent));
+    await page.waitForFunction(() =>
+      /receptidee/.test(document.getElementById("aiSuggestStatus").textContent)
+    );
     await record("ai suggestions dutch");
     await clickButton("aiRecipeResults", "Alles opslaan (1)");
     await record("ai save all dutch");
 
     // Settings: backup export and import, clearing data with cancel and confirm.
     await tab("settings");
-    const [download] = await Promise.all([page.waitForEvent("download"), click("#exportDataButton")]);
+    const [download] = await Promise.all([
+      page.waitForEvent("download"),
+      click("#exportDataButton")
+    ]);
     const exported = JSON.parse(await readFile(await download.path(), "utf8"));
     steps.push({ name: "exported backup", file: download.suggestedFilename(), exported });
     await tab("pantry");
@@ -396,5 +439,7 @@ test("main flows match the recorded reference", { timeout: 120000 }, async () =>
 
   const expected = JSON.parse(await readFile(SNAPSHOT_FILE, "utf8"));
   assert.equal(steps.length, expected.length, "number of recorded steps changed");
-  steps.forEach((step, i) => assert.deepEqual(step, expected[i], `step "${expected[i].name}" differs`));
+  steps.forEach((step, i) =>
+    assert.deepEqual(step, expected[i], `step "${expected[i].name}" differs`)
+  );
 });

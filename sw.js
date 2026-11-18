@@ -9,7 +9,15 @@ const CACHE_NAME = `grocery-scanner-${CACHE_VERSION}`;
 // can never get stuck serving a stale copy just because it happened to be
 // cached once — the cache here is purely an offline fallback, not a source
 // of truth while online.
-const CORE_FILES = ["./", "./index.html", "./app.js", "./ai.js", "./sw-register.js", "./recipe-ui-text.js", "./style.css"];
+const CORE_FILES = [
+  "./",
+  "./index.html",
+  "./app.js",
+  "./ai.js",
+  "./sw-register.js",
+  "./recipe-ui-text.js",
+  "./style.css"
+];
 
 // Static assets: these essentially never change once created, so caching
 // them aggressively (cache-first) is safe and saves a network round trip.
@@ -32,9 +40,7 @@ self.addEventListener("install", (event) => {
     caches.open(CACHE_NAME).then((cache) => {
       // Use allSettled instead of addAll so one failed resource
       // (e.g. offline during install) doesn't block the whole install.
-      return Promise.allSettled(
-        APP_SHELL.map((url) => cache.add(url))
-      );
+      return Promise.allSettled(APP_SHELL.map((url) => cache.add(url)));
     })
   );
   self.skipWaiting();
@@ -42,13 +48,11 @@ self.addEventListener("install", (event) => {
 
 self.addEventListener("activate", (event) => {
   event.waitUntil(
-    caches.keys().then((keys) =>
-      Promise.all(
-        keys
-          .filter((key) => key !== CACHE_NAME)
-          .map((key) => caches.delete(key))
+    caches
+      .keys()
+      .then((keys) =>
+        Promise.all(keys.filter((key) => key !== CACHE_NAME).map((key) => caches.delete(key)))
       )
-    )
   );
   self.clients.claim();
 });

@@ -102,7 +102,8 @@
       asking: "De AI zoekt receptideeën op basis van je voorraad...",
       gotRecipes: (total, ready, extras) =>
         `${total} ${plural(total, "receptidee", "receptideeën")}: ${ready} klaar om te koken, ${extras} met extra ingrediënten.`,
-      noneExtras: " Deze keer had geen enkel recept extra ingrediënten nodig. Tik nogmaals voor meer variatie."
+      noneExtras:
+        " Deze keer had geen enkel recept extra ingrediënten nodig. Tik nogmaals voor meer variatie."
     },
 
     de: {
@@ -150,7 +151,8 @@
       asking: "Die KI sucht Rezeptideen anhand deines Vorrats...",
       gotRecipes: (total, ready, extras) =>
         `${total} ${plural(total, "Rezeptidee", "Rezeptideen")}: ${ready} sofort kochbar, ${extras} mit zusätzlichen Zutaten.`,
-      noneExtras: " Diesmal brauchte kein Rezept zusätzliche Zutaten. Tippe erneut für mehr Abwechslung."
+      noneExtras:
+        " Diesmal brauchte kein Rezept zusätzliche Zutaten. Tippe erneut für mehr Abwechslung."
     },
 
     fr: {
@@ -169,7 +171,8 @@
       protein: "protéines",
       carbs: "glucides",
       fat: "lipides",
-      sourceCalculated: "Par portion — calculé à partir de vos valeurs nutritionnelles enregistrées.",
+      sourceCalculated:
+        "Par portion — calculé à partir de vos valeurs nutritionnelles enregistrées.",
       sourceEstimated:
         "Par portion — estimé par l'IA (ajoutez des valeurs nutritionnelles à vos articles pour des chiffres précis).",
       saveRecipe: "Enregistrer la recette",
@@ -188,7 +191,9 @@
       savedOne: (name) => `"${name}" ajoutée à vos recettes.`,
       savedMany: (n, skipped) =>
         `${n} ${plural(n, "recette enregistrée", "recettes enregistrées")}` +
-        (skipped > 0 ? ` (${skipped} ${plural(skipped, "existait déjà", "existaient déjà")}, ignorée${plural(skipped, "", "s")}).` : "."),
+        (skipped > 0
+          ? ` (${skipped} ${plural(skipped, "existait déjà", "existaient déjà")}, ignorée${plural(skipped, "", "s")}).`
+          : "."),
       forRecipe: (name) => `Pour ${name}`,
       addedCount: (n) =>
         `${n} ${plural(n, "ingrédient manquant ajouté", "ingrédients manquants ajoutés")} à votre liste de courses.`,
@@ -198,7 +203,8 @@
       asking: "L'IA cherche des idées de recettes selon votre stock...",
       gotRecipes: (total, ready, extras) =>
         `${total} ${plural(total, "idée", "idées")} de recette : ${ready} ${plural(ready, "prête", "prêtes")} à cuisiner, ${extras} avec des ingrédients en plus.`,
-      noneExtras: " Cette fois, aucune recette n'avait besoin d'ingrédients en plus. Appuyez à nouveau pour plus de variété."
+      noneExtras:
+        " Cette fois, aucune recette n'avait besoin d'ingrédients en plus. Appuyez à nouveau pour plus de variété."
     },
 
     es: {
@@ -236,7 +242,9 @@
       savedOne: (name) => `"${name}" guardada en tus recetas.`,
       savedMany: (n, skipped) =>
         `${n} ${plural(n, "receta guardada", "recetas guardadas")}` +
-        (skipped > 0 ? ` (${skipped} ya ${plural(skipped, "existía", "existían")}, ${plural(skipped, "omitida", "omitidas")}).` : "."),
+        (skipped > 0
+          ? ` (${skipped} ya ${plural(skipped, "existía", "existían")}, ${plural(skipped, "omitida", "omitidas")}).`
+          : "."),
       forRecipe: (name) => `Para ${name}`,
       addedCount: (n) =>
         `${n} ${plural(n, "ingrediente añadido", "ingredientes añadidos")} a tu lista de la compra.`,
@@ -246,7 +254,8 @@
       asking: "La IA busca ideas de recetas según tu despensa...",
       gotRecipes: (total, ready, extras) =>
         `${total} ${plural(total, "idea", "ideas")} de receta: ${ready} ${plural(ready, "lista", "listas")} para cocinar, ${extras} con ingredientes extra.`,
-      noneExtras: " Esta vez ninguna receta necesitaba ingredientes extra. Toca de nuevo para más variedad."
+      noneExtras:
+        " Esta vez ninguna receta necesitaba ingredientes extra. Toca de nuevo para más variedad."
     }
   };
 

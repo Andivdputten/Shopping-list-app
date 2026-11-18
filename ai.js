@@ -116,9 +116,8 @@
       let detail = "";
       try {
         const errorBody = await response.json();
-        detail = errorBody && errorBody.error && errorBody.error.message
-          ? errorBody.error.message
-          : "";
+        detail =
+          errorBody && errorBody.error && errorBody.error.message ? errorBody.error.message : "";
       } catch (parseError) {
         // Ignore — body wasn't valid JSON, we'll fall back to a generic message.
       }
@@ -149,7 +148,8 @@
       return {
         ok: false,
         errorType: "truncated",
-        message: "The AI's answer was too long and got cut off. Try again, or add preferences that narrow it down."
+        message:
+          "The AI's answer was too long and got cut off. Try again, or add preferences that narrow it down."
       };
     }
 
@@ -426,7 +426,12 @@
     // Capped so a large recipe collection can't make every request expensive.
     const avoidText =
       avoidNames.length > 0
-        ? `\n<already_saved>\n${avoidNames.slice(-100).map((name) => `- ${name}`).join("\n")}\n</already_saved>\nSuggest recipes that differ from the already saved ones.`
+        ? `\n<already_saved>\n${avoidNames
+            .slice(-100)
+            .map((name) => `- ${name}`)
+            .join(
+              "\n"
+            )}\n</already_saved>\nSuggest recipes that differ from the already saved ones.`
         : "";
 
     const userMessage = `<stock>
