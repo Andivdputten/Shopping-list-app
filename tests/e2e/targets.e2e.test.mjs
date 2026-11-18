@@ -5,7 +5,7 @@ import assert from "node:assert/strict";
 import { chromium } from "playwright";
 import { startStaticServer } from "./static-server.mjs";
 
-// Dinner is 35% of 2720 kcal = 952 kcal; 400 g at 238 kcal/100 g hits it exactly, macros within range.
+// Dinner is 35% of 2723 kcal = 953 kcal; 400 g at 238 kcal/100 g = 952 kcal, macros within range.
 const DINNER = {
   name: "Stamppot",
   servings: 1,
@@ -21,7 +21,7 @@ const DINNER = {
 // Saved before meal types existed: no meal type, so it gets the hint instead of a badge.
 const OLD_RECIPE = { ...DINNER, name: "Oud recept", mealType: undefined };
 
-// Lunch is 30% of 2720 = 816 kcal; 1200 kcal is 47% too much, and 20 g protein is under 75% of 43.2 g.
+// Lunch is 30% of 2723 = 817 kcal; 1200 kcal is 47% too much, and 20 g protein is under 75% of 43.2 g.
 const AI_REPLY = {
   ready: [
     {
@@ -104,8 +104,22 @@ test(
         ].join(","),
         (inputs) => inputs.map((input) => input.value)
       );
-      assert.deepEqual(shown, ["2720", "144", "332", "91", "38"]);
-      assert.equal((await storedTargets()).targets.kcal, 2720);
+      assert.deepEqual(shown, ["2723", "144", "332", "91", "38"]);
+      assert.equal((await storedTargets()).targets.kcal, 2723);
+
+      // kcal can't be typed; changing a macro recalculates it (150 g protein: +6 g x 4 = 2747).
+      assert.equal(await page.getAttribute("#targetKcalInput", "readonly"), "");
+      await page.fill("#targetProteinInput", "150");
+      await page.dispatchEvent("#targetProteinInput", "change");
+      assert.equal(await page.inputValue("#targetKcalInput"), "2747");
+      assert.match(await page.textContent("#targetsStatus"), /2747 kcal per day/);
+      // Without carbs there is no kcal target, and the status says why.
+      await page.fill("#targetCarbsInput", "");
+      await page.dispatchEvent("#targetCarbsInput", "change");
+      assert.equal(await page.inputValue("#targetKcalInput"), "");
+      assert.match(await page.textContent("#targetsStatus"), /Set protein, carbs and fat/);
+      // Back to the calculated targets for the badge checks below.
+      await page.click("#calculateTargetsButton");
 
       // A meal split that doesn't add up to 100% is refused and not saved.
       await page.fill("#mealSplitSnackInput", "20");

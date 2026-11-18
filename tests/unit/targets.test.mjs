@@ -4,6 +4,7 @@ import assert from "node:assert/strict";
 import {
   assessFit,
   calculateTargets,
+  kcalFromMacros,
   maintenanceCalories,
   mealSplitTotal,
   mealTargets,
@@ -31,15 +32,16 @@ test("maintenance calories use Mifflin-St Jeor times the activity factor", () =>
 
 test("targets follow the goal: protein 1.8 g/kg, fat 30%, fibre 14 g per 1000 kcal, carbs the rest", () => {
   assert.deepEqual(calculateTargets(body), {
-    kcal: 2720,
+    // 144 x 4 + 332 x 4 + 91 x 9: kcal always follows from the rounded macros.
+    kcal: 2723,
     protein: 144,
     fat: 91,
     fiber: 38,
     carbs: 332
   });
   // Lose = -15%, gain = +10%.
-  assert.equal(calculateTargets({ ...body, goal: "lose" }).kcal, 2312);
-  assert.equal(calculateTargets({ ...body, goal: "gain" }).kcal, 2992);
+  assert.equal(calculateTargets({ ...body, goal: "lose" }).kcal, 2313);
+  assert.equal(calculateTargets({ ...body, goal: "gain" }).kcal, 2996);
 });
 
 test("the calculator refuses incomplete or impossible body data", () => {
@@ -109,4 +111,16 @@ test("stored settings are cleaned up and fall back to the default meal split", (
     activity: "",
     goal: "keep"
   });
+});
+
+test("the kcal target follows from protein, carbs and fat (4/4/9) and needs all three", () => {
+  assert.equal(kcalFromMacros({ protein: 150, carbs: 250, fat: 70 }), 2230);
+  assert.equal(kcalFromMacros({ protein: 150, carbs: null, fat: 70 }), null);
+  // A stored kcal that doesn't match the macros is replaced by the calculated one.
+  const settings = normalizeTargetSettings({
+    targets: { kcal: 3000, protein: 150, carbs: 250, fat: 70 }
+  });
+  assert.equal(settings.targets.kcal, 2230);
+  // kcal on its own (no macros) is not kept: it can only come from the macros.
+  assert.equal(normalizeTargetSettings({ targets: { kcal: 2000 } }).targets.kcal, null);
 });

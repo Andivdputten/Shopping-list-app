@@ -101,9 +101,10 @@ test("logging food in every way adds up on the Today tab", { timeout: 90000 }, a
       ({ stock, recipe }) => {
         localStorage.setItem("grocery_scanner_stock_v1", JSON.stringify(stock));
         localStorage.setItem("grocery_scanner_recipes_v1", JSON.stringify([recipe]));
+        // 125 x 4 + 240 x 4 + 60 x 9 = 2000 kcal (kcal always follows from the macros).
         localStorage.setItem(
           "grocery_scanner_targets_v1",
-          JSON.stringify({ targets: { kcal: 2000 } })
+          JSON.stringify({ targets: { protein: 125, carbs: 240, fat: 60 } })
         );
       },
       { stock: STOCK, recipe: OMELET }

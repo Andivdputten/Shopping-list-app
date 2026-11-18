@@ -39,6 +39,16 @@ export function maintenanceCalories({ sex, age, heightCm, weightKg, activity }) 
   return resting * ACTIVITY_FACTORS[activity];
 }
 
+// The kcal target that follows from the macro targets: protein and carbs 4 kcal per gram, fat 9.
+// Fibre is not counted. Returns null unless protein, carbs and fat are all set, because a kcal
+// target from only some of them would be misleadingly low.
+export function kcalFromMacros({ protein, carbs, fat }) {
+  if (!positive(protein) || !positive(carbs) || !positive(fat)) {
+    return null;
+  }
+  return Math.round(protein * 4 + carbs * 4 + fat * 9);
+}
+
 // Suggested daily targets from body data, or null when something needed is missing or impossible.
 // Protein 1.8 g per kg body weight, fat 30% of calories, fibre 14 g per 1000 kcal, carbs the remainder.
 export function calculateTargets(body) {
@@ -54,16 +64,21 @@ export function calculateTargets(body) {
     return null;
   }
 
-  const kcal = Math.round(maintenanceCalories(body) * (1 + GOAL_ADJUSTMENTS[body.goal]));
+  // The goal's calories set the split; the kcal target itself is then recalculated from the rounded
+  // macros, so it always equals protein x 4 + carbs x 4 + fat x 9 (a few kcal off the goal at most).
+  const goalKcal = Math.round(maintenanceCalories(body) * (1 + GOAL_ADJUSTMENTS[body.goal]));
   const protein = Math.round(1.8 * body.weightKg);
-  const fatKcal = 0.3 * kcal;
-  return {
-    kcal,
+  const fatKcal = 0.3 * goalKcal;
+  const macros = {
     protein,
     fat: Math.round(fatKcal / 9),
-    fiber: Math.round((14 * kcal) / 1000),
     // Protein has 4 kcal per gram and carbs 4; never below zero for very high protein.
-    carbs: Math.max(0, Math.round((kcal - protein * 4 - fatKcal) / 4))
+    carbs: Math.max(0, Math.round((goalKcal - protein * 4 - fatKcal) / 4))
+  };
+  return {
+    kcal: kcalFromMacros(macros),
+    ...macros,
+    fiber: Math.round((14 * goalKcal) / 1000)
   };
 }
 
@@ -129,6 +144,8 @@ export function normalizeTargetSettings(raw) {
   TARGET_KEYS.forEach((key) => {
     targets[key] = number(rawTargets[key]);
   });
+  // kcal is never stored on its own: it always follows from protein, carbs and fat.
+  targets.kcal = kcalFromMacros(targets);
 
   const split = {};
   MEAL_TYPES.forEach((meal) => {

@@ -1023,3 +1023,10 @@ button:disabled {
   clip: rect(0 0 0 0);
   white-space: nowrap;
 }
+
+/* A value the app calculates (e.g. the kcal target): shown like an input but clearly not editable. */
+.calculated-input {
+  background: var(--bg);
+  color: var(--ink-soft);
+  border-style: dashed;
+}
