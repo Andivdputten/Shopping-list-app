@@ -16,6 +16,7 @@ import {
   recipeIngredientsList,
   recipeInstructionsInput,
   recipeItemSelect,
+  recipeMealTypeSelect,
   recipeMissingNutritionNote,
   recipeNameInput,
   recipePer100gTotals,
@@ -45,6 +46,7 @@ import {
 import { saveRecipes } from "./persistence.js";
 import { renderSavedRecipes } from "./saved-recipes.js";
 import { state } from "./state.js";
+import { normalizeMealType } from "./targets.js";
 import { setStatus, showToast } from "./ui.js";
 
 export function addRecipeOption(parent, value, item) {
@@ -340,6 +342,7 @@ export function saveCurrentRecipe() {
     instructions: parseInstructionsText(recipeInstructionsInput.value),
     servings,
     servingLabel: recipeServingLabelInput.value.trim(),
+    mealType: normalizeMealType(recipeMealTypeSelect.value),
     ingredients: state.recipeIngredients.map((ingredient) => {
       return {
         name: ingredient.name,
@@ -416,6 +419,7 @@ export function resetRecipeBuilder() {
   recipeNameInput.value = "";
   recipeServingsInput.value = "1";
   recipeServingLabelInput.value = "";
+  recipeMealTypeSelect.value = "";
   recipeInstructionsInput.value = "";
   recipeItemSelect.value = "";
   recipeGramsInput.value = "";

@@ -876,3 +876,35 @@ button:disabled {
 .target-grid .field-label {
   margin: 0;
 }
+
+/* Fit badge: a green pill for a good fit, amber when a recipe is too much or too little for its meal. */
+.fit-badge-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 10px;
+  margin: 8px 0;
+  font-size: 13px;
+}
+
+.fit-badge {
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-weight: 700;
+}
+
+.fit-good {
+  background: var(--brand-tint);
+  color: var(--brand-dark);
+}
+
+.fit-over,
+.fit-under {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.fit-notes,
+.fit-hint {
+  color: var(--ink-soft);
+}

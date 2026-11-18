@@ -9,7 +9,7 @@ import {
 import { normalizeDisplayAmount, parseOptionalNumberInput } from "./format.js";
 import { createShoppingItem, createStockItem, normalizeStockLink } from "./items.js";
 import { normalizeNutrition } from "./nutrition.js";
-import { normalizeTargetSettings } from "./targets.js";
+import { normalizeMealType, normalizeTargetSettings } from "./targets.js";
 
 export function loadRecipes() {
   return loadStoredList(RECIPE_STORAGE_KEY, (recipe) => {
@@ -57,6 +57,7 @@ export function loadRecipes() {
         : [],
       servings,
       servingLabel: typeof recipe.servingLabel === "string" ? recipe.servingLabel : "",
+      mealType: normalizeMealType(recipe.mealType),
       ingredients
     };
   });

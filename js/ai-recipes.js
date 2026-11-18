@@ -6,6 +6,7 @@ import {
   aiSuggestStatus,
   suggestRecipesButton
 } from "./dom.js";
+import { buildFitBadge } from "./fit-badge.js";
 import {
   formatIngredientAmountText,
   formatIngredientLine,
@@ -23,6 +24,7 @@ import { getRecipeLanguage } from "./settings.js";
 import { renderList } from "./shopping-list.js";
 import { state } from "./state.js";
 import { switchTab } from "./tabs.js";
+import { normalizeMealType } from "./targets.js";
 import { showToast } from "./ui.js";
 
 // Texts for the AI recipe section in the chosen recipe language (see recipe-ui-text.js).
@@ -214,6 +216,11 @@ export function renderAiRecipes(recipes) {
       sourceLine.textContent =
         macroResult.source === "calculated" ? t.sourceCalculated : t.sourceEstimated;
       card.appendChild(sourceLine);
+
+      const fitBadge = buildFitBadge(macroResult.perServing, recipe.mealType);
+      if (fitBadge) {
+        card.appendChild(fitBadge);
+      }
     }
 
     const ingredientList = document.createElement("ul");
@@ -381,6 +388,7 @@ export function buildSavedRecipeData(recipe, matchedIngredients) {
     instructions: Array.isArray(recipe.instructions) ? recipe.instructions.slice() : [],
     servings: recipe.servings,
     servingLabel: "",
+    mealType: normalizeMealType(recipe.mealType),
     ingredients: matchedIngredients.map((ing) => ({
       name: ing.name,
       // Unknown amounts are stored as null rather than 0, because loadRecipes() used to discard 0-gram ingredients on reload.

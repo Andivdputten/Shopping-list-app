@@ -3,12 +3,14 @@ import { aiText } from "./ai-recipes.js";
 import { openCookDialog } from "./cook-dialog.js";
 import {
   recipeInstructionsInput,
+  recipeMealTypeSelect,
   recipeNameInput,
   recipeServingLabelInput,
   recipeServingsInput,
   savedRecipesEmptyMessage,
   savedRecipesList
 } from "./dom.js";
+import { buildFitBadge } from "./fit-badge.js";
 import {
   formatIngredientLine,
   formatNutritionValue,
@@ -22,7 +24,8 @@ import {
   buildRecipePerServingDisplayFromIngredients,
   buildRecipeTotalsSummaryFromIngredients,
   buildRecipeWeightSummaryFromIngredients,
-  normalizeNutrition
+  normalizeNutrition,
+  sumRecipeNutrition
 } from "./nutrition.js";
 import { saveRecipes } from "./persistence.js";
 import {
@@ -147,6 +150,21 @@ export function renderSavedRecipes() {
     infoWrap.appendChild(per100gSpan);
     infoWrap.appendChild(perServingSpan);
 
+    // Fit badge from the recipe's per-serving totals (only when targets are set and kcal is known).
+    const totals = sumRecipeNutrition(recipe.ingredients);
+    const servings = recipe.servings > 0 ? recipe.servings : 1;
+    const perServing = totals && {
+      kcal: totals.kcal / servings,
+      protein: totals.protein / servings,
+      carbs: totals.carbs / servings,
+      fat: totals.fat / servings,
+      fiber: totals.fiber === null ? null : totals.fiber / servings
+    };
+    const fitBadge = buildFitBadge(perServing, recipe.mealType);
+    if (fitBadge) {
+      infoWrap.appendChild(fitBadge);
+    }
+
     const actions = document.createElement("div");
     actions.className = "item-actions";
 
@@ -220,6 +238,7 @@ export function loadSavedRecipe(index) {
   recipeServingLabelInput.value =
     typeof recipe.servingLabel === "string" ? recipe.servingLabel : "";
   recipeInstructionsInput.value = instructionsToText(recipe.instructions);
+  recipeMealTypeSelect.value = recipe.mealType || "";
 
   state.recipeIngredients = recipe.ingredients.map((ingredient) => {
     return {

@@ -50,6 +50,7 @@ export const recipePerServingTotals = document.getElementById("recipePerServingT
 export const savedRecipesList = document.getElementById("savedRecipesList");
 export const savedRecipesEmptyMessage = document.getElementById("savedRecipesEmptyMessage");
 export const recipeServingLabelInput = document.getElementById("recipeServingLabelInput");
+export const recipeMealTypeSelect = document.getElementById("recipeMealTypeSelect");
 export const recipeInstructionsInput = document.getElementById("recipeInstructionsInput");
 export const customIngredientBlock = document.getElementById("customIngredientBlock");
 export const customIngredientNameInput = document.getElementById("customIngredientNameInput");
@@ -155,6 +156,7 @@ export function allElementsPresent() {
     stockList,
     stockEmptyMessage,
     recipeServingLabelInput,
+    recipeMealTypeSelect,
     recipeInstructionsInput,
     customIngredientBlock,
     customIngredientNameInput,

@@ -330,6 +330,15 @@
             autocomplete="off"
           />
 
+          <!-- The meal this recipe is for; its fit badge compares it with that meal's share of the daily targets. -->
+          <select id="recipeMealTypeSelect" aria-label="Meal type">
+            <option value="">Meal type (for the fit badge)</option>
+            <option value="breakfast">Breakfast</option>
+            <option value="lunch">Lunch</option>
+            <option value="dinner">Dinner</option>
+            <option value="snack">Snack</option>
+          </select>
+
           <select id="recipeItemSelect">
             <option value="">Select an item</option>
           </select>

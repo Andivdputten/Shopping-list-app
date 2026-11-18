@@ -9,6 +9,14 @@ const plural = (n, one, many) => (n === 1 ? one : many);
 
 const TEXTS = {
   en: {
+    // Fit badge against the daily targets
+    meals: { breakfast: "breakfast", lunch: "lunch", dinner: "dinner", snack: "snack" },
+    fitGood: (meal) => `Good fit for ${meal}`,
+    fitOver: (meal, pct) => `Too much for ${meal} (+${pct}% kcal)`,
+    fitUnder: (meal, pct) => `Too little for ${meal} (−${pct}% kcal)`,
+    highIn: (macro) => `high in ${macro}`,
+    lowIn: (macro) => `low in ${macro}`,
+    setMealType: "Set a meal type to see how it fits your targets",
     fiber: "fibre",
     // "Cook this" dialog
     cookThis: "Cook this",
@@ -73,6 +81,14 @@ const TEXTS = {
   },
 
   nl: {
+    // Fit badge against the daily targets
+    meals: { breakfast: "ontbijt", lunch: "lunch", dinner: "avondeten", snack: "tussendoortje" },
+    fitGood: (meal) => `Past goed bij ${meal}`,
+    fitOver: (meal, pct) => `Te veel voor ${meal} (+${pct}% kcal)`,
+    fitUnder: (meal, pct) => `Te weinig voor ${meal} (−${pct}% kcal)`,
+    highIn: (macro) => `veel ${macro}`,
+    lowIn: (macro) => `weinig ${macro}`,
+    setMealType: "Kies een maaltijdtype om te zien hoe het bij je doelen past",
     fiber: "vezels",
     // "Cook this" dialog
     cookThis: "Dit koken",
@@ -138,6 +154,14 @@ const TEXTS = {
   },
 
   de: {
+    // Fit badge against the daily targets
+    meals: { breakfast: "Frühstück", lunch: "Mittagessen", dinner: "Abendessen", snack: "Snack" },
+    fitGood: (meal) => `Passt gut: ${meal}`,
+    fitOver: (meal, pct) => `Zu viel: ${meal} (+${pct}% kcal)`,
+    fitUnder: (meal, pct) => `Zu wenig: ${meal} (−${pct}% kcal)`,
+    highIn: (macro) => `viel ${macro}`,
+    lowIn: (macro) => `wenig ${macro}`,
+    setMealType: "Wähle eine Mahlzeit, um zu sehen, wie es zu deinen Zielen passt",
     fiber: "Ballaststoffe",
     // "Cook this" dialog
     cookThis: "Das kochen",
@@ -203,6 +227,14 @@ const TEXTS = {
   },
 
   fr: {
+    // Fit badge against the daily targets
+    meals: { breakfast: "petit-déjeuner", lunch: "déjeuner", dinner: "dîner", snack: "en-cas" },
+    fitGood: (meal) => `Convient bien : ${meal}`,
+    fitOver: (meal, pct) => `Trop : ${meal} (+${pct} % kcal)`,
+    fitUnder: (meal, pct) => `Pas assez : ${meal} (−${pct} % kcal)`,
+    highIn: (macro) => `riche en ${macro}`,
+    lowIn: (macro) => `pauvre en ${macro}`,
+    setMealType: "Choisissez un type de repas pour voir s'il correspond à vos objectifs",
     fiber: "fibres",
     // "Cook this" dialog
     cookThis: "Cuisiner",
@@ -270,6 +302,14 @@ const TEXTS = {
   },
 
   es: {
+    // Fit badge against the daily targets
+    meals: { breakfast: "desayuno", lunch: "almuerzo", dinner: "cena", snack: "tentempié" },
+    fitGood: (meal) => `Encaja bien: ${meal}`,
+    fitOver: (meal, pct) => `Demasiado: ${meal} (+${pct}% kcal)`,
+    fitUnder: (meal, pct) => `Poco: ${meal} (−${pct}% kcal)`,
+    highIn: (macro) => `alto en ${macro}`,
+    lowIn: (macro) => `bajo en ${macro}`,
+    setMealType: "Elige un tipo de comida para ver cómo encaja con tus objetivos",
     fiber: "fibra",
     // "Cook this" dialog
     cookThis: "Cocinar esto",

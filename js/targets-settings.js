@@ -3,7 +3,7 @@
 import { saveTargetSettings } from "./persistence.js";
 import { renderSavedRecipes } from "./saved-recipes.js";
 import { state } from "./state.js";
-import { MEAL_TYPES, TARGET_KEYS, calculateTargets, mealSplitTotal } from "./targets.js";
+import { MEAL_TYPES, calculateTargets, mealSplitTotal } from "./targets.js";
 
 const byId = (id) => document.getElementById(id);
 
@@ -107,11 +107,4 @@ export function initTargetsSettings() {
       saveAndRefresh("Meal split saved.");
     });
   });
-}
-
-// For other modules: true when at least one daily target is set.
-export function hasTargets() {
-  return TARGET_KEYS.some(
-    (key) => state.targetSettings && state.targetSettings.targets[key] !== null
-  );
 }

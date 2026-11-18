@@ -15,6 +15,11 @@ export const GOAL_ADJUSTMENTS = { lose: -0.15, keep: 0, gain: 0.1 };
 
 export const MEAL_TYPES = ["breakfast", "lunch", "dinner", "snack"];
 
+// A recipe's meal type if it is one of MEAL_TYPES, otherwise null (e.g. recipes saved before meal types).
+export function normalizeMealType(value) {
+  return MEAL_TYPES.includes(value) ? value : null;
+}
+
 // Share of the day's targets per meal, in percent; must add up to 100.
 export const DEFAULT_MEAL_SPLIT = { breakfast: 25, lunch: 30, dinner: 35, snack: 10 };
 
