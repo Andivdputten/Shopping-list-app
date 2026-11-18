@@ -10,6 +10,7 @@ export const nutritionKcalInput = document.getElementById("nutritionKcalInput");
 export const nutritionProteinInput = document.getElementById("nutritionProteinInput");
 export const nutritionCarbsInput = document.getElementById("nutritionCarbsInput");
 export const nutritionFatInput = document.getElementById("nutritionFatInput");
+export const nutritionFiberInput = document.getElementById("nutritionFiberInput");
 export const nutritionAmountInput = document.getElementById("nutritionAmountInput");
 export const barcodePreview = document.getElementById("barcodePreview");
 export const clearBarcodeButton = document.getElementById("clearBarcodeButton");
@@ -49,6 +50,7 @@ export const recipePerServingTotals = document.getElementById("recipePerServingT
 export const savedRecipesList = document.getElementById("savedRecipesList");
 export const savedRecipesEmptyMessage = document.getElementById("savedRecipesEmptyMessage");
 export const recipeServingLabelInput = document.getElementById("recipeServingLabelInput");
+export const recipeMealTypeSelect = document.getElementById("recipeMealTypeSelect");
 export const recipeInstructionsInput = document.getElementById("recipeInstructionsInput");
 export const customIngredientBlock = document.getElementById("customIngredientBlock");
 export const customIngredientNameInput = document.getElementById("customIngredientNameInput");
@@ -56,6 +58,7 @@ export const customIngredientKcalInput = document.getElementById("customIngredie
 export const customIngredientProteinInput = document.getElementById("customIngredientProteinInput");
 export const customIngredientCarbsInput = document.getElementById("customIngredientCarbsInput");
 export const customIngredientFatInput = document.getElementById("customIngredientFatInput");
+export const customIngredientFiberInput = document.getElementById("customIngredientFiberInput");
 export const recipeBuilderMessage = document.getElementById("recipeBuilderMessage");
 export const recipeMissingNutritionNote = document.getElementById("recipeMissingNutritionNote");
 export const recipeWeightTotals = document.getElementById("recipeWeightTotals");
@@ -106,6 +109,7 @@ export function allElementsPresent() {
     nutritionProteinInput,
     nutritionCarbsInput,
     nutritionFatInput,
+    nutritionFiberInput,
     nutritionAmountInput,
     barcodePreview,
     clearBarcodeButton,
@@ -152,6 +156,7 @@ export function allElementsPresent() {
     stockList,
     stockEmptyMessage,
     recipeServingLabelInput,
+    recipeMealTypeSelect,
     recipeInstructionsInput,
     customIngredientBlock,
     customIngredientNameInput,
@@ -159,6 +164,7 @@ export function allElementsPresent() {
     customIngredientProteinInput,
     customIngredientCarbsInput,
     customIngredientFatInput,
+    customIngredientFiberInput,
     recipeBuilderMessage,
     recipeMissingNutritionNote,
     recipeWeightTotals,

@@ -14,6 +14,7 @@ import {
   clearStockButton,
   customIngredientCarbsInput,
   customIngredientFatInput,
+  customIngredientFiberInput,
   customIngredientKcalInput,
   customIngredientNameInput,
   customIngredientProteinInput,
@@ -22,6 +23,7 @@ import {
   nutritionAmountInput,
   nutritionCarbsInput,
   nutritionFatInput,
+  nutritionFiberInput,
   nutritionKcalInput,
   nutritionProteinInput,
   pantryScanButton,
@@ -81,8 +83,15 @@ import {
   updateQuickAddButtonState
 } from "./shopping-list.js";
 import { state } from "./state.js";
-import { loadBarcodeCache, loadItems, loadRecipes, loadStockItems } from "./storage.js";
+import {
+  loadBarcodeCache,
+  loadItems,
+  loadRecipes,
+  loadStockItems,
+  loadTargetSettings
+} from "./storage.js";
 import { initTabs } from "./tabs.js";
+import { initTargetsSettings } from "./targets-settings.js";
 import { setStatus } from "./ui.js";
 
 // Starts the app: checks the page, loads stored data, renders every tab and wires up the buttons.
@@ -97,6 +106,7 @@ function startApp() {
   state.savedRecipes = loadRecipes();
   state.stockItems = loadStockItems();
   state.barcodeCache = loadBarcodeCache();
+  state.targetSettings = loadTargetSettings();
   renderList();
   updateFormMode();
   updatePendingBarcodeUI();
@@ -104,6 +114,7 @@ function startApp() {
   initApiKeySettings();
   initBackupSettings();
   initRecipeLanguageSetting();
+  initTargetsSettings();
   suggestRecipesButton.addEventListener("click", handleSuggestRecipesClick);
   setStatus("App loaded successfully.");
   renderRecipeItemOptions();
@@ -131,7 +142,8 @@ function startApp() {
     customIngredientKcalInput,
     customIngredientProteinInput,
     customIngredientCarbsInput,
-    customIngredientFatInput
+    customIngredientFatInput,
+    customIngredientFiberInput
   ].forEach((input) => input.addEventListener("keydown", handleEnterToAddIngredient));
   saveRecipeButton.addEventListener("click", saveCurrentRecipe);
   recipeServingsInput.addEventListener("input", renderRecipeBuilder);
@@ -187,6 +199,7 @@ function startApp() {
   nutritionProteinInput.addEventListener("keydown", handleEnterToSubmit);
   nutritionCarbsInput.addEventListener("keydown", handleEnterToSubmit);
   nutritionFatInput.addEventListener("keydown", handleEnterToSubmit);
+  nutritionFiberInput.addEventListener("keydown", handleEnterToSubmit);
   nutritionAmountInput.addEventListener("keydown", handleEnterToSubmit);
 }
 

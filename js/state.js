@@ -23,5 +23,7 @@ export const state = {
   aiToolbar: null,
   editingSavedRecipeIndex: null,
   stockItems: null,
-  barcodeCache: null
+  barcodeCache: null,
+  // Daily targets, body data and meal split; loaded at start-up (see js/targets.js).
+  targetSettings: null
 };

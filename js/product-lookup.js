@@ -150,6 +150,7 @@ export function extractNutritionFromOffProduct(product) {
     kcal100g: pickFirstNumber(nutriments["energy-kcal_100g"], nutriments["energy-kcal"]),
     protein100g: pickFirstNumber(nutriments.proteins_100g),
     carbs100g: pickFirstNumber(nutriments.carbohydrates_100g),
-    fat100g: pickFirstNumber(nutriments.fat_100g)
+    fat100g: pickFirstNumber(nutriments.fat_100g),
+    fiber100g: pickFirstNumber(nutriments.fiber_100g)
   });
 }

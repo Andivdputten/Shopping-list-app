@@ -38,13 +38,15 @@ test("nutrition values of the wrong type are replaced by null", () => {
     kcal100g: 100,
     protein100g: null,
     carbs100g: null,
-    fat100g: null
+    fat100g: null,
+    fiber100g: null
   });
   assert.deepEqual(normalizeNutrition(undefined), {
     kcal100g: null,
     protein100g: null,
     carbs100g: null,
-    fat100g: null
+    fat100g: null,
+    fiber100g: null
   });
 });
 
@@ -53,7 +55,14 @@ test("recipe totals add nutrition per 100 g times grams", () => {
     { grams: 200, nutrition: { kcal100g: 100, protein100g: 10, carbs100g: 20, fat100g: 1 } },
     { grams: 100, nutrition: { kcal100g: 50, protein100g: null, carbs100g: 10, fat100g: 0 } }
   ];
-  assert.deepEqual(sumRecipeNutrition(ingredients), { kcal: 250, protein: 20, carbs: 50, fat: 2 });
+  // No ingredient has fibre data: fibre stays unknown and is left out of the text.
+  assert.deepEqual(sumRecipeNutrition(ingredients), {
+    kcal: 250,
+    protein: 20,
+    carbs: 50,
+    fat: 2,
+    fiber: null
+  });
   assert.equal(
     buildRecipeTotalsSummaryFromIngredients(ingredients),
     "250 kcal · P 20g · C 50g · F 2g"
@@ -83,5 +92,20 @@ test("an ingredient without an amount counts as zero grams instead of breaking t
   assert.equal(
     buildRecipeTotalsSummaryFromIngredients(ingredients),
     "100 kcal · P 1g · C 1g · F 1g"
+  );
+});
+
+test("fibre is added up and shown only when an ingredient has fibre data", () => {
+  const ingredients = [
+    {
+      grams: 200,
+      nutrition: { kcal100g: 100, protein100g: 10, carbs100g: 20, fat100g: 1, fiber100g: 5 }
+    },
+    { grams: 100, nutrition: { kcal100g: 50, protein100g: 0, carbs100g: 10, fat100g: 0 } }
+  ];
+  assert.equal(sumRecipeNutrition(ingredients).fiber, 10);
+  assert.equal(
+    buildRecipeTotalsSummaryFromIngredients(ingredients),
+    "250 kcal · P 20g · C 50g · F 2g · Fib 10g"
   );
 });

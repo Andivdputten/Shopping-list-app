@@ -12,6 +12,7 @@ import {
   nutritionAmountInput,
   nutritionCarbsInput,
   nutritionFatInput,
+  nutritionFiberInput,
   nutritionKcalInput,
   nutritionProteinInput,
   quantityInput,
@@ -227,6 +228,7 @@ export function syncNutritionInputsFromPending() {
   nutritionProteinInput.value = formatNutritionInputValue(nutrition.protein100g);
   nutritionCarbsInput.value = formatNutritionInputValue(nutrition.carbs100g);
   nutritionFatInput.value = formatNutritionInputValue(nutrition.fat100g);
+  nutritionFiberInput.value = formatNutritionInputValue(nutrition.fiber100g);
 }
 
 export function readNutritionFromInputs() {
@@ -234,6 +236,7 @@ export function readNutritionFromInputs() {
     kcal100g: parseOptionalNumberInput(nutritionKcalInput.value),
     protein100g: parseOptionalNumberInput(nutritionProteinInput.value),
     carbs100g: parseOptionalNumberInput(nutritionCarbsInput.value),
-    fat100g: parseOptionalNumberInput(nutritionFatInput.value)
+    fat100g: parseOptionalNumberInput(nutritionFatInput.value),
+    fiber100g: parseOptionalNumberInput(nutritionFiberInput.value)
   });
 }

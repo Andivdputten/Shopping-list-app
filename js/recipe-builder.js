@@ -4,6 +4,7 @@ import {
   customIngredientBlock,
   customIngredientCarbsInput,
   customIngredientFatInput,
+  customIngredientFiberInput,
   customIngredientKcalInput,
   customIngredientNameInput,
   customIngredientProteinInput,
@@ -15,6 +16,7 @@ import {
   recipeIngredientsList,
   recipeInstructionsInput,
   recipeItemSelect,
+  recipeMealTypeSelect,
   recipeMissingNutritionNote,
   recipeNameInput,
   recipePer100gTotals,
@@ -44,6 +46,7 @@ import {
 import { saveRecipes } from "./persistence.js";
 import { renderSavedRecipes } from "./saved-recipes.js";
 import { state } from "./state.js";
+import { normalizeMealType } from "./targets.js";
 import { setStatus, showToast } from "./ui.js";
 
 export function addRecipeOption(parent, value, item) {
@@ -162,7 +165,8 @@ export function addRecipeIngredient() {
       kcal100g: parseOptionalNumberInput(customIngredientKcalInput.value),
       protein100g: parseOptionalNumberInput(customIngredientProteinInput.value),
       carbs100g: parseOptionalNumberInput(customIngredientCarbsInput.value),
-      fat100g: parseOptionalNumberInput(customIngredientFatInput.value)
+      fat100g: parseOptionalNumberInput(customIngredientFatInput.value),
+      fiber100g: parseOptionalNumberInput(customIngredientFiberInput.value)
     });
   } else {
     const [kind, indexText] = selected.split(":");
@@ -193,6 +197,7 @@ export function addRecipeIngredient() {
     customIngredientProteinInput.value = "";
     customIngredientCarbsInput.value = "";
     customIngredientFatInput.value = "";
+    customIngredientFiberInput.value = "";
   }
 
   renderRecipeBuilder();
@@ -337,6 +342,7 @@ export function saveCurrentRecipe() {
     instructions: parseInstructionsText(recipeInstructionsInput.value),
     servings,
     servingLabel: recipeServingLabelInput.value.trim(),
+    mealType: normalizeMealType(recipeMealTypeSelect.value),
     ingredients: state.recipeIngredients.map((ingredient) => {
       return {
         name: ingredient.name,
@@ -413,6 +419,7 @@ export function resetRecipeBuilder() {
   recipeNameInput.value = "";
   recipeServingsInput.value = "1";
   recipeServingLabelInput.value = "";
+  recipeMealTypeSelect.value = "";
   recipeInstructionsInput.value = "";
   recipeItemSelect.value = "";
   recipeGramsInput.value = "";

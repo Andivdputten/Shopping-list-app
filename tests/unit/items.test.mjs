@@ -36,7 +36,13 @@ test("new items get safe defaults for missing or wrongly typed fields", () => {
     category: "",
     note: "",
     barcode: "",
-    nutrition: { kcal100g: null, protein100g: null, carbs100g: null, fat100g: null },
+    nutrition: {
+      kcal100g: null,
+      protein100g: null,
+      carbs100g: null,
+      fat100g: null,
+      fiber100g: null
+    },
     nutritionAmount: null,
     bought: false
   });

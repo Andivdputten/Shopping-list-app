@@ -50,3 +50,13 @@ test("recipes without a name or usable ingredients are rejected", () => {
 test("invalid servings fall back to 1", () => {
   assert.equal(sanitizeRecipe({ ...baseRecipe(), servings: 0 }, "ready").servings, 1);
 });
+
+test("the meal type and estimated fibre come through; unknown values become null", () => {
+  const raw = { ...baseRecipe(), mealType: "lunch" };
+  raw.estimatedMacrosPerServing.fiber = 6;
+  const recipe = sanitizeRecipe(raw, "ready");
+  assert.equal(recipe.mealType, "lunch");
+  assert.equal(recipe.estimatedMacrosPerServing.fiber, 6);
+  assert.equal(sanitizeRecipe({ ...baseRecipe(), mealType: "brunch" }, "ready").mealType, null);
+  assert.equal(sanitizeRecipe(baseRecipe(), "ready").estimatedMacrosPerServing.fiber, null);
+});
