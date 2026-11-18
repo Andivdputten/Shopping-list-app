@@ -222,6 +222,11 @@ test("main flows match the recorded reference", { timeout: 120000 }, async () =>
     );
   const tab = (name) => click(`[data-tab="${name}"]`);
   const settle = () => page.waitForTimeout(150);
+  // Waits until a button is clickable again. The app disables these buttons while a request runs,
+  // so this is the reliable "finished" signal; matching status text was not, because the
+  // in-progress message contains the same words as the result message.
+  const waitUntilEnabled = (id) =>
+    page.waitForFunction((buttonId) => !document.getElementById(buttonId).disabled, id);
   const scan = async (readerId, barcode) => {
     await page.evaluate(({ r, b }) => window.__fakeScan(r, b), { r: readerId, b: barcode });
     await settle();
@@ -378,13 +383,11 @@ test("main flows match the recorded reference", { timeout: 120000 }, async () =>
     await setValue("apiKeyInput", "sk-ant-test");
     await click("#saveApiKeyButton");
     await click("#testApiKeyButton");
-    await settle();
+    await waitUntilEnabled("testApiKeyButton");
     await record("settings test connection");
     await tab("recipes");
     await click("#suggestRecipesButton");
-    await page.waitForFunction(() =>
-      /recipe idea/.test(document.getElementById("aiSuggestStatus").textContent)
-    );
+    await waitUntilEnabled("suggestRecipesButton");
     await record("ai suggestions english");
     await clickButton("aiRecipeResults", "Save recipe");
     await record("ai save one");
@@ -392,9 +395,7 @@ test("main flows match the recorded reference", { timeout: 120000 }, async () =>
     await record("ai add missing");
     await setValue("recipeLanguageSelect", "nl");
     await click("#suggestRecipesButton");
-    await page.waitForFunction(() =>
-      /receptidee/.test(document.getElementById("aiSuggestStatus").textContent)
-    );
+    await waitUntilEnabled("suggestRecipesButton");
     await record("ai suggestions dutch");
     await clickButton("aiRecipeResults", "Alles opslaan (1)");
     await record("ai save all dutch");
