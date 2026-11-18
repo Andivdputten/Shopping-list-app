@@ -3,7 +3,7 @@
 import { saveTargetSettings } from "./persistence.js";
 import { renderSavedRecipes } from "./saved-recipes.js";
 import { state } from "./state.js";
-import { MEAL_TYPES, calculateTargets, mealSplitTotal } from "./targets.js";
+import { MEAL_TYPES, calculateTargets, kcalFromMacros, mealSplitTotal } from "./targets.js";
 
 const byId = (id) => document.getElementById(id);
 
@@ -82,10 +82,21 @@ export function initTargetsSettings() {
     saveAndRefresh(`Targets calculated: ${targets.kcal} kcal per day. Adjust them if you like.`);
   });
 
+  // kcal is read-only: changing protein, carbs or fat recalculates it (x 4, x 4, x 9).
   Object.entries(TARGET_FIELDS).forEach(([key, id]) => {
+    if (key === "kcal") {
+      return;
+    }
     byId(id).addEventListener("change", () => {
-      state.targetSettings.targets[key] = readNumber(id);
-      saveAndRefresh("Targets saved.");
+      const targets = state.targetSettings.targets;
+      targets[key] = readNumber(id);
+      targets.kcal = kcalFromMacros(targets);
+      fillForm();
+      saveAndRefresh(
+        targets.kcal === null
+          ? "Targets saved. Set protein, carbs and fat to get a kcal target."
+          : `Targets saved: ${targets.kcal} kcal per day.`
+      );
     });
   });
 

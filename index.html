@@ -544,9 +544,10 @@
           </p>
 
           <h3>Targets per day</h3>
+          <p class="hint-text">kcal follows from your macros: protein × 4 + carbs × 4 + fat × 9.</p>
           <div class="target-grid">
-            <label class="field-label" for="targetKcalInput">kcal</label>
-            <input id="targetKcalInput" type="number" inputmode="decimal" min="0" step="any" />
+            <label class="field-label" for="targetKcalInput">kcal (calculated)</label>
+            <input id="targetKcalInput" type="number" readonly tabindex="-1" aria-readonly="true" class="calculated-input" />
             <label class="field-label" for="targetProteinInput">Protein (g)</label>
             <input id="targetProteinInput" type="number" inputmode="decimal" min="0" step="any" />
             <label class="field-label" for="targetCarbsInput">Carbs (g)</label>
