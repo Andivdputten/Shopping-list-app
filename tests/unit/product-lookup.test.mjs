@@ -29,7 +29,8 @@ test("a found product is converted to the app's format", async () => {
         "energy-kcal_100g": 46,
         proteins_100g: 3.5,
         carbohydrates_100g: 4.8,
-        fat_100g: 1.5
+        fat_100g: 1.5,
+        fiber_100g: 0.2
       }
     }
   });
@@ -40,7 +41,8 @@ test("a found product is converted to the app's format", async () => {
     kcal100g: 46,
     protein100g: 3.5,
     carbs100g: 4.8,
-    fat100g: 1.5
+    fat100g: 1.5,
+    fiber100g: 0.2
   });
 });
 

@@ -66,6 +66,14 @@ export function renderMacroStatBlock(itemArray, chartEl, legendEl, coverageEl) {
     legendEl.appendChild(rowEl);
   });
 
+  // Fibre has no calories, so it is listed in grams under the chart rather than as a slice.
+  if (totals.fiber !== null) {
+    const fiberRow = document.createElement("div");
+    fiberRow.className = "macro-legend-row";
+    fiberRow.textContent = `Fibre ${round1(totals.fiber)}g`;
+    legendEl.appendChild(fiberRow);
+  }
+
   coverageEl.textContent = `Based on ${includedCount} of ${totalCount} item${totalCount === 1 ? "" : "s"} with known amount and nutrition data.`;
 }
 

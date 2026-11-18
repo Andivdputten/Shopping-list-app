@@ -14,6 +14,7 @@ import {
   clearStockButton,
   customIngredientCarbsInput,
   customIngredientFatInput,
+  customIngredientFiberInput,
   customIngredientKcalInput,
   customIngredientNameInput,
   customIngredientProteinInput,
@@ -22,6 +23,7 @@ import {
   nutritionAmountInput,
   nutritionCarbsInput,
   nutritionFatInput,
+  nutritionFiberInput,
   nutritionKcalInput,
   nutritionProteinInput,
   pantryScanButton,
@@ -131,7 +133,8 @@ function startApp() {
     customIngredientKcalInput,
     customIngredientProteinInput,
     customIngredientCarbsInput,
-    customIngredientFatInput
+    customIngredientFatInput,
+    customIngredientFiberInput
   ].forEach((input) => input.addEventListener("keydown", handleEnterToAddIngredient));
   saveRecipeButton.addEventListener("click", saveCurrentRecipe);
   recipeServingsInput.addEventListener("input", renderRecipeBuilder);
@@ -187,6 +190,7 @@ function startApp() {
   nutritionProteinInput.addEventListener("keydown", handleEnterToSubmit);
   nutritionCarbsInput.addEventListener("keydown", handleEnterToSubmit);
   nutritionFatInput.addEventListener("keydown", handleEnterToSubmit);
+  nutritionFiberInput.addEventListener("keydown", handleEnterToSubmit);
   nutritionAmountInput.addEventListener("keydown", handleEnterToSubmit);
 }
 

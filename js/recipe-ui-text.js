@@ -9,6 +9,7 @@ const plural = (n, one, many) => (n === 1 ? one : many);
 
 const TEXTS = {
   en: {
+    fiber: "fibre",
     // "Cook this" dialog
     cookThis: "Cook this",
     cookTitle: (name) => `Cook ${name}`,
@@ -72,6 +73,7 @@ const TEXTS = {
   },
 
   nl: {
+    fiber: "vezels",
     // "Cook this" dialog
     cookThis: "Dit koken",
     cookTitle: (name) => `${name} koken`,
@@ -136,6 +138,7 @@ const TEXTS = {
   },
 
   de: {
+    fiber: "Ballaststoffe",
     // "Cook this" dialog
     cookThis: "Das kochen",
     cookTitle: (name) => `${name} kochen`,
@@ -200,6 +203,7 @@ const TEXTS = {
   },
 
   fr: {
+    fiber: "fibres",
     // "Cook this" dialog
     cookThis: "Cuisiner",
     cookTitle: (name) => `Cuisiner ${name}`,
@@ -266,6 +270,7 @@ const TEXTS = {
   },
 
   es: {
+    fiber: "fibra",
     // "Cook this" dialog
     cookThis: "Cocinar esto",
     cookTitle: (name) => `Cocinar ${name}`,

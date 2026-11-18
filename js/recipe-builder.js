@@ -4,6 +4,7 @@ import {
   customIngredientBlock,
   customIngredientCarbsInput,
   customIngredientFatInput,
+  customIngredientFiberInput,
   customIngredientKcalInput,
   customIngredientNameInput,
   customIngredientProteinInput,
@@ -162,7 +163,8 @@ export function addRecipeIngredient() {
       kcal100g: parseOptionalNumberInput(customIngredientKcalInput.value),
       protein100g: parseOptionalNumberInput(customIngredientProteinInput.value),
       carbs100g: parseOptionalNumberInput(customIngredientCarbsInput.value),
-      fat100g: parseOptionalNumberInput(customIngredientFatInput.value)
+      fat100g: parseOptionalNumberInput(customIngredientFatInput.value),
+      fiber100g: parseOptionalNumberInput(customIngredientFiberInput.value)
     });
   } else {
     const [kind, indexText] = selected.split(":");
@@ -193,6 +195,7 @@ export function addRecipeIngredient() {
     customIngredientProteinInput.value = "";
     customIngredientCarbsInput.value = "";
     customIngredientFatInput.value = "";
+    customIngredientFiberInput.value = "";
   }
 
   renderRecipeBuilder();

@@ -9,7 +9,8 @@ export function hasUsableNutrition(nutrition) {
     typeof nutrition.kcal100g === "number" ||
     typeof nutrition.protein100g === "number" ||
     typeof nutrition.carbs100g === "number" ||
-    typeof nutrition.fat100g === "number"
+    typeof nutrition.fat100g === "number" ||
+    typeof nutrition.fiber100g === "number"
   );
 }
 
@@ -18,7 +19,9 @@ export function createEmptyNutrition() {
     kcal100g: null,
     protein100g: null,
     carbs100g: null,
-    fat100g: null
+    fat100g: null,
+    // Fibre per 100 g; null (unknown) for data saved before fibre was tracked.
+    fiber100g: null
   };
 }
 
@@ -31,7 +34,8 @@ export function normalizeNutrition(value) {
     kcal100g: normalizeNutritionNumber(value.kcal100g),
     protein100g: normalizeNutritionNumber(value.protein100g),
     carbs100g: normalizeNutritionNumber(value.carbs100g),
-    fat100g: normalizeNutritionNumber(value.fat100g)
+    fat100g: normalizeNutritionNumber(value.fat100g),
+    fiber100g: normalizeNutritionNumber(value.fiber100g)
   };
 }
 
@@ -50,14 +54,16 @@ export function hasAnyNutrition(nutrition) {
     data.kcal100g !== null ||
     data.protein100g !== null ||
     data.carbs100g !== null ||
-    data.fat100g !== null
+    data.fat100g !== null ||
+    data.fiber100g !== null
   );
 }
 
 // Adds up kcal and macros over a recipe's ingredients (nutrition per 100 g times grams).
 // Returns null when no ingredient has any nutrition data, so callers can show nothing instead of zeros.
+// fiber stays null when no ingredient has fibre data, so "0 g fibre" is never shown for unknown fibre.
 export function sumRecipeNutrition(ingredients) {
-  const totals = { kcal: 0, protein: 0, carbs: 0, fat: 0 };
+  const totals = { kcal: 0, protein: 0, carbs: 0, fat: 0, fiber: null };
   let hasAny = false;
 
   ingredients.forEach((ingredient) => {
@@ -68,10 +74,11 @@ export function sumRecipeNutrition(ingredients) {
       ["kcal", nutrition.kcal100g],
       ["protein", nutrition.protein100g],
       ["carbs", nutrition.carbs100g],
-      ["fat", nutrition.fat100g]
+      ["fat", nutrition.fat100g],
+      ["fiber", nutrition.fiber100g]
     ].forEach(([key, per100g]) => {
       if (per100g !== null) {
-        totals[key] += per100g * factor;
+        totals[key] = (totals[key] || 0) + per100g * factor;
         hasAny = true;
       }
     });
@@ -80,14 +87,16 @@ export function sumRecipeNutrition(ingredients) {
   return hasAny ? totals : null;
 }
 
-// Formats totals as "955 kcal · P 35.5g · C 174g · F 7.3g", each value multiplied by scale first.
+// Formats totals as "955 kcal · P 35.5g · C 174g · F 7.3g · Fib 12g", each value multiplied by scale first.
+// Fibre is left out when it is unknown.
 // One formatter for the recipe total, per-serving and per-100 g lines, so they always look the same.
 function formatMacroLine(totals, scale) {
   return (
     `${formatNutritionValue(totals.kcal * scale)} kcal · ` +
     `P ${formatNutritionValue(totals.protein * scale)}g · ` +
     `C ${formatNutritionValue(totals.carbs * scale)}g · ` +
-    `F ${formatNutritionValue(totals.fat * scale)}g`
+    `F ${formatNutritionValue(totals.fat * scale)}g` +
+    (totals.fiber !== null ? ` · Fib ${formatNutritionValue(totals.fiber * scale)}g` : "")
   );
 }
 
@@ -186,7 +195,8 @@ export function estimateItemGrams(item) {
 }
 
 export function calculateMacroTotals(itemArray) {
-  const totals = { kcal: 0, protein: 0, carbs: 0, fat: 0 };
+  // fiber stays null until a counted item has fibre data.
+  const totals = { kcal: 0, protein: 0, carbs: 0, fat: 0, fiber: null };
   let includedCount = 0;
 
   itemArray.forEach((item) => {
@@ -196,7 +206,8 @@ export function calculateMacroTotals(itemArray) {
       (typeof nutrition.kcal100g === "number" ||
         typeof nutrition.protein100g === "number" ||
         typeof nutrition.carbs100g === "number" ||
-        typeof nutrition.fat100g === "number");
+        typeof nutrition.fat100g === "number" ||
+        typeof nutrition.fiber100g === "number");
 
     if (!hasAnyNutrition) {
       return;
@@ -212,6 +223,9 @@ export function calculateMacroTotals(itemArray) {
     totals.protein += (nutrition.protein100g || 0) * factor;
     totals.carbs += (nutrition.carbs100g || 0) * factor;
     totals.fat += (nutrition.fat100g || 0) * factor;
+    if (typeof nutrition.fiber100g === "number") {
+      totals.fiber = (totals.fiber || 0) + nutrition.fiber100g * factor;
+    }
     includedCount++;
   });
 

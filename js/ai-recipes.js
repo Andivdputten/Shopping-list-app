@@ -83,9 +83,13 @@ export function computeRecipeMacros(recipe, matchedIngredients) {
         acc.protein += (n.protein100g || 0) * factor;
         acc.carbs += (n.carbs100g || 0) * factor;
         acc.fat += (n.fat100g || 0) * factor;
+        // Fibre only counts when the pantry item has it; otherwise it stays unknown (null).
+        if (typeof n.fiber100g === "number") {
+          acc.fiber = (acc.fiber || 0) + n.fiber100g * factor;
+        }
         return acc;
       },
-      { kcal: 0, protein: 0, carbs: 0, fat: 0 }
+      { kcal: 0, protein: 0, carbs: 0, fat: 0, fiber: null }
     );
 
     const servings = recipe.servings > 0 ? recipe.servings : 1;
@@ -95,7 +99,8 @@ export function computeRecipeMacros(recipe, matchedIngredients) {
         kcal: Math.round(totals.kcal / servings),
         protein: Math.round((totals.protein / servings) * 10) / 10,
         carbs: Math.round((totals.carbs / servings) * 10) / 10,
-        fat: Math.round((totals.fat / servings) * 10) / 10
+        fat: Math.round((totals.fat / servings) * 10) / 10,
+        fiber: totals.fiber === null ? null : Math.round((totals.fiber / servings) * 10) / 10
       }
     };
   }
@@ -121,6 +126,7 @@ export function macroPillsHtml(macros) {
   if (macros.protein !== null) parts.push(`${macros.protein}g ${t.protein}`);
   if (macros.carbs !== null) parts.push(`${macros.carbs}g ${t.carbs}`);
   if (macros.fat !== null) parts.push(`${macros.fat}g ${t.fat}`);
+  if (typeof macros.fiber === "number") parts.push(`${macros.fiber}g ${t.fiber}`);
   return parts;
 }
 

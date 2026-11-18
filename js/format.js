@@ -45,6 +45,10 @@ export function formatNutritionSummary(nutrition) {
     parts.push(`F ${formatNutritionValue(data.fat100g)}g`);
   }
 
+  if (data.fiber100g !== null) {
+    parts.push(`Fib ${formatNutritionValue(data.fiber100g)}g`);
+  }
+
   if (parts.length === 0) {
     return "";
   }
@@ -148,6 +152,10 @@ export function formatNutritionTotalSummary(nutrition, amountGrams) {
 
   if (data.fat100g !== null) {
     parts.push(`F ${formatNutritionValue(data.fat100g * factor)}g`);
+  }
+
+  if (data.fiber100g !== null) {
+    parts.push(`Fib ${formatNutritionValue(data.fiber100g * factor)}g`);
   }
 
   if (parts.length === 0) {
