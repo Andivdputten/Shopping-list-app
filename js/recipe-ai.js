@@ -319,7 +319,8 @@ const RECIPE_LANGUAGES = {
   nl: "Dutch",
   de: "German",
   fr: "French",
-  es: "Spanish"
+  es: "Spanish",
+  pt: "Brazilian Portuguese"
 };
 
 // JSON Schema for structured outputs: the API guarantees the response matches this shape exactly.

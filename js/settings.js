@@ -112,7 +112,8 @@ export function initRecipeLanguageSetting() {
     nl: "Nederlands",
     de: "Deutsch",
     fr: "Français",
-    es: "Español"
+    es: "Español",
+    pt: "Português (Brasil)"
   };
   Object.keys(RecipeAI.recipeLanguages).forEach((code) => {
     const option = document.createElement("option");
