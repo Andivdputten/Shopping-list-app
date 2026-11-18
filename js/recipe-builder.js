@@ -121,6 +121,15 @@ export function setRecipeStatus(message) {
   setStatus(message);
 }
 
+// Enter in an ingredient field adds the ingredient, just like the "Add ingredient" button.
+// Previously these fields shared the Scanner tab's handler and submitted the shopping-list form instead.
+export function handleEnterToAddIngredient(event) {
+  if (event.key === "Enter") {
+    event.preventDefault();
+    addRecipeIngredient();
+  }
+}
+
 export function addRecipeIngredient() {
   const selected = recipeItemSelect.value;
   const grams = parseOptionalNumberInput(recipeGramsInput.value);
