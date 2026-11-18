@@ -1,0 +1,8 @@
+# Third-party code is kept byte-for-byte as published.
+vendor/
+# The recorded test reference is generated; its exact layout is not hand-edited.
+tests/e2e/flows.snapshot.json
+# Left alone so formatting can't change whitespace that is visible on the page.
+index.html
+node_modules/
+package-lock.json

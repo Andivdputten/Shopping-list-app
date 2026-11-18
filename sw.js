@@ -1,7 +1,7 @@
 // Bump this version on every release. It is required whenever a cache-first file
 // (icons, manifest.json, vendor/) changes, because returning users otherwise keep the old copy;
 // bumping also deletes old caches. Network-first core files (see CORE_FILES) update without it.
-const CACHE_VERSION = "v21";
+const CACHE_VERSION = "v22";
 const CACHE_NAME = `grocery-scanner-${CACHE_VERSION}`;
 
 // Core app files: these change often during development. They're fetched
@@ -9,7 +9,37 @@ const CACHE_NAME = `grocery-scanner-${CACHE_VERSION}`;
 // can never get stuck serving a stale copy just because it happened to be
 // cached once — the cache here is purely an offline fallback, not a source
 // of truth while online.
-const CORE_FILES = ["./", "./index.html", "./app.js", "./ai.js", "./sw-register.js", "./recipe-ui-text.js", "./style.css"];
+const CORE_FILES = [
+  "./",
+  "./index.html",
+  "./sw-register.js",
+  "./style.css",
+  "./js/ai-recipes.js",
+  "./js/camera.js",
+  "./js/constants.js",
+  "./js/dom.js",
+  "./js/format.js",
+  "./js/item-form.js",
+  "./js/items.js",
+  "./js/main.js",
+  "./js/nutrition.js",
+  "./js/pantry-scanner.js",
+  "./js/pantry.js",
+  "./js/persistence.js",
+  "./js/product-lookup.js",
+  "./js/recipe-ai.js",
+  "./js/recipe-builder.js",
+  "./js/recipe-ui-text.js",
+  "./js/saved-recipes.js",
+  "./js/scanner.js",
+  "./js/settings.js",
+  "./js/shopping-list.js",
+  "./js/state.js",
+  "./js/statistics.js",
+  "./js/storage.js",
+  "./js/tabs.js",
+  "./js/ui.js"
+];
 
 // Static assets: these essentially never change once created, so caching
 // them aggressively (cache-first) is safe and saves a network round trip.
@@ -32,9 +62,7 @@ self.addEventListener("install", (event) => {
     caches.open(CACHE_NAME).then((cache) => {
       // Use allSettled instead of addAll so one failed resource
       // (e.g. offline during install) doesn't block the whole install.
-      return Promise.allSettled(
-        APP_SHELL.map((url) => cache.add(url))
-      );
+      return Promise.allSettled(APP_SHELL.map((url) => cache.add(url)));
     })
   );
   self.skipWaiting();
@@ -42,13 +70,11 @@ self.addEventListener("install", (event) => {
 
 self.addEventListener("activate", (event) => {
   event.waitUntil(
-    caches.keys().then((keys) =>
-      Promise.all(
-        keys
-          .filter((key) => key !== CACHE_NAME)
-          .map((key) => caches.delete(key))
+    caches
+      .keys()
+      .then((keys) =>
+        Promise.all(keys.filter((key) => key !== CACHE_NAME).map((key) => caches.delete(key)))
       )
-    )
   );
   self.clients.claim();
 });
@@ -60,12 +86,9 @@ self.addEventListener("message", (event) => {
 });
 
 function isCoreFile(url) {
-  if (url.pathname.endsWith("/app.js")) return true;
-  if (url.pathname.endsWith("/ai.js")) return true;
-  // Treated as a core file because it was inline in index.html and should update just as promptly.
-  if (url.pathname.endsWith("/sw-register.js")) return true;
-  // Translation texts change along with app.js, so they are fetched network-first too.
-  if (url.pathname.endsWith("/recipe-ui-text.js")) return true;
+  // All of the app's own scripts (including the js/ modules) change together, so they are all network-first.
+  // Third-party code in vendor/ never changes for a given version and stays cache-first.
+  if (url.pathname.endsWith(".js") && !url.pathname.includes("/vendor/")) return true;
   if (url.pathname.endsWith("/style.css")) return true;
   if (url.pathname.endsWith("/index.html")) return true;
   // "./" and any path ending in "/" resolve to index.html on GitHub Pages.
@@ -122,5 +145,5 @@ self.addEventListener("fetch", (event) => {
   }
 
   // Cross-origin requests (Open Food Facts, the AI API) pass straight to the network without caching.
-  // app.js already keeps its own bounded barcode cache, so caching them here only grew Cache Storage without limit.
+  // js/persistence.js already keeps its own bounded barcode cache, so caching them here only grew Cache Storage without limit.
 });

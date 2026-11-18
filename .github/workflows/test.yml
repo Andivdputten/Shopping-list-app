@@ -1,0 +1,23 @@
+# Runs the formatting check, unit tests and end-to-end tests on every pull request and on main,
+# so a change that breaks a flow is caught before it is merged and deployed.
+name: Tests
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      # Downloads the browser the end-to-end tests drive.
+      - run: npx playwright install --with-deps chromium
+      - run: npm run format:check
+      - run: npm test
