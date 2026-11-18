@@ -25,5 +25,8 @@ export const state = {
   stockItems: null,
   barcodeCache: null,
   // Daily targets, body data and meal split; loaded at start-up (see js/targets.js).
-  targetSettings: null
+  targetSettings: null,
+  // The intake log, loaded at start-up, and the day the Today tab shows ("YYYY-MM-DD").
+  intakeLog: null,
+  todayDate: null
 };

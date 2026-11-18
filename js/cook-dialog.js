@@ -3,11 +3,13 @@
 import { aiText } from "./ai-recipes.js";
 import { applyCooking, planCooking } from "./cooking.js";
 import { cookDialog } from "./dom.js";
+import { perServingFromRecipe } from "./intake.js";
 import { createShoppingItem, normalizeIngredientName } from "./items.js";
 import { renderStockList } from "./pantry.js";
 import { saveItems, saveStockItems } from "./persistence.js";
 import { renderList } from "./shopping-list.js";
 import { state } from "./state.js";
+import { defaultMeal, logDateForNewEntry, logEntry, removeEntry } from "./today.js";
 import { showToast } from "./ui.js";
 
 // Pantry amounts with up to 2 decimals, so "0.15 l" isn't shown as "0.2 l".
@@ -48,6 +50,18 @@ export function openCookDialog(recipe) {
   servingsInput.id = "cookServingsInput";
   servingsLabel.append(t.servingsCooked, servingsInput);
   cookDialog.appendChild(servingsLabel);
+
+  // How much of it you ate now; logged on the Today tab (0 = don't log, e.g. when cooking ahead).
+  const eatenLabel = element("label", "cook-servings");
+  const eatenInput = element("input");
+  eatenInput.type = "number";
+  eatenInput.inputMode = "decimal";
+  eatenInput.min = "0";
+  eatenInput.step = "any";
+  eatenInput.value = "1";
+  eatenInput.id = "cookEatenInput";
+  eatenLabel.append(t.servingsEaten, eatenInput);
+  cookDialog.appendChild(eatenLabel);
 
   // One row per ingredient: tick box, name (and the pantry item it comes from), amount box and a note.
   const list = element("ul", "cook-lines");
@@ -149,7 +163,7 @@ export function openCookDialog(recipe) {
       .filter(({ row }) => row.checkbox.checked && Number(row.input.value) > 0)
       .map(({ line, row }) => ({ stockIndex: line.stockIndex, amount: Number(row.input.value) }));
     cookDialog.close();
-    cook(recipe.name, deductions, addToList.checked);
+    cook(recipe, deductions, addToList.checked, Number(eatenInput.value) || 0);
   });
   actions.append(cancelButton, confirmButton);
   cookDialog.appendChild(actions);
@@ -157,14 +171,14 @@ export function openCookDialog(recipe) {
   cookDialog.showModal();
 }
 
-// Deducts the confirmed amounts, optionally puts used-up items on the shopping list, and offers Undo.
-function cook(recipeName, deductions, addUsedUpToList) {
-  const t = aiText();
+// Takes the confirmed amounts ({ stockIndex, amount }) out of the pantry; used-up items leave the pantry
+// and, if asked, go on the shopping list once. Returns a function that undoes exactly this.
+// Shared by "Cook this" and logging a product from the pantry.
+export function takeFromPantry(deductions, addUsedUpToList) {
   const stockBefore = state.stockItems;
   const { stockItems, usedUp } = applyCooking(stockBefore, deductions);
   state.stockItems = stockItems;
 
-  // Used-up items go on the list once; an item already on it isn't added twice.
   const added = [];
   if (addUsedUpToList) {
     usedUp.forEach((item) => {
@@ -178,16 +192,46 @@ function cook(recipeName, deductions, addUsedUpToList) {
       }
     });
   }
-
   saveAndRender();
-  showToast(t.cooked(recipeName), {
+
+  return () => {
+    state.stockItems = stockBefore;
+    state.items = state.items.filter((item) => !added.includes(item));
+    saveAndRender();
+  };
+}
+
+// Cooks: takes the amounts from the pantry, logs the servings eaten (if any) and offers one Undo for both.
+function cook(recipe, deductions, addUsedUpToList, servingsEaten) {
+  const t = aiText();
+  const undoPantry = takeFromPantry(deductions, addUsedUpToList);
+
+  // Logged silently so the "Cooked" pop-up with its Undo stays visible.
+  let entry = null;
+  if (servingsEaten > 0) {
+    entry = logEntry(
+      {
+        date: logDateForNewEntry(false),
+        meal: defaultMeal(recipe.mealType),
+        name: recipe.name,
+        source: "recipe",
+        unit: "serving",
+        quantity: servingsEaten,
+        ...perServingFromRecipe(recipe, recipe.estimatedMacrosPerServing)
+      },
+      { silent: true }
+    );
+  }
+
+  showToast(t.cooked(recipe.name), {
     label: t.undo,
     durationMs: 10000,
-    // Puts the pantry back exactly as it was and takes back the shopping-list items this added.
+    // Puts the pantry back, takes back the shopping-list items, and removes the log entry.
     onClick: () => {
-      state.stockItems = stockBefore;
-      state.items = state.items.filter((item) => !added.includes(item));
-      saveAndRender();
+      undoPantry();
+      if (entry) {
+        removeEntry(entry);
+      }
       showToast(t.undone);
     }
   });

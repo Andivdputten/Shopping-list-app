@@ -36,6 +36,7 @@ import {
 } from "./recipe-builder.js";
 import { state } from "./state.js";
 import { switchTab } from "./tabs.js";
+import { openAteRecipe } from "./today.js";
 
 export const expandedSavedRecipes = new Set();
 
@@ -207,7 +208,16 @@ export function renderSavedRecipes() {
       openCookDialog(recipe);
     });
 
+    // Logs a serving of this recipe as eaten today, without changing the pantry.
+    const ateButton = document.createElement("button");
+    ateButton.className = "edit-button";
+    ateButton.textContent = aiText().ateThis;
+    ateButton.addEventListener("click", () => {
+      openAteRecipe(recipe);
+    });
+
     actions.appendChild(cookButton);
+    actions.appendChild(ateButton);
     actions.appendChild(viewButton);
     actions.appendChild(loadButton);
     actions.appendChild(deleteRecipeButton);

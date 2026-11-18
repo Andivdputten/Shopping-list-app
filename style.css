@@ -908,3 +908,118 @@ button:disabled {
 .fit-hint {
   color: var(--ink-soft);
 }
+
+/* ================= Today tab ================= */
+
+.today-date-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.today-date-row input {
+  flex: 1;
+  min-width: 0;
+}
+
+.today-date-row .secondary-button {
+  flex: 0 0 auto;
+  padding-left: 14px;
+  padding-right: 14px;
+}
+
+.progress-row {
+  margin: 10px 0;
+}
+
+.progress-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  margin-bottom: 4px;
+}
+
+.progress-label span:last-child {
+  color: var(--ink-soft);
+}
+
+.progress-bar {
+  height: 8px;
+  border-radius: 999px;
+  background: var(--border);
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  border-radius: 999px;
+  background: var(--brand);
+}
+
+/* Over target: amber, so it stands out without looking like an error. */
+.progress-fill.over {
+  background: #d97706;
+}
+
+.log-status-partial,
+.log-status-unknown {
+  color: #b45309;
+}
+
+/* Week chart: one series in the brand colour; grid, axis and target line stay recessive. */
+.week-chart {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.week-bar {
+  fill: var(--brand);
+}
+
+.week-hit {
+  fill: transparent;
+}
+
+.week-day:hover .week-bar {
+  fill: var(--brand-dark);
+}
+
+.week-axis {
+  stroke: var(--border);
+  stroke-width: 1;
+}
+
+.week-target {
+  stroke: var(--ink-soft);
+  stroke-width: 1.5;
+  stroke-dasharray: 4 4;
+}
+
+.week-label,
+.week-target-label {
+  font-size: 10px;
+  fill: var(--ink-soft);
+}
+
+.week-label-shown {
+  fill: var(--ink);
+  font-weight: 700;
+}
+
+.week-value {
+  font-size: 11px;
+  font-weight: 700;
+  fill: var(--ink);
+}
+
+/* Visible to screen readers only. */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
