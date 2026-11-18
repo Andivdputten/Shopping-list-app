@@ -4,6 +4,7 @@ import { saveTargetSettings } from "./persistence.js";
 import { renderSavedRecipes } from "./saved-recipes.js";
 import { state } from "./state.js";
 import { MEAL_TYPES, calculateTargets, kcalFromMacros, mealSplitTotal } from "./targets.js";
+import { renderToday } from "./today.js";
 
 const byId = (id) => document.getElementById(id);
 
@@ -49,10 +50,11 @@ function fillForm() {
   });
 }
 
-// Saves and refreshes the saved recipes, whose fit badges depend on the targets.
+// Saves and refreshes what depends on the targets: the saved recipes' fit badges and the Today tab.
 function saveAndRefresh(message) {
   saveTargetSettings();
   renderSavedRecipes();
+  renderToday();
   byId("targetsStatus").textContent = message;
 }
 
