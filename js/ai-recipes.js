@@ -277,7 +277,11 @@ export function renderAiRecipes(recipes) {
       if (!saveButton.disabled) {
         saveAiRecipes([entry]);
       }
-      openCookDialog(buildSavedRecipeData(recipe, matchedIngredients));
+      // The AI's estimate goes along so logging what you ate has values when ingredients have no data.
+      openCookDialog({
+        ...buildSavedRecipeData(recipe, matchedIngredients),
+        estimatedMacrosPerServing: recipe.estimatedMacrosPerServing
+      });
     });
     actions.appendChild(cookButton);
 

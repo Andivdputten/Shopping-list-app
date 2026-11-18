@@ -9,6 +9,9 @@ const plural = (n, one, many) => (n === 1 ? one : many);
 
 const TEXTS = {
   en: {
+    // Logging what you ate
+    servingsEaten: "Servings you ate (0 = don't log)",
+    ateThis: "Ate this",
     // Fit badge against the daily targets
     meals: { breakfast: "breakfast", lunch: "lunch", dinner: "dinner", snack: "snack" },
     fitGood: (meal) => `Good fit for ${meal}`,
@@ -81,6 +84,9 @@ const TEXTS = {
   },
 
   nl: {
+    // Logging what you ate
+    servingsEaten: "Porties die je hebt gegeten (0 = niet loggen)",
+    ateThis: "Gegeten",
     // Fit badge against the daily targets
     meals: { breakfast: "ontbijt", lunch: "lunch", dinner: "avondeten", snack: "tussendoortje" },
     fitGood: (meal) => `Past goed bij ${meal}`,
@@ -154,6 +160,9 @@ const TEXTS = {
   },
 
   de: {
+    // Logging what you ate
+    servingsEaten: "Gegessene Portionen (0 = nicht eintragen)",
+    ateThis: "Gegessen",
     // Fit badge against the daily targets
     meals: { breakfast: "Frühstück", lunch: "Mittagessen", dinner: "Abendessen", snack: "Snack" },
     fitGood: (meal) => `Passt gut: ${meal}`,
@@ -227,6 +236,9 @@ const TEXTS = {
   },
 
   fr: {
+    // Logging what you ate
+    servingsEaten: "Portions mangées (0 = ne pas enregistrer)",
+    ateThis: "Mangé",
     // Fit badge against the daily targets
     meals: { breakfast: "petit-déjeuner", lunch: "déjeuner", dinner: "dîner", snack: "en-cas" },
     fitGood: (meal) => `Convient bien : ${meal}`,
@@ -302,6 +314,9 @@ const TEXTS = {
   },
 
   es: {
+    // Logging what you ate
+    servingsEaten: "Raciones que comiste (0 = no registrar)",
+    ateThis: "Lo comí",
     // Fit badge against the daily targets
     meals: { breakfast: "desayuno", lunch: "almuerzo", dinner: "cena", snack: "tentempié" },
     fitGood: (meal) => `Encaja bien: ${meal}`,
@@ -376,6 +391,9 @@ const TEXTS = {
       " Esta vez ninguna receta necesitaba ingredientes extra. Toca de nuevo para más variedad."
   },
   pt: {
+    // Logging what you ate
+    servingsEaten: "Porções que você comeu (0 = não registrar)",
+    ateThis: "Comi",
     // Fit badge against the daily targets
     meals: { breakfast: "café da manhã", lunch: "almoço", dinner: "jantar", snack: "lanche" },
     fitGood: (meal) => `Combina bem com o ${meal}`,

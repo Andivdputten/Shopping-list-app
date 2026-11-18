@@ -8,6 +8,7 @@ import {
   entryNutrition,
   mealForTime,
   mealKcal,
+  perServingFromRecipe,
   shiftDate
 } from "./intake.js";
 import { saveIntakeLog } from "./persistence.js";
@@ -118,14 +119,24 @@ export function defaultMeal(mealType) {
   return MEAL_TYPES.includes(mealType) ? mealType : mealForTime(new Date());
 }
 
-// Adds an entry to the log for `date`, saves, refreshes the Today tab and confirms with a pop-up.
-export function logEntry(fields) {
+// Adds an entry to the log, saves and refreshes the Today tab; confirms with a pop-up unless silent
+// (when the caller shows its own pop-up, e.g. "Cooked" with Undo).
+export function logEntry(fields, options = {}) {
   const entry = createEntry({ time: timeNow(), ...fields });
   state.intakeLog.push(entry);
   saveIntakeLog();
   renderToday();
-  showToast(`Logged ${entry.name}`);
+  if (!options.silent) {
+    showToast(`Logged ${entry.name}`);
+  }
   return entry;
+}
+
+// Removes an entry (used by Undo after cooking).
+export function removeEntry(entry) {
+  state.intakeLog = state.intakeLog.filter((item) => item !== entry);
+  saveIntakeLog();
+  renderToday();
 }
 
 // The date new entries go to: the day shown on the Today tab when that tab is open, otherwise today.
@@ -337,6 +348,41 @@ function deleteEntry(entry) {
       saveIntakeLog();
       renderToday();
     }
+  });
+}
+
+// ----- A saved recipe -----
+
+// "Ate this" on a saved recipe: how many servings, which meal; logged on today.
+export function openAteRecipe(recipe) {
+  const { body, addActions } = openLogDialog(`Ate ${recipe.name}`);
+  const servings = addField(body, "Servings eaten", numberInput(1), "logQuantityInput");
+  const meal = addField(body, "Meal", mealSelect(defaultMeal(recipe.mealType)), "logMealSelect");
+  const nutrition = perServingFromRecipe(recipe);
+  if (nutrition.status !== "complete") {
+    const note = document.createElement("p");
+    note.className = "hint-text";
+    note.textContent =
+      nutrition.status === "unknown"
+        ? "This recipe has no nutrition data, so it won't count towards your totals."
+        : "Some ingredients have no nutrition data, so this only partly counts.";
+    body.appendChild(note);
+  }
+  addActions("Log", () => {
+    const amount = Number(servings.value);
+    if (!(amount > 0)) {
+      return false;
+    }
+    logEntry({
+      date: logDateForNewEntry(false),
+      meal: meal.value,
+      name: recipe.name,
+      source: "recipe",
+      unit: "serving",
+      quantity: amount,
+      ...nutrition
+    });
+    return true;
   });
 }
 
