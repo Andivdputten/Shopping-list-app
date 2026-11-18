@@ -1,4 +1,6 @@
 // The list of saved recipes: viewing, loading into the builder and deleting.
+import { aiText } from "./ai-recipes.js";
+import { openCookDialog } from "./cook-dialog.js";
 import {
   recipeInstructionsInput,
   recipeNameInput,
@@ -14,6 +16,7 @@ import {
   instructionsToText,
   normalizeDisplayAmount
 } from "./format.js";
+import { normalizeStockLink } from "./items.js";
 import {
   buildRecipePer100gSummaryFromIngredients,
   buildRecipePerServingDisplayFromIngredients,
@@ -178,6 +181,15 @@ export function renderSavedRecipes() {
       deleteSavedRecipe(index);
     });
 
+    // Opens the confirmation screen that deducts this recipe's ingredients from the pantry.
+    const cookButton = document.createElement("button");
+    cookButton.className = "edit-button";
+    cookButton.textContent = aiText().cookThis;
+    cookButton.addEventListener("click", () => {
+      openCookDialog(recipe);
+    });
+
+    actions.appendChild(cookButton);
     actions.appendChild(viewButton);
     actions.appendChild(loadButton);
     actions.appendChild(deleteRecipeButton);
@@ -214,6 +226,7 @@ export function loadSavedRecipe(index) {
       name: ingredient.name,
       grams: ingredient.grams,
       displayAmount: normalizeDisplayAmount(ingredient.displayAmount),
+      stockItem: normalizeStockLink(ingredient.stockItem),
       nutrition: normalizeNutrition(ingredient.nutrition)
     };
   });

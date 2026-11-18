@@ -182,3 +182,12 @@ export function getCategoryLabel(category) {
   const normalized = normalizeCategory(category);
   return normalized === "" ? "Uncategorised" : normalized;
 }
+
+// The pantry item a recipe ingredient uses, as saved with the recipe: a name, null for "not in stock",
+// or undefined when unknown (recipes saved before links existed), so cooking can fall back to matching by name.
+export function normalizeStockLink(value) {
+  if (value === null) {
+    return null;
+  }
+  return typeof value === "string" && value.trim() !== "" ? value.trim() : undefined;
+}

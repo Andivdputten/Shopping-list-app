@@ -32,7 +32,7 @@ import {
   parseInstructionsText,
   parseOptionalNumberInput
 } from "./format.js";
-import { normalizeIngredientName } from "./items.js";
+import { normalizeIngredientName, normalizeStockLink } from "./items.js";
 import {
   buildRecipePer100gSummaryFromIngredients,
   buildRecipePerServingDisplayFromIngredients,
@@ -146,6 +146,8 @@ export function addRecipeIngredient() {
 
   let name;
   let nutrition;
+  // Custom ingredients aren't a pantry item.
+  let stockItem = null;
 
   if (selected === "custom") {
     name = customIngredientNameInput.value.trim();
@@ -176,10 +178,12 @@ export function addRecipeIngredient() {
 
     name = source.name;
     nutrition = normalizeNutrition(source.nutrition);
+    // Remember the pantry item so "Cook this" deducts it; shopping-list items aren't in stock yet.
+    stockItem = kind === "stock" ? source.name : null;
   }
 
   // Manually added ingredients are entered in grams, so they have no separate kitchen measure.
-  state.recipeIngredients.push({ name, grams, displayAmount: null, nutrition });
+  state.recipeIngredients.push({ name, grams, displayAmount: null, stockItem, nutrition });
 
   recipeGramsInput.value = "";
 
@@ -339,6 +343,7 @@ export function saveCurrentRecipe() {
         grams: ingredient.grams,
         // Keeps the kitchen measure ("1", "2 tbsp") from AI recipes when the recipe is re-saved.
         displayAmount: normalizeDisplayAmount(ingredient.displayAmount),
+        stockItem: normalizeStockLink(ingredient.stockItem),
         nutrition: normalizeNutrition(ingredient.nutrition)
       };
     })

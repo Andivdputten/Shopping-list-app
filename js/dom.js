@@ -29,6 +29,7 @@ export const pantryUnknownNameInput = document.getElementById("pantryUnknownName
 export const pantryUnknownAddButton = document.getElementById("pantryUnknownAddButton");
 export const pantryUnknownSkipButton = document.getElementById("pantryUnknownSkipButton");
 export const toastEl = document.getElementById("toast");
+export const cookDialog = document.getElementById("cookDialog");
 export const scannerMessage = document.getElementById("scannerMessage");
 export const readerWrapper = document.getElementById("readerWrapper");
 export const recipeNameInput = document.getElementById("recipeNameInput");
@@ -124,6 +125,7 @@ export function allElementsPresent() {
     pantryUnknownAddButton,
     pantryUnknownSkipButton,
     toastEl,
+    cookDialog,
     scannerMessage,
     readerWrapper,
     recipeItemSelect,
