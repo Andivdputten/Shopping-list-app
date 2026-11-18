@@ -374,8 +374,85 @@ const TEXTS = {
       `${total} ${plural(total, "idea", "ideas")} de receta: ${ready} ${plural(ready, "lista", "listas")} para cocinar, ${extras} con ingredientes extra.`,
     noneExtras:
       " Esta vez ninguna receta necesitaba ingredientes extra. Toca de nuevo para más variedad."
+  },
+  pt: {
+    // Fit badge against the daily targets
+    meals: { breakfast: "café da manhã", lunch: "almoço", dinner: "jantar", snack: "lanche" },
+    fitGood: (meal) => `Combina bem com o ${meal}`,
+    fitOver: (meal, pct) => `Demais para o ${meal} (+${pct}% kcal)`,
+    fitUnder: (meal, pct) => `Pouco para o ${meal} (−${pct}% kcal)`,
+    highIn: (macro) => `alto teor de ${macro}`,
+    lowIn: (macro) => `baixo teor de ${macro}`,
+    setMealType: "Escolha um tipo de refeição para ver como ela se encaixa nas suas metas",
+    fiber: "fibras",
+    // "Cook this" dialog
+    cookThis: "Cozinhar",
+    cookTitle: (name) => `Cozinhar ${name}`,
+    servingsCooked: "Porções preparadas",
+    cookAddUsedUp: "Adicionar itens esgotados à lista de compras",
+    cookConfirm: "Cozinhar e descontar",
+    cancel: "Cancelar",
+    notInStock: "não está na despensa",
+    unknownQuantity: "quantidade na despensa desconhecida, nada descontado",
+    enterAmount: "informe a quantidade",
+    inPantry: (amount, unit) => `na despensa: ${amount} ${unit}`,
+    short: (amount, unit) => `faltam ${amount} ${unit}`,
+    cooked: (name) => `Receita preparada: ${name}`,
+    undo: "Desfazer",
+    undone: "Preparo desfeito",
+    sectionTitle: "Sugestões de receitas com IA",
+    sectionHint: "Receba ideias de receitas com base no que você tem na despensa.",
+    preferencesPlaceholder: "Opcional: ex. vegetariano, refeições rápidas, picante",
+    suggestButton: "Sugerir receitas com a minha despensa",
+    groupReady: (n) => `Pronto para cozinhar (${n})`,
+    groupExtras: (n) => `Faltam alguns ingredientes (${n})`,
+    selectRecipe: (name) => `Selecionar ${name}`,
+    serves: (s, missing) =>
+      `Rende ${s} ${plural(s, "porção", "porções")} — ` +
+      (missing > 0
+        ? `${plural(missing, "falta", "faltam")} ${missing} ${plural(missing, "ingrediente", "ingredientes")}`
+        : "você tem tudo"),
+    protein: "proteína",
+    carbs: "carboidratos",
+    fat: "gordura",
+    sourceCalculated: "Por porção — calculado com os seus dados nutricionais salvos.",
+    sourceEstimated:
+      "Por porção — estimado pela IA (adicione dados nutricionais aos seus produtos para números exatos).",
+    saveRecipe: "Salvar receita",
+    alreadySaved: "Já salva",
+    saved: "Salva ✓",
+    addMissing: "Adicionar faltantes à lista",
+    addedToList: "Adicionado à lista ✓",
+    alreadyOnList: "Já está na lista ✓",
+    selectAll: "Selecionar tudo",
+    saveSelected: (n) => (n > 0 ? `Salvar selecionadas (${n})` : "Salvar selecionadas"),
+    saveAll: (n) => (n > 0 ? `Salvar todas (${n})` : "Salvar todas"),
+    selectFirst: "Selecione pelo menos uma receita primeiro.",
+    oneAlreadySaved: (name) => `"${name}" já está salva.`,
+    thoseAlreadySaved: "Essas receitas já estão salvas.",
+    nameExists: (name) => `Já existe uma receita salva chamada "${name}".`,
+    savedOne: (name) => `"${name}" foi salva nas suas receitas.`,
+    savedMany: (n, skipped) =>
+      `${n} ${plural(n, "receita salva", "receitas salvas")}` +
+      (skipped > 0
+        ? ` (${skipped} já ${plural(skipped, "existia", "existiam")}, ${plural(skipped, "ignorada", "ignoradas")}).`
+        : "."),
+    forRecipe: (name) => `Para ${name}`,
+    addedCount: (n) =>
+      `${n} ${plural(n, "ingrediente adicionado", "ingredientes adicionados")} à sua lista de compras.`,
+    allOnList: "Esses ingredientes já estão na sua lista de compras.",
+    needKey: "Adicione primeiro uma chave de API em Settings.",
+    thinking: "Pensando...",
+    asking: "A IA está buscando ideias de receitas com base na sua despensa...",
+    gotRecipes: (total, ready, extras) =>
+      `${total} ${plural(total, "ideia", "ideias")} de receita: ${ready} ${plural(ready, "pronta", "prontas")} para cozinhar, ${extras} com ingredientes extras.`,
+    noneExtras:
+      " Desta vez nenhuma receita precisou de ingredientes extras. Toque novamente para mais variedade."
   }
 };
+
+// The language codes with a full set of texts; a unit test checks each one has every English text.
+export const UI_LANGUAGES = Object.keys(TEXTS);
 
 // Returns the text set for a language code, falling back to English for unknown codes.
 export function forLanguage(code) {
