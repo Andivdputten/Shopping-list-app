@@ -3,6 +3,8 @@ const STORAGE_KEY = "grocery_scanner_items_v6";
 const STOCK_STORAGE_KEY = "grocery_scanner_stock_v1";
 const RECIPE_STORAGE_KEY = "grocery_scanner_recipes_v1";
 const BARCODE_CACHE_STORAGE_KEY = "grocery_scanner_barcode_cache_v1";
+// Chosen language for AI recipes. Declared up here because it is read during startup, before later code runs.
+const RECIPE_LANGUAGE_STORAGE_KEY = "grocery_scanner_recipe_language_v1";
 const BARCODE_CACHE_MAX_ENTRIES = 500;
 // Cached "not found" results expire after a while in case a product gets
 // added to Open Food Facts later; successful matches are cached indefinitely
@@ -264,6 +266,7 @@ updatePendingBarcodeUI();
 updateQuickAddButtonState();
 initApiKeySettings();
 initBackupSettings();
+initRecipeLanguageSetting();
 suggestRecipesButton.addEventListener("click", handleSuggestRecipesClick);
 setStatus("App loaded successfully.");
 renderRecipeItemOptions();
@@ -422,6 +425,55 @@ function initApiKeySettings() {
     testApiKeyButton.disabled = false;
     testApiKeyButton.textContent = previousLabel;
     apiKeyStatus.textContent = result.message;
+  });
+}
+
+// Reads the chosen recipe language code ("en", "nl", ...), defaulting to English.
+// Wrapped in try/catch because storage can be unavailable (e.g. private browsing).
+function getRecipeLanguage() {
+  // The dropdown holds the current choice even if saving it to storage failed.
+  const select = document.getElementById("recipeLanguageSelect");
+  if (select && select.value) {
+    return select.value;
+  }
+  return readStoredRecipeLanguage();
+}
+
+// Reads the saved language straight from storage; used when the dropdown is first filled,
+// because at that moment its value is still the default first option rather than the saved choice.
+function readStoredRecipeLanguage() {
+  try {
+    return localStorage.getItem(RECIPE_LANGUAGE_STORAGE_KEY) || "en";
+  } catch (error) {
+    return "en";
+  }
+}
+
+// Fills the "Recipe language" dropdown in Settings and saves the choice when it changes.
+// The setting only affects AI-generated recipes, not the rest of the app.
+function initRecipeLanguageSetting() {
+  const select = document.getElementById("recipeLanguageSelect");
+
+  if (!select || !window.RecipeAI || !window.RecipeAI.recipeLanguages) {
+    return;
+  }
+
+  const labels = { en: "English", nl: "Nederlands", de: "Deutsch", fr: "Français", es: "Español" };
+  Object.keys(window.RecipeAI.recipeLanguages).forEach((code) => {
+    const option = document.createElement("option");
+    option.value = code;
+    option.textContent = labels[code] || window.RecipeAI.recipeLanguages[code];
+    select.appendChild(option);
+  });
+
+  select.value = readStoredRecipeLanguage();
+
+  select.addEventListener("change", () => {
+    try {
+      localStorage.setItem(RECIPE_LANGUAGE_STORAGE_KEY, select.value);
+    } catch (error) {
+      // Not saved; the choice still applies until the page is reloaded.
+    }
   });
 }
 
@@ -791,9 +843,7 @@ function renderAiRecipes(recipes) {
       flag.className = `ai-ingredient-flag ${ing.inStock ? "have" : "need"}`;
       flag.textContent = ing.inStock ? "✓" : "+";
       const label = document.createElement("span");
-      const amountText =
-        typeof ing.amount === "number" ? `${ing.amount}${ing.unit} ` : "";
-      label.textContent = `${amountText}${ing.name}`;
+      label.textContent = formatIngredientLine(ing.name, ing.amount, ing.displayAmount);
       li.appendChild(flag);
       li.appendChild(label);
       ingredientList.appendChild(li);
@@ -836,7 +886,7 @@ function renderAiRecipes(recipes) {
       addMissingButton.className = "secondary-button";
       addMissingButton.textContent = "Add missing to list";
       addMissingButton.addEventListener("click", () => {
-        addMissingIngredientsToShoppingList(missingIngredients);
+        addMissingIngredientsToShoppingList(missingIngredients, recipe.name);
       });
       actions.appendChild(addMissingButton);
     }
@@ -938,6 +988,7 @@ function buildSavedRecipeData(recipe, matchedIngredients) {
       name: ing.name,
       // Unknown amounts are stored as null rather than 0, because loadRecipes() used to discard 0-gram ingredients on reload.
       grams: typeof ing.amount === "number" && ing.amount > 0 ? ing.amount : null,
+      displayAmount: normalizeDisplayAmount(ing.displayAmount),
       nutrition: ing.hasNutrition
         ? normalizeNutrition(ing.stockMatch.nutrition)
         : createEmptyNutrition()
@@ -1008,7 +1059,9 @@ function saveAiRecipes(entries) {
   updateAiSelectionUi();
 }
 
-function addMissingIngredientsToShoppingList(missingIngredients) {
+// Adds a recipe's missing ingredients to the shopping list in the amount you'd buy ("1" onion rather than 150 g).
+// The kitchen measure and gram weight go into the item's note, so the recipe amount is still visible while shopping.
+function addMissingIngredientsToShoppingList(missingIngredients, recipeName) {
   let addedCount = 0;
 
   missingIngredients.forEach((ing) => {
@@ -1019,12 +1072,39 @@ function addMissingIngredientsToShoppingList(missingIngredients) {
       return;
     }
 
+    const grams = typeof ing.amount === "number" && ing.amount > 0 ? ing.amount : null;
+    const display = typeof ing.displayAmount === "string" ? ing.displayAmount.trim() : "";
+    // A plain number such as "2" means a count of pieces; measures like "2 tbsp" aren't a shopping quantity.
+    const pieceCount = /^\d+([.,]\d+)?$/.test(display) ? parseFloat(display.replace(",", ".")) : null;
+
+    let quantity = null;
+    let unit = "";
+    if (pieceCount !== null && pieceCount > 0) {
+      quantity = pieceCount;
+      unit = "pcs";
+    } else if (display === "" && grams !== null) {
+      // Ingredients measured in grams anyway (rice, cheese) keep their gram amount.
+      quantity = grams;
+      unit = "g";
+    }
+
+    const amountNote = display !== "" ? formatIngredientAmountText(grams, display) : "";
+    const noteParts = [];
+    if (recipeName) {
+      noteParts.push(`For ${recipeName}`);
+    }
+    if (amountNote !== "" && unit !== "pcs") {
+      noteParts.push(amountNote);
+    } else if (amountNote !== "" && grams !== null) {
+      noteParts.push(`${formatNutritionValue(grams)} g`);
+    }
+
     items.push({
       name: ing.name,
-      quantity: typeof ing.amount === "number" ? ing.amount : null,
-      unit: ing.unit || "",
+      quantity,
+      unit,
       category: "",
-      note: "",
+      note: noteParts.join(": "),
       barcode: "",
       nutrition: createEmptyNutrition(),
       nutritionAmount: null,
@@ -1056,7 +1136,12 @@ async function handleSuggestRecipesClick() {
 
   const result = await window.RecipeAI.generateRecipes(
     stockItems,
-    aiPreferencesInput.value
+    aiPreferencesInput.value,
+    {
+      language: getRecipeLanguage(),
+      // Saved recipe names are sent so the AI suggests new recipes instead of ones you already have.
+      avoidNames: savedRecipes.map((recipe) => recipe.name)
+    }
   );
 
   suggestRecipesButton.disabled = false;
@@ -2032,12 +2117,35 @@ function formatNutritionValue(value) {
   return String(Math.round(value * 10) / 10);
 }
 
-// Shows an ingredient's gram amount, or "amount unknown" when it is null.
-// Needed because recipe ingredients may now be saved without an amount instead of being discarded.
-function formatIngredientAmount(grams) {
-  return typeof grams === "number" && Number.isFinite(grams) && grams > 0
-    ? `${formatNutritionValue(grams)} g`
-    : "amount unknown";
+// Returns a trimmed kitchen measure ("1", "2 tbsp"), or null when there is none.
+// Used wherever ingredients are saved or loaded, so the field is always either a usable string or null.
+function normalizeDisplayAmount(value) {
+  return typeof value === "string" && value.trim() !== "" ? value.trim() : null;
+}
+
+// Text for an ingredient's amount on its own: "1 (50 g)", "2 tbsp (28 g)", "150 g" or "amount unknown".
+// The kitchen measure is what you cook with; the grams in brackets are what the nutrition maths uses.
+function formatIngredientAmountText(grams, displayAmount) {
+  const hasGrams = typeof grams === "number" && Number.isFinite(grams) && grams > 0;
+  const display = normalizeDisplayAmount(displayAmount);
+  const gramsText = hasGrams ? `${formatNutritionValue(grams)} g` : "";
+
+  if (display !== null) {
+    return gramsText !== "" ? `${display} (${gramsText})` : display;
+  }
+  return gramsText !== "" ? gramsText : "amount unknown";
+}
+
+// Full ingredient line: "1 egg (50 g)" when there is a kitchen measure, otherwise "150 g rice".
+// Puts the name between the measure and the grams, because "1 (50 g) egg" reads badly.
+function formatIngredientLine(name, grams, displayAmount) {
+  const hasGrams = typeof grams === "number" && Number.isFinite(grams) && grams > 0;
+  const display = normalizeDisplayAmount(displayAmount);
+
+  if (display !== null) {
+    return hasGrams ? `${display} ${name} (${formatNutritionValue(grams)} g)` : `${display} ${name}`;
+  }
+  return `${formatIngredientAmountText(grams, null)} ${name}`;
 }
 
 function syncNutritionInputsFromPending() {
@@ -2244,7 +2352,8 @@ function addRecipeIngredient() {
     nutrition = normalizeNutrition(source.nutrition);
   }
 
-  recipeIngredients.push({ name, grams, nutrition });
+  // Manually added ingredients are entered in grams, so they have no separate kitchen measure.
+  recipeIngredients.push({ name, grams, displayAmount: null, nutrition });
 
   recipeGramsInput.value = "";
 
@@ -2317,7 +2426,7 @@ function renderRecipeBuilder() {
 
     const gramsSpan = document.createElement("span");
     gramsSpan.className = "item-meta";
-    gramsSpan.textContent = formatIngredientAmount(ingredient.grams);
+    gramsSpan.textContent = formatIngredientAmountText(ingredient.grams, ingredient.displayAmount);
 
     const totalsSpan = document.createElement("span");
     totalsSpan.className = "item-meta";
@@ -2411,6 +2520,8 @@ function saveCurrentRecipe() {
       return {
         name: ingredient.name,
         grams: ingredient.grams,
+        // Keeps the kitchen measure ("1", "2 tbsp") from AI recipes when the recipe is re-saved.
+        displayAmount: normalizeDisplayAmount(ingredient.displayAmount),
         nutrition: normalizeNutrition(ingredient.nutrition)
       };
     })
@@ -2474,7 +2585,7 @@ function buildSavedRecipeDetails(recipe) {
   recipe.ingredients.forEach((ingredient) => {
     const line = document.createElement("div");
     line.className = "saved-recipe-line";
-    line.textContent = `${formatIngredientAmount(ingredient.grams)} ${ingredient.name}`;
+    line.textContent = formatIngredientLine(ingredient.name, ingredient.grams, ingredient.displayAmount);
     details.appendChild(line);
   });
 
@@ -2634,6 +2745,7 @@ function loadSavedRecipe(index) {
     return {
       name: ingredient.name,
       grams: ingredient.grams,
+      displayAmount: normalizeDisplayAmount(ingredient.displayAmount),
       nutrition: normalizeNutrition(ingredient.nutrition)
     };
   });
@@ -2721,6 +2833,7 @@ function loadRecipes() {
             return {
               name: ingredientName,
               grams: grams !== null && grams > 0 ? grams : null,
+              displayAmount: normalizeDisplayAmount(ingredient.displayAmount),
               nutrition: normalizeNutrition(ingredient.nutrition)
             };
           })
