@@ -429,6 +429,38 @@
     </section>
 
     <!-- ================= SETTINGS TAB ================= -->
+    <!-- ================= TODAY TAB ================= -->
+    <!-- The intake log: eaten vs daily targets for one day, the entries, and a 7-day chart (js/today.js). -->
+    <section class="tab-panel" id="panel-today" data-panel="today">
+      <section class="card">
+        <div class="today-date-row">
+          <button id="todayPrevButton" class="secondary-button" aria-label="Previous day">‹</button>
+          <input id="todayDateInput" type="date" aria-label="Day shown" />
+          <button id="todayNextButton" class="secondary-button" aria-label="Next day">›</button>
+          <button id="todayTodayButton" class="secondary-button">Today</button>
+        </div>
+        <div id="todayProgress"></div>
+        <p id="todayNotCounted" class="hint-text"></p>
+        <h3>Per meal</h3>
+        <div id="todayMeals"></div>
+      </section>
+
+      <section class="card">
+        <h2>Eaten</h2>
+        <div class="action-row">
+          <button id="addProductButton" class="primary-button">Add product</button>
+          <button id="quickEntryButton" class="secondary-button">Quick entry</button>
+        </div>
+        <div id="todayEntries"></div>
+        <p id="todayEmptyMessage" class="hint-text">Nothing logged on this day yet.</p>
+      </section>
+
+      <section class="card">
+        <h2>Last 7 days</h2>
+        <div id="weekChart"></div>
+      </section>
+    </section>
+
     <section class="tab-panel" id="panel-settings" data-panel="settings">
       <section class="card">
         <h2>AI recipe suggestions</h2>
@@ -591,6 +623,8 @@
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
   <!-- "Cook this" confirmation; filled in by js/cook-dialog.js each time it opens. -->
   <dialog id="cookDialog" class="cook-dialog" aria-labelledby="cookDialogTitle"></dialog>
+  <!-- Logging food and editing log entries; filled in by js/today.js each time it opens. -->
+  <dialog id="logDialog" class="cook-dialog" aria-labelledby="logDialogTitle"></dialog>
 
   <nav class="bottom-tabs" id="bottomTabs" aria-label="Main navigation">
     <button class="tab-button" data-tab="scanner" aria-current="page">
@@ -636,6 +670,17 @@
         </svg>
       </span>
       <span class="tab-label">Recipes</span>
+    </button>
+
+    <button class="tab-button" data-tab="today">
+      <span class="tab-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="4" width="18" height="17" rx="2" />
+          <path d="M3 9h18M8 2v4M16 2v4" />
+          <path d="M8.5 15l2.5 2.5 4.5-5" />
+        </svg>
+      </span>
+      <span class="tab-label">Today</span>
     </button>
 
     <button class="tab-button" data-tab="settings">

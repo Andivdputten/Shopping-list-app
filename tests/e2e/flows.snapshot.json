@@ -7522,7 +7522,8 @@
           "dinner": 35,
           "snack": 10
         }
-      }
+      },
+      "intakeLog": []
     }
   },
   {
@@ -8551,6 +8552,7 @@
           "cachedAt": 1768471200000
         }
       },
+      "grocery_scanner_intake_v1": [],
       "grocery_scanner_items_v6": [
         {
           "name": "Rode appels",

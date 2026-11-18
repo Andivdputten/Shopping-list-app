@@ -51,6 +51,10 @@ export const TAB_INFO = {
     title: "Recipes",
     subtitle: "Build and save recipes from your items"
   },
+  today: {
+    title: "Today",
+    subtitle: "What you ate against your targets"
+  },
   settings: {
     title: "Settings",
     subtitle: "AI, daily targets, backup and statistics"
@@ -60,6 +64,9 @@ export const TAB_INFO = {
 // Format marker written into backup files, so imports can reject files that came from somewhere else.
 // Daily targets, body data for the calculator and the meal split (see js/targets.js).
 export const TARGETS_STORAGE_KEY = "grocery_scanner_targets_v1";
+
+// The intake log: one entry per thing eaten (see js/intake.js).
+export const INTAKE_STORAGE_KEY = "grocery_scanner_intake_v1";
 
 export const BACKUP_APP_ID = "grocery-scanner-backup";
 

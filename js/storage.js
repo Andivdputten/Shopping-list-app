@@ -1,12 +1,14 @@
 // Reading data from browser storage and validating it. No page or state access, so loaders can be unit-tested.
 import {
   BARCODE_CACHE_STORAGE_KEY,
+  INTAKE_STORAGE_KEY,
   RECIPE_STORAGE_KEY,
   STOCK_STORAGE_KEY,
   STORAGE_KEY,
   TARGETS_STORAGE_KEY
 } from "./constants.js";
 import { normalizeDisplayAmount, parseOptionalNumberInput } from "./format.js";
+import { normalizeIntakeLog } from "./intake.js";
 import { createShoppingItem, createStockItem, normalizeStockLink } from "./items.js";
 import { normalizeNutrition } from "./nutrition.js";
 import { normalizeMealType, normalizeTargetSettings } from "./targets.js";
@@ -144,5 +146,14 @@ export function loadTargetSettings() {
     return normalizeTargetSettings(JSON.parse(localStorage.getItem(TARGETS_STORAGE_KEY)));
   } catch (error) {
     return normalizeTargetSettings(null);
+  }
+}
+
+// Reads the intake log; missing or damaged data gives an empty log, and broken entries are dropped.
+export function loadIntakeLog() {
+  try {
+    return normalizeIntakeLog(JSON.parse(localStorage.getItem(INTAKE_STORAGE_KEY)));
+  } catch (error) {
+    return [];
   }
 }

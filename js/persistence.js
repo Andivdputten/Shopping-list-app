@@ -2,6 +2,7 @@
 import {
   BARCODE_CACHE_MAX_ENTRIES,
   BARCODE_CACHE_NOT_FOUND_TTL_MS,
+  INTAKE_STORAGE_KEY,
   RECIPE_STORAGE_KEY,
   STOCK_STORAGE_KEY,
   STORAGE_KEY,
@@ -67,4 +68,8 @@ export function saveTargetSettings() {
   } catch (error) {
     // Nothing else to do: the settings still apply until the page reloads.
   }
+}
+
+export function saveIntakeLog() {
+  localStorage.setItem(INTAKE_STORAGE_KEY, JSON.stringify(state.intakeLog));
 }

@@ -3,6 +3,7 @@ import { aiText } from "./ai-recipes.js";
 import {
   BACKUP_APP_ID,
   BACKUP_FORMAT_VERSION,
+  INTAKE_STORAGE_KEY,
   RECIPE_LANGUAGE_STORAGE_KEY,
   RECIPE_STORAGE_KEY,
   STOCK_STORAGE_KEY,
@@ -176,7 +177,9 @@ export function exportBackup(statusElement) {
     stockItems: state.stockItems,
     savedRecipes: state.savedRecipes,
     // Optional: older backups have no targets, and older app versions ignore this field.
-    targetSettings: state.targetSettings
+    targetSettings: state.targetSettings,
+    // Optional, like targetSettings: older backups have no log.
+    intakeLog: state.intakeLog
   };
 
   const blob = new Blob([JSON.stringify(backup, null, 2)], { type: "application/json" });
@@ -236,7 +239,13 @@ export async function importBackup(file, statusElement) {
   }
 
   // Remember the current stored values so a failed write (e.g. storage full) can be undone instead of leaving half-imported data.
-  const keys = [STORAGE_KEY, STOCK_STORAGE_KEY, RECIPE_STORAGE_KEY, TARGETS_STORAGE_KEY];
+  const keys = [
+    STORAGE_KEY,
+    STOCK_STORAGE_KEY,
+    RECIPE_STORAGE_KEY,
+    TARGETS_STORAGE_KEY,
+    INTAKE_STORAGE_KEY
+  ];
   const previousValues = keys.map((key) => localStorage.getItem(key));
 
   try {
@@ -246,6 +255,9 @@ export async function importBackup(file, statusElement) {
     // A backup made before targets existed leaves the current targets as they are.
     if (backup.targetSettings && typeof backup.targetSettings === "object") {
       localStorage.setItem(TARGETS_STORAGE_KEY, JSON.stringify(backup.targetSettings));
+    }
+    if (Array.isArray(backup.intakeLog)) {
+      localStorage.setItem(INTAKE_STORAGE_KEY, JSON.stringify(backup.intakeLog));
     }
   } catch (error) {
     keys.forEach((key, i) => {

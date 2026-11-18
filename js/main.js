@@ -44,6 +44,7 @@ import {
   suggestRecipesButton,
   unitInput
 } from "./dom.js";
+import { dateKey } from "./intake.js";
 import {
   cancelEdit,
   clearPendingBarcode,
@@ -85,6 +86,7 @@ import {
 import { state } from "./state.js";
 import {
   loadBarcodeCache,
+  loadIntakeLog,
   loadItems,
   loadRecipes,
   loadStockItems,
@@ -92,6 +94,7 @@ import {
 } from "./storage.js";
 import { initTabs } from "./tabs.js";
 import { initTargetsSettings } from "./targets-settings.js";
+import { initToday } from "./today.js";
 import { setStatus } from "./ui.js";
 
 // Starts the app: checks the page, loads stored data, renders every tab and wires up the buttons.
@@ -107,6 +110,8 @@ function startApp() {
   state.stockItems = loadStockItems();
   state.barcodeCache = loadBarcodeCache();
   state.targetSettings = loadTargetSettings();
+  state.intakeLog = loadIntakeLog();
+  state.todayDate = dateKey(new Date());
   renderList();
   updateFormMode();
   updatePendingBarcodeUI();
@@ -115,6 +120,7 @@ function startApp() {
   initBackupSettings();
   initRecipeLanguageSetting();
   initTargetsSettings();
+  initToday();
   suggestRecipesButton.addEventListener("click", handleSuggestRecipesClick);
   setStatus("App loaded successfully.");
   renderRecipeItemOptions();
