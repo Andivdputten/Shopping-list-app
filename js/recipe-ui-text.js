@@ -41,6 +41,7 @@ const TEXTS = {
     preferencesPlaceholder: "Optional: e.g. vegetarian, quick meals, spicy",
     // The meal-type choice next to the suggest button; "any" asks for a mix, as before.
     anyMeal: "Any meal",
+    complexToggle: "Complex recipes (more technique and time)",
     mealChoiceLabel: "Meal",
     suggestButton: "Suggest recipes from my stock",
     groupReady: (n) => `Ready to cook (${n})`,
@@ -138,6 +139,7 @@ const TEXTS = {
     preferencesPlaceholder: "Optioneel: bijv. vegetarisch, snelle maaltijden, pittig",
     // The meal-type choice next to the suggest button; "any" asks for a mix, as before.
     anyMeal: "Elke maaltijd",
+    complexToggle: "Uitgebreide recepten (meer techniek en tijd)",
     mealChoiceLabel: "Maaltijd",
     suggestButton: "Recepten voorstellen uit mijn voorraad",
     groupReady: (n) => `Klaar om te koken (${n})`,
@@ -238,6 +240,7 @@ const TEXTS = {
     preferencesPlaceholder: "Optional: z. B. vegetarisch, schnelle Gerichte, scharf",
     // The meal-type choice next to the suggest button; "any" asks for a mix, as before.
     anyMeal: "Jede Mahlzeit",
+    complexToggle: "Aufwendige Rezepte (mehr Technik und Zeit)",
     mealChoiceLabel: "Mahlzeit",
     suggestButton: "Rezepte aus meinem Vorrat vorschlagen",
     groupReady: (n) => `Bereit zum Kochen (${n})`,
@@ -336,6 +339,7 @@ const TEXTS = {
     preferencesPlaceholder: "Facultatif : ex. végétarien, repas rapides, épicé",
     // The meal-type choice next to the suggest button; "any" asks for a mix, as before.
     anyMeal: "Tous les repas",
+    complexToggle: "Recettes élaborées (plus de technique et de temps)",
     mealChoiceLabel: "Repas",
     suggestButton: "Proposer des recettes avec mon stock",
     groupReady: (n) => `Prêt à cuisiner (${n})`,
@@ -439,6 +443,7 @@ const TEXTS = {
     preferencesPlaceholder: "Opcional: p. ej. vegetariano, comidas rápidas, picante",
     // The meal-type choice next to the suggest button; "any" asks for a mix, as before.
     anyMeal: "Cualquier comida",
+    complexToggle: "Recetas elaboradas (más técnica y tiempo)",
     mealChoiceLabel: "Comida",
     suggestButton: "Sugerir recetas con mi despensa",
     groupReady: (n) => `Listo para cocinar (${n})`,
@@ -541,6 +546,7 @@ const TEXTS = {
     preferencesPlaceholder: "Opcional: ex. vegetariano, refeições rápidas, picante",
     // The meal-type choice next to the suggest button; "any" asks for a mix, as before.
     anyMeal: "Qualquer refeição",
+    complexToggle: "Receitas elaboradas (mais técnica e tempo)",
     mealChoiceLabel: "Refeição",
     suggestButton: "Sugerir receitas com a minha despensa",
     groupReady: (n) => `Pronto para cozinhar (${n})`,

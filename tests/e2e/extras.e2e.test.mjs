@@ -1,5 +1,6 @@
 // When no AI suggestion needs extra ingredients, a button asks for 3 that do; nothing is requested
-// until it is tapped, and the new recipes are added below the ones already shown.
+// until it is tapped, and the new recipes are added below the ones already shown. Also covers the
+// remembered "Complex recipes" switch, which applies to both requests.
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { chromium } from "playwright";
@@ -76,6 +77,12 @@ test(
       });
       await page.reload();
       await page.click('[data-tab="recipes"]');
+      // The "Complex recipes" switch is off by default, and stays on after a restart once turned on.
+      assert.equal(await page.isChecked("#aiComplexToggle"), false);
+      await page.check("#aiComplexToggle");
+      await page.reload();
+      await page.click('[data-tab="recipes"]');
+      assert.equal(await page.isChecked("#aiComplexToggle"), true);
       await page.click("#suggestRecipesButton");
       await page.waitForSelector("#moreExtrasButton");
 
@@ -89,6 +96,9 @@ test(
       );
       assert.equal(prompts.length, 2);
       assert.match(prompts[1], /"ready": leave this empty/);
+      // Both requests ask for elaborate recipes while the switch is on.
+      assert.match(prompts[0], /Make every recipe elaborate/);
+      assert.match(prompts[1], /Make every recipe elaborate/);
       // The recipes already on screen are listed so they aren't suggested again.
       assert.match(prompts[1], /- Rijst puur/);
       assert.match(prompts[1], /- Rijst met melk/);

@@ -3,6 +3,14 @@
 
 export const RELEASE_NOTES = [
   {
+    version: "v38",
+    date: "2026-11-20",
+    title: "Complex recipes",
+    notes: [
+      'Tick "Complex recipes" next to Suggest for elaborate dishes: more technique, several components, longer cooking and kitchen equipment. The app remembers your choice.'
+    ]
+  },
+  {
     version: "v37",
     date: "2026-11-20",
     title: "Always a way to recipes with extras",

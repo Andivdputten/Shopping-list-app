@@ -426,9 +426,11 @@ const MEAL_TYPE_NAMES = ["breakfast", "lunch", "dinner", "snack"];
 
 // The request text: the stock, the preferences, saved recipes to avoid and, when chosen, the one meal
 // type all suggestions must suit (instead of a mix of meal types).
-// onlyExtras asks for 3 recipes that each need a few extra ingredients and none that use only stock: the
-// follow-up request when a first answer had no such recipes.
-export function buildUserMessage(stockList, preferences, avoidNames, mealType, onlyExtras = false) {
+// options.onlyExtras asks for 3 recipes that each need a few extra ingredients and none that use only
+// stock: the follow-up request when a first answer had no such recipes. options.complex asks for more
+// elaborate cooking (the "Complex recipes" switch).
+export function buildUserMessage(stockList, preferences, avoidNames, mealType, options = {}) {
+  const onlyExtras = options.onlyExtras === true;
   const stockLines = stockList
     .map((item) => {
       const qty = typeof item.quantity === "number" ? item.quantity : "";
@@ -462,18 +464,25 @@ export function buildUserMessage(stockList, preferences, avoidNames, mealType, o
     : `- "ready": 3 recipes that use only stock items.
 - "needsExtras": 3 recipes built around the stock that each also need 1 to 3 ingredients that are not in stock, such as a fresh vegetable, a sauce or a spice.`;
 
+  // More technique, more components and more time; the stock and amount rules stay the same.
+  const complexText =
+    options.complex === true
+      ? `\nMake every recipe elaborate rather than quick: use more advanced techniques (such as searing, braising, reducing, emulsifying or marinating), give it several components (for example a sauce, a side and a garnish), and write detailed steps with times and temperatures. They may take an hour or more and use equipment such as an oven, blender or food processor.`
+      : "";
+
   return `<stock>
 ${stockLines}
 </stock>${preferenceText}${avoidText}
 
 ${variety}
-${groups}`;
+${groups}${complexText}`;
 }
 
 // stockItems: pantry items; preferences: free text; options.language: a RECIPE_LANGUAGES code;
 // options.avoidNames: names of already-saved recipes, so suggestions don't repeat them;
 // options.mealType: "breakfast" | "lunch" | "dinner" | "snack" to ask for that meal only, or "" for any;
-// options.onlyExtras: true to ask only for recipes that need a few extra ingredients.
+// options.onlyExtras: true to ask only for recipes that need a few extra ingredients;
+// options.complex: true for elaborate recipes (more technique, components, time and equipment).
 async function generateRecipes(stockItems, preferences, options) {
   const stockList = Array.isArray(stockItems) ? stockItems : [];
   const settings = options || {};
@@ -490,13 +499,10 @@ async function generateRecipes(stockItems, preferences, options) {
     };
   }
 
-  const userMessage = buildUserMessage(
-    stockList,
-    preferences,
-    avoidNames,
-    settings.mealType,
-    settings.onlyExtras === true
-  );
+  const userMessage = buildUserMessage(stockList, preferences, avoidNames, settings.mealType, {
+    onlyExtras: settings.onlyExtras === true,
+    complex: settings.complex === true
+  });
 
   const result = await callClaude(
     [{ role: "user", content: userMessage }],

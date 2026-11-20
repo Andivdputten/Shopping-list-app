@@ -683,7 +683,8 @@ export async function handleSuggestRecipesClick() {
     // Saved recipe names are sent so the AI suggests new recipes instead of ones you already have.
     avoidNames: state.savedRecipes.map((recipe) => recipe.name),
     // "" (any meal) or the one meal type all suggestions should suit.
-    mealType: document.getElementById("aiMealTypeSelect").value
+    mealType: document.getElementById("aiMealTypeSelect").value,
+    complex: document.getElementById("aiComplexToggle").checked
   });
 
   suggestRecipesButton.disabled = false;
@@ -737,6 +738,7 @@ async function requestExtras(button) {
     // Also the names on screen, so the new recipes differ from the ones just suggested.
     avoidNames: [...state.savedRecipes, ...shownRecipes].map((recipe) => recipe.name),
     mealType: document.getElementById("aiMealTypeSelect").value,
+    complex: document.getElementById("aiComplexToggle").checked,
     onlyExtras: true
   });
   if (!result.ok) {

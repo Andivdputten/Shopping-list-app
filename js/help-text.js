@@ -31,7 +31,7 @@ export const HELP_SECTIONS = {
     title: "Recipes",
     lines: [
       "Build a recipe from pantry and list items, or ask the AI for suggestions (needs your Anthropic API key in Settings).",
-      "Pick a meal next to the suggest button for breakfast, lunch, dinner or snack ideas only.",
+      'Pick a meal next to the suggest button for breakfast, lunch, dinner or snack ideas only; tick "Complex recipes" for elaborate dishes.',
       "Each ingredient shows where its values come from (pantry, NEVO, Open Food Facts or an AI estimate); tap Change to pick another.",
       "The fit badge shows how a serving fits that meal's share of your daily targets.",
       '"Cook this" takes the ingredients out of your pantry; "Ate this" logs a serving on the Today tab.',
