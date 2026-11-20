@@ -3,6 +3,14 @@
 
 export const RELEASE_NOTES = [
   {
+    version: "v37",
+    date: "2026-11-20",
+    title: "Always a way to recipes with extras",
+    notes: [
+      "When none of the suggestions needs extra ingredients, a button asks for three that do; they are added below the others."
+    ]
+  },
+  {
     version: "v36",
     date: "2026-11-20",
     title: "Recipe ideas for one meal",
