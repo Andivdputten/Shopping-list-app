@@ -187,7 +187,7 @@ export function renderToday() {
   byId("todayDateInput").value = date;
   byId("todayTodayButton").disabled = date === dateKey(new Date());
 
-  const { totals, notFullyCounted, count } = dayTotals(state.intakeLog, date);
+  const { totals, missing, notFullyCounted, count } = dayTotals(state.intakeLog, date);
   const targets = state.targetSettings ? state.targetSettings.targets : {};
   const progress = byId("todayProgress");
   progress.innerHTML = "";
@@ -206,7 +206,11 @@ export function renderToday() {
         NUTRIENT_LABELS[key],
         totals[key],
         targets[key],
-        `${formatValue(key, totals[key])} / ${formatValue(key, targets[key])}`
+        `${formatValue(key, totals[key])} / ${formatValue(key, targets[key])}` +
+          // Entries without this value make the total too low; say so instead of hiding it.
+          (missing[key] > 0
+            ? ` · ${missing[key]} ${missing[key] === 1 ? "entry" : "entries"} without data`
+            : "")
       )
     );
   });
