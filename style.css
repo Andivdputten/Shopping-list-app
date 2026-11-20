@@ -1113,3 +1113,51 @@ button:disabled {
   padding: 2px 8px;
   font-size: 0.8rem;
 }
+
+/* AI usage per day (js/usage-card.js): input light, output (5x the price) in the brand colour. */
+.usage-chart {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.usage-in {
+  fill: var(--brand-tint);
+  stroke: var(--brand);
+  stroke-width: 0.5;
+}
+
+.usage-out {
+  fill: var(--brand);
+}
+
+.usage-dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  vertical-align: middle;
+}
+
+.usage-dot.usage-in {
+  background: var(--brand-tint);
+  border: 1px solid var(--brand);
+}
+
+.usage-dot.usage-out {
+  background: var(--brand);
+}
+
+.usage-warning,
+.usage-over {
+  color: #b45309;
+  font-weight: 600;
+}
+
+.usage-over {
+  color: #dc2626;
+}
+
+.progress-fill.warning {
+  background: #f59e0b;
+}

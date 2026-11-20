@@ -14,6 +14,10 @@ export const RECIPE_LANGUAGE_STORAGE_KEY = "grocery_scanner_recipe_language_v1";
 // Whether AI recipe suggestions should be elaborate ("1") or everyday ("0" or missing).
 export const RECIPE_COMPLEX_STORAGE_KEY = "grocery_scanner_recipe_complex_v1";
 
+// AI token usage per day and the optional monthly token budget (see js/token-usage.js).
+export const TOKEN_USAGE_STORAGE_KEY = "grocery_scanner_token_usage_v1";
+export const TOKEN_BUDGET_STORAGE_KEY = "grocery_scanner_token_budget_v1";
+
 export const BARCODE_CACHE_MAX_ENTRIES = 500;
 
 // Cached "not found" results expire after a while in case a product gets

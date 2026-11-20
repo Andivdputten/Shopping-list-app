@@ -102,6 +102,7 @@ import {
 import { initInfoDialogs } from "./info-dialogs.js";
 import { initNevoSettings } from "./nevo-settings.js";
 import { initTabs } from "./tabs.js";
+import { initUsageCard } from "./usage-card.js";
 import { initTargetsSettings } from "./targets-settings.js";
 import { initToday } from "./today.js";
 import { setStatus } from "./ui.js";
@@ -132,6 +133,7 @@ function startApp() {
   initBackupSettings();
   initRecipeLanguageSetting();
   initComplexRecipesToggle();
+  initUsageCard();
   initTargetsSettings();
   initNevoSettings();
   initToday();
