@@ -1061,11 +1061,14 @@ button:disabled {
 
 .food-result {
   width: 100%;
+  padding: 6px 8px;
   text-align: left;
 }
 
+/* Drawn inside the button, so the scrolling result list can't clip it. */
 .food-result.chosen {
-  outline: 2px solid var(--brand);
+  box-shadow: inset 0 0 0 2px var(--brand);
+  border-radius: 8px;
 }
 
 /* Source references (e.g. RIVM's required NEVO line), small and quiet. */

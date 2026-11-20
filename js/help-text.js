@@ -41,8 +41,8 @@ export const HELP_SECTIONS = {
     title: "Today",
     lines: [
       "What you ate against your daily targets, per meal; step through the days with the arrows.",
-      "Add product logs grams of a pantry item, a scanned product or a searched food (NEVO or Open Food Facts).",
-      "Quick entry is for food you can't look up, such as a meal eaten out: type the kcal and any macros.",
+      "Add food: tap a recent food to log it again, or search your pantry, NEVO and Open Food Facts, or scan a barcode.",
+      'For a meal you can\'t look up, such as one eaten out, use "Enter values by hand" and type the kcal and any macros.',
       "Tap Edit to change an entry's meal or amount; entries without full data are marked."
     ]
   },

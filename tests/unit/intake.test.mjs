@@ -200,3 +200,24 @@ test("stored entries are validated: broken ones are dropped, missing values beco
   });
   assert.deepEqual(normalizeIntakeLog("nonsense"), []);
 });
+
+test("recent foods: newest first, each food once, at most five", async () => {
+  const { recentFoods } = await import("../../js/intake.js");
+  const at = (date, time, name, unit = "g") => ({ date, time, name, unit });
+  const log = [
+    at("2026-11-18", "08:00", "Yoghurt"),
+    at("2026-11-19", "08:00", "Yoghurt"),
+    at("2026-11-19", "12:30", "Soep", ""),
+    at("2026-11-19", "12:30", "Brood"),
+    at("2026-11-20", "07:45", "yoghurt"),
+    at("2026-11-20", "09:00", "Appel"),
+    at("2026-11-17", "18:00", "Pasta", "serving"),
+    at("2026-11-16", "18:00", "Rijst", "serving")
+  ];
+  assert.deepEqual(
+    recentFoods(log).map((entry) => entry.name),
+    ["Appel", "yoghurt", "Brood", "Soep", "Pasta"]
+  );
+  assert.deepEqual(recentFoods([]), []);
+  assert.equal(recentFoods(log, 2).length, 2);
+});

@@ -256,3 +256,27 @@ export function normalizeIntakeLog(raw) {
       };
     });
 }
+
+// The most recent different foods in the log, newest first, for one-tap re-logging in "Add food".
+// The same name with the same unit counts once, so a daily breakfast doesn't fill the whole list.
+export function recentFoods(entries, limit = 5) {
+  const seen = new Set();
+  return entries
+    .map((entry, index) => ({ entry, index }))
+    .sort(
+      (a, b) =>
+        b.entry.date.localeCompare(a.entry.date) ||
+        b.entry.time.localeCompare(a.entry.time) ||
+        b.index - a.index
+    )
+    .map(({ entry }) => entry)
+    .filter((entry) => {
+      const key = `${entry.name.trim().toLowerCase()}|${entry.unit}`;
+      if (seen.has(key)) {
+        return false;
+      }
+      seen.add(key);
+      return true;
+    })
+    .slice(0, limit);
+}

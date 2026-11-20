@@ -75,7 +75,7 @@ test(
       await page.click('[data-tab="today"]');
       await page.click("#helpButton");
       assert.equal(await page.textContent("#infoDialogTitle"), "Help: Today");
-      assert.match(await dialogText(), /Quick entry is for food you can't look up/);
+      assert.match(await dialogText(), /Enter values by hand/);
       await page.click("#fullGuideButton");
       assert.equal(await page.textContent("#infoDialogTitle"), "How to use the app");
       const guide = await page.$$eval("#infoDialog .info-section h3", (h) =>

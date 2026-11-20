@@ -3,6 +3,17 @@
 
 export const RELEASE_NOTES = [
   {
+    version: "v34",
+    date: "2026-11-20",
+    title: "One Add food dialog",
+    notes: [
+      'Add product and Quick entry are now one "Add food" button on the Today tab.',
+      "Your five most recent foods are listed first: tap one to log it again.",
+      "One search finds your pantry items, NEVO foods and Open Food Facts products together.",
+      'For a meal you can\'t look up, "Enter values by hand" works as Quick entry did.'
+    ]
+  },
+  {
     version: "v33",
     date: "2026-11-20",
     title: "Recipe nutrition per ingredient",

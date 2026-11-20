@@ -79,7 +79,7 @@ test(
 
       // 1. Without NEVO the search says how to get it, and only Open Food Facts answers.
       await page.click('[data-tab="today"]');
-      await page.click("#addProductButton");
+      await page.click("#addFoodButton");
       assert.match(await page.textContent("#logDialog"), /Import the NEVO table in Settings/);
       assert.deepEqual(await search("soep"), [
         "TomatensoepMerk · Open Food Facts · Per 100g: 40 kcal · P 1g · C 6g · F 1g"
@@ -112,7 +112,7 @@ test(
 
       // 3. A NEVO drink is logged in millilitres with its unchanged values; the day shows the reference.
       await page.click('[data-tab="today"]');
-      await page.click("#addProductButton");
+      await page.click("#addFoodButton");
       assert.deepEqual(await search("testmelk"), [
         "Testmelk halfvolTest milk semi-skimmed · NEVO 2099/1.0 · Per 100ml: 46 kcal · P 3.4g · C 4.7g · F 1.5g · Fib 0g"
       ]);
@@ -130,16 +130,23 @@ test(
       assert.equal(await page.textContent("#todayNevoReference"), REFERENCE);
 
       // 4. An Open Food Facts result is labelled as such; a failed online search keeps the NEVO results.
-      await page.click("#addProductButton");
+      await page.click("#addFoodButton");
       await search("soep");
       await page.click("#logSearchResults .food-result");
       await page.fill("#logGramsInput", "250");
       await page.click("#logConfirmButton");
       assert.equal((await log()).at(-1).nutritionSource, "off");
       assert.match(await page.textContent("#todayEntries"), /250 g · 100 kcal · Open Food Facts/);
-      await page.click("#addProductButton");
-      assert.equal((await search("testrijst")).length, 2);
-      assert.match(await page.textContent("#logDialog"), /couldn't be reached; NEVO results only/);
+      await page.click("#addFoodButton");
+      // The pantry item comes first, then the two NEVO foods.
+      assert.deepEqual(
+        (await search("testrijst")).map((text) => text.split(/in pantry|Test rice/)[0]),
+        ["Testrijst", "Testrijst gekookt", "Testrijst onbereid"]
+      );
+      assert.match(
+        await page.textContent("#logDialog"),
+        /couldn't be reached; showing the other results/
+      );
       await page.click("#logDialog .action-row .secondary-button");
       assert.equal(offSearches, 4);
 
