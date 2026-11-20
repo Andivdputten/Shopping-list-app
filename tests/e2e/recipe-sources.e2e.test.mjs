@@ -175,7 +175,7 @@ test(
       const saved = await page.evaluate(
         () => JSON.parse(localStorage.getItem("grocery_scanner_recipes_v1"))[0]
       );
-      assert.match(prompt, /Suggest 6 varied lunch recipes/);
+      assert.match(prompt, /Suggest 3 varied lunch recipes/);
       assert.equal(saved.mealType, "lunch");
       assert.deepEqual(
         saved.ingredients.map((i) => [

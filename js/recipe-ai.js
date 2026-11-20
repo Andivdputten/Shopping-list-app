@@ -437,11 +437,11 @@ const MEAL_TYPE_NAMES = ["breakfast", "lunch", "dinner", "snack"];
 
 // The request text: the stock, the preferences, saved recipes to avoid and, when chosen, the one meal
 // type all suggestions must suit (instead of a mix of meal types).
-// options.onlyExtras asks for 3 recipes that each need a few extra ingredients and none that use only
-// stock: the follow-up request when a first answer had no such recipes. options.complex asks for more
-// elaborate cooking (the "Complex recipes" switch).
+// One request asks for one group of 3 recipes: options.group "ready" (only stock) or "needsExtras" (each
+// needs 1-3 ingredients not in stock). Splitting the 6 suggestions into two requests keeps every answer
+// short enough for the token limit and the time limit. options.complex asks for more elaborate cooking.
 export function buildUserMessage(stockList, preferences, avoidNames, mealType, options = {}) {
-  const onlyExtras = options.onlyExtras === true;
+  const group = options.group === "needsExtras" ? "needsExtras" : "ready";
   const stockLines = stockList
     .map((item) => {
       const qty = typeof item.quantity === "number" ? item.quantity : "";
@@ -465,15 +465,15 @@ export function buildUserMessage(stockList, preferences, avoidNames, mealType, o
           .join("\n")}\n</already_saved>\nSuggest recipes that differ from the already saved ones.`
       : "";
 
-  const count = onlyExtras ? 3 : 6;
   const variety = MEAL_TYPE_NAMES.includes(mealType)
-    ? `Suggest ${count} varied ${mealType} recipes (different cuisines and styles), all suited to ${mealType}; set mealType to "${mealType}" for each:`
-    : `Suggest ${count} varied recipes (different cuisines or meal types):`;
-  const groups = onlyExtras
-    ? `- "ready": leave this empty.
+    ? `Suggest 3 varied ${mealType} recipes (different cuisines and styles), all suited to ${mealType}; set mealType to "${mealType}" for each:`
+    : "Suggest 3 varied recipes (different cuisines or meal types):";
+  const groups =
+    group === "needsExtras"
+      ? `- "ready": leave this empty.
 - "needsExtras": 3 recipes built around the stock that each also need 1 to 3 ingredients that are not in stock, such as a fresh vegetable, a sauce or a spice. Every one must need at least one ingredient that is not in the stock list.`
-    : `- "ready": 3 recipes that use only stock items.
-- "needsExtras": 3 recipes built around the stock that each also need 1 to 3 ingredients that are not in stock, such as a fresh vegetable, a sauce or a spice.`;
+      : `- "ready": 3 recipes that use only stock items.
+- "needsExtras": leave this empty.`;
 
   // More technique, more components and more time; the stock and amount rules stay the same.
   const complexText =
@@ -492,7 +492,7 @@ ${groups}${complexText}`;
 // stockItems: pantry items; preferences: free text; options.language: a RECIPE_LANGUAGES code;
 // options.avoidNames: names of already-saved recipes, so suggestions don't repeat them;
 // options.mealType: "breakfast" | "lunch" | "dinner" | "snack" to ask for that meal only, or "" for any;
-// options.onlyExtras: true to ask only for recipes that need a few extra ingredients;
+// options.onlyExtras: true to ask only for the group of recipes that need a few extra ingredients;
 // options.complex: true for elaborate recipes (more technique, components, time and equipment).
 async function generateRecipes(stockItems, preferences, options) {
   const stockList = Array.isArray(stockItems) ? stockItems : [];
@@ -510,11 +510,57 @@ async function generateRecipes(stockItems, preferences, options) {
     };
   }
 
-  const userMessage = buildUserMessage(stockList, preferences, avoidNames, settings.mealType, {
-    onlyExtras: settings.onlyExtras === true,
-    complex: settings.complex === true
-  });
+  // Both groups are asked for at the same time, so the wait is that of the slower half. If one half
+  // fails, the other half's recipes are still shown, with the error as a note.
+  const groups = settings.onlyExtras === true ? ["needsExtras"] : ["ready", "needsExtras"];
+  const results = await Promise.all(
+    groups.map((group) =>
+      requestGroup(
+        buildUserMessage(stockList, preferences, avoidNames, settings.mealType, {
+          group,
+          complex: settings.complex === true
+        }),
+        group,
+        languageName
+      )
+    )
+  );
 
+  const failed = results.find((result) => !result.ok);
+  const seen = new Set();
+  const recipes = results
+    .filter((result) => result.ok)
+    .flatMap((result) => result.recipes)
+    // The two halves are asked separately, so the same recipe could come back twice.
+    .filter((recipe) => {
+      const key = recipe.name.toLowerCase();
+      if (seen.has(key)) {
+        return false;
+      }
+      seen.add(key);
+      return true;
+    });
+  // A chosen meal type is what was asked for, so the fit badge compares against that meal's share.
+  if (MEAL_TYPE_NAMES.includes(settings.mealType)) {
+    recipes.forEach((recipe) => {
+      recipe.mealType = settings.mealType;
+    });
+  }
+
+  if (recipes.length === 0) {
+    return (
+      failed || {
+        ok: false,
+        errorType: "parse_error",
+        message: "No usable recipes came back. Try again."
+      }
+    );
+  }
+  return { ok: true, recipes, partialError: failed ? failed.message : null };
+}
+
+// One request for one group of recipes; only that group is taken from the answer.
+async function requestGroup(userMessage, group, languageName) {
   const result = await callClaude(
     [{ role: "user", content: userMessage }],
     16000,
@@ -522,7 +568,9 @@ async function generateRecipes(stockItems, preferences, options) {
     {
       system: buildSystemPrompt(languageName),
       output_config: {
-        effort: "medium",
+        // Low effort: the model's reasoning counts towards the 16,000-token limit, and writing structured
+        // recipes doesn't need deep reasoning; at medium, answers were cut off.
+        effort: "low",
         format: { type: "json_schema", schema: RECIPE_SCHEMA }
       }
     }
@@ -552,29 +600,9 @@ async function generateRecipes(stockItems, preferences, options) {
     };
   }
 
-  const rawRecipes = [];
-  ["ready", "needsExtras"].forEach((group) => {
-    if (Array.isArray(parsed[group])) {
-      parsed[group].forEach((raw) => rawRecipes.push({ raw, group }));
-    }
-  });
-
-  const recipes = rawRecipes.map((entry) => sanitizeRecipe(entry.raw, entry.group)).filter(Boolean);
-  // A chosen meal type is what was asked for, so the fit badge compares against that meal's share.
-  if (MEAL_TYPE_NAMES.includes(settings.mealType)) {
-    recipes.forEach((recipe) => {
-      recipe.mealType = settings.mealType;
-    });
-  }
-
-  if (recipes.length === 0) {
-    return {
-      ok: false,
-      errorType: "parse_error",
-      message: "No usable recipes came back. Try again."
-    };
-  }
-
+  const recipes = (Array.isArray(parsed[group]) ? parsed[group] : [])
+    .map((raw) => sanitizeRecipe(raw, group))
+    .filter(Boolean);
   return { ok: true, recipes };
 }
 

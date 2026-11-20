@@ -42,14 +42,15 @@ test(
     page.on("pageerror", (error) => errors.push(error.message));
 
     await page.clock.setFixedTime(new Date(2026, 10, 20, 12, 0));
-    // Each answer reports 20,000 input and 60,000 output tokens: 0.002 + 0.03 = $0.032 at list price.
+    // Each answer reports 10,000 input and 30,000 output tokens: 0.001 + 0.015 = $0.016 at list price;
+    // a suggestion makes two requests (stock-only and extras).
     await page.route("https://api.anthropic.com/**", (route) =>
       route.fulfill({
         headers: { "access-control-allow-origin": "*" },
         json: {
           content: [{ type: "text", text: JSON.stringify(REPLY) }],
           stop_reason: "end_turn",
-          usage: { input_tokens: 20000, output_tokens: 60000 }
+          usage: { input_tokens: 10000, output_tokens: 30000 }
         }
       })
     );
@@ -72,7 +73,7 @@ test(
       assert.equal(await totals(), "No AI requests yet this month.");
       assert.equal(await page.locator("#usageBudget").count(), 0);
 
-      // Two suggestion requests.
+      // Two suggestions, so four requests.
       await page.click('[data-tab="recipes"]');
       for (let i = 0; i < 2; i++) {
         await page.click("#suggestRecipesButton");
@@ -81,7 +82,7 @@ test(
       await page.click('[data-tab="settings"]');
       assert.equal(
         await totals(),
-        "160,000 tokens (40,000 in · 120,000 out) · about $0.06 · 2 requests"
+        "160,000 tokens (40,000 in · 120,000 out) · about $0.06 · 4 requests"
       );
       // Today's bar is drawn; earlier days of the month are empty.
       assert.equal(await page.locator("#usageChart rect.usage-out").count(), 1);
@@ -101,14 +102,14 @@ test(
       await page.click('[data-tab="settings"]');
       assert.equal(await page.inputValue("#tokenBudgetInput"), "200000");
 
-      // The connection test counts too: 240,000 of 200,000 is over budget.
+      // The connection test counts too: 200,000 of 200,000 is the whole budget.
       await page.click("#testApiKeyButton");
       await page.waitForFunction(() =>
-        /240,000 tokens/.test(document.getElementById("usageTotals").textContent)
+        /200,000 tokens/.test(document.getElementById("usageTotals").textContent)
       );
       assert.match(
         await page.textContent("#usageBudget"),
-        /120% of your 200,000-token budget: budget used up\./
+        /100% of your 200,000-token budget: budget used up\./
       );
 
       // Clearing the budget removes the bar.
