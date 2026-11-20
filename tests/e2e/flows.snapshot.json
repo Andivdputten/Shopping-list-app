@@ -51,7 +51,9 @@
       ""
     ],
     "toast": "",
-    "storage": {}
+    "storage": {
+      "grocery_scanner_release_seen_v1": "v32"
+    }
   },
   {
     "name": "quick add",
@@ -127,7 +129,8 @@
           "nevoVersion": null,
           "bought": false
         }
-      ]
+      ],
+      "grocery_scanner_release_seen_v1": "v32"
     }
   },
   {
@@ -204,7 +207,8 @@
           "nevoVersion": null,
           "bought": false
         }
-      ]
+      ],
+      "grocery_scanner_release_seen_v1": "v32"
     }
   },
   {
@@ -301,7 +305,8 @@
           "nevoVersion": null,
           "bought": false
         }
-      ]
+      ],
+      "grocery_scanner_release_seen_v1": "v32"
     }
   },
   {
@@ -416,7 +421,8 @@
           "nutritionAmount": null,
           "bought": false
         }
-      ]
+      ],
+      "grocery_scanner_release_seen_v1": "v32"
     }
   },
   {
@@ -531,7 +537,8 @@
           "nutritionAmount": null,
           "bought": false
         }
-      ]
+      ],
+      "grocery_scanner_release_seen_v1": "v32"
     }
   },
   {
@@ -651,7 +658,8 @@
           "nutritionAmount": null,
           "bought": false
         }
-      ]
+      ],
+      "grocery_scanner_release_seen_v1": "v32"
     }
   },
   {
@@ -789,7 +797,8 @@
           "nutritionAmount": null,
           "bought": false
         }
-      ]
+      ],
+      "grocery_scanner_release_seen_v1": "v32"
     }
   },
   {
@@ -963,7 +972,8 @@
           "nutritionAmount": null,
           "bought": false
         }
-      ]
+      ],
+      "grocery_scanner_release_seen_v1": "v32"
     }
   },
   {
@@ -1137,7 +1147,8 @@
           "nutritionAmount": null,
           "bought": false
         }
-      ]
+      ],
+      "grocery_scanner_release_seen_v1": "v32"
     }
   },
   {
@@ -1295,6 +1306,7 @@
           "bought": false
         }
       ],
+      "grocery_scanner_release_seen_v1": "v32",
       "grocery_scanner_stock_v1": [
         {
           "name": "Halfvolle melk",
@@ -1455,6 +1467,7 @@
           "bought": false
         }
       ],
+      "grocery_scanner_release_seen_v1": "v32",
       "grocery_scanner_stock_v1": [
         {
           "name": "Halfvolle melk",
@@ -1631,6 +1644,7 @@
           "bought": false
         }
       ],
+      "grocery_scanner_release_seen_v1": "v32",
       "grocery_scanner_stock_v1": [
         {
           "name": "Halfvolle melk",
@@ -1789,6 +1803,7 @@
           "bought": false
         }
       ],
+      "grocery_scanner_release_seen_v1": "v32",
       "grocery_scanner_stock_v1": [
         {
           "name": "Halfvolle melk",
@@ -1947,6 +1962,7 @@
           "bought": false
         }
       ],
+      "grocery_scanner_release_seen_v1": "v32",
       "grocery_scanner_stock_v1": [
         {
           "name": "Halfvolle melk",
@@ -2105,6 +2121,7 @@
           "bought": false
         }
       ],
+      "grocery_scanner_release_seen_v1": "v32",
       "grocery_scanner_stock_v1": [
         {
           "name": "Halfvolle melk",
@@ -2263,6 +2280,7 @@
           "bought": false
         }
       ],
+      "grocery_scanner_release_seen_v1": "v32",
       "grocery_scanner_stock_v1": [
         {
           "name": "Halfvolle melk",
@@ -2421,6 +2439,7 @@
           "bought": false
         }
       ],
+      "grocery_scanner_release_seen_v1": "v32",
       "grocery_scanner_stock_v1": [
         {
           "name": "Halfvolle melk",
@@ -2584,6 +2603,7 @@
           "bought": false
         }
       ],
+      "grocery_scanner_release_seen_v1": "v32",
       "grocery_scanner_stock_v1": [
         {
           "name": "Halfvolle melk",
@@ -2748,6 +2768,7 @@
           "bought": false
         }
       ],
+      "grocery_scanner_release_seen_v1": "v32",
       "grocery_scanner_stock_v1": [
         {
           "name": "Halfvolle melk",
@@ -2935,6 +2956,7 @@
           "bought": false
         }
       ],
+      "grocery_scanner_release_seen_v1": "v32",
       "grocery_scanner_stock_v1": [
         {
           "name": "Halfvolle melk",
@@ -3141,6 +3163,7 @@
           "bought": false
         }
       ],
+      "grocery_scanner_release_seen_v1": "v32",
       "grocery_scanner_stock_v1": [
         {
           "name": "Halfvolle melk",
@@ -3329,6 +3352,7 @@
           "bought": false
         }
       ],
+      "grocery_scanner_release_seen_v1": "v32",
       "grocery_scanner_stock_v1": [
         {
           "name": "Halfvolle melk",
@@ -3517,6 +3541,7 @@
           "bought": false
         }
       ],
+      "grocery_scanner_release_seen_v1": "v32",
       "grocery_scanner_stock_v1": [
         {
           "name": "Halfvolle melk",
@@ -3746,6 +3771,7 @@
           ]
         }
       ],
+      "grocery_scanner_release_seen_v1": "v32",
       "grocery_scanner_stock_v1": [
         {
           "name": "Halfvolle melk",
@@ -3975,6 +4001,7 @@
           ]
         }
       ],
+      "grocery_scanner_release_seen_v1": "v32",
       "grocery_scanner_stock_v1": [
         {
           "name": "Halfvolle melk",
@@ -4243,6 +4270,7 @@
           ]
         }
       ],
+      "grocery_scanner_release_seen_v1": "v32",
       "grocery_scanner_stock_v1": [
         {
           "name": "Halfvolle melk",
@@ -4511,6 +4539,7 @@
           ]
         }
       ],
+      "grocery_scanner_release_seen_v1": "v32",
       "grocery_scanner_stock_v1": [
         {
           "name": "Halfvolle melk",
@@ -4779,6 +4808,7 @@
           ]
         }
       ],
+      "grocery_scanner_release_seen_v1": "v32",
       "grocery_scanner_stock_v1": [
         {
           "name": "Halfvolle melk",
@@ -5008,6 +5038,7 @@
           ]
         }
       ],
+      "grocery_scanner_release_seen_v1": "v32",
       "grocery_scanner_stock_v1": [
         {
           "name": "Halfvolle melk",
@@ -5237,6 +5268,7 @@
           ]
         }
       ],
+      "grocery_scanner_release_seen_v1": "v32",
       "grocery_scanner_stock_v1": [
         {
           "name": "Halfvolle melk",
@@ -5466,6 +5498,7 @@
           ]
         }
       ],
+      "grocery_scanner_release_seen_v1": "v32",
       "grocery_scanner_stock_v1": [
         {
           "name": "Halfvolle melk",
@@ -5695,6 +5728,7 @@
           ]
         }
       ],
+      "grocery_scanner_release_seen_v1": "v32",
       "grocery_scanner_stock_v1": [
         {
           "name": "Halfvolle melk",
@@ -5925,6 +5959,7 @@
           ]
         }
       ],
+      "grocery_scanner_release_seen_v1": "v32",
       "grocery_scanner_stock_v1": [
         {
           "name": "Halfvolle melk",
@@ -6155,6 +6190,7 @@
           ]
         }
       ],
+      "grocery_scanner_release_seen_v1": "v32",
       "grocery_scanner_stock_v1": [
         {
           "name": "Halfvolle melk",
@@ -6424,6 +6460,7 @@
           ]
         }
       ],
+      "grocery_scanner_release_seen_v1": "v32",
       "grocery_scanner_stock_v1": [
         {
           "name": "Halfvolle melk",
@@ -6733,6 +6770,7 @@
           ]
         }
       ],
+      "grocery_scanner_release_seen_v1": "v32",
       "grocery_scanner_stock_v1": [
         {
           "name": "Halfvolle melk",
@@ -7043,6 +7081,7 @@
           ]
         }
       ],
+      "grocery_scanner_release_seen_v1": "v32",
       "grocery_scanner_stock_v1": [
         {
           "name": "Halfvolle melk",
@@ -7405,6 +7444,7 @@
           ]
         }
       ],
+      "grocery_scanner_release_seen_v1": "v32",
       "grocery_scanner_stock_v1": [
         {
           "name": "Halfvolle melk",
@@ -8046,6 +8086,7 @@
           ]
         }
       ],
+      "grocery_scanner_release_seen_v1": "v32",
       "grocery_scanner_stock_v1": [
         {
           "name": "Halfvolle melk",
@@ -8406,6 +8447,7 @@
           ]
         }
       ],
+      "grocery_scanner_release_seen_v1": "v32",
       "grocery_scanner_stock_v1": []
     }
   },
@@ -8650,6 +8692,7 @@
           ]
         }
       ],
+      "grocery_scanner_release_seen_v1": "v32",
       "grocery_scanner_stock_v1": []
     }
   },
@@ -8976,6 +9019,7 @@
           ]
         }
       ],
+      "grocery_scanner_release_seen_v1": "v32",
       "grocery_scanner_stock_v1": [
         {
           "name": "Halfvolle melk",

@@ -1,7 +1,7 @@
 // Bump this version on every release. It is required whenever a cache-first file
 // (icons, manifest.json, vendor/) changes, because returning users otherwise keep the old copy;
 // bumping also deletes old caches. Network-first core files (see CORE_FILES) update without it.
-const CACHE_VERSION = "v31";
+const CACHE_VERSION = "v32";
 const CACHE_NAME = `grocery-scanner-${CACHE_VERSION}`;
 
 // Core app files: these change often during development. They're fetched
@@ -23,8 +23,10 @@ const CORE_FILES = [
   "./js/fit-badge.js",
   "./js/food-search.js",
   "./js/format.js",
+  "./js/help-text.js",
   "./js/intake.js",
   "./js/item-form.js",
+  "./js/info-dialogs.js",
   "./js/items.js",
   "./js/log-product.js",
   "./js/nevo-settings.js",
@@ -39,6 +41,7 @@ const CORE_FILES = [
   "./js/recipe-ai.js",
   "./js/recipe-builder.js",
   "./js/recipe-ui-text.js",
+  "./js/release-notes.js",
   "./js/saved-recipes.js",
   "./js/scanner.js",
   "./js/settings.js",

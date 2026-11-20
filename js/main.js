@@ -93,6 +93,7 @@ import {
   loadStockItems,
   loadTargetSettings
 } from "./storage.js";
+import { initInfoDialogs } from "./info-dialogs.js";
 import { initNevoSettings } from "./nevo-settings.js";
 import { initTabs } from "./tabs.js";
 import { initTargetsSettings } from "./targets-settings.js";
@@ -106,6 +107,8 @@ function startApp() {
     alert("HTML element missing. Check your index.html IDs.");
     return;
   }
+  // First, before anything is saved: it tells a first visit (no stored data yet) apart from an update.
+  initInfoDialogs();
   state.items = loadItems();
   state.pendingNutrition = createEmptyNutrition();
   state.savedRecipes = loadRecipes();

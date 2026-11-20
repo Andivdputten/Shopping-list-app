@@ -52,6 +52,28 @@ body {
   opacity: 0.85;
 }
 
+/* The version badge and the ? help button, side by side at the right of the header. */
+.header-actions {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.help-button {
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: none;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.18);
+  color: inherit;
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 28px;
+  cursor: pointer;
+}
+
 .version-badge {
   flex-shrink: 0;
   margin-top: 2px;
@@ -1049,4 +1071,19 @@ button:disabled {
 /* Source references (e.g. RIVM's required NEVO line), small and quiet. */
 .source-reference {
   font-size: 0.8rem;
+}
+
+/* Release notes and help (js/info-dialogs.js): scrolls inside the dialog when long. */
+.info-body {
+  max-height: 65vh;
+  overflow-y: auto;
+}
+
+.info-section h3 {
+  margin: 12px 0 2px;
+}
+
+.info-section ul {
+  margin: 4px 0 8px;
+  padding-left: 20px;
 }
