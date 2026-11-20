@@ -37,7 +37,8 @@ const AI_REPLY = {
       name: "Testschotel",
       description: "Alles door elkaar.",
       servings: 1,
-      mealType: "lunch",
+      // The AI says dinner, but lunch was asked for: the chosen meal wins (see step 1).
+      mealType: "dinner",
       ingredients: [
         ingredient("Rijst", 100, "rice white boiled", est(140, 3, 30, 0, 0), "Testrijst"),
         // NEVO: "Test apple raw".
@@ -65,15 +66,17 @@ test(
     page.on("pageerror", (error) => errors.push(error.message));
 
     await page.clock.setFixedTime(new Date(2026, 10, 20, 12, 30));
-    await page.route("https://api.anthropic.com/**", (route) =>
-      route.fulfill({
+    let prompt = "";
+    await page.route("https://api.anthropic.com/**", (route) => {
+      prompt = route.request().postDataJSON().messages[0].content;
+      return route.fulfill({
         headers: { "access-control-allow-origin": "*" },
         json: {
           content: [{ type: "text", text: JSON.stringify(AI_REPLY) }],
           stop_reason: "end_turn"
         }
-      })
-    );
+      });
+    });
     const offQueries = [];
     await page.route("https://world.openfoodfacts.org/**", (route) => {
       const url = new URL(route.request().url());
@@ -123,6 +126,14 @@ test(
 
       // 1. Each ingredient gets the best source: pantry, NEVO, Open Food Facts (looked up afterwards), estimate.
       await page.click('[data-tab="recipes"]');
+      // Lunch only: the prompt asks for lunch recipes.
+      assert.deepEqual(
+        await page.$$eval("#aiMealTypeSelect option", (options) =>
+          options.map((o) => o.textContent)
+        ),
+        ["Any meal", "Breakfast", "Lunch", "Dinner", "Snack"]
+      );
+      await page.selectOption("#aiMealTypeSelect", "lunch");
       await page.click("#suggestRecipesButton");
       await page.waitForFunction(() => !document.getElementById("suggestRecipesButton").disabled);
       await page.waitForFunction(() =>
@@ -164,6 +175,8 @@ test(
       const saved = await page.evaluate(
         () => JSON.parse(localStorage.getItem("grocery_scanner_recipes_v1"))[0]
       );
+      assert.match(prompt, /Suggest 6 varied lunch recipes/);
+      assert.equal(saved.mealType, "lunch");
       assert.deepEqual(
         saved.ingredients.map((i) => [
           i.name,

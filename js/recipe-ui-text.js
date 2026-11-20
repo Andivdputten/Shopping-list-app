@@ -39,6 +39,9 @@ const TEXTS = {
     sectionTitle: "AI recipe suggestions",
     sectionHint: "Get recipe ideas based on what's currently in your pantry stock.",
     preferencesPlaceholder: "Optional: e.g. vegetarian, quick meals, spicy",
+    // The meal-type choice next to the suggest button; "any" asks for a mix, as before.
+    anyMeal: "Any meal",
+    mealChoiceLabel: "Meal",
     suggestButton: "Suggest recipes from my stock",
     groupReady: (n) => `Ready to cook (${n})`,
     groupExtras: (n) => `Needs a few extra ingredients (${n})`,
@@ -130,6 +133,9 @@ const TEXTS = {
     sectionTitle: "AI-receptsuggesties",
     sectionHint: "Krijg receptideeën op basis van wat er nu in je voorraad staat.",
     preferencesPlaceholder: "Optioneel: bijv. vegetarisch, snelle maaltijden, pittig",
+    // The meal-type choice next to the suggest button; "any" asks for a mix, as before.
+    anyMeal: "Elke maaltijd",
+    mealChoiceLabel: "Maaltijd",
     suggestButton: "Recepten voorstellen uit mijn voorraad",
     groupReady: (n) => `Klaar om te koken (${n})`,
     groupExtras: (n) => `Nog een paar ingrediënten nodig (${n})`,
@@ -224,6 +230,9 @@ const TEXTS = {
     sectionTitle: "KI-Rezeptvorschläge",
     sectionHint: "Erhalte Rezeptideen auf Grundlage deines aktuellen Vorrats.",
     preferencesPlaceholder: "Optional: z. B. vegetarisch, schnelle Gerichte, scharf",
+    // The meal-type choice next to the suggest button; "any" asks for a mix, as before.
+    anyMeal: "Jede Mahlzeit",
+    mealChoiceLabel: "Mahlzeit",
     suggestButton: "Rezepte aus meinem Vorrat vorschlagen",
     groupReady: (n) => `Bereit zum Kochen (${n})`,
     groupExtras: (n) => `Braucht noch ein paar Zutaten (${n})`,
@@ -316,6 +325,9 @@ const TEXTS = {
     sectionTitle: "Suggestions de recettes par l'IA",
     sectionHint: "Obtenez des idées de recettes selon ce qu'il y a dans votre stock.",
     preferencesPlaceholder: "Facultatif : ex. végétarien, repas rapides, épicé",
+    // The meal-type choice next to the suggest button; "any" asks for a mix, as before.
+    anyMeal: "Tous les repas",
+    mealChoiceLabel: "Repas",
     suggestButton: "Proposer des recettes avec mon stock",
     groupReady: (n) => `Prêt à cuisiner (${n})`,
     groupExtras: (n) => `Il manque quelques ingrédients (${n})`,
@@ -412,6 +424,9 @@ const TEXTS = {
     sectionTitle: "Sugerencias de recetas con IA",
     sectionHint: "Obtén ideas de recetas según lo que tienes en tu despensa.",
     preferencesPlaceholder: "Opcional: p. ej. vegetariano, comidas rápidas, picante",
+    // The meal-type choice next to the suggest button; "any" asks for a mix, as before.
+    anyMeal: "Cualquier comida",
+    mealChoiceLabel: "Comida",
     suggestButton: "Sugerir recetas con mi despensa",
     groupReady: (n) => `Listo para cocinar (${n})`,
     groupExtras: (n) => `Faltan algunos ingredientes (${n})`,
@@ -507,6 +522,9 @@ const TEXTS = {
     sectionTitle: "Sugestões de receitas com IA",
     sectionHint: "Receba ideias de receitas com base no que você tem na despensa.",
     preferencesPlaceholder: "Opcional: ex. vegetariano, refeições rápidas, picante",
+    // The meal-type choice next to the suggest button; "any" asks for a mix, as before.
+    anyMeal: "Qualquer refeição",
+    mealChoiceLabel: "Refeição",
     suggestButton: "Sugerir receitas com a minha despensa",
     groupReady: (n) => `Pronto para cozinhar (${n})`,
     groupExtras: (n) => `Faltam alguns ingredientes (${n})`,

@@ -681,7 +681,9 @@ export async function handleSuggestRecipesClick() {
   const result = await RecipeAI.generateRecipes(state.stockItems, aiPreferencesInput.value, {
     language: getRecipeLanguage(),
     // Saved recipe names are sent so the AI suggests new recipes instead of ones you already have.
-    avoidNames: state.savedRecipes.map((recipe) => recipe.name)
+    avoidNames: state.savedRecipes.map((recipe) => recipe.name),
+    // "" (any meal) or the one meal type all suggestions should suit.
+    mealType: document.getElementById("aiMealTypeSelect").value
   });
 
   suggestRecipesButton.disabled = false;
