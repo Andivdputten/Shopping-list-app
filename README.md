@@ -27,7 +27,8 @@ Planned work and its order are in [ROADMAP.md](ROADMAP.md).
 | `tests/`                                                                                                                                        | Unit tests and end-to-end browser tests                                                                                            |
 
 When you add a file under `js/`, also add it to `CORE_FILES` in `sw.js`; the offline test fails if you
-forget. Bump `CACHE_VERSION` in `sw.js` on every release.
+forget. Bump `CACHE_VERSION` in `sw.js` on every release and add its entry to `js/release-notes.js`; a unit
+test fails when the newest note's version doesn't match. A new tab needs a section in `js/help-text.js`.
 
 ## Development
 

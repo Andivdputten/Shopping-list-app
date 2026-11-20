@@ -27,7 +27,11 @@
         <h1 id="pageTitle">Scanner</h1>
         <p class="subtitle" id="pageSubtitle">Scan a barcode or add an item by hand</p>
       </div>
-      <span id="swVersionBadge" class="version-badge" title="Active service worker cache version">…</span>
+      <!-- The ? opens the help for the current tab (js/info-dialogs.js). -->
+      <div class="header-actions">
+        <span id="swVersionBadge" class="version-badge" title="Active service worker cache version">…</span>
+        <button id="helpButton" class="help-button" type="button" aria-label="Help for this tab">?</button>
+      </div>
     </div>
   </header>
 
@@ -653,6 +657,16 @@
         </div>
         <p id="listMacroCoverage" class="hint-text"></p>
       </section>
+
+      <!-- About card: release notes for the newest version and the full history (js/info-dialogs.js). -->
+      <section class="card">
+        <h2>About this app</h2>
+        <p id="appVersionText" class="hint-text"></p>
+        <div class="action-row">
+          <button id="whatsNewButton" class="secondary-button">What's new</button>
+          <button id="releaseHistoryButton" class="secondary-button">Release history</button>
+        </div>
+      </section>
     </section>
 
   </main>
@@ -662,6 +676,9 @@
   <dialog id="cookDialog" class="cook-dialog" aria-labelledby="cookDialogTitle"></dialog>
   <!-- Logging food and editing log entries; filled in by js/today.js each time it opens. -->
   <dialog id="logDialog" class="cook-dialog" aria-labelledby="logDialogTitle"></dialog>
+
+  <!-- Release notes and help (js/info-dialogs.js). -->
+  <dialog id="infoDialog" class="cook-dialog" aria-labelledby="infoDialogTitle"></dialog>
 
   <nav class="bottom-tabs" id="bottomTabs" aria-label="Main navigation">
     <button class="tab-button" data-tab="scanner" aria-current="page">
