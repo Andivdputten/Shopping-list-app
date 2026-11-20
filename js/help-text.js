@@ -50,7 +50,7 @@ export const HELP_SECTIONS = {
   settings: {
     title: "Settings",
     lines: [
-      "Your Anthropic API key and the language for AI recipes.",
+      "Your Anthropic API key, the language for AI recipes, and the AI tokens used this month against an optional budget.",
       "Daily targets (with a calculator) and how the day is split over meals.",
       "Import the NEVO table from RIVM to search generic foods by name.",
       "Export a backup now and then: your data lives only in this browser.",

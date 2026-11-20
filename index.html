@@ -514,6 +514,18 @@
           <label class="field-label" for="recipeLanguageSelect">Recipe language</label>
           <select id="recipeLanguageSelect"></select>
         </div>
+
+        <!-- AI usage (js/usage-card.js): tokens per request as the API reports them, against a monthly budget.
+             The app's own count with an estimated cost; a normal API key can't read the real balance. -->
+        <h3>AI usage this month</h3>
+        <div id="usageSummary"></div>
+        <div id="usageChart"></div>
+        <label class="field-label" for="tokenBudgetInput">Monthly budget (tokens, optional)</label>
+        <input id="tokenBudgetInput" type="number" inputmode="numeric" min="0" step="10000" placeholder="e.g. 500000" />
+        <p class="hint-text">
+          Counted by this app from what each AI request reports, with an estimated cost at list price.
+          Your real balance is on console.anthropic.com.
+        </p>
       </section>
 
       <!-- Daily targets: a calculator suggests targets from body data; every target and the meal split stay editable.

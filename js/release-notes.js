@@ -3,6 +3,16 @@
 
 export const RELEASE_NOTES = [
   {
+    version: "v39",
+    date: "2026-11-20",
+    title: "AI usage this month",
+    notes: [
+      "Settings shows the AI tokens used this month (input and output), an estimated cost at list price, and a bar per day.",
+      "Set a monthly token budget to see how much of it is used, with a warning from 80%.",
+      "This is the app's own count; your real balance is on console.anthropic.com."
+    ]
+  },
+  {
     version: "v38",
     date: "2026-11-20",
     title: "Complex recipes",

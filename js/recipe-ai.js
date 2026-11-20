@@ -50,6 +50,12 @@ function clearApiKey() {
 }
 
 // extraBody adds optional request fields (system prompt, output_config) on top of the basic message request.
+// Called with (usage, model) after every answer, so the usage card can count tokens; set by js/usage-card.js.
+let usageListener = null;
+function onUsage(listener) {
+  usageListener = listener;
+}
+
 async function callClaude(messages, maxTokens, timeoutMs, extraBody) {
   const apiKey = getApiKey();
 
@@ -140,6 +146,11 @@ async function callClaude(messages, maxTokens, timeoutMs, extraBody) {
     };
   } finally {
     clearTimeout(timer);
+  }
+
+  // Every answer is billed, also one that is cut off or declined below, so its usage is reported first.
+  if (usageListener && data && data.usage) {
+    usageListener(data.usage, MODEL);
   }
 
   // The answer was cut off at the token limit, so its JSON would be incomplete.
@@ -569,6 +580,7 @@ async function generateRecipes(stockItems, preferences, options) {
 
 // The only surface the rest of the app talks to.
 export const RecipeAI = {
+  onUsage,
   hasApiKey,
   getApiKey,
   setApiKey,
