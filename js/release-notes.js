@@ -3,6 +3,15 @@
 
 export const RELEASE_NOTES = [
   {
+    version: "v35",
+    date: "2026-11-20",
+    title: "Honest totals for incomplete entries",
+    notes: [
+      "Food logged with only kcal (or without some macros) is now marked as not fully counted.",
+      'Each target on the Today tab says how many entries have no value for it, e.g. "Carbs 120 / 240 g · 1 entry without data", so a low total is never mistaken for a real one.'
+    ]
+  },
+  {
     version: "v34",
     date: "2026-11-20",
     title: "One Add food dialog",

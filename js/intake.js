@@ -51,8 +51,18 @@ export function perGramFromNutrition(nutrition) {
     fat: data.fat100g === null ? null : data.fat100g / 100,
     fiber: data.fiber100g === null ? null : data.fiber100g / 100
   };
-  const status = perUnit.kcal !== null ? "complete" : hasAnyNutrition(data) ? "partial" : "unknown";
-  return { perUnit, status };
+  return { perUnit, status: statusFromValues(perUnit) };
+}
+
+// How complete a set of values is: "complete" needs kcal, protein, carbs and fat (fibre is left out,
+// since many foods have no fibre data); some values make it "partial", none "unknown". A kcal-only
+// entry is therefore partial, so low protein, carbs or fat totals are never mistaken for real ones.
+export function statusFromValues(values) {
+  const known = ["kcal", "protein", "carbs", "fat"].filter((key) => isNumber(values[key]));
+  if (known.length === 4) {
+    return "complete";
+  }
+  return known.length > 0 || isNumber(values.fiber) ? "partial" : "unknown";
 }
 
 // A recipe's values per serving from its ingredients' nutrition and grams.
@@ -167,6 +177,8 @@ export function entryNutrition(entry) {
 // Totals for one day (known values added up), how many entries aren't fully counted, and the entry count.
 export function dayTotals(entries, date) {
   const totals = { kcal: 0, protein: 0, carbs: 0, fat: 0, fiber: 0 };
+  // Per nutrient: entries that count but have no value for it, so the Today tab can say a total is short.
+  const missing = { kcal: 0, protein: 0, carbs: 0, fat: 0, fiber: 0 };
   let notFullyCounted = 0;
   let count = 0;
 
@@ -181,11 +193,13 @@ export function dayTotals(entries, date) {
       NUTRIENTS.forEach((key) => {
         if (values[key] !== null) {
           totals[key] = round1(totals[key] + values[key]);
+        } else if (entry.status !== "unknown") {
+          missing[key]++;
         }
       });
     });
 
-  return { totals, notFullyCounted, count };
+  return { totals, missing, notFullyCounted, count };
 }
 
 // kcal eaten per meal on one day.

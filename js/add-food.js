@@ -12,7 +12,7 @@ import { takeFromPantry } from "./cook-dialog.js";
 import { gramsToStockUnit } from "./cooking.js";
 import { addFoodSearch, sourceLabel } from "./food-search.js";
 import { formatNutritionValue } from "./format.js";
-import { entryNutrition, perGramFromNutrition, recentFoods } from "./intake.js";
+import { entryNutrition, perGramFromNutrition, recentFoods, statusFromValues } from "./intake.js";
 import { searchText } from "./nevo.js";
 import { getCachedBarcodeLookup, setCachedBarcodeLookup } from "./persistence.js";
 import { lookupProductByBarcode } from "./product-lookup.js";
@@ -392,7 +392,8 @@ export function openAddFood() {
           unit: "",
           quantity: 1,
           perUnit,
-          status: "complete",
+          // Only kcal typed in: partial, so the protein, carbs and fat totals are marked as short.
+          status: statusFromValues(perUnit),
           nutritionSource: "manual"
         },
         { silent: true }

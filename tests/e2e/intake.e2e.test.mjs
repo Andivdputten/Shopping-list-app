@@ -165,7 +165,8 @@ test("logging food in every way adds up on the Today tab", { timeout: 90000 }, a
     await settle();
     await page.fill("#logGramsInput", "50");
     await page.click("#logConfirmButton");
-    assert.match(await page.textContent("#todayNotCounted"), /1 entry is not fully counted/);
+    // The typed lunch (kcal and protein only) and this product are both not fully counted.
+    assert.match(await page.textContent("#todayNotCounted"), /2 entries are not fully counted/);
 
     // 6. "Ate this" on a saved recipe: 2 servings at breakfast (the recipe's meal type).
     await page.click('[data-tab="recipes"]');
@@ -185,7 +186,7 @@ test("logging food in every way adds up on the Today tab", { timeout: 90000 }, a
     assert.deepEqual(await pantry(), ["Yoghurt 350", "Eggs 4"]);
 
     assert.deepEqual(await summary(), [
-      "2026-11-18 lunch Lunch buiten de deur 1 complete",
+      "2026-11-18 lunch Lunch buiten de deur 1 partial",
       "2026-11-18 lunch Yoghurt g150 complete",
       "2026-11-18 lunch Chocolade g20 complete",
       "2026-11-18 lunch Eggs g100 complete",
@@ -197,6 +198,19 @@ test("logging food in every way adds up on the Today tab", { timeout: 90000 }, a
     await page.click('[data-tab="today"]');
     assert.match(await page.textContent("#todayProgress"), /1316 \/ 2000/);
     assert.match(await page.textContent("#todayMeals"), /Breakfast280 \/ 500 kcal/);
+    // The typed lunch has no carbs or fat: those totals say they are short, protein and kcal don't.
+    const rows = await page.$$eval("#todayProgress .progress-label", (labels) =>
+      labels.map((label) => label.textContent)
+    );
+    assert.equal(rows.filter((row) => /1 entry without data/.test(row)).length, 2);
+    assert.match(
+      rows.find((row) => row.startsWith("Carbs")),
+      /· 1 entry without data/
+    );
+    assert.doesNotMatch(
+      rows.find((row) => row.startsWith("Protein")),
+      /without data/
+    );
 
     // Edit: 300 g of yoghurt instead of 150 g doubles its kcal (90 → 180).
     await page.click('#todayEntries li:has-text("Yoghurt") button:text-is("Edit")');
@@ -204,9 +218,9 @@ test("logging food in every way adds up on the Today tab", { timeout: 90000 }, a
     await page.click("#logConfirmButton");
     assert.match(await page.textContent("#todayProgress"), /1406 \/ 2000/);
 
-    // Delete the unknown product; the note disappears.
+    // Delete the unknown product; only the typed lunch is still not fully counted.
     await page.click('#todayEntries li:has-text("Product 8710000000404") button:text-is("Delete")');
-    assert.equal(await page.textContent("#todayNotCounted"), "");
+    assert.match(await page.textContent("#todayNotCounted"), /1 entry is not fully counted/);
 
     // A forgotten entry on yesterday goes to yesterday, and shows in the week chart.
     await page.click('button[aria-label="Previous day"]');

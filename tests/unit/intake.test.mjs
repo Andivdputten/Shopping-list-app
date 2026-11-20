@@ -67,6 +67,8 @@ test("product nutrition per 100 g becomes per gram; status says how complete it 
     }
   );
   assert.equal(perGramFromNutrition({ kcal100g: null, protein100g: 4 }).status, "partial");
+  // kcal alone is not complete: protein, carbs and fat are needed too (fibre isn't).
+  assert.equal(perGramFromNutrition({ kcal100g: 300 }).status, "partial");
   assert.equal(perGramFromNutrition(null).status, "unknown");
 });
 
@@ -156,6 +158,8 @@ test("day totals add the known values and count entries that aren't fully counte
   ];
   assert.deepEqual(dayTotals(entries, "2026-01-05"), {
     totals: { kcal: 1000, protein: 50, carbs: 50, fat: 30, fiber: 5 },
+    // B has no carbs or fibre; C (no data at all) is already flagged as not counted, so it isn't repeated.
+    missing: { kcal: 0, protein: 0, carbs: 1, fat: 0, fiber: 1 },
     notFullyCounted: 2,
     count: 3
   });
@@ -220,4 +224,15 @@ test("recent foods: newest first, each food once, at most five", async () => {
   );
   assert.deepEqual(recentFoods([]), []);
   assert.equal(recentFoods(log, 2).length, 2);
+});
+
+test("complete needs kcal, protein, carbs and fat; fibre is optional", async () => {
+  const { statusFromValues } = await import("../../js/intake.js");
+  const values = (kcal, protein, carbs, fat, fiber) => ({ kcal, protein, carbs, fat, fiber });
+  assert.equal(statusFromValues(values(700, 30, 80, 25, null)), "complete");
+  assert.equal(statusFromValues(values(700, 0, 0, 0, 0)), "complete");
+  assert.equal(statusFromValues(values(700, null, null, null, null)), "partial");
+  assert.equal(statusFromValues(values(700, 30, null, 25, 5)), "partial");
+  assert.equal(statusFromValues(values(null, null, null, null, 3)), "partial");
+  assert.equal(statusFromValues(values(null, null, null, null, null)), "unknown");
 });
