@@ -68,6 +68,10 @@ export const TARGETS_STORAGE_KEY = "grocery_scanner_targets_v1";
 // The intake log: one entry per thing eaten (see js/intake.js).
 export const INTAKE_STORAGE_KEY = "grocery_scanner_intake_v1";
 
+// The NEVO foods imported from the user's own RIVM download. Kept apart and left out of the backup file:
+// the RIVM conditions are the user's own agreement, so the app never passes NEVO data on.
+export const NEVO_STORAGE_KEY = "grocery_scanner_nevo_v1";
+
 export const BACKUP_APP_ID = "grocery-scanner-backup";
 
 export const BACKUP_FORMAT_VERSION = 1;

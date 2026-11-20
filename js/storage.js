@@ -2,6 +2,7 @@
 import {
   BARCODE_CACHE_STORAGE_KEY,
   INTAKE_STORAGE_KEY,
+  NEVO_STORAGE_KEY,
   RECIPE_STORAGE_KEY,
   STOCK_STORAGE_KEY,
   STORAGE_KEY,
@@ -9,6 +10,7 @@ import {
 } from "./constants.js";
 import { normalizeDisplayAmount, parseOptionalNumberInput } from "./format.js";
 import { normalizeIntakeLog } from "./intake.js";
+import { normalizeNevoData } from "./nevo.js";
 import { createShoppingItem, createStockItem, normalizeStockLink } from "./items.js";
 import { normalizeNutrition } from "./nutrition.js";
 import { normalizeMealType, normalizeTargetSettings } from "./targets.js";
@@ -155,5 +157,13 @@ export function loadIntakeLog() {
     return normalizeIntakeLog(JSON.parse(localStorage.getItem(INTAKE_STORAGE_KEY)));
   } catch (error) {
     return [];
+  }
+}
+
+export function loadNevoData() {
+  try {
+    return normalizeNevoData(JSON.parse(localStorage.getItem(NEVO_STORAGE_KEY)));
+  } catch (error) {
+    return null;
   }
 }

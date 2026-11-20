@@ -1,5 +1,5 @@
-// "Add product" on the Today tab: log grams of a pantry item or a scanned product, and optionally take
-// it from the pantry (the same conversion as "Cook this"; pieces and packs are entered by hand).
+// "Add product" on the Today tab: log grams of a pantry item, a scanned product or a searched food (NEVO or
+// Open Food Facts), and optionally take a pantry item from the pantry (pieces and packs entered by hand).
 import {
   cameraUnavailableMessage,
   createCamera,
@@ -11,6 +11,7 @@ import { takeFromPantry } from "./cook-dialog.js";
 import { gramsToStockUnit } from "./cooking.js";
 import { perGramFromNutrition } from "./intake.js";
 import { hasAnyNutrition } from "./nutrition.js";
+import { addFoodSearch } from "./food-search.js";
 import { getCachedBarcodeLookup, setCachedBarcodeLookup } from "./persistence.js";
 import { lookupProductByBarcode } from "./product-lookup.js";
 import { state } from "./state.js";
@@ -31,7 +32,7 @@ const formatAmount = (value) => String(Math.round(value * 100) / 100);
 export function openAddProduct() {
   const { dialog, body, addActions } = openLogDialog("Add product");
 
-  // What was eaten: a pantry item (by index) or, after a scan, a product that isn't in the pantry.
+  // What was eaten: a pantry item (by index) or, after a scan or search, a food that isn't in the pantry.
   let scanned = null;
   const select = document.createElement("select");
   const placeholder = new Option("Choose from your pantry", "");
@@ -55,7 +56,23 @@ export function openAddProduct() {
   scanMessage.className = "status-text";
   body.append(scanButton, reader, scanMessage);
 
+  // Searching: NEVO foods without a barcode (fruit, cooked rice) and Open Food Facts products by name.
+  const searchHeading = document.createElement("p");
+  searchHeading.className = "field-label";
+  searchHeading.textContent = "Or search a food";
+  body.appendChild(searchHeading);
+  addFoodSearch(body, {
+    idPrefix: "log",
+    onPick: (choice) => {
+      select.value = "";
+      scanned = choice;
+      scanMessage.textContent = "";
+      refreshPantryBox();
+    }
+  });
+
   const grams = addField(body, "Grams eaten", numberInput(null), "logGramsInput");
+  const gramsLabel = body.querySelector('label[for="logGramsInput"]');
   const meal = addField(body, "Meal", mealSelect(defaultMeal(null)), "logMealSelect");
 
   // Taking it from the pantry: only for pantry items; ticked by default, like Cook this.
@@ -94,6 +111,9 @@ export function openAddProduct() {
   // Shows how much leaves the pantry, or asks for the amount when grams can't be converted.
   const refreshPantryBox = () => {
     const item = selectedItem();
+    // NEVO drinks are per 100 ml, so their amount is asked in millilitres.
+    gramsLabel.textContent =
+      !item && scanned && scanned.unit === "ml" ? "Millilitres eaten" : "Grams eaten";
     pantryBox.classList.toggle("hidden", !item);
     if (!item) {
       return;
@@ -159,7 +179,10 @@ export function openAddProduct() {
     select.value = "";
     scanned = {
       name: product && product.name ? product.name : `Product ${barcode}`,
-      nutrition: product ? product.nutrition : null
+      unit: "g",
+      nutrition: product ? product.nutrition : null,
+      nutritionSource: product ? "off" : null,
+      nevoVersion: null
     };
     scanMessage.textContent = product
       ? `Not in your pantry: ${scanned.name}`
@@ -195,7 +218,7 @@ export function openAddProduct() {
     const source = item || scanned;
     const amount = Number(grams.value);
     if (!source || !(amount > 0)) {
-      message.textContent = "Choose or scan a product and enter the grams eaten.";
+      message.textContent = "Choose, scan or search a food and enter the amount eaten.";
       return false;
     }
 
@@ -217,9 +240,11 @@ export function openAddProduct() {
         meal: meal.value,
         name: source.name,
         source: "product",
-        unit: "g",
+        unit: !item && scanned.unit === "ml" ? "ml" : "g",
         quantity: amount,
-        ...perGramFromNutrition(source.nutrition)
+        ...perGramFromNutrition(source.nutrition),
+        nutritionSource: item ? item.nutritionSource || "pantry" : scanned.nutritionSource,
+        nevoVersion: item ? item.nevoVersion || null : scanned.nevoVersion
       },
       { silent: true }
     );

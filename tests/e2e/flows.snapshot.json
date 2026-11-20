@@ -123,6 +123,8 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "nutritionSource": null,
+          "nevoVersion": null,
           "bought": false
         }
       ]
@@ -198,6 +200,8 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "nutritionSource": null,
+          "nevoVersion": null,
           "bought": false
         }
       ]
@@ -293,6 +297,8 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "nutritionSource": null,
+          "nevoVersion": null,
           "bought": false
         }
       ]
@@ -389,6 +395,8 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "nutritionSource": null,
+          "nevoVersion": null,
           "bought": false
         },
         {
@@ -502,6 +510,8 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "nutritionSource": null,
+          "nevoVersion": null,
           "bought": false
         },
         {
@@ -620,6 +630,8 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "nutritionSource": null,
+          "nevoVersion": null,
           "bought": false
         },
         {
@@ -739,6 +751,8 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "nutritionSource": null,
+          "nevoVersion": null,
           "bought": false
         },
         {
@@ -894,6 +908,8 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "nutritionSource": null,
+          "nevoVersion": null,
           "bought": false
         },
         {
@@ -1066,6 +1082,8 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "nutritionSource": null,
+          "nevoVersion": null,
           "bought": false
         },
         {
@@ -1238,6 +1256,8 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "nutritionSource": null,
+          "nevoVersion": null,
           "bought": false
         },
         {
@@ -1290,7 +1310,9 @@
             "fat100g": 1.5,
             "fiber100g": null
           },
-          "nutritionAmount": null
+          "nutritionAmount": null,
+          "nutritionSource": null,
+          "nevoVersion": null
         }
       ]
     }
@@ -1411,6 +1433,8 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "nutritionSource": null,
+          "nevoVersion": null,
           "bought": false
         },
         {
@@ -1446,7 +1470,9 @@
             "fat100g": 1.5,
             "fiber100g": null
           },
-          "nutritionAmount": null
+          "nutritionAmount": null,
+          "nutritionSource": null,
+          "nevoVersion": null
         },
         {
           "name": "Volkoren pasta",
@@ -1462,7 +1488,9 @@
             "fat100g": 2.5,
             "fiber100g": null
           },
-          "nutritionAmount": null
+          "nutritionAmount": null,
+          "nutritionSource": null,
+          "nevoVersion": null
         }
       ]
     }
@@ -1618,7 +1646,9 @@
             "fat100g": 1.5,
             "fiber100g": null
           },
-          "nutritionAmount": null
+          "nutritionAmount": null,
+          "nutritionSource": null,
+          "nevoVersion": null
         },
         {
           "name": "Volkoren pasta",
@@ -1634,7 +1664,9 @@
             "fat100g": 2.5,
             "fiber100g": null
           },
-          "nutritionAmount": null
+          "nutritionAmount": null,
+          "nutritionSource": null,
+          "nevoVersion": null
         }
       ]
     }
@@ -1772,7 +1804,9 @@
             "fat100g": 1.5,
             "fiber100g": null
           },
-          "nutritionAmount": null
+          "nutritionAmount": null,
+          "nutritionSource": null,
+          "nevoVersion": null
         },
         {
           "name": "Volkoren pasta",
@@ -1788,7 +1822,9 @@
             "fat100g": 2.5,
             "fiber100g": null
           },
-          "nutritionAmount": null
+          "nutritionAmount": null,
+          "nutritionSource": null,
+          "nevoVersion": null
         }
       ]
     }
@@ -1926,7 +1962,9 @@
             "fat100g": 1.5,
             "fiber100g": null
           },
-          "nutritionAmount": null
+          "nutritionAmount": null,
+          "nutritionSource": null,
+          "nevoVersion": null
         },
         {
           "name": "Volkoren pasta",
@@ -1942,7 +1980,9 @@
             "fat100g": 2.5,
             "fiber100g": null
           },
-          "nutritionAmount": null
+          "nutritionAmount": null,
+          "nutritionSource": null,
+          "nevoVersion": null
         }
       ]
     }
@@ -2080,7 +2120,9 @@
             "fat100g": 1.5,
             "fiber100g": null
           },
-          "nutritionAmount": null
+          "nutritionAmount": null,
+          "nutritionSource": null,
+          "nevoVersion": null
         },
         {
           "name": "Volkoren pasta",
@@ -2096,7 +2138,9 @@
             "fat100g": 2.5,
             "fiber100g": null
           },
-          "nutritionAmount": null
+          "nutritionAmount": null,
+          "nutritionSource": null,
+          "nevoVersion": null
         }
       ]
     }
@@ -2234,7 +2278,9 @@
             "fat100g": 1.5,
             "fiber100g": null
           },
-          "nutritionAmount": null
+          "nutritionAmount": null,
+          "nutritionSource": null,
+          "nevoVersion": null
         },
         {
           "name": "Volkoren pasta",
@@ -2250,7 +2296,9 @@
             "fat100g": 2.5,
             "fiber100g": null
           },
-          "nutritionAmount": null
+          "nutritionAmount": null,
+          "nutritionSource": null,
+          "nevoVersion": null
         }
       ]
     }
@@ -2388,7 +2436,9 @@
             "fat100g": 1.5,
             "fiber100g": null
           },
-          "nutritionAmount": null
+          "nutritionAmount": null,
+          "nutritionSource": null,
+          "nevoVersion": null
         },
         {
           "name": "Volkoren pasta",
@@ -2404,7 +2454,9 @@
             "fat100g": 2.5,
             "fiber100g": null
           },
-          "nutritionAmount": null
+          "nutritionAmount": null,
+          "nutritionSource": null,
+          "nevoVersion": null
         }
       ]
     }
@@ -2547,7 +2599,9 @@
             "fat100g": 1.5,
             "fiber100g": null
           },
-          "nutritionAmount": null
+          "nutritionAmount": null,
+          "nutritionSource": null,
+          "nevoVersion": null
         },
         {
           "name": "Volkoren pasta",
@@ -2563,7 +2617,9 @@
             "fat100g": 2.5,
             "fiber100g": null
           },
-          "nutritionAmount": null
+          "nutritionAmount": null,
+          "nutritionSource": null,
+          "nevoVersion": null
         }
       ]
     }
@@ -2592,7 +2648,7 @@
       "1",
       "3"
     ],
-    "stockList": "Halfvolle melk−+Brand: Testmerk Pack size: 1 l Nutri-Score: APer 100g: 46 kcal · P 3.5g · C 4.8g · F 1.5gBarcode: 8710000000001DairyReturnVolkoren pasta−+Brand: Testmerk Pack size: 500 g Nutri-Score: APer 100g: 350 kcal · P 13g · C 64g · F 2.5gBarcode: 8710000000002PantryReturnKruidenmix−+packBarcode: 8710000000077UncategorisedReturn",
+    "stockList": "Halfvolle melk−+Brand: Testmerk Pack size: 1 l Nutri-Score: APer 100g: 46 kcal · P 3.5g · C 4.8g · F 1.5gBarcode: 8710000000001DairyReturnVolkoren pasta−+Brand: Testmerk Pack size: 500 g Nutri-Score: APer 100g: 350 kcal · P 13g · C 64g · F 2.5gBarcode: 8710000000002PantryReturnKruidenmix−+packBarcode: 8710000000077UncategorisedReturnFind nutrition",
     "pantryScanMessage": "Added. Point at the next barcode.",
     "pantryUnknownText": "Barcode 8710000000077 wasn't found. Enter a name to add it to your pantry.",
     "recipeEditorModeText": "Creating a new recipe.",
@@ -2707,7 +2763,9 @@
             "fat100g": 1.5,
             "fiber100g": null
           },
-          "nutritionAmount": null
+          "nutritionAmount": null,
+          "nutritionSource": null,
+          "nevoVersion": null
         },
         {
           "name": "Volkoren pasta",
@@ -2723,7 +2781,9 @@
             "fat100g": 2.5,
             "fiber100g": null
           },
-          "nutritionAmount": null
+          "nutritionAmount": null,
+          "nutritionSource": null,
+          "nevoVersion": null
         },
         {
           "name": "Kruidenmix",
@@ -2739,7 +2799,9 @@
             "fat100g": null,
             "fiber100g": null
           },
-          "nutritionAmount": null
+          "nutritionAmount": null,
+          "nutritionSource": null,
+          "nevoVersion": null
         }
       ]
     }
@@ -2768,7 +2830,7 @@
       "1",
       "3"
     ],
-    "stockList": "Halfvolle melk−+Brand: Testmerk Pack size: 1 l Nutri-Score: APer 100g: 46 kcal · P 3.5g · C 4.8g · F 1.5gBarcode: 8710000000001DairyReturnVolkoren pasta−+Brand: Testmerk Pack size: 500 g Nutri-Score: APer 100g: 350 kcal · P 13g · C 64g · F 2.5gBarcode: 8710000000002PantryReturnKruidenmix−+packBarcode: 8710000000077UncategorisedReturn",
+    "stockList": "Halfvolle melk−+Brand: Testmerk Pack size: 1 l Nutri-Score: APer 100g: 46 kcal · P 3.5g · C 4.8g · F 1.5gBarcode: 8710000000001DairyReturnVolkoren pasta−+Brand: Testmerk Pack size: 500 g Nutri-Score: APer 100g: 350 kcal · P 13g · C 64g · F 2.5gBarcode: 8710000000002PantryReturnKruidenmix−+packBarcode: 8710000000077UncategorisedReturnFind nutrition",
     "pantryScanMessage": "Skipped. Point at the next barcode.",
     "pantryUnknownText": "Barcode 8710000000066 wasn't found. Enter a name to add it to your pantry.",
     "recipeEditorModeText": "Creating a new recipe.",
@@ -2888,7 +2950,9 @@
             "fat100g": 1.5,
             "fiber100g": null
           },
-          "nutritionAmount": null
+          "nutritionAmount": null,
+          "nutritionSource": null,
+          "nevoVersion": null
         },
         {
           "name": "Volkoren pasta",
@@ -2904,7 +2968,9 @@
             "fat100g": 2.5,
             "fiber100g": null
           },
-          "nutritionAmount": null
+          "nutritionAmount": null,
+          "nutritionSource": null,
+          "nevoVersion": null
         },
         {
           "name": "Kruidenmix",
@@ -2920,7 +2986,9 @@
             "fat100g": null,
             "fiber100g": null
           },
-          "nutritionAmount": null
+          "nutritionAmount": null,
+          "nutritionSource": null,
+          "nevoVersion": null
         }
       ]
     }
@@ -3068,6 +3136,8 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "nutritionSource": null,
+          "nevoVersion": null,
           "bought": false
         }
       ],
@@ -3086,7 +3156,9 @@
             "fat100g": 1.5,
             "fiber100g": null
           },
-          "nutritionAmount": null
+          "nutritionAmount": null,
+          "nutritionSource": null,
+          "nevoVersion": null
         },
         {
           "name": "Volkoren pasta",
@@ -3102,7 +3174,9 @@
             "fat100g": 2.5,
             "fiber100g": null
           },
-          "nutritionAmount": null
+          "nutritionAmount": null,
+          "nutritionSource": null,
+          "nevoVersion": null
         }
       ]
     }
@@ -3250,6 +3324,8 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "nutritionSource": null,
+          "nevoVersion": null,
           "bought": false
         }
       ],
@@ -3268,7 +3344,9 @@
             "fat100g": 1.5,
             "fiber100g": null
           },
-          "nutritionAmount": null
+          "nutritionAmount": null,
+          "nutritionSource": null,
+          "nevoVersion": null
         },
         {
           "name": "Volkoren pasta",
@@ -3284,7 +3362,9 @@
             "fat100g": 2.5,
             "fiber100g": null
           },
-          "nutritionAmount": null
+          "nutritionAmount": null,
+          "nutritionSource": null,
+          "nevoVersion": null
         }
       ]
     }
@@ -3432,6 +3512,8 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "nutritionSource": null,
+          "nevoVersion": null,
           "bought": false
         }
       ],
@@ -3450,7 +3532,9 @@
             "fat100g": 1.5,
             "fiber100g": null
           },
-          "nutritionAmount": null
+          "nutritionAmount": null,
+          "nutritionSource": null,
+          "nevoVersion": null
         },
         {
           "name": "Volkoren pasta",
@@ -3466,7 +3550,9 @@
             "fat100g": 2.5,
             "fiber100g": null
           },
-          "nutritionAmount": null
+          "nutritionAmount": null,
+          "nutritionSource": null,
+          "nevoVersion": null
         }
       ]
     }
@@ -3614,6 +3700,8 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "nutritionSource": null,
+          "nevoVersion": null,
           "bought": false
         }
       ],
@@ -3673,7 +3761,9 @@
             "fat100g": 1.5,
             "fiber100g": null
           },
-          "nutritionAmount": null
+          "nutritionAmount": null,
+          "nutritionSource": null,
+          "nevoVersion": null
         },
         {
           "name": "Volkoren pasta",
@@ -3689,7 +3779,9 @@
             "fat100g": 2.5,
             "fiber100g": null
           },
-          "nutritionAmount": null
+          "nutritionAmount": null,
+          "nutritionSource": null,
+          "nevoVersion": null
         }
       ]
     }
@@ -3837,6 +3929,8 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "nutritionSource": null,
+          "nevoVersion": null,
           "bought": false
         }
       ],
@@ -3896,7 +3990,9 @@
             "fat100g": 1.5,
             "fiber100g": null
           },
-          "nutritionAmount": null
+          "nutritionAmount": null,
+          "nutritionSource": null,
+          "nevoVersion": null
         },
         {
           "name": "Volkoren pasta",
@@ -3912,7 +4008,9 @@
             "fat100g": 2.5,
             "fiber100g": null
           },
-          "nutritionAmount": null
+          "nutritionAmount": null,
+          "nutritionSource": null,
+          "nevoVersion": null
         }
       ]
     }
@@ -4060,6 +4158,8 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "nutritionSource": null,
+          "nevoVersion": null,
           "bought": false
         }
       ],
@@ -4158,7 +4258,9 @@
             "fat100g": 1.5,
             "fiber100g": null
           },
-          "nutritionAmount": null
+          "nutritionAmount": null,
+          "nutritionSource": null,
+          "nevoVersion": null
         },
         {
           "name": "Volkoren pasta",
@@ -4174,7 +4276,9 @@
             "fat100g": 2.5,
             "fiber100g": null
           },
-          "nutritionAmount": null
+          "nutritionAmount": null,
+          "nutritionSource": null,
+          "nevoVersion": null
         }
       ]
     }
@@ -4322,6 +4426,8 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "nutritionSource": null,
+          "nevoVersion": null,
           "bought": false
         }
       ],
@@ -4420,7 +4526,9 @@
             "fat100g": 1.5,
             "fiber100g": null
           },
-          "nutritionAmount": null
+          "nutritionAmount": null,
+          "nutritionSource": null,
+          "nevoVersion": null
         },
         {
           "name": "Volkoren pasta",
@@ -4436,7 +4544,9 @@
             "fat100g": 2.5,
             "fiber100g": null
           },
-          "nutritionAmount": null
+          "nutritionAmount": null,
+          "nutritionSource": null,
+          "nevoVersion": null
         }
       ]
     }
@@ -4584,6 +4694,8 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "nutritionSource": null,
+          "nevoVersion": null,
           "bought": false
         }
       ],
@@ -4682,7 +4794,9 @@
             "fat100g": 1.5,
             "fiber100g": null
           },
-          "nutritionAmount": null
+          "nutritionAmount": null,
+          "nutritionSource": null,
+          "nevoVersion": null
         },
         {
           "name": "Volkoren pasta",
@@ -4698,7 +4812,9 @@
             "fat100g": 2.5,
             "fiber100g": null
           },
-          "nutritionAmount": null
+          "nutritionAmount": null,
+          "nutritionSource": null,
+          "nevoVersion": null
         }
       ]
     }
@@ -4846,6 +4962,8 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "nutritionSource": null,
+          "nevoVersion": null,
           "bought": false
         }
       ],
@@ -4905,7 +5023,9 @@
             "fat100g": 1.5,
             "fiber100g": null
           },
-          "nutritionAmount": null
+          "nutritionAmount": null,
+          "nutritionSource": null,
+          "nevoVersion": null
         },
         {
           "name": "Volkoren pasta",
@@ -4921,7 +5041,9 @@
             "fat100g": 2.5,
             "fiber100g": null
           },
-          "nutritionAmount": null
+          "nutritionAmount": null,
+          "nutritionSource": null,
+          "nevoVersion": null
         }
       ]
     }
@@ -5069,6 +5191,8 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "nutritionSource": null,
+          "nevoVersion": null,
           "bought": false
         }
       ],
@@ -5128,7 +5252,9 @@
             "fat100g": 1.5,
             "fiber100g": null
           },
-          "nutritionAmount": null
+          "nutritionAmount": null,
+          "nutritionSource": null,
+          "nevoVersion": null
         },
         {
           "name": "Volkoren pasta",
@@ -5144,7 +5270,9 @@
             "fat100g": 2.5,
             "fiber100g": null
           },
-          "nutritionAmount": null
+          "nutritionAmount": null,
+          "nutritionSource": null,
+          "nevoVersion": null
         }
       ]
     }
@@ -5292,6 +5420,8 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "nutritionSource": null,
+          "nevoVersion": null,
           "bought": false
         }
       ],
@@ -5351,7 +5481,9 @@
             "fat100g": 1.5,
             "fiber100g": null
           },
-          "nutritionAmount": null
+          "nutritionAmount": null,
+          "nutritionSource": null,
+          "nevoVersion": null
         },
         {
           "name": "Volkoren pasta",
@@ -5367,7 +5499,9 @@
             "fat100g": 2.5,
             "fiber100g": null
           },
-          "nutritionAmount": null
+          "nutritionAmount": null,
+          "nutritionSource": null,
+          "nevoVersion": null
         }
       ]
     }
@@ -5515,6 +5649,8 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "nutritionSource": null,
+          "nevoVersion": null,
           "bought": false
         }
       ],
@@ -5574,7 +5710,9 @@
             "fat100g": 1.5,
             "fiber100g": null
           },
-          "nutritionAmount": null
+          "nutritionAmount": null,
+          "nutritionSource": null,
+          "nevoVersion": null
         },
         {
           "name": "Volkoren pasta",
@@ -5590,7 +5728,9 @@
             "fat100g": 2.5,
             "fiber100g": null
           },
-          "nutritionAmount": null
+          "nutritionAmount": null,
+          "nutritionSource": null,
+          "nevoVersion": null
         }
       ]
     }
@@ -5739,6 +5879,8 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "nutritionSource": null,
+          "nevoVersion": null,
           "bought": false
         }
       ],
@@ -5798,7 +5940,9 @@
             "fat100g": 1.5,
             "fiber100g": null
           },
-          "nutritionAmount": null
+          "nutritionAmount": null,
+          "nutritionSource": null,
+          "nevoVersion": null
         },
         {
           "name": "Volkoren pasta",
@@ -5814,7 +5958,9 @@
             "fat100g": 2.5,
             "fiber100g": null
           },
-          "nutritionAmount": null
+          "nutritionAmount": null,
+          "nutritionSource": null,
+          "nevoVersion": null
         }
       ]
     }
@@ -5963,6 +6109,8 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "nutritionSource": null,
+          "nevoVersion": null,
           "bought": false
         }
       ],
@@ -6022,7 +6170,9 @@
             "fat100g": 1.5,
             "fiber100g": null
           },
-          "nutritionAmount": null
+          "nutritionAmount": null,
+          "nutritionSource": null,
+          "nevoVersion": null
         },
         {
           "name": "Volkoren pasta",
@@ -6038,7 +6188,9 @@
             "fat100g": 2.5,
             "fiber100g": null
           },
-          "nutritionAmount": null
+          "nutritionAmount": null,
+          "nutritionSource": null,
+          "nevoVersion": null
         }
       ]
     }
@@ -6187,6 +6339,8 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "nutritionSource": null,
+          "nevoVersion": null,
           "bought": false
         }
       ],
@@ -6285,7 +6439,9 @@
             "fat100g": 1.5,
             "fiber100g": null
           },
-          "nutritionAmount": null
+          "nutritionAmount": null,
+          "nutritionSource": null,
+          "nevoVersion": null
         },
         {
           "name": "Volkoren pasta",
@@ -6301,7 +6457,9 @@
             "fat100g": 2.5,
             "fiber100g": null
           },
-          "nutritionAmount": null
+          "nutritionAmount": null,
+          "nutritionSource": null,
+          "nevoVersion": null
         }
       ]
     }
@@ -6452,6 +6610,8 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "nutritionSource": null,
+          "nevoVersion": null,
           "bought": false
         },
         {
@@ -6469,6 +6629,8 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "nutritionSource": null,
+          "nevoVersion": null,
           "bought": false
         },
         {
@@ -6486,6 +6648,8 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "nutritionSource": null,
+          "nevoVersion": null,
           "bought": false
         }
       ],
@@ -6584,7 +6748,9 @@
             "fat100g": 1.5,
             "fiber100g": null
           },
-          "nutritionAmount": null
+          "nutritionAmount": null,
+          "nutritionSource": null,
+          "nevoVersion": null
         },
         {
           "name": "Volkoren pasta",
@@ -6600,7 +6766,9 @@
             "fat100g": 2.5,
             "fiber100g": null
           },
-          "nutritionAmount": null
+          "nutritionAmount": null,
+          "nutritionSource": null,
+          "nevoVersion": null
         }
       ]
     }
@@ -6751,6 +6919,8 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "nutritionSource": null,
+          "nevoVersion": null,
           "bought": false
         },
         {
@@ -6768,6 +6938,8 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "nutritionSource": null,
+          "nevoVersion": null,
           "bought": false
         },
         {
@@ -6785,6 +6957,8 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "nutritionSource": null,
+          "nevoVersion": null,
           "bought": false
         }
       ],
@@ -6884,7 +7058,9 @@
             "fat100g": 1.5,
             "fiber100g": null
           },
-          "nutritionAmount": null
+          "nutritionAmount": null,
+          "nutritionSource": null,
+          "nevoVersion": null
         },
         {
           "name": "Volkoren pasta",
@@ -6900,7 +7076,9 @@
             "fat100g": 2.5,
             "fiber100g": null
           },
-          "nutritionAmount": null
+          "nutritionAmount": null,
+          "nutritionSource": null,
+          "nevoVersion": null
         }
       ]
     }
@@ -7051,6 +7229,8 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "nutritionSource": null,
+          "nevoVersion": null,
           "bought": false
         },
         {
@@ -7068,6 +7248,8 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "nutritionSource": null,
+          "nevoVersion": null,
           "bought": false
         },
         {
@@ -7085,6 +7267,8 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "nutritionSource": null,
+          "nevoVersion": null,
           "bought": false
         }
       ],
@@ -7236,7 +7420,9 @@
             "fat100g": 1.5,
             "fiber100g": null
           },
-          "nutritionAmount": null
+          "nutritionAmount": null,
+          "nutritionSource": null,
+          "nevoVersion": null
         },
         {
           "name": "Volkoren pasta",
@@ -7252,7 +7438,9 @@
             "fat100g": 2.5,
             "fiber100g": null
           },
-          "nutritionAmount": null
+          "nutritionAmount": null,
+          "nutritionSource": null,
+          "nevoVersion": null
         }
       ]
     }
@@ -7297,6 +7485,8 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "nutritionSource": null,
+          "nevoVersion": null,
           "bought": false
         },
         {
@@ -7314,6 +7504,8 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "nutritionSource": null,
+          "nevoVersion": null,
           "bought": false
         },
         {
@@ -7331,6 +7523,8 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "nutritionSource": null,
+          "nevoVersion": null,
           "bought": false
         }
       ],
@@ -7349,7 +7543,9 @@
             "fat100g": 1.5,
             "fiber100g": null
           },
-          "nutritionAmount": null
+          "nutritionAmount": null,
+          "nutritionSource": null,
+          "nevoVersion": null
         },
         {
           "name": "Volkoren pasta",
@@ -7365,7 +7561,9 @@
             "fat100g": 2.5,
             "fiber100g": null
           },
-          "nutritionAmount": null
+          "nutritionAmount": null,
+          "nutritionSource": null,
+          "nevoVersion": null
         }
       ],
       "savedRecipes": [
@@ -7672,6 +7870,8 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "nutritionSource": null,
+          "nevoVersion": null,
           "bought": false
         },
         {
@@ -7689,6 +7889,8 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "nutritionSource": null,
+          "nevoVersion": null,
           "bought": false
         },
         {
@@ -7706,6 +7908,8 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "nutritionSource": null,
+          "nevoVersion": null,
           "bought": false
         }
       ],
@@ -7857,7 +8061,9 @@
             "fat100g": 1.5,
             "fiber100g": null
           },
-          "nutritionAmount": null
+          "nutritionAmount": null,
+          "nutritionSource": null,
+          "nevoVersion": null
         },
         {
           "name": "Volkoren pasta",
@@ -7873,7 +8079,9 @@
             "fat100g": 2.5,
             "fiber100g": null
           },
-          "nutritionAmount": null
+          "nutritionAmount": null,
+          "nutritionSource": null,
+          "nevoVersion": null
         }
       ]
     }
@@ -8022,6 +8230,8 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "nutritionSource": null,
+          "nevoVersion": null,
           "bought": false
         },
         {
@@ -8039,6 +8249,8 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "nutritionSource": null,
+          "nevoVersion": null,
           "bought": false
         },
         {
@@ -8056,6 +8268,8 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "nutritionSource": null,
+          "nevoVersion": null,
           "bought": false
         }
       ],
@@ -8586,6 +8800,8 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "nutritionSource": null,
+          "nevoVersion": null,
           "bought": false
         },
         {
@@ -8603,6 +8819,8 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "nutritionSource": null,
+          "nevoVersion": null,
           "bought": false
         },
         {
@@ -8620,6 +8838,8 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "nutritionSource": null,
+          "nevoVersion": null,
           "bought": false
         }
       ],
@@ -8771,7 +8991,9 @@
             "fat100g": 1.5,
             "fiber100g": null
           },
-          "nutritionAmount": null
+          "nutritionAmount": null,
+          "nutritionSource": null,
+          "nevoVersion": null
         },
         {
           "name": "Volkoren pasta",
@@ -8787,7 +9009,9 @@
             "fat100g": 2.5,
             "fiber100g": null
           },
-          "nutritionAmount": null
+          "nutritionAmount": null,
+          "nutritionSource": null,
+          "nevoVersion": null
         }
       ],
       "grocery_scanner_targets_v1": {

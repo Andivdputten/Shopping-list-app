@@ -9,6 +9,9 @@ export const NUTRIENTS = ["kcal", "protein", "carbs", "fat", "fiber"];
 // "partial" (some data missing) and "unknown" (no data) are flagged on the Today tab, never counted as zero.
 const STATUSES = ["complete", "partial", "estimated", "unknown"];
 
+// Sources of an entry's values: NEVO, Open Food Facts, a pantry item, typed by hand, a recipe or the AI.
+export const NUTRITION_SOURCES = ["nevo", "off", "pantry", "manual", "recipe", "estimated"];
+
 const round1 = (value) => Math.round(value * 10) / 10;
 const isNumber = (value) => typeof value === "number" && Number.isFinite(value);
 
@@ -100,7 +103,19 @@ export function perServingFromRecipe(recipe, estimate) {
 
 // A new log entry. unit is "serving", "g" or "" (a quick entry); its values are perUnit times quantity.
 // The values are stored as they are now, so later changes to a recipe or product don't rewrite history.
-export function createEntry({ date, meal, name, source, unit, quantity, perUnit, status, time }) {
+export function createEntry({
+  date,
+  meal,
+  name,
+  source,
+  unit,
+  quantity,
+  perUnit,
+  status,
+  time,
+  nutritionSource = null,
+  nevoVersion = null
+}) {
   return {
     id: `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`,
     date,
@@ -111,8 +126,22 @@ export function createEntry({ date, meal, name, source, unit, quantity, perUnit,
     unit,
     quantity,
     perUnit: { ...emptyValues(), ...perUnit },
-    status
+    status,
+    nutritionSource,
+    nevoVersion
   };
+}
+
+// The NEVO versions behind a day's entries, for RIVM's required reference under that day's totals.
+export function nevoVersionsUsed(entries, date) {
+  return [
+    ...new Set(
+      entries
+        .filter((entry) => entry.date === date && entry.nutritionSource === "nevo")
+        .map((entry) => entry.nevoVersion)
+        .filter(Boolean)
+    )
+  ];
 }
 
 // An entry's values: per-unit values times the quantity, rounded to 1 decimal; unknown values stay null.
@@ -205,10 +234,15 @@ export function normalizeIntakeLog(raw) {
         meal: entry.meal,
         name: entry.name.trim(),
         source: ["recipe", "product", "manual"].includes(entry.source) ? entry.source : "manual",
-        unit: ["serving", "g"].includes(entry.unit) ? entry.unit : "",
+        unit: ["serving", "g", "ml"].includes(entry.unit) ? entry.unit : "",
         quantity: isNumber(entry.quantity) && entry.quantity > 0 ? entry.quantity : 1,
         perUnit,
-        status: STATUSES.includes(entry.status) ? entry.status : "unknown"
+        status: STATUSES.includes(entry.status) ? entry.status : "unknown",
+        // Where the values came from; a NEVO entry keeps its NEVO version for the required reference.
+        nutritionSource: NUTRITION_SOURCES.includes(entry.nutritionSource)
+          ? entry.nutritionSource
+          : null,
+        nevoVersion: typeof entry.nevoVersion === "string" ? entry.nevoVersion : null
       };
     });
 }

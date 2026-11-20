@@ -154,3 +154,24 @@ export function extractNutritionFromOffProduct(product) {
     fiber100g: pickFirstNumber(nutriments.fiber_100g)
   });
 }
+
+// Products whose names match a search, from Open Food Facts' full-text search (needs a connection).
+// Only products with nutrition data are returned, since the search is used to fill in nutrition.
+export async function searchProductsByName(query, limit = 10) {
+  const url =
+    "https://world.openfoodfacts.org/cgi/search.pl?search_simple=1&action=process&json=1" +
+    `&page_size=${limit}&fields=product_name,brands,nutriments` +
+    `&search_terms=${encodeURIComponent(query)}`;
+  const response = await fetch(url);
+  if (!response.ok) {
+    throw new Error(`Search failed with status ${response.status}`);
+  }
+  const data = await response.json();
+  return (Array.isArray(data.products) ? data.products : [])
+    .map((product) => ({
+      name: normalizeText(product.product_name),
+      brand: normalizeText(product.brands),
+      nutrition: extractNutritionFromOffProduct(product)
+    }))
+    .filter((product) => product.name !== "" && product.nutrition.kcal100g !== null);
+}

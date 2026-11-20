@@ -2,7 +2,8 @@
 import { stockEmptyMessage, stockList } from "./dom.js";
 import { formatNutritionSummary, formatNutritionTotalSummary } from "./format.js";
 import { createShoppingItem, getCategoryLabel, normalizeIngredientName } from "./items.js";
-import { getQuantityStep } from "./nutrition.js";
+import { getQuantityStep, hasAnyNutrition } from "./nutrition.js";
+import { openFindNutrition, pantrySourceText } from "./pantry-nutrition.js";
 import { saveItems, saveStockItems } from "./persistence.js";
 import { renderRecipeItemOptions } from "./recipe-builder.js";
 import { renderList } from "./shopping-list.js";
@@ -185,6 +186,14 @@ export function renderStockList() {
       infoWrap.appendChild(nutritionTotalSpan);
     }
 
+    const sourceText = pantrySourceText(item);
+    if (sourceText !== "") {
+      const sourceSpan = document.createElement("span");
+      sourceSpan.className = "item-meta";
+      sourceSpan.textContent = sourceText;
+      infoWrap.appendChild(sourceSpan);
+    }
+
     if (item.barcode !== "") {
       const barcodeSpan = document.createElement("span");
       barcodeSpan.className = "item-barcode";
@@ -208,6 +217,16 @@ export function renderStockList() {
     });
 
     actions.appendChild(returnButton);
+
+    // Only items without any data get the search, so looked-up or typed values are never overwritten by it.
+    if (!hasAnyNutrition(item.nutrition)) {
+      const findButton = document.createElement("button");
+      findButton.className = "edit-button";
+      findButton.textContent = "Find nutrition";
+      findButton.setAttribute("aria-label", `Find nutrition for ${item.name}`);
+      findButton.addEventListener("click", () => openFindNutrition(index, renderStockList));
+      actions.appendChild(findButton);
+    }
 
     li.appendChild(infoWrap);
     li.appendChild(actions);

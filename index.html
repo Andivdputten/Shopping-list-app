@@ -453,6 +453,8 @@
         </div>
         <div id="todayEntries"></div>
         <p id="todayEmptyMessage" class="hint-text">Nothing logged on this day yet.</p>
+        <!-- RIVM's required reference, shown by js/today.js only on days whose totals use NEVO values. -->
+        <p id="todayNevoReference" class="hint-text source-reference"></p>
       </section>
 
       <section class="card">
@@ -572,6 +574,40 @@
 
           <p id="targetsStatus" class="status-text"></p>
         </div>
+      </section>
+
+      <!-- NEVO card (js/nevo-settings.js): imports the user's own NEVO file from RIVM. It stays in this browser and
+           is not in the backup, because the RIVM conditions are the user's own agreement. -->
+      <section class="card">
+        <h2>Food database (NEVO)</h2>
+        <p class="hint-text">
+          NEVO is the Dutch food composition table from RIVM: generic foods such as fruit, vegetables,
+          cooked rice and meat, searchable by name. Request the dataset yourself (you accept RIVM's
+          conditions when you do), then import the .xlsx file here. It stays in this browser and is
+          not part of the backup.
+        </p>
+        <p class="hint-text">
+          <a
+            href="https://www.rivm.nl/en/dutch-food-composition-database/use-of-nevo-online/request-dataset"
+            target="_blank"
+            rel="noopener"
+            >Request the NEVO dataset (RIVM)</a
+          >
+        </p>
+
+        <div class="action-row">
+          <button id="importNevoButton" class="secondary-button">Import NEVO file</button>
+          <button id="removeNevoButton" class="secondary-button">Remove</button>
+        </div>
+        <input
+          id="importNevoInput"
+          type="file"
+          accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+          class="hidden"
+        />
+
+        <p id="nevoStatus" class="status-text"></p>
+        <p id="nevoReference" class="hint-text source-reference"></p>
       </section>
 
       <!-- Backup card: lets users save and restore all their data, since it otherwise only lives in this browser's storage. -->

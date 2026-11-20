@@ -87,11 +87,13 @@ import { state } from "./state.js";
 import {
   loadBarcodeCache,
   loadIntakeLog,
+  loadNevoData,
   loadItems,
   loadRecipes,
   loadStockItems,
   loadTargetSettings
 } from "./storage.js";
+import { initNevoSettings } from "./nevo-settings.js";
 import { initTabs } from "./tabs.js";
 import { initTargetsSettings } from "./targets-settings.js";
 import { initToday } from "./today.js";
@@ -111,6 +113,7 @@ function startApp() {
   state.barcodeCache = loadBarcodeCache();
   state.targetSettings = loadTargetSettings();
   state.intakeLog = loadIntakeLog();
+  state.nevo = loadNevoData();
   state.todayDate = dateKey(new Date());
   renderList();
   updateFormMode();
@@ -120,6 +123,7 @@ function startApp() {
   initBackupSettings();
   initRecipeLanguageSetting();
   initTargetsSettings();
+  initNevoSettings();
   initToday();
   suggestRecipesButton.addEventListener("click", handleSuggestRecipesClick);
   setStatus("App loaded successfully.");
