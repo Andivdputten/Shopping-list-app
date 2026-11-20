@@ -426,7 +426,9 @@ const MEAL_TYPE_NAMES = ["breakfast", "lunch", "dinner", "snack"];
 
 // The request text: the stock, the preferences, saved recipes to avoid and, when chosen, the one meal
 // type all suggestions must suit (instead of a mix of meal types).
-export function buildUserMessage(stockList, preferences, avoidNames, mealType) {
+// onlyExtras asks for 3 recipes that each need a few extra ingredients and none that use only stock: the
+// follow-up request when a first answer had no such recipes.
+export function buildUserMessage(stockList, preferences, avoidNames, mealType, onlyExtras = false) {
   const stockLines = stockList
     .map((item) => {
       const qty = typeof item.quantity === "number" ? item.quantity : "";
@@ -450,22 +452,28 @@ export function buildUserMessage(stockList, preferences, avoidNames, mealType) {
           .join("\n")}\n</already_saved>\nSuggest recipes that differ from the already saved ones.`
       : "";
 
+  const count = onlyExtras ? 3 : 6;
   const variety = MEAL_TYPE_NAMES.includes(mealType)
-    ? `Suggest 6 varied ${mealType} recipes (different cuisines and styles), all suited to ${mealType}; set mealType to "${mealType}" for each:`
-    : "Suggest 6 varied recipes (different cuisines or meal types):";
+    ? `Suggest ${count} varied ${mealType} recipes (different cuisines and styles), all suited to ${mealType}; set mealType to "${mealType}" for each:`
+    : `Suggest ${count} varied recipes (different cuisines or meal types):`;
+  const groups = onlyExtras
+    ? `- "ready": leave this empty.
+- "needsExtras": 3 recipes built around the stock that each also need 1 to 3 ingredients that are not in stock, such as a fresh vegetable, a sauce or a spice. Every one must need at least one ingredient that is not in the stock list.`
+    : `- "ready": 3 recipes that use only stock items.
+- "needsExtras": 3 recipes built around the stock that each also need 1 to 3 ingredients that are not in stock, such as a fresh vegetable, a sauce or a spice.`;
 
   return `<stock>
 ${stockLines}
 </stock>${preferenceText}${avoidText}
 
 ${variety}
-- "ready": 3 recipes that use only stock items.
-- "needsExtras": 3 recipes built around the stock that each also need 1 to 3 ingredients that are not in stock, such as a fresh vegetable, a sauce or a spice.`;
+${groups}`;
 }
 
 // stockItems: pantry items; preferences: free text; options.language: a RECIPE_LANGUAGES code;
 // options.avoidNames: names of already-saved recipes, so suggestions don't repeat them;
-// options.mealType: "breakfast" | "lunch" | "dinner" | "snack" to ask for that meal only, or "" for any.
+// options.mealType: "breakfast" | "lunch" | "dinner" | "snack" to ask for that meal only, or "" for any;
+// options.onlyExtras: true to ask only for recipes that need a few extra ingredients.
 async function generateRecipes(stockItems, preferences, options) {
   const stockList = Array.isArray(stockItems) ? stockItems : [];
   const settings = options || {};
@@ -482,7 +490,13 @@ async function generateRecipes(stockItems, preferences, options) {
     };
   }
 
-  const userMessage = buildUserMessage(stockList, preferences, avoidNames, settings.mealType);
+  const userMessage = buildUserMessage(
+    stockList,
+    preferences,
+    avoidNames,
+    settings.mealType,
+    settings.onlyExtras === true
+  );
 
   const result = await callClaude(
     [{ role: "user", content: userMessage }],

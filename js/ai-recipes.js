@@ -694,7 +694,7 @@ export async function handleSuggestRecipesClick() {
     return;
   }
 
-  const counts = renderAiRecipes(result.recipes);
+  const counts = showSuggestions(result.recipes);
   const total = result.recipes.length;
   let message = t.gotRecipes(total, counts.readyCount, counts.extrasCount);
 
@@ -703,4 +703,49 @@ export async function handleSuggestRecipesClick() {
   }
 
   aiSuggestStatus.textContent = message;
+}
+
+// The current suggestions, so a follow-up request can add to them instead of replacing them.
+let shownRecipes = [];
+
+// Shows the suggestions; when none needs extra ingredients (the AI left that group empty, or its
+// "extras" turned out to be in your pantry), adds a button that asks for 3 such recipes. The button
+// costs a request only when tapped, so nothing is spent on a case that may never happen.
+function showSuggestions(recipes) {
+  shownRecipes = recipes;
+  const counts = renderAiRecipes(recipes);
+  if (counts.extrasCount === 0 && recipes.length > 0) {
+    const t = aiText();
+    const more = document.createElement("button");
+    more.type = "button";
+    more.className = "secondary-button";
+    more.id = "moreExtrasButton";
+    more.textContent = t.moreWithExtras;
+    more.addEventListener("click", () => requestExtras(more));
+    aiRecipeResults.appendChild(more);
+  }
+  return counts;
+}
+
+async function requestExtras(button) {
+  const t = aiText();
+  button.disabled = true;
+  button.textContent = t.thinking;
+  aiSuggestStatus.textContent = t.asking;
+  const result = await RecipeAI.generateRecipes(state.stockItems, aiPreferencesInput.value, {
+    language: getRecipeLanguage(),
+    // Also the names on screen, so the new recipes differ from the ones just suggested.
+    avoidNames: [...state.savedRecipes, ...shownRecipes].map((recipe) => recipe.name),
+    mealType: document.getElementById("aiMealTypeSelect").value,
+    onlyExtras: true
+  });
+  if (!result.ok) {
+    button.disabled = false;
+    button.textContent = t.moreWithExtras;
+    aiSuggestStatus.textContent = result.message;
+    return;
+  }
+  const counts = showSuggestions([...shownRecipes, ...result.recipes]);
+  aiSuggestStatus.textContent =
+    t.gotExtras(result.recipes.length) + (counts.extrasCount === 0 ? t.noneExtras : "");
 }

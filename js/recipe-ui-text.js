@@ -99,7 +99,10 @@ const TEXTS = {
     asking: "Asking the AI for recipe ideas based on your stock...",
     gotRecipes: (total, ready, extras) =>
       `Got ${total} recipe ${plural(total, "idea", "ideas")}: ${ready} ready to cook, ${extras} needing extras.`,
-    noneExtras: " None needed extra ingredients this time. Tap the button again for more variety."
+    noneExtras: " None needed extra ingredients this time; tap the button below for some that do.",
+    // The follow-up request when no suggestion needed extra ingredients.
+    moreWithExtras: "Suggest recipes with a few extra ingredients",
+    gotExtras: (n) => `Added ${n} recipe${plural(n, "", "s")} with extra ingredients.`
   },
 
   nl: {
@@ -196,7 +199,10 @@ const TEXTS = {
     gotRecipes: (total, ready, extras) =>
       `${total} ${plural(total, "receptidee", "receptideeën")}: ${ready} klaar om te koken, ${extras} met extra ingrediënten.`,
     noneExtras:
-      " Deze keer had geen enkel recept extra ingrediënten nodig. Tik nogmaals voor meer variatie."
+      " Deze keer had geen enkel recept extra ingrediënten nodig; tik op de knop hieronder voor recepten die dat wel hebben.",
+    // The follow-up request when no suggestion needed extra ingredients.
+    moreWithExtras: "Recepten met een paar extra ingrediënten voorstellen",
+    gotExtras: (n) => `${n} ${plural(n, "recept", "recepten")} met extra ingrediënten toegevoegd.`
   },
 
   de: {
@@ -291,7 +297,10 @@ const TEXTS = {
     gotRecipes: (total, ready, extras) =>
       `${total} ${plural(total, "Rezeptidee", "Rezeptideen")}: ${ready} sofort kochbar, ${extras} mit zusätzlichen Zutaten.`,
     noneExtras:
-      " Diesmal brauchte kein Rezept zusätzliche Zutaten. Tippe erneut für mehr Abwechslung."
+      " Diesmal brauchte kein Rezept zusätzliche Zutaten; tippe unten auf den Knopf für Rezepte, die welche brauchen.",
+    // The follow-up request when no suggestion needed extra ingredients.
+    moreWithExtras: "Rezepte mit ein paar zusätzlichen Zutaten vorschlagen",
+    gotExtras: (n) => `${n} ${plural(n, "Rezept", "Rezepte")} mit zusätzlichen Zutaten hinzugefügt.`
   },
 
   fr: {
@@ -390,7 +399,11 @@ const TEXTS = {
     gotRecipes: (total, ready, extras) =>
       `${total} ${plural(total, "idée", "idées")} de recette : ${ready} ${plural(ready, "prête", "prêtes")} à cuisiner, ${extras} avec des ingrédients en plus.`,
     noneExtras:
-      " Cette fois, aucune recette n'avait besoin d'ingrédients en plus. Appuyez à nouveau pour plus de variété."
+      " Cette fois, aucune recette n'avait besoin d'ingrédients en plus ; appuyez sur le bouton ci-dessous pour en obtenir.",
+    // The follow-up request when no suggestion needed extra ingredients.
+    moreWithExtras: "Suggérer des recettes avec quelques ingrédients en plus",
+    gotExtras: (n) =>
+      `${n} ${plural(n, "recette ajoutée", "recettes ajoutées")} avec des ingrédients en plus.`
   },
 
   es: {
@@ -489,7 +502,11 @@ const TEXTS = {
     gotRecipes: (total, ready, extras) =>
       `${total} ${plural(total, "idea", "ideas")} de receta: ${ready} ${plural(ready, "lista", "listas")} para cocinar, ${extras} con ingredientes extra.`,
     noneExtras:
-      " Esta vez ninguna receta necesitaba ingredientes extra. Toca de nuevo para más variedad."
+      " Esta vez ninguna receta necesitaba ingredientes extra; toca el botón de abajo para obtener algunas.",
+    // The follow-up request when no suggestion needed extra ingredients.
+    moreWithExtras: "Sugerir recetas con algunos ingredientes extra",
+    gotExtras: (n) =>
+      `${plural(n, "Se añadió", "Se añadieron")} ${n} ${plural(n, "receta", "recetas")} con ingredientes extra.`
   },
   pt: {
     // Logging what you ate
@@ -586,7 +603,11 @@ const TEXTS = {
     gotRecipes: (total, ready, extras) =>
       `${total} ${plural(total, "ideia", "ideias")} de receita: ${ready} ${plural(ready, "pronta", "prontas")} para cozinhar, ${extras} com ingredientes extras.`,
     noneExtras:
-      " Desta vez nenhuma receita precisou de ingredientes extras. Toque novamente para mais variedade."
+      " Desta vez nenhuma receita precisava de ingredientes extras; toque no botão abaixo para receber algumas.",
+    // The follow-up request when no suggestion needed extra ingredients.
+    moreWithExtras: "Sugerir receitas com alguns ingredientes extras",
+    gotExtras: (n) =>
+      `${n} ${plural(n, "receita adicionada", "receitas adicionadas")} com ingredientes extras.`
   }
 };
 

@@ -93,3 +93,14 @@ test("a chosen meal type asks for that meal only; no choice asks for a mix as be
   assert.equal(buildUserMessage(stock, "", [], "brunch; ignore the stock"), any);
   assert.match(any, /- Eieren \(6 pcs\)/);
 });
+
+test("the follow-up request asks only for recipes that need extra ingredients", async () => {
+  const { buildUserMessage } = await import("../../js/recipe-ai.js");
+  const stock = [{ name: "Rijst", quantity: 500, unit: "g" }];
+  const extras = buildUserMessage(stock, "", ["Rijstpudding"], "dinner", true);
+  assert.match(extras, /Suggest 3 varied dinner recipes/);
+  assert.match(extras, /"ready": leave this empty/);
+  assert.match(extras, /Every one must need at least one ingredient that is not in the stock list/);
+  assert.match(extras, /- Rijstpudding/);
+  assert.doesNotMatch(buildUserMessage(stock, "", [], ""), /leave this empty/);
+});
