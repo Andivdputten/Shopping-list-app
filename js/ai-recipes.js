@@ -7,16 +7,25 @@ import {
   suggestRecipesButton
 } from "./dom.js";
 import { buildFitBadge } from "./fit-badge.js";
+import { addFoodSearch } from "./food-search.js";
 import {
   formatIngredientAmountText,
   formatIngredientLine,
   formatNutritionValue,
   normalizeDisplayAmount
 } from "./format.js";
+import {
+  estimateChoice,
+  initialIngredientChoice,
+  offAutoChoice,
+  recipeNutrition
+} from "./ingredient-nutrition.js";
 import { createShoppingItem, normalizeIngredientName } from "./items.js";
+import { nevoReference } from "./nevo.js";
 import { createEmptyNutrition, hasUsableNutrition, normalizeNutrition } from "./nutrition.js";
 import { findMatchingStockItem } from "./pantry.js";
 import { saveItems, saveRecipes } from "./persistence.js";
+import { searchProductsByName } from "./product-lookup.js";
 import { RecipeAI } from "./recipe-ai.js";
 import { forLanguage } from "./recipe-ui-text.js";
 import { renderSavedRecipes } from "./saved-recipes.js";
@@ -24,6 +33,7 @@ import { getRecipeLanguage } from "./settings.js";
 import { renderList } from "./shopping-list.js";
 import { state } from "./state.js";
 import { switchTab } from "./tabs.js";
+import { openLogDialog } from "./today.js";
 import { normalizeMealType } from "./targets.js";
 import { showToast } from "./ui.js";
 
@@ -66,56 +76,55 @@ export function matchRecipeIngredients(recipe) {
       ...ingredient,
       stockMatch,
       inStock: stockMatch !== null,
-      hasNutrition: stockMatch ? hasUsableNutrition(stockMatch.nutrition) : false
+      hasNutrition: stockMatch ? hasUsableNutrition(stockMatch.nutrition) : false,
+      // Where this ingredient's values come from: the pantry item, else NEVO; Open Food Facts is tried
+      // afterwards (online), and the AI's estimate is the fallback (see js/ingredient-nutrition.js).
+      choice: initialIngredientChoice(ingredient, { stockMatch, nevo: state.nevo })
     };
   });
 }
 
+// The values used for an ingredient right now: its chosen source, else the AI's estimate (or none).
+function effectiveChoice(ing) {
+  return ing.choice || estimateChoice(ing);
+}
+
+// An ingredient as stored in a saved recipe: grams, values and where they came from.
+function nutritionIngredient(ing) {
+  const choice = effectiveChoice(ing);
+  return {
+    grams: typeof ing.amount === "number" && ing.amount > 0 ? ing.amount : null,
+    nutrition: choice ? normalizeNutrition(choice.nutrition) : createEmptyNutrition(),
+    nutritionSource: choice ? choice.source : null,
+    nevoVersion: choice ? choice.nevoVersion : null
+  };
+}
+
+// Per-serving values from the ingredients' own sources. source: "calculated" (all from pantry, NEVO or
+// Open Food Facts), "partlyEstimated" (some AI estimates per ingredient), "partial" (some without data and
+// no recipe estimate), or the whole-recipe "estimated" when ingredient data is missing.
 export function computeRecipeMacros(recipe, matchedIngredients) {
-  const allHaveNutrition = matchedIngredients.every(
-    (ing) => ing.hasNutrition && typeof ing.amount === "number"
-  );
-
-  if (allHaveNutrition && matchedIngredients.length > 0) {
-    const totals = matchedIngredients.reduce(
-      (acc, ing) => {
-        const factor = ing.amount / 100;
-        const n = ing.stockMatch.nutrition;
-        acc.kcal += (n.kcal100g || 0) * factor;
-        acc.protein += (n.protein100g || 0) * factor;
-        acc.carbs += (n.carbs100g || 0) * factor;
-        acc.fat += (n.fat100g || 0) * factor;
-        // Fibre only counts when the pantry item has it; otherwise it stays unknown (null).
-        if (typeof n.fiber100g === "number") {
-          acc.fiber = (acc.fiber || 0) + n.fiber100g * factor;
-        }
-        return acc;
-      },
-      { kcal: 0, protein: 0, carbs: 0, fat: 0, fiber: null }
-    );
-
-    const servings = recipe.servings > 0 ? recipe.servings : 1;
-    return {
-      source: "calculated",
-      perServing: {
-        kcal: Math.round(totals.kcal / servings),
-        protein: Math.round((totals.protein / servings) * 10) / 10,
-        carbs: Math.round((totals.carbs / servings) * 10) / 10,
-        fat: Math.round((totals.fat / servings) * 10) / 10,
-        fiber: totals.fiber === null ? null : Math.round((totals.fiber / servings) * 10) / 10
-      }
-    };
-  }
-
+  const result = recipeNutrition(matchedIngredients.map(nutritionIngredient), recipe.servings);
   const est = recipe.estimatedMacrosPerServing;
-  if (
-    est &&
-    (est.kcal !== null || est.protein !== null || est.carbs !== null || est.fat !== null)
-  ) {
-    return { source: "estimated", perServing: est };
-  }
+  const hasEstimate =
+    est && (est.kcal !== null || est.protein !== null || est.carbs !== null || est.fat !== null);
 
-  return { source: "unknown", perServing: null };
+  // Some ingredients without any data would undercount (28 g of oil is 250 kcal), so then the AI's
+  // whole-recipe estimate is the better number, as before per-ingredient sources existed.
+  if (
+    result.status === "complete" ||
+    result.status === "estimated" ||
+    (result.status === "partial" && !hasEstimate)
+  ) {
+    const source = { complete: "calculated", estimated: "partlyEstimated", partial: "partial" }[
+      result.status
+    ];
+    return { source, perServing: result.perServing, nevoVersions: result.nevoVersions };
+  }
+  if (hasEstimate) {
+    return { source: "estimated", perServing: est, nevoVersions: [] };
+  }
+  return { source: "unknown", perServing: null, nevoVersions: [] };
 }
 
 export function macroPillsHtml(macros) {
@@ -151,12 +160,12 @@ export function renderAiRecipes(recipes) {
   });
   prepared.sort((a, b) => (a.missingCount === 0 ? 0 : 1) - (b.missingCount === 0 ? 0 : 1));
 
+  const refreshers = [];
   const readyCount = prepared.filter((p) => p.missingCount === 0).length;
   const extrasCount = prepared.length - readyCount;
   let lastGroup = null;
 
   prepared.forEach(({ recipe, matchedIngredients, missingCount }) => {
-    const macroResult = computeRecipeMacros(recipe, matchedIngredients);
     const missingIngredients = matchedIngredients.filter((ing) => !ing.inStock);
 
     const group = missingCount === 0 ? "ready" : "extras";
@@ -199,44 +208,19 @@ export function renderAiRecipes(recipes) {
     servingsLine.textContent = t.serves(recipe.servings, missingIngredients.length);
     card.appendChild(servingsLine);
 
-    const pills = macroPillsHtml(macroResult.perServing);
-    if (pills) {
-      const macroRow = document.createElement("div");
-      macroRow.className = "ai-macro-row";
-      pills.forEach((text) => {
-        const pill = document.createElement("span");
-        pill.className = "ai-macro-pill";
-        pill.textContent = text;
-        macroRow.appendChild(pill);
-      });
-      card.appendChild(macroRow);
-
-      const sourceLine = document.createElement("p");
-      sourceLine.className = "ai-macro-source";
-      sourceLine.textContent =
-        macroResult.source === "calculated" ? t.sourceCalculated : t.sourceEstimated;
-      card.appendChild(sourceLine);
-
-      const fitBadge = buildFitBadge(macroResult.perServing, recipe.mealType);
-      if (fitBadge) {
-        card.appendChild(fitBadge);
-      }
-    }
-
+    // The values, their source line and the fit badge; redrawn when an ingredient's source changes.
+    const macroBox = document.createElement("div");
+    macroBox.className = "ai-macro-box";
+    card.appendChild(macroBox);
     const ingredientList = document.createElement("ul");
     ingredientList.className = "ai-ingredient-list";
-    matchedIngredients.forEach((ing) => {
-      const li = document.createElement("li");
-      const flag = document.createElement("span");
-      flag.className = `ai-ingredient-flag ${ing.inStock ? "have" : "need"}`;
-      flag.textContent = ing.inStock ? "✓" : "+";
-      const label = document.createElement("span");
-      label.textContent = formatIngredientLine(ing.name, ing.amount, ing.displayAmount);
-      li.appendChild(flag);
-      li.appendChild(label);
-      ingredientList.appendChild(li);
-    });
     card.appendChild(ingredientList);
+    const refresh = () => {
+      renderMacroBox(macroBox, recipe, matchedIngredients);
+      renderIngredientList(ingredientList, matchedIngredients, refresh);
+    };
+    refresh();
+    refreshers.push({ matchedIngredients, refresh });
 
     if (recipe.instructions.length > 0) {
       const steps = document.createElement("ol");
@@ -304,7 +288,164 @@ export function renderAiRecipes(recipes) {
   });
 
   updateAiSelectionUi();
+  void lookUpMissingOnline(refreshers);
   return { readyCount, extrasCount };
+}
+
+// The macro pills, where the values come from, RIVM's reference when NEVO is used, and the fit badge.
+function renderMacroBox(box, recipe, matchedIngredients) {
+  const t = aiText();
+  box.innerHTML = "";
+  const macroResult = computeRecipeMacros(recipe, matchedIngredients);
+  const pills = macroPillsHtml(macroResult.perServing);
+  if (!pills) {
+    return;
+  }
+  const macroRow = document.createElement("div");
+  macroRow.className = "ai-macro-row";
+  pills.forEach((text) => {
+    const pill = document.createElement("span");
+    pill.className = "ai-macro-pill";
+    pill.textContent = text;
+    macroRow.appendChild(pill);
+  });
+  box.appendChild(macroRow);
+
+  const sourceLine = document.createElement("p");
+  sourceLine.className = "ai-macro-source";
+  sourceLine.textContent = {
+    calculated: t.sourceCalculated,
+    partlyEstimated: t.sourcePartlyEstimated,
+    partial: t.sourcePartial,
+    estimated: t.sourceEstimated
+  }[macroResult.source];
+  box.appendChild(sourceLine);
+  macroResult.nevoVersions.forEach((version) => {
+    const reference = document.createElement("p");
+    reference.className = "hint-text source-reference";
+    reference.textContent = nevoReference(version);
+    box.appendChild(reference);
+  });
+
+  const fitBadge = buildFitBadge(macroResult.perServing, recipe.mealType);
+  if (fitBadge) {
+    box.appendChild(fitBadge);
+  }
+}
+
+// Each ingredient with its source ("Ui rauw · NEVO"); anything but a pantry item with data can be changed.
+function renderIngredientList(list, matchedIngredients, refresh) {
+  const t = aiText();
+  list.innerHTML = "";
+  matchedIngredients.forEach((ing) => {
+    const li = document.createElement("li");
+    const flag = document.createElement("span");
+    flag.className = `ai-ingredient-flag ${ing.inStock ? "have" : "need"}`;
+    flag.textContent = ing.inStock ? "✓" : "+";
+    const label = document.createElement("span");
+    label.textContent = formatIngredientLine(ing.name, ing.amount, ing.displayAmount);
+    li.append(flag, label);
+
+    const choice = effectiveChoice(ing);
+    const source = document.createElement("span");
+    source.className = "ai-ingredient-source";
+    source.textContent = choice
+      ? [choice.label, t.sourceLabels[choice.source]].filter(Boolean).join(" · ")
+      : t.sourceLabels.none;
+    li.appendChild(source);
+
+    if (!(ing.choice && ing.choice.source === "pantry")) {
+      const change = document.createElement("button");
+      change.type = "button";
+      change.className = "edit-button ai-change-source";
+      change.textContent = t.changeSource;
+      change.setAttribute("aria-label", `${t.changeSource}: ${ing.name}`);
+      change.addEventListener("click", () => openIngredientSource(ing, refresh));
+      li.appendChild(change);
+    }
+    list.appendChild(li);
+  });
+}
+
+// Lets you pick another source for one ingredient: a NEVO or Open Food Facts food, or the AI's estimate.
+function openIngredientSource(ing, refresh) {
+  const t = aiText();
+  const { body, addActions } = openLogDialog(t.changeSourceTitle(ing.name));
+  let picked = null;
+  const input = addFoodSearch(body, {
+    idPrefix: "ingredientSource",
+    onPick: (choice) => {
+      picked = {
+        source: choice.nutritionSource,
+        label: choice.name,
+        nutrition: normalizeNutrition(choice.nutrition),
+        nevoVersion: choice.nevoVersion
+      };
+    }
+  });
+  input.value = ing.searchName || ing.name;
+  const message = document.createElement("p");
+  message.className = "status-text";
+  const estimate = estimateChoice(ing);
+  if (estimate) {
+    const useEstimate = document.createElement("button");
+    useEstimate.type = "button";
+    useEstimate.className = "secondary-button";
+    useEstimate.id = "useEstimateButton";
+    useEstimate.textContent = t.useEstimate;
+    useEstimate.addEventListener("click", () => {
+      ing.choice = estimate;
+      refresh();
+      document.getElementById("logDialog").close();
+    });
+    body.appendChild(useEstimate);
+  }
+  body.appendChild(message);
+  addActions(t.saveChoice, () => {
+    if (!picked) {
+      message.textContent = t.pickFirst;
+      return false;
+    }
+    ing.choice = picked;
+    refresh();
+    return true;
+  });
+}
+
+// Ingredients with neither pantry data nor a NEVO match are looked up in Open Food Facts, one at a time
+// (its name search allows about 10 requests a minute), at most 8 per set of suggestions. Answers are kept
+// per name, so the same ingredient in several recipes is looked up once.
+const offCache = new Map();
+let lookupRun = 0;
+async function lookUpMissingOnline(refreshers) {
+  const run = ++lookupRun;
+  const pending = refreshers.flatMap(({ matchedIngredients, refresh }) =>
+    matchedIngredients.filter((ing) => ing.choice === null).map((ing) => ({ ing, refresh }))
+  );
+  const names = [...new Set(pending.map(({ ing }) => ing.searchName || ing.name))].slice(0, 8);
+  for (const name of names) {
+    if (run !== lookupRun) {
+      return;
+    }
+    if (!offCache.has(name)) {
+      try {
+        offCache.set(name, offAutoChoice(await searchProductsByName(name, 5)));
+      } catch (error) {
+        // Offline or refused: those ingredients keep the AI's estimate, and can still be changed by hand.
+        return;
+      }
+    }
+    const choice = offCache.get(name);
+    if (run !== lookupRun || !choice) {
+      continue;
+    }
+    pending
+      .filter(({ ing }) => (ing.searchName || ing.name) === name && ing.choice === null)
+      .forEach(({ ing, refresh }) => {
+        ing.choice = choice;
+        refresh();
+      });
+  }
 }
 
 export function isRecipeAlreadySaved(name) {
@@ -400,9 +541,12 @@ export function buildSavedRecipeData(recipe, matchedIngredients) {
       displayAmount: normalizeDisplayAmount(ing.displayAmount),
       // Which pantry item this ingredient is, so "Cook this" on the saved recipe deducts the right one.
       stockItem: ing.stockMatch ? ing.stockMatch.name : null,
-      nutrition: ing.hasNutrition
-        ? normalizeNutrition(ing.stockMatch.nutrition)
-        : createEmptyNutrition()
+      // The values shown on the card, with their source, so the saved recipe adds up the same way.
+      ...(({ nutrition, nutritionSource, nevoVersion }) => ({
+        nutrition,
+        nutritionSource,
+        nevoVersion
+      }))(nutritionIngredient(ing))
     }))
   };
 }

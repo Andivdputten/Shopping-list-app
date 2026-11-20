@@ -68,6 +68,7 @@ import {
   clearRecipeIngredients,
   duplicateCurrentRecipe,
   handleEnterToAddIngredient,
+  initCustomIngredientSearch,
   renderRecipeBuilder,
   renderRecipeItemOptions,
   saveCurrentRecipe,
@@ -132,6 +133,7 @@ function startApp() {
   setStatus("App loaded successfully.");
   renderRecipeItemOptions();
   renderRecipeBuilder();
+  initCustomIngredientSearch();
   renderSavedRecipes();
   renderStockList();
   updateRecipeEditorMode();

@@ -51,9 +51,25 @@ const TEXTS = {
     protein: "protein",
     carbs: "carbs",
     fat: "fat",
-    sourceCalculated: "Per serving — calculated from your saved nutrition data.",
+    sourceCalculated: "Per serving — calculated per ingredient (pantry, NEVO or Open Food Facts).",
     sourceEstimated:
       "Per serving — estimated by AI (add nutrition data to matching items for precise numbers).",
+    sourcePartlyEstimated: "Per serving — calculated per ingredient; some values are AI estimates.",
+    sourcePartial: "Per serving — calculated, but some ingredients have no nutrition data.",
+    // Where an ingredient's values come from, shown next to it.
+    sourceLabels: {
+      pantry: "pantry",
+      nevo: "NEVO",
+      off: "Open Food Facts",
+      estimated: "AI estimate",
+      manual: "typed in",
+      none: "no data"
+    },
+    changeSource: "Change",
+    changeSourceTitle: (name) => `Nutrition for ${name}`,
+    useEstimate: "Use the AI estimate",
+    saveChoice: "Save",
+    pickFirst: "Search and choose a food, or use the AI estimate.",
     saveRecipe: "Save recipe",
     alreadySaved: "Already saved",
     saved: "Saved ✓",
@@ -126,9 +142,27 @@ const TEXTS = {
     protein: "eiwit",
     carbs: "koolhydraten",
     fat: "vet",
-    sourceCalculated: "Per portie — berekend met je opgeslagen voedingswaarden.",
+    sourceCalculated: "Per portie — per ingrediënt berekend (voorraad, NEVO of Open Food Facts).",
     sourceEstimated:
       "Per portie — geschat door AI (voeg voedingswaarden toe aan je producten voor exacte cijfers).",
+    sourcePartlyEstimated:
+      "Per portie — per ingrediënt berekend; sommige waarden zijn AI-schattingen.",
+    sourcePartial:
+      "Per portie — berekend, maar van sommige ingrediënten zijn geen voedingswaarden bekend.",
+    // Where an ingredient's values come from, shown next to it.
+    sourceLabels: {
+      pantry: "voorraad",
+      nevo: "NEVO",
+      off: "Open Food Facts",
+      estimated: "AI-schatting",
+      manual: "zelf ingevuld",
+      none: "geen gegevens"
+    },
+    changeSource: "Wijzig",
+    changeSourceTitle: (name) => `Voedingswaarden voor ${name}`,
+    useEstimate: "Gebruik de AI-schatting",
+    saveChoice: "Opslaan",
+    pickFirst: "Zoek en kies een product, of gebruik de AI-schatting.",
     saveRecipe: "Recept opslaan",
     alreadySaved: "Al opgeslagen",
     saved: "Opgeslagen ✓",
@@ -202,9 +236,25 @@ const TEXTS = {
     protein: "Eiweiß",
     carbs: "Kohlenhydrate",
     fat: "Fett",
-    sourceCalculated: "Pro Portion — berechnet aus deinen gespeicherten Nährwerten.",
+    sourceCalculated: "Pro Portion — je Zutat berechnet (Vorrat, NEVO oder Open Food Facts).",
     sourceEstimated:
       "Pro Portion — von der KI geschätzt (füge passenden Artikeln Nährwerte hinzu für genaue Zahlen).",
+    sourcePartlyEstimated: "Pro Portion — je Zutat berechnet; einige Werte sind KI-Schätzungen.",
+    sourcePartial: "Pro Portion — berechnet, aber für einige Zutaten fehlen Nährwerte.",
+    // Where an ingredient's values come from, shown next to it.
+    sourceLabels: {
+      pantry: "Vorrat",
+      nevo: "NEVO",
+      off: "Open Food Facts",
+      estimated: "KI-Schätzung",
+      manual: "selbst eingegeben",
+      none: "keine Daten"
+    },
+    changeSource: "Ändern",
+    changeSourceTitle: (name) => `Nährwerte für ${name}`,
+    useEstimate: "KI-Schätzung verwenden",
+    saveChoice: "Speichern",
+    pickFirst: "Suche und wähle ein Lebensmittel oder verwende die KI-Schätzung.",
     saveRecipe: "Rezept speichern",
     alreadySaved: "Bereits gespeichert",
     saved: "Gespeichert ✓",
@@ -278,9 +328,27 @@ const TEXTS = {
     protein: "protéines",
     carbs: "glucides",
     fat: "lipides",
-    sourceCalculated: "Par portion — calculé à partir de vos valeurs nutritionnelles enregistrées.",
+    sourceCalculated: "Par portion — calculé par ingrédient (réserve, NEVO ou Open Food Facts).",
     sourceEstimated:
       "Par portion — estimé par l'IA (ajoutez des valeurs nutritionnelles à vos articles pour des chiffres précis).",
+    sourcePartlyEstimated:
+      "Par portion — calculé par ingrédient ; certaines valeurs sont des estimations de l'IA.",
+    sourcePartial:
+      "Par portion — calculé, mais certains ingrédients n'ont pas de valeurs nutritionnelles.",
+    // Where an ingredient's values come from, shown next to it.
+    sourceLabels: {
+      pantry: "réserve",
+      nevo: "NEVO",
+      off: "Open Food Facts",
+      estimated: "estimation IA",
+      manual: "saisi à la main",
+      none: "aucune donnée"
+    },
+    changeSource: "Modifier",
+    changeSourceTitle: (name) => `Valeurs nutritionnelles pour ${name}`,
+    useEstimate: "Utiliser l'estimation de l'IA",
+    saveChoice: "Enregistrer",
+    pickFirst: "Cherchez et choisissez un aliment, ou utilisez l'estimation de l'IA.",
     saveRecipe: "Enregistrer la recette",
     alreadySaved: "Déjà enregistrée",
     saved: "Enregistrée ✓",
@@ -356,9 +424,27 @@ const TEXTS = {
     protein: "proteínas",
     carbs: "carbohidratos",
     fat: "grasas",
-    sourceCalculated: "Por ración — calculado con tus datos nutricionales guardados.",
+    sourceCalculated: "Por ración — calculado por ingrediente (despensa, NEVO u Open Food Facts).",
     sourceEstimated:
       "Por ración — estimado por la IA (añade datos nutricionales a tus productos para cifras exactas).",
+    sourcePartlyEstimated:
+      "Por ración — calculado por ingrediente; algunos valores son estimaciones de la IA.",
+    sourcePartial:
+      "Por ración — calculado, pero algunos ingredientes no tienen datos nutricionales.",
+    // Where an ingredient's values come from, shown next to it.
+    sourceLabels: {
+      pantry: "despensa",
+      nevo: "NEVO",
+      off: "Open Food Facts",
+      estimated: "estimación IA",
+      manual: "introducido a mano",
+      none: "sin datos"
+    },
+    changeSource: "Cambiar",
+    changeSourceTitle: (name) => `Valores nutricionales de ${name}`,
+    useEstimate: "Usar la estimación de la IA",
+    saveChoice: "Guardar",
+    pickFirst: "Busca y elige un alimento, o usa la estimación de la IA.",
     saveRecipe: "Guardar receta",
     alreadySaved: "Ya guardada",
     saved: "Guardada ✓",
@@ -433,9 +519,26 @@ const TEXTS = {
     protein: "proteína",
     carbs: "carboidratos",
     fat: "gordura",
-    sourceCalculated: "Por porção — calculado com os seus dados nutricionais salvos.",
+    sourceCalculated: "Por porção — calculado por ingrediente (despensa, NEVO ou Open Food Facts).",
     sourceEstimated:
       "Por porção — estimado pela IA (adicione dados nutricionais aos seus produtos para números exatos).",
+    sourcePartlyEstimated:
+      "Por porção — calculado por ingrediente; alguns valores são estimativas da IA.",
+    sourcePartial: "Por porção — calculado, mas alguns ingredientes não têm dados nutricionais.",
+    // Where an ingredient's values come from, shown next to it.
+    sourceLabels: {
+      pantry: "despensa",
+      nevo: "NEVO",
+      off: "Open Food Facts",
+      estimated: "estimativa da IA",
+      manual: "digitado à mão",
+      none: "sem dados"
+    },
+    changeSource: "Alterar",
+    changeSourceTitle: (name) => `Valores nutricionais de ${name}`,
+    useEstimate: "Usar a estimativa da IA",
+    saveChoice: "Salvar",
+    pickFirst: "Pesquise e escolha um alimento, ou use a estimativa da IA.",
     saveRecipe: "Salvar receita",
     alreadySaved: "Já salva",
     saved: "Salva ✓",

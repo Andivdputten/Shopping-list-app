@@ -3,6 +3,17 @@
 
 export const RELEASE_NOTES = [
   {
+    version: "v33",
+    date: "2026-11-20",
+    title: "Recipe nutrition per ingredient",
+    notes: [
+      "AI recipes take each ingredient's values from your pantry, else NEVO, else Open Food Facts; only what can't be found uses the AI's estimate.",
+      'Every ingredient shows its source; tap "Change" to pick another food or the AI estimate.',
+      '"Other ingredient" in the recipe builder can search NEVO and Open Food Facts to fill in its values.',
+      "Saved recipes keep each ingredient's source, and recipes with AI estimates are marked as estimated when you log them."
+    ]
+  },
+  {
     version: "v32",
     date: "2026-11-20",
     title: "Release notes and help",

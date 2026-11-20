@@ -62,6 +62,8 @@ export function perServingFromRecipe(recipe, estimate) {
   const servings = recipe.servings > 0 ? recipe.servings : 1;
   const totals = emptyValues();
   let withData = 0;
+  let estimated = false;
+  let nevoVersion = null;
 
   recipe.ingredients.forEach((ingredient) => {
     const grams = isNumber(ingredient.grams) && ingredient.grams > 0 ? ingredient.grams : null;
@@ -70,6 +72,11 @@ export function perServingFromRecipe(recipe, estimate) {
       return;
     }
     withData++;
+    // An AI estimate for one ingredient makes the whole entry "estimated"; a NEVO one needs RIVM's reference.
+    estimated = estimated || ingredient.nutritionSource === "estimated";
+    if (ingredient.nutritionSource === "nevo" && ingredient.nevoVersion) {
+      nevoVersion = nevoVersion || ingredient.nevoVersion;
+    }
     [
       ["kcal", data.kcal100g],
       ["protein", data.protein100g],
@@ -98,7 +105,9 @@ export function perServingFromRecipe(recipe, estimate) {
   NUTRIENTS.forEach((key) => {
     perUnit[key] = totals[key] === null ? null : round1(totals[key] / servings);
   });
-  return { perUnit, status: withData === recipe.ingredients.length ? "complete" : "partial" };
+  const status =
+    withData < recipe.ingredients.length ? "partial" : estimated ? "estimated" : "complete";
+  return { perUnit, status, nevoVersion };
 }
 
 // A new log entry. unit is "serving", "g" or "" (a quick entry); its values are perUnit times quantity.
@@ -137,7 +146,8 @@ export function nevoVersionsUsed(entries, date) {
   return [
     ...new Set(
       entries
-        .filter((entry) => entry.date === date && entry.nutritionSource === "nevo")
+        // Any entry with a NEVO version: a product found in NEVO, or a recipe with a NEVO ingredient.
+        .filter((entry) => entry.date === date && entry.nevoVersion)
         .map((entry) => entry.nevoVersion)
         .filter(Boolean)
     )

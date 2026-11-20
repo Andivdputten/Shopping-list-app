@@ -34,6 +34,8 @@ import {
   setRecipeStatus,
   updateRecipeEditorMode
 } from "./recipe-builder.js";
+import { ingredientSourceFields, nevoVersionsIn, SOURCE_NAMES } from "./ingredient-nutrition.js";
+import { nevoReference } from "./nevo.js";
 import { state } from "./state.js";
 import { switchTab } from "./tabs.js";
 import { openAteRecipe } from "./today.js";
@@ -59,11 +61,13 @@ export function buildSavedRecipeDetails(recipe) {
   recipe.ingredients.forEach((ingredient) => {
     const line = document.createElement("div");
     line.className = "saved-recipe-line";
-    line.textContent = formatIngredientLine(
-      ingredient.name,
-      ingredient.grams,
-      ingredient.displayAmount
-    );
+    // The line ends with where its values came from, e.g. "· NEVO" or "· AI estimate".
+    line.textContent = [
+      formatIngredientLine(ingredient.name, ingredient.grams, ingredient.displayAmount),
+      SOURCE_NAMES[ingredient.nutritionSource] || ""
+    ]
+      .filter(Boolean)
+      .join(" · ");
     details.appendChild(line);
   });
 
@@ -150,6 +154,20 @@ export function renderSavedRecipes() {
     infoWrap.appendChild(weightSpan);
     infoWrap.appendChild(per100gSpan);
     infoWrap.appendChild(perServingSpan);
+
+    // Estimated values are flagged, and RIVM's reference is required wherever NEVO values are used.
+    if (recipe.ingredients.some((ingredient) => ingredient.nutritionSource === "estimated")) {
+      const estimatedSpan = document.createElement("span");
+      estimatedSpan.className = "item-note";
+      estimatedSpan.textContent = "Some values are AI estimates.";
+      infoWrap.appendChild(estimatedSpan);
+    }
+    nevoVersionsIn(recipe.ingredients).forEach((version) => {
+      const referenceSpan = document.createElement("span");
+      referenceSpan.className = "item-meta source-reference";
+      referenceSpan.textContent = nevoReference(version);
+      infoWrap.appendChild(referenceSpan);
+    });
 
     // Fit badge from the recipe's per-serving totals (only when targets are set and kcal is known).
     const totals = sumRecipeNutrition(recipe.ingredients);
@@ -256,7 +274,8 @@ export function loadSavedRecipe(index) {
       grams: ingredient.grams,
       displayAmount: normalizeDisplayAmount(ingredient.displayAmount),
       stockItem: normalizeStockLink(ingredient.stockItem),
-      nutrition: normalizeNutrition(ingredient.nutrition)
+      nutrition: normalizeNutrition(ingredient.nutrition),
+      ...ingredientSourceFields(ingredient)
     };
   });
 

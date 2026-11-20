@@ -20,7 +20,9 @@ test("a valid recipe passes through with its group", () => {
     amount: 100,
     unit: "g",
     displayAmount: "2",
-    stockItem: "Eggs"
+    stockItem: "Eggs",
+    searchName: "",
+    estimatedPer100g: { kcal: null, protein: null, carbs: null, fat: null, fiber: null }
   });
   // Empty steps are dropped.
   assert.deepEqual(recipe.instructions, ["Bak"]);
@@ -45,6 +47,21 @@ test("recipes without a name or usable ingredients are rejected", () => {
   assert.equal(sanitizeRecipe({ ...baseRecipe(), name: "" }, "ready"), null);
   assert.equal(sanitizeRecipe({ ...baseRecipe(), ingredients: [{ name: "" }] }, "ready"), null);
   assert.equal(sanitizeRecipe(null, "ready"), null);
+});
+
+test("the English search name and the per-100 g estimate come through; bad values become null", () => {
+  const raw = baseRecipe();
+  raw.ingredients[0].searchName = "  egg whole raw ";
+  raw.ingredients[0].estimatedPer100g = { kcal: 140, protein: 12.5, carbs: "x", fat: -1, fiber: 0 };
+  const [ingredient] = sanitizeRecipe(raw, "ready").ingredients;
+  assert.equal(ingredient.searchName, "egg whole raw");
+  assert.deepEqual(ingredient.estimatedPer100g, {
+    kcal: 140,
+    protein: 12.5,
+    carbs: null,
+    fat: null,
+    fiber: 0
+  });
 });
 
 test("invalid servings fall back to 1", () => {

@@ -9,6 +9,7 @@ import {
   TARGETS_STORAGE_KEY
 } from "./constants.js";
 import { normalizeDisplayAmount, parseOptionalNumberInput } from "./format.js";
+import { ingredientSourceFields } from "./ingredient-nutrition.js";
 import { normalizeIntakeLog } from "./intake.js";
 import { normalizeNevoData } from "./nevo.js";
 import { createShoppingItem, createStockItem, normalizeStockLink } from "./items.js";
@@ -46,7 +47,9 @@ export function loadRecipes() {
           grams: grams !== null && grams > 0 ? grams : null,
           displayAmount: normalizeDisplayAmount(ingredient.displayAmount),
           stockItem: normalizeStockLink(ingredient.stockItem),
-          nutrition: normalizeNutrition(ingredient.nutrition)
+          nutrition: normalizeNutrition(ingredient.nutrition),
+          // Where the values came from (pantry, NEVO, Open Food Facts, typed in or the AI's estimate).
+          ...ingredientSourceFields(ingredient)
         };
       })
       .filter(Boolean);
