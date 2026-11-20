@@ -88,8 +88,20 @@ test("a recipe's per-serving values come from its ingredients; missing data is f
   };
   assert.deepEqual(perServingFromRecipe(recipe), {
     perUnit: { kcal: 530, protein: 41.5, carbs: 78, fat: 4, fiber: 1 },
-    status: "complete"
+    status: "complete",
+    nevoVersion: null
   });
+  // An AI estimate for one ingredient marks the whole serving "estimated"; NEVO's version is passed on
+  // for RIVM's reference on the Today tab.
+  const [rice, chicken] = recipe.ingredients;
+  const mixed = perServingFromRecipe({
+    ...recipe,
+    ingredients: [
+      { ...rice, nutritionSource: "nevo", nevoVersion: "2099/1.0" },
+      { ...chicken, nutritionSource: "estimated" }
+    ]
+  });
+  assert.deepEqual([mixed.status, mixed.nevoVersion], ["estimated", "2099/1.0"]);
   // One ingredient without data: values from the rest, marked partial.
   const partial = perServingFromRecipe({
     ...recipe,

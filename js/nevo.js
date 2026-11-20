@@ -111,13 +111,17 @@ export function normalizeNevoData(raw) {
 // starts with the query, then one whose first word matches, then word starts, then inside a word (Dutch
 // compounds: "rijst" finds "Zilvervliesrijst"); shorter names first within each.
 export function searchNevo(foods, query, limit = 20) {
+  return rankNevo(foods, query, limit).map((result) => result.food);
+}
+
+// The matches with their rank (0 = a name's first word is the query's first word ... 4 = inside a word).
+function rankNevo(foods, query, limit) {
   const words = searchText(query).split(" ").filter(Boolean);
   if (words.length === 0) {
     return [];
   }
   const phrase = words.join(" ");
-  // English plurals count as the same word ("apples" finds "apple", "onion" ranks "Onions raw" first).
-  const stem = (word) => (word.length > 3 ? word.replace(/e?s$/, "") : word);
+  const stem = stemWord;
   const stems = words.map(stem);
 
   return foods
@@ -143,6 +147,79 @@ export function searchNevo(foods, query, limit = 20) {
     })
     .filter(Boolean)
     .sort((a, b) => a.rank - b.rank || a.length - b.length)
-    .slice(0, limit)
-    .map((result) => result.food);
+    .slice(0, limit);
+}
+
+// English plurals count as the same word ("apples" finds "apple", "onion" ranks "Onions raw" first).
+function stemWord(word) {
+  return word.length > 3 ? word.replace(/e?s$/, "") : word;
+}
+
+// Words that only say how a food is prepared or packed; on their own they never identify a food.
+const STATE_WORDS = new Set(
+  "raw cooked boiled fried baked roasted grilled steamed stewed prepared unprepared uncooked dried dry fresh frozen canned tinned average av w wo with without and in".split(
+    " "
+  )
+);
+
+// NEVO's wording for a few common words, so "canned tomatoes" meets "Tomatoes tinned" and uncooked
+// rice or pasta meets NEVO's "raw".
+const SAME_WORDS = { tinned: "canned", uncooked: "raw" };
+const matchWord = (word) => {
+  const stem = stemWord(word);
+  return SAME_WORDS[stem] || stem;
+};
+
+// The single best NEVO food for an ingredient name (e.g. the AI's English search name), or null.
+// Word order is ignored, as NEVO's English names put the food first ("Oil olive", "Cheese Parmesan").
+// Best, in order: most food words matched exactly ("egg" is the word Egg, not the start of Eggplant);
+// most food words matched at all; the query's first food word among them ("salmon fillet" is salmon);
+// a name that starts with a food word ("Butter salted", not "Peanut butter");
+// the name most covered by the query ("Tomatoes tinned" over a long dish that mentions tomato); the
+// shortest name. State words such as "raw" help rank but never make a match on their own.
+export function bestNevoMatch(foods, query) {
+  const words = [...new Set(searchText(query).split(" ").filter(Boolean).map(matchWord))];
+  const firstFoodWord = words.find((word) => !STATE_WORDS.has(word));
+  if (!firstFoodWord) {
+    return null;
+  }
+  let best = null;
+  foods.forEach((food) => {
+    [food.nameEn, food.nameNl, food.synonym].forEach((name) => {
+      const tokens = searchText(name).split(" ").filter(Boolean).map(matchWord);
+      if (tokens.length === 0) {
+        return;
+      }
+      const matched = words.filter((word) => tokens.some((token) => token.startsWith(word)));
+      const foodWords = matched.filter((word) => !STATE_WORDS.has(word));
+      if (foodWords.length === 0) {
+        return;
+      }
+      const exact = foodWords.filter((word) => tokens.includes(word)).length;
+      const covered = tokens.filter((token) =>
+        matched.some((word) => token.startsWith(word))
+      ).length;
+      const score = [
+        exact,
+        foodWords.length,
+        foodWords.includes(firstFoodWord) ? 1 : 0,
+        foodWords.some((word) => tokens[0].startsWith(word)) ? 1 : 0,
+        covered / tokens.length,
+        -food.nameNl.length
+      ];
+      if (!best || compareScores(score, best.score) > 0) {
+        best = { food, score };
+      }
+    });
+  });
+  return best ? best.food : null;
+}
+
+function compareScores(a, b) {
+  for (let i = 0; i < a.length; i++) {
+    if (a[i] !== b[i]) {
+      return a[i] - b[i];
+    }
+  }
+  return 0;
 }

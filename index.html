@@ -354,7 +354,9 @@
               placeholder="Ingredient name, e.g. Spinach"
               autocomplete="off"
             />
-            <p class="hint-text">Nutrition per 100 g (optional, leave empty if unknown)</p>
+            <!-- Filled by js/recipe-builder.js: a NEVO / Open Food Facts search that fills in the values below. -->
+            <div id="customIngredientSearch" class="form-stack"></div>
+            <p class="hint-text">Nutrition per 100 g (filled in by the search, or type it; leave empty if unknown)</p>
             <div class="input-row">
               <input id="customIngredientKcalInput" type="number" inputmode="decimal" min="0" step="any" placeholder="kcal" />
               <input id="customIngredientProteinInput" type="number" inputmode="decimal" min="0" step="any" placeholder="protein (g)" />

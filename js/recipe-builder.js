@@ -34,7 +34,10 @@ import {
   parseInstructionsText,
   parseOptionalNumberInput
 } from "./format.js";
+import { addFoodSearch } from "./food-search.js";
+import { ingredientSourceFields, nevoVersionsIn, SOURCE_NAMES } from "./ingredient-nutrition.js";
 import { normalizeIngredientName, normalizeStockLink } from "./items.js";
+import { nevoReference } from "./nevo.js";
 import {
   buildRecipePer100gSummaryFromIngredients,
   buildRecipePerServingDisplayFromIngredients,
@@ -48,6 +51,52 @@ import { renderSavedRecipes } from "./saved-recipes.js";
 import { state } from "./state.js";
 import { normalizeMealType } from "./targets.js";
 import { setStatus, showToast } from "./ui.js";
+
+// The food picked in the "Other ingredient" search (NEVO or Open Food Facts), until its values are edited.
+let customChoice = null;
+let resetCustomSearch = null;
+
+// Values per 100 g as the text the number inputs show; unknown stays empty.
+const inputText = (value) => (typeof value === "number" ? String(value) : "");
+
+// The search in "Other ingredient": a picked food fills in the name (if empty) and the values per 100 g.
+// Typing in the values afterwards makes them manual, since they no longer match the source.
+export function initCustomIngredientSearch() {
+  const container = document.getElementById("customIngredientSearch");
+  if (!container) {
+    return;
+  }
+  const input = addFoodSearch(container, {
+    idPrefix: "customIngredient",
+    onPick: (choice) => {
+      customChoice = choice;
+      if (customIngredientNameInput.value.trim() === "") {
+        customIngredientNameInput.value = choice.name;
+      }
+      const n = choice.nutrition;
+      customIngredientKcalInput.value = inputText(n.kcal100g);
+      customIngredientProteinInput.value = inputText(n.protein100g);
+      customIngredientCarbsInput.value = inputText(n.carbs100g);
+      customIngredientFatInput.value = inputText(n.fat100g);
+      customIngredientFiberInput.value = inputText(n.fiber100g);
+    }
+  });
+  [
+    customIngredientKcalInput,
+    customIngredientProteinInput,
+    customIngredientCarbsInput,
+    customIngredientFatInput,
+    customIngredientFiberInput
+  ].forEach((field) =>
+    field.addEventListener("input", () => {
+      customChoice = null;
+    })
+  );
+  resetCustomSearch = () => {
+    input.value = "";
+    document.getElementById("customIngredientSearchResults").innerHTML = "";
+  };
+}
 
 export function addRecipeOption(parent, value, item) {
   const option = document.createElement("option");
@@ -151,6 +200,7 @@ export function addRecipeIngredient() {
   let nutrition;
   // Custom ingredients aren't a pantry item.
   let stockItem = null;
+  let sourceFields = { nutritionSource: null, nevoVersion: null };
 
   if (selected === "custom") {
     name = customIngredientNameInput.value.trim();
@@ -168,6 +218,15 @@ export function addRecipeIngredient() {
       fat100g: parseOptionalNumberInput(customIngredientFatInput.value),
       fiber100g: parseOptionalNumberInput(customIngredientFiberInput.value)
     });
+    // A food picked in the search keeps its source; values typed (or changed) by hand count as manual.
+    if (customChoice) {
+      sourceFields = {
+        nutritionSource: customChoice.nutritionSource,
+        nevoVersion: customChoice.nevoVersion
+      };
+    } else if (hasAnyNutrition(nutrition)) {
+      sourceFields = { nutritionSource: "manual", nevoVersion: null };
+    }
   } else {
     const [kind, indexText] = selected.split(":");
     const index = Number(indexText);
@@ -182,12 +241,25 @@ export function addRecipeIngredient() {
 
     name = source.name;
     nutrition = normalizeNutrition(source.nutrition);
+    // An item filled from NEVO stays NEVO (for RIVM's reference); other item data counts as pantry data.
+    if (source.nutritionSource === "nevo") {
+      sourceFields = { nutritionSource: "nevo", nevoVersion: source.nevoVersion || null };
+    } else if (hasAnyNutrition(nutrition)) {
+      sourceFields = { nutritionSource: "pantry", nevoVersion: null };
+    }
     // Remember the pantry item so "Cook this" deducts it; shopping-list items aren't in stock yet.
     stockItem = kind === "stock" ? source.name : null;
   }
 
   // Manually added ingredients are entered in grams, so they have no separate kitchen measure.
-  state.recipeIngredients.push({ name, grams, displayAmount: null, stockItem, nutrition });
+  state.recipeIngredients.push({
+    name,
+    grams,
+    displayAmount: null,
+    stockItem,
+    nutrition,
+    ...sourceFields
+  });
 
   recipeGramsInput.value = "";
 
@@ -198,6 +270,10 @@ export function addRecipeIngredient() {
     customIngredientCarbsInput.value = "";
     customIngredientFatInput.value = "";
     customIngredientFiberInput.value = "";
+    customChoice = null;
+    if (resetCustomSearch) {
+      resetCustomSearch();
+    }
   }
 
   renderRecipeBuilder();
@@ -266,7 +342,12 @@ export function renderRecipeBuilder() {
     const totalsSpan = document.createElement("span");
     totalsSpan.className = "item-meta";
     totalsSpan.textContent = hasAnyNutrition(ingredient.nutrition)
-      ? formatNutritionTotalSummary(ingredient.nutrition, ingredient.grams)
+      ? [
+          formatNutritionTotalSummary(ingredient.nutrition, ingredient.grams),
+          SOURCE_NAMES[ingredient.nutritionSource] || ""
+        ]
+          .filter(Boolean)
+          .join(" · ")
       : "No nutrition data (not counted in totals)";
 
     infoWrap.appendChild(nameSpan);
@@ -297,6 +378,13 @@ export function renderRecipeBuilder() {
     missingNutritionCount > 0
       ? `${missingNutritionCount} of ${state.recipeIngredients.length} ingredient${state.recipeIngredients.length === 1 ? "" : "s"} ha${missingNutritionCount === 1 ? "s" : "ve"} no nutrition data, so the totals are incomplete.`
       : "";
+  // RIVM's reference, required under totals that use NEVO values.
+  const references = nevoVersionsIn(state.recipeIngredients).map(nevoReference).join(" ");
+  if (references !== "") {
+    recipeMissingNutritionNote.textContent = [recipeMissingNutritionNote.textContent, references]
+      .filter(Boolean)
+      .join(" ");
+  }
 }
 
 export function buildRecipeTotalsSummary() {
@@ -350,7 +438,8 @@ export function saveCurrentRecipe() {
         // Keeps the kitchen measure ("1", "2 tbsp") from AI recipes when the recipe is re-saved.
         displayAmount: normalizeDisplayAmount(ingredient.displayAmount),
         stockItem: normalizeStockLink(ingredient.stockItem),
-        nutrition: normalizeNutrition(ingredient.nutrition)
+        nutrition: normalizeNutrition(ingredient.nutrition),
+        ...ingredientSourceFields(ingredient)
       };
     })
   };
