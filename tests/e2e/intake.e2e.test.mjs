@@ -94,6 +94,11 @@ test("logging food in every way adds up on the Today tab", { timeout: 90000 }, a
   const summary = async () =>
     (await log()).map((e) => `${e.date} ${e.meal} ${e.name} ${e.unit}${e.quantity} ${e.status}`);
   const settle = () => page.waitForTimeout(150);
+  const search = async (query) => {
+    await page.fill("#logSearchInput", query);
+    await page.press("#logSearchInput", "Enter");
+    await settle();
+  };
 
   try {
     await page.goto(`${server.url}/index.html`);
@@ -113,23 +118,27 @@ test("logging food in every way adds up on the Today tab", { timeout: 90000 }, a
     await page.click('[data-tab="today"]');
     assert.equal(await page.isVisible("#todayEmptyMessage"), true);
 
-    // 1. Quick entry (meal defaults to lunch at 13:30).
-    await page.click("#quickEntryButton");
+    // 1. Values typed by hand (meal defaults to lunch at 13:30); no recent foods yet.
+    await page.click("#addFoodButton");
+    assert.equal(await page.isVisible("#addFoodRecent"), false);
+    await page.click("#manualEntryButton");
     await page.fill("#quickNameInput", "Lunch buiten de deur");
     await page.fill("#quickkcalInput", "700");
     await page.fill("#quickproteinInput", "30");
     await page.click("#logConfirmButton");
 
-    // 2. A pantry product in grams, taken from the pantry.
-    await page.click("#addProductButton");
-    await page.selectOption("#logProductSelect", { label: "Yoghurt" });
+    // 2. A pantry product in grams, found by searching, taken from the pantry.
+    await page.click("#addFoodButton");
+    await search("yog");
+    await page.click('#logSearchResults .food-result:has-text("Yoghurt")');
+    assert.match(await page.textContent("#logDialog"), /Chosen: Yoghurt \(Pantry\)/);
     await page.fill("#logGramsInput", "150");
     assert.match(await page.textContent("#logDialog"), /Takes 150 g \(in pantry: 500 g\)/);
     await page.click("#logConfirmButton");
     assert.deepEqual(await pantry(), ["Yoghurt 350", "Eggs 6"]);
 
     // 3. A scanned product that isn't in the pantry: logged, pantry untouched.
-    await page.click("#addProductButton");
+    await page.click("#addFoodButton");
     await page.click("#logScanButton");
     await settle();
     await page.evaluate(() => window.__fakeScan("logReader", "8710000000999"));
@@ -139,8 +148,9 @@ test("logging food in every way adds up on the Today tab", { timeout: 90000 }, a
     await page.click("#logConfirmButton");
 
     // 4. A pantry item counted in pieces: the amount to take is entered by hand.
-    await page.click("#addProductButton");
-    await page.selectOption("#logProductSelect", { label: "Eggs" });
+    await page.click("#addFoodButton");
+    await search("eggs");
+    await page.click('#logSearchResults .food-result:has-text("Eggs")');
     await page.fill("#logGramsInput", "100");
     assert.equal(await page.isVisible("#logPantryAmountInput"), true);
     await page.fill("#logPantryAmountInput", "2");
@@ -148,7 +158,7 @@ test("logging food in every way adds up on the Today tab", { timeout: 90000 }, a
     assert.deepEqual(await pantry(), ["Yoghurt 350", "Eggs 4"]);
 
     // 5. A product without any nutrition data: logged, but flagged as not counted.
-    await page.click("#addProductButton");
+    await page.click("#addFoodButton");
     await page.click("#logScanButton");
     await settle();
     await page.evaluate(() => window.__fakeScan("logReader", "8710000000404"));
@@ -202,7 +212,8 @@ test("logging food in every way adds up on the Today tab", { timeout: 90000 }, a
     await page.click('button[aria-label="Previous day"]');
     assert.equal(await page.inputValue("#todayDateInput"), "2026-11-17");
     assert.equal(await page.isVisible("#todayEmptyMessage"), true);
-    await page.click("#quickEntryButton");
+    await page.click("#addFoodButton");
+    await page.click("#manualEntryButton");
     await page.fill("#quickNameInput", "Pizza");
     await page.fill("#quickkcalInput", "900");
     await page.click("#logConfirmButton");
@@ -223,6 +234,29 @@ test("logging food in every way adds up on the Today tab", { timeout: 90000 }, a
     await page.click('[data-tab="today"]');
     assert.match(await page.textContent("#todayMeals"), /Lunch\d+ \/ 800 kcal/);
     assert.match(await page.textContent("#todayMeals"), /Snack\d+ kcal/);
+
+    // Recent foods: the five most recent different foods, newest first; typing a search hides them.
+    await page.click("#addFoodButton");
+    const recent = await page.$$eval("#addFoodRecent .item-name", (names) =>
+      names.map((n) => n.textContent)
+    );
+    // Pizza went to yesterday, so it is older than all of today's foods and drops off the list.
+    assert.deepEqual(recent, ["Omelet", "Eggs", "Chocolade", "Yoghurt", "Lunch buiten de deur"]);
+    await page.fill("#logSearchInput", "x");
+    assert.equal(await page.isVisible("#addFoodRecent"), false);
+    await page.fill("#logSearchInput", "");
+    await page.dispatchEvent("#logSearchInput", "input");
+    // Re-logging yoghurt: same values, amount and meal filled in from last time, pantry untouched.
+    await page.click('#addFoodRecent .food-result:has-text("Yoghurt")');
+    assert.equal(await page.inputValue("#logGramsInput"), "300");
+    await page.fill("#logGramsInput", "100");
+    await page.click("#logConfirmButton");
+    const again = (await log()).at(-1);
+    assert.deepEqual(
+      [again.name, again.unit, again.quantity, again.meal, again.perUnit.kcal, again.status],
+      ["Yoghurt", "g", 100, "lunch", 0.6, "complete"]
+    );
+    assert.deepEqual(await pantry(), ["Yoghurt 350", "Eggs 4"]);
 
     assert.deepEqual(errors, []);
   } finally {

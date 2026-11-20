@@ -1,5 +1,5 @@
 // The Today tab: eaten vs daily targets for the day shown, per meal, the logged entries (edit/delete),
-// and quick entries. Also the shared pieces other modules use to log food (logEntry, the dialog helpers).
+// and "Add food" (js/add-food.js). Also the shared pieces other modules use to log food (logEntry, the dialog helpers).
 import { formatNutritionValue } from "./format.js";
 import {
   createEntry,
@@ -12,7 +12,7 @@ import {
   perServingFromRecipe,
   shiftDate
 } from "./intake.js";
-import { openAddProduct } from "./log-product.js";
+import { openAddFood } from "./add-food.js";
 import { nevoReference } from "./nevo.js";
 import { saveIntakeLog } from "./persistence.js";
 import { state } from "./state.js";
@@ -393,59 +393,6 @@ export function openAteRecipe(recipe) {
   });
 }
 
-// ----- Quick entry -----
-
-// Logs food that isn't in the app (e.g. eaten out): a name and kcal, macros optional.
-function openQuickEntry() {
-  const { body, addActions } = openLogDialog("Quick entry");
-  const nameInput = document.createElement("input");
-  nameInput.type = "text";
-  nameInput.autocomplete = "off";
-  addField(body, "What did you eat?", nameInput, "quickNameInput");
-  const grid = document.createElement("div");
-  grid.className = "target-grid";
-  body.appendChild(grid);
-  const inputs = {};
-  [
-    ["kcal", "kcal"],
-    ["protein", "Protein (g, optional)"],
-    ["carbs", "Carbs (g, optional)"],
-    ["fat", "Fat (g, optional)"],
-    ["fiber", "Fibre (g, optional)"]
-  ].forEach(([key, label]) => {
-    inputs[key] = addField(grid, label, numberInput(null), `quick${key}Input`);
-  });
-  const meal = addField(body, "Meal", mealSelect(defaultMeal(null)), "logMealSelect");
-  const message = document.createElement("p");
-  message.className = "status-text";
-  body.appendChild(message);
-
-  addActions("Log", () => {
-    const name = nameInput.value.trim();
-    const kcal = Number(inputs.kcal.value);
-    if (name === "" || inputs.kcal.value.trim() === "" || !(kcal >= 0)) {
-      message.textContent = "Enter a name and the kcal.";
-      return false;
-    }
-    const perUnit = {};
-    Object.entries(inputs).forEach(([key, input]) => {
-      const value = Number(input.value);
-      perUnit[key] = input.value.trim() !== "" && value >= 0 ? value : null;
-    });
-    logEntry({
-      date: logDateForNewEntry(true),
-      meal: meal.value,
-      name,
-      source: "manual",
-      unit: "",
-      quantity: 1,
-      perUnit,
-      status: "complete"
-    });
-    return true;
-  });
-}
-
 export function initToday() {
   if (!byId("panel-today")) {
     return;
@@ -462,7 +409,6 @@ export function initToday() {
       go(byId("todayDateInput").value);
     }
   });
-  byId("quickEntryButton").addEventListener("click", openQuickEntry);
-  byId("addProductButton").addEventListener("click", openAddProduct);
+  byId("addFoodButton").addEventListener("click", openAddFood);
   renderToday();
 }

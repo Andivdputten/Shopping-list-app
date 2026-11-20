@@ -35,12 +35,16 @@ export function sourceLabel(choice) {
   if (choice.nutritionSource === "nevo") {
     return choice.nevoVersion ? `NEVO ${choice.nevoVersion}` : "NEVO";
   }
+  if (choice.nutritionSource === "pantry") {
+    return "Pantry";
+  }
   return choice.nutritionSource === "off" ? "Open Food Facts" : "";
 }
 
 // Adds a search box, a Search button and a result list to parent; onPick gets the chosen food.
+// localResults(query), when given, adds the caller's own matches first (e.g. pantry items in "Add food").
 // Returns the input, so a caller can prefill it (e.g. with a pantry item's name).
-export function addFoodSearch(parent, { idPrefix, onPick }) {
+export function addFoodSearch(parent, { idPrefix, onPick, localResults = null }) {
   const row = document.createElement("div");
   row.className = "barcode-row";
   const input = document.createElement("input");
@@ -57,9 +61,12 @@ export function addFoodSearch(parent, { idPrefix, onPick }) {
 
   const hint = document.createElement("p");
   hint.className = "hint-text";
-  hint.textContent = state.nevo
-    ? "NEVO foods first, then Open Food Facts products."
-    : "Searches Open Food Facts. Import the NEVO table in Settings for generic foods.";
+  const sources = [localResults && "your pantry", state.nevo && "NEVO", "Open Food Facts"].filter(
+    Boolean
+  );
+  hint.textContent =
+    `Searches ${sources.join(", then ")}.` +
+    (state.nevo ? "" : " Import the NEVO table in Settings for generic foods.");
   const results = document.createElement("ul");
   results.className = "shopping-list food-results";
   results.id = `${idPrefix}SearchResults`;
@@ -108,6 +115,8 @@ export function addFoodSearch(parent, { idPrefix, onPick }) {
       status.textContent = "Type a food to search for.";
       return;
     }
+    const local = localResults ? localResults(query) : [];
+    local.forEach(addResult);
     const nevoFoods = state.nevo ? searchNevo(state.nevo.foods, query, NEVO_LIMIT) : [];
     nevoFoods.forEach((food) => addResult(nevoChoice(food, state.nevo.version)));
     status.textContent = "Searching Open Food Facts...";
@@ -117,9 +126,9 @@ export function addFoodSearch(parent, { idPrefix, onPick }) {
     } catch (error) {
       if (id === searchId) {
         status.textContent =
-          nevoFoods.length > 0
-            ? "Open Food Facts couldn't be reached; NEVO results only."
-            : "Open Food Facts couldn't be reached and nothing matched in NEVO.";
+          local.length + nevoFoods.length > 0
+            ? "Open Food Facts couldn't be reached; showing the other results."
+            : "Open Food Facts couldn't be reached and nothing else matched.";
       }
       return;
     }
@@ -128,7 +137,7 @@ export function addFoodSearch(parent, { idPrefix, onPick }) {
     }
     products.forEach((product) => addResult(offChoice(product)));
     status.textContent =
-      nevoFoods.length + products.length === 0
+      local.length + nevoFoods.length + products.length === 0
         ? "Nothing found; try other words."
         : "Tap a result to choose it.";
   };
