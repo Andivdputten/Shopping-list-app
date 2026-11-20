@@ -83,6 +83,19 @@ export function applyRecipeSectionLanguage() {
     hint.textContent = t.sectionHint;
   }
   aiPreferencesInput.placeholder = t.preferencesPlaceholder;
+  // The meal-type choice: "Any meal" first, then the four meals, keeping the current choice on relabelling.
+  const mealSelect = document.getElementById("aiMealTypeSelect");
+  if (mealSelect) {
+    const chosen = mealSelect.value;
+    mealSelect.innerHTML = "";
+    mealSelect.appendChild(new Option(t.anyMeal, ""));
+    ["breakfast", "lunch", "dinner", "snack"].forEach((meal) => {
+      const label = t.meals[meal];
+      mealSelect.appendChild(new Option(label.charAt(0).toUpperCase() + label.slice(1), meal));
+    });
+    mealSelect.value = chosen;
+    mealSelect.setAttribute("aria-label", t.mealChoiceLabel);
+  }
   // Not while a request is running, when the button temporarily shows the "thinking" label.
   if (!suggestRecipesButton.disabled) {
     suggestRecipesButton.textContent = t.suggestButton;

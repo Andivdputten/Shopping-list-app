@@ -3,6 +3,14 @@
 
 export const RELEASE_NOTES = [
   {
+    version: "v36",
+    date: "2026-11-20",
+    title: "Recipe ideas for one meal",
+    notes: [
+      'Choose breakfast, lunch, dinner or snack next to "Suggest recipes" to get ideas for that meal only; "Any meal" gives a mix, as before.'
+    ]
+  },
+  {
     version: "v35",
     date: "2026-11-20",
     title: "Honest totals for incomplete entries",
