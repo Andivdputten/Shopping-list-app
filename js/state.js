@@ -28,5 +28,7 @@ export const state = {
   targetSettings: null,
   // The intake log, loaded at start-up, and the day the Today tab shows ("YYYY-MM-DD").
   intakeLog: null,
-  todayDate: null
+  todayDate: null,
+  // The imported NEVO foods ({ version, foods }) or null when none are imported (see js/nevo.js).
+  nevo: null
 };

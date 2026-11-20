@@ -44,8 +44,12 @@ test("new items get safe defaults for missing or wrongly typed fields", () => {
       fiber100g: null
     },
     nutritionAmount: null,
+    nutritionSource: null,
+    nevoVersion: null,
     bought: false
   });
+  assert.equal(createStockItem({ name: "Ui", nutritionSource: "nevo" }).nutritionSource, "nevo");
+  assert.equal(createStockItem({ name: "Ui", nutritionSource: "other" }).nutritionSource, null);
   assert.equal("bought" in createStockItem({ name: "Melk" }), false);
   assert.equal(positiveQuantityOrNull(0), null);
   assert.equal(positiveQuantityOrNull(2), 2);

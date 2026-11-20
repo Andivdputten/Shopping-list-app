@@ -63,7 +63,10 @@ export function createStockItem(item) {
     note: typeof item.note === "string" ? item.note : "",
     barcode: typeof item.barcode === "string" ? item.barcode : "",
     nutrition: normalizeNutrition(item.nutrition),
-    nutritionAmount: normalizeNutritionNumber(item.nutritionAmount)
+    nutritionAmount: normalizeNutritionNumber(item.nutritionAmount),
+    // Set when nutrition was found by name ("nevo" or "off"), so its source (and NEVO version) can be shown.
+    nutritionSource: ["nevo", "off"].includes(item.nutritionSource) ? item.nutritionSource : null,
+    nevoVersion: typeof item.nevoVersion === "string" ? item.nevoVersion : null
   };
 }
 
@@ -100,6 +103,8 @@ export function mergeStockItems(existingItem, incomingItem) {
 
   if (!hasAnyNutrition(merged.nutrition) && hasAnyNutrition(incomingItem.nutrition)) {
     merged.nutrition = normalizeNutrition(incomingItem.nutrition);
+    merged.nutritionSource = incomingItem.nutritionSource || null;
+    merged.nevoVersion = incomingItem.nevoVersion || null;
   }
 
   if (

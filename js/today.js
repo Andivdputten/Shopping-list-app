@@ -8,10 +8,12 @@ import {
   entryNutrition,
   mealForTime,
   mealKcal,
+  nevoVersionsUsed,
   perServingFromRecipe,
   shiftDate
 } from "./intake.js";
 import { openAddProduct } from "./log-product.js";
+import { nevoReference } from "./nevo.js";
 import { saveIntakeLog } from "./persistence.js";
 import { state } from "./state.js";
 import { MEAL_TYPES, mealTargets } from "./targets.js";
@@ -228,6 +230,10 @@ export function renderToday() {
   });
 
   renderEntries(date);
+  // RIVM requires its reference wherever NEVO values are used in a calculation, such as these day totals.
+  byId("todayNevoReference").textContent = nevoVersionsUsed(state.intakeLog, date)
+    .map(nevoReference)
+    .join(" ");
   byId("todayEmptyMessage").style.display = count === 0 ? "block" : "none";
   renderWeekChart(byId("weekChart"), state.intakeLog, date, targets.kcal || null);
 }
@@ -256,11 +262,14 @@ function amountText(entry) {
   if (entry.unit === "serving") {
     return `${formatNutritionValue(entry.quantity)} serving${entry.quantity === 1 ? "" : "s"}`;
   }
-  if (entry.unit === "g") {
-    return `${formatNutritionValue(entry.quantity)} g`;
+  if (entry.unit === "g" || entry.unit === "ml") {
+    return `${formatNutritionValue(entry.quantity)} ${entry.unit}`;
   }
   return "";
 }
+
+// Where a logged product's values came from, when it was searched by name.
+const SOURCE_LABELS = { nevo: "NEVO", off: "Open Food Facts" };
 
 const STATUS_NOTES = {
   partial: "partly counted: some nutrition data missing",
@@ -280,7 +289,8 @@ function entryRow(entry) {
   meta.className = "item-meta";
   meta.textContent = [
     amountText(entry),
-    values.kcal === null ? "" : `${Math.round(values.kcal)} kcal`
+    values.kcal === null ? "" : `${Math.round(values.kcal)} kcal`,
+    SOURCE_LABELS[entry.nutritionSource] || ""
   ]
     .filter(Boolean)
     .join(" · ");
@@ -314,13 +324,9 @@ function openEditEntry(entry) {
   const { body, addActions } = openLogDialog(`Edit ${entry.name}`);
   const meal = addField(body, "Meal", mealSelect(entry.meal), "logMealSelect");
   let quantity = null;
-  if (entry.unit === "serving" || entry.unit === "g") {
-    quantity = addField(
-      body,
-      entry.unit === "serving" ? "Servings eaten" : "Grams eaten",
-      numberInput(entry.quantity),
-      "logQuantityInput"
-    );
+  if (["serving", "g", "ml"].includes(entry.unit)) {
+    const labels = { serving: "Servings eaten", g: "Grams eaten", ml: "Millilitres eaten" };
+    quantity = addField(body, labels[entry.unit], numberInput(entry.quantity), "logQuantityInput");
   }
   addActions("Save", () => {
     const amount = quantity ? Number(quantity.value) : entry.quantity;

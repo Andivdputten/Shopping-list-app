@@ -3,6 +3,7 @@ import {
   BARCODE_CACHE_MAX_ENTRIES,
   BARCODE_CACHE_NOT_FOUND_TTL_MS,
   INTAKE_STORAGE_KEY,
+  NEVO_STORAGE_KEY,
   RECIPE_STORAGE_KEY,
   STOCK_STORAGE_KEY,
   STORAGE_KEY,
@@ -72,4 +73,18 @@ export function saveTargetSettings() {
 
 export function saveIntakeLog() {
   localStorage.setItem(INTAKE_STORAGE_KEY, JSON.stringify(state.intakeLog));
+}
+
+// Saves (or with null removes) the imported NEVO foods; returns false when the browser storage is full.
+export function saveNevoData() {
+  try {
+    if (state.nevo === null) {
+      localStorage.removeItem(NEVO_STORAGE_KEY);
+    } else {
+      localStorage.setItem(NEVO_STORAGE_KEY, JSON.stringify(state.nevo));
+    }
+    return true;
+  } catch (error) {
+    return false;
+  }
 }
