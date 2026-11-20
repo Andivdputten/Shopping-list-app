@@ -298,6 +298,12 @@
           <!-- Optional meal type for the suggestions; the options are filled in by js/settings.js in the recipe language. -->
           <select id="aiMealTypeSelect" aria-label="Meal"></select>
 
+          <!-- "Complex recipes": asks the AI for elaborate cooking; remembered on this device (js/settings.js). -->
+          <label class="cook-add-to-list">
+            <input id="aiComplexToggle" type="checkbox" />
+            <span id="aiComplexText">Complex recipes (more technique and time)</span>
+          </label>
+
           <button id="suggestRecipesButton" class="primary-button">
             Suggest recipes from my stock
           </button>

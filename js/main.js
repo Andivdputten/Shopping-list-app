@@ -77,7 +77,12 @@ import {
 } from "./recipe-builder.js";
 import { renderSavedRecipes } from "./saved-recipes.js";
 import { startScanner, stopScanner } from "./scanner.js";
-import { initApiKeySettings, initBackupSettings, initRecipeLanguageSetting } from "./settings.js";
+import {
+  initApiKeySettings,
+  initBackupSettings,
+  initComplexRecipesToggle,
+  initRecipeLanguageSetting
+} from "./settings.js";
 import {
   clearAllItems,
   quickAddItem,
@@ -126,6 +131,7 @@ function startApp() {
   initApiKeySettings();
   initBackupSettings();
   initRecipeLanguageSetting();
+  initComplexRecipesToggle();
   initTargetsSettings();
   initNevoSettings();
   initToday();

@@ -11,6 +11,9 @@ export const BARCODE_CACHE_STORAGE_KEY = "grocery_scanner_barcode_cache_v1";
 // Chosen language for AI recipes. Declared up here because it is read during startup, before later code runs.
 export const RECIPE_LANGUAGE_STORAGE_KEY = "grocery_scanner_recipe_language_v1";
 
+// Whether AI recipe suggestions should be elaborate ("1") or everyday ("0" or missing).
+export const RECIPE_COMPLEX_STORAGE_KEY = "grocery_scanner_recipe_complex_v1";
+
 export const BARCODE_CACHE_MAX_ENTRIES = 500;
 
 // Cached "not found" results expire after a while in case a product gets

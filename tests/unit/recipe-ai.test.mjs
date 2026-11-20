@@ -97,10 +97,24 @@ test("a chosen meal type asks for that meal only; no choice asks for a mix as be
 test("the follow-up request asks only for recipes that need extra ingredients", async () => {
   const { buildUserMessage } = await import("../../js/recipe-ai.js");
   const stock = [{ name: "Rijst", quantity: 500, unit: "g" }];
-  const extras = buildUserMessage(stock, "", ["Rijstpudding"], "dinner", true);
+  const extras = buildUserMessage(stock, "", ["Rijstpudding"], "dinner", { onlyExtras: true });
   assert.match(extras, /Suggest 3 varied dinner recipes/);
   assert.match(extras, /"ready": leave this empty/);
   assert.match(extras, /Every one must need at least one ingredient that is not in the stock list/);
   assert.match(extras, /- Rijstpudding/);
   assert.doesNotMatch(buildUserMessage(stock, "", [], ""), /leave this empty/);
+});
+
+test("the complex switch asks for elaborate recipes; off, the request doesn't mention it", async () => {
+  const { buildUserMessage } = await import("../../js/recipe-ai.js");
+  const stock = [{ name: "Kip", quantity: 500, unit: "g" }];
+  const complex = buildUserMessage(stock, "", [], "dinner", { complex: true });
+  assert.match(complex, /Make every recipe elaborate rather than quick/);
+  assert.match(complex, /may take an hour or more/);
+  assert.doesNotMatch(buildUserMessage(stock, "", [], "dinner"), /elaborate/);
+  // Works together with the follow-up request for recipes with extras.
+  assert.match(
+    buildUserMessage(stock, "", [], "", { onlyExtras: true, complex: true }),
+    /leave this empty[\s\S]*elaborate/
+  );
 });

@@ -4,6 +4,7 @@ import {
   BACKUP_APP_ID,
   BACKUP_FORMAT_VERSION,
   INTAKE_STORAGE_KEY,
+  RECIPE_COMPLEX_STORAGE_KEY,
   RECIPE_LANGUAGE_STORAGE_KEY,
   RECIPE_STORAGE_KEY,
   STOCK_STORAGE_KEY,
@@ -95,6 +96,10 @@ export function applyRecipeSectionLanguage() {
     });
     mealSelect.value = chosen;
     mealSelect.setAttribute("aria-label", t.mealChoiceLabel);
+  }
+  const complexText = document.getElementById("aiComplexText");
+  if (complexText) {
+    complexText.textContent = t.complexToggle;
   }
   // Not while a request is running, when the button temporarily shows the "thinking" label.
   if (!suggestRecipesButton.disabled) {
@@ -298,4 +303,24 @@ export function updateApiKeyStatusDisplay() {
   } else {
     apiKeyStatus.textContent = "No API key saved yet.";
   }
+}
+
+// The "Complex recipes" switch: restored at start-up and saved on every change, on this device only.
+export function initComplexRecipesToggle() {
+  const toggle = document.getElementById("aiComplexToggle");
+  if (!toggle) {
+    return;
+  }
+  try {
+    toggle.checked = localStorage.getItem(RECIPE_COMPLEX_STORAGE_KEY) === "1";
+  } catch (error) {
+    toggle.checked = false;
+  }
+  toggle.addEventListener("change", () => {
+    try {
+      localStorage.setItem(RECIPE_COMPLEX_STORAGE_KEY, toggle.checked ? "1" : "0");
+    } catch (error) {
+      // Not stored (e.g. private mode): the switch still applies until the app is closed.
+    }
+  });
 }
