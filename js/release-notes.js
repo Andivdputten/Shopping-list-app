@@ -3,6 +3,15 @@
 
 export const RELEASE_NOTES = [
   {
+    version: "v40",
+    date: "2026-11-20",
+    title: "Recipe suggestions work again",
+    notes: [
+      'Fixed: suggestions failed with "took too long" or "got cut off". The six suggestions are now asked for as two smaller requests at the same time, so each answer stays well within the limits and the wait is shorter.',
+      "If one of the two requests fails, the other three recipes are still shown, with the reason."
+    ]
+  },
+  {
     version: "v39",
     date: "2026-11-20",
     title: "AI usage this month",

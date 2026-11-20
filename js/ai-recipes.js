@@ -702,6 +702,10 @@ export async function handleSuggestRecipesClick() {
   if (counts.extrasCount === 0) {
     message += t.noneExtras;
   }
+  // One of the two requests failed: its recipes are missing, so say why.
+  if (result.partialError) {
+    message += ` (${result.partialError})`;
+  }
 
   aiSuggestStatus.textContent = message;
 }
