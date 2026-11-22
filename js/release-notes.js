@@ -3,6 +3,15 @@
 
 export const RELEASE_NOTES = [
   {
+    version: "v41",
+    date: "2026-11-22",
+    title: "Faster recipe suggestions",
+    notes: [
+      "Suggestions no longer wait for the AI's hidden reasoning, which was about three quarters of every answer: they should arrive several times faster and cost about a third as much.",
+      '"Complex recipes" now makes a clear difference: normal recipes are quick (at most 30 minutes, 6 steps), complex ones have several components, at least 8 steps and an advanced technique.'
+    ]
+  },
+  {
     version: "v40",
     date: "2026-11-20",
     title: "Recipe suggestions work again",

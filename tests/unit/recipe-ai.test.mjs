@@ -107,13 +107,20 @@ test("each request asks for one group of 3 recipes, so answers stay short", asyn
   assert.match(extras, /- Rijstpudding/);
 });
 
-test("the complex switch asks for elaborate recipes; off, the request doesn't mention it", async () => {
+test("the complex switch asks for elaborate recipes; off, it asks for quick ones", async () => {
   const { buildUserMessage } = await import("../../js/recipe-ai.js");
   const stock = [{ name: "Kip", quantity: 500, unit: "g" }];
   const complex = buildUserMessage(stock, "", [], "dinner", { complex: true });
-  assert.match(complex, /Make every recipe elaborate rather than quick/);
+  assert.match(complex, /Make every recipe elaborate:/);
   assert.match(complex, /may take an hour or more/);
-  assert.doesNotMatch(buildUserMessage(stock, "", [], "dinner"), /elaborate/);
+  // Normal recipes are asked to be quick, so the two modes clearly differ.
+  const normal = buildUserMessage(stock, "", [], "dinner");
+  assert.doesNotMatch(normal, /elaborate/);
+  assert.match(
+    normal,
+    /Keep every recipe quick and simple: at most 30 minutes in total, at most 6 short steps/
+  );
+  assert.match(complex, /at least two components .* at least 8 steps/);
   // Works together with the follow-up request for recipes with extras.
   assert.match(
     buildUserMessage(stock, "", [], "", { group: "needsExtras", complex: true }),

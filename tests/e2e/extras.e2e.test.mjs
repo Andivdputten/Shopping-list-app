@@ -51,8 +51,12 @@ test(
     page.on("pageerror", (error) => errors.push(error.message));
 
     const prompts = [];
+    const thinkingModes = [];
     await page.route("https://api.anthropic.com/**", (route) => {
-      prompts.push(route.request().postDataJSON().messages[0].content);
+      const body = route.request().postDataJSON();
+      prompts.push(body.messages[0].content);
+      // Recipe requests run without hidden reasoning (it was ~3/4 of every answer).
+      thinkingModes.push(body.thinking && body.thinking.type);
       // The first suggestion makes two requests (stock-only and extras); the button makes a third.
       const reply = prompts.length <= 2 ? FIRST : FOLLOW_UP;
       return route.fulfill({
@@ -96,6 +100,7 @@ test(
         document.getElementById("aiRecipeResults").textContent.includes("Rijst met kip")
       );
       assert.equal(prompts.length, 3);
+      assert.deepEqual(thinkingModes, ["disabled", "disabled", "disabled"]);
       assert.match(prompts[2], /"ready": leave this empty/);
       // Both requests ask for elaborate recipes while the switch is on.
       assert.match(prompts[0], /Make every recipe elaborate/);
