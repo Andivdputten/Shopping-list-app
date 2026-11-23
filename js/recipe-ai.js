@@ -475,11 +475,12 @@ export function buildUserMessage(stockList, preferences, avoidNames, mealType, o
       : `- "ready": 3 recipes that use only stock items.
 - "needsExtras": leave this empty.`;
 
-  // More technique, more components and more time; the stock and amount rules stay the same.
+  // Both modes are concrete and opposite, so "Complex recipes" makes a visible difference; a single
+  // sentence for complex alone was ignored. The stock and amount rules stay the same in both.
   const complexText =
     options.complex === true
-      ? `\nMake every recipe elaborate rather than quick: use more advanced techniques (such as searing, braising, reducing, emulsifying or marinating), give it several components (for example a sauce, a side and a garnish), and write detailed steps with times and temperatures. They may take an hour or more and use equipment such as an oven, blender or food processor.`
-      : "";
+      ? `\nMake every recipe elaborate: each has at least two components (for example a main part plus a sauce or side), at least 8 steps with times and temperatures, and at least one advanced technique such as searing, braising, reducing, emulsifying or marinating. It may take an hour or more and use equipment such as an oven, blender or food processor.`
+      : `\nKeep every recipe quick and simple: at most 30 minutes in total, at most 6 short steps, and everyday techniques only.`;
 
   return `<stock>
 ${stockLines}
@@ -567,9 +568,11 @@ async function requestGroup(userMessage, group, languageName) {
     RECIPE_TIMEOUT_MS,
     {
       system: buildSystemPrompt(languageName),
+      // No hidden reasoning: measured in the app, about three quarters of each answer (~11,800 of ~12,000
+      // output tokens for 3 recipes) was reasoning, which made suggestions slow, costly and near the limit.
+      // Claude Haiku 5.5 allows turning it off at effort "high" or lower.
+      thinking: { type: "disabled" },
       output_config: {
-        // Low effort: the model's reasoning counts towards the 16,000-token limit, and writing structured
-        // recipes doesn't need deep reasoning; at medium, answers were cut off.
         effort: "low",
         format: { type: "json_schema", schema: RECIPE_SCHEMA }
       }
