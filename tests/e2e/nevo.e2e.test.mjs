@@ -22,6 +22,8 @@ test(
     page.on("dialog", (dialog) => dialog.accept());
 
     await page.clock.setFixedTime(new Date(2026, 10, 20, 13, 30));
+    // This test works on a made-up table, so the NEVO table included with the app is made unavailable.
+    await page.route("**/data/nevo.json", (route) => route.fulfill({ json: {} }));
     // Open Food Facts name search: one product for "soep"; unreachable for "rijst".
     let offSearches = 0;
     await page.route("https://world.openfoodfacts.org/**", (route) => {
@@ -88,7 +90,9 @@ test(
 
       // 2. Importing the file shows what is imported and the required reference; a wrong file is refused.
       await page.click('[data-tab="settings"]');
-      assert.equal(await page.textContent("#nevoStatus"), "No NEVO file imported.");
+      await page.waitForFunction(() =>
+        /couldn't be loaded/.test(document.getElementById("nevoStatus").textContent)
+      );
       assert.equal(await page.isDisabled("#removeNevoButton"), true);
       await page.setInputFiles("#importNevoInput", {
         name: "notes.xlsx",
@@ -105,9 +109,12 @@ test(
         buffer: makeFakeNevoXlsx()
       });
       await page.waitForFunction(() =>
-        /imported\./.test(document.getElementById("nevoStatus").textContent)
+        /Imported:/.test(document.getElementById("nevoStatus").textContent)
       );
-      assert.equal(await page.textContent("#nevoStatus"), "NEVO 2099/1.0: 6 foods imported.");
+      assert.equal(
+        await page.textContent("#nevoStatus"),
+        "Imported: NEVO 2099/1.0, 6 foods. Remove it to use the included table again."
+      );
       assert.equal(await page.textContent("#nevoReference"), REFERENCE);
 
       // 3. A NEVO drink is logged in millilitres with its unchanged values; the day shows the reference.
@@ -174,20 +181,74 @@ test(
       // 6. NEVO stays after a restart but is never part of the backup; Remove clears it.
       await page.reload();
       await page.click('[data-tab="settings"]');
-      assert.equal(await page.textContent("#nevoStatus"), "NEVO 2099/1.0: 6 foods imported.");
+      assert.equal(
+        await page.textContent("#nevoStatus"),
+        "Imported: NEVO 2099/1.0, 6 foods. Remove it to use the included table again."
+      );
       const [download] = await Promise.all([
         page.waitForEvent("download"),
         page.click("#exportDataButton")
       ]);
       const backup = await (await download.createReadStream()).toArray();
       assert.doesNotMatch(Buffer.concat(backup).toString(), /Testappel|nevo_v1/);
+      // Remove goes back to the included table (unavailable in this test).
       await page.click("#removeNevoButton");
-      assert.equal(await page.textContent("#nevoStatus"), "No NEVO file imported.");
+      await page.waitForFunction(() =>
+        /couldn't be loaded/.test(document.getElementById("nevoStatus").textContent)
+      );
       assert.equal(
         await page.evaluate(() => localStorage.getItem("grocery_scanner_nevo_v1")),
         null
       );
 
+      assert.deepEqual(errors, []);
+    } finally {
+      await browser.close();
+      await server.close();
+    }
+  }
+);
+
+test(
+  "NEVO 2025/9.0 is included: it loads without an import and is searchable",
+  { timeout: 60000 },
+  async () => {
+    const server = await startStaticServer();
+    const browser = await chromium.launch();
+    const context = await browser.newContext({ serviceWorkers: "block" });
+    const page = await context.newPage();
+    const errors = [];
+    page.on("pageerror", (error) => errors.push(error.message));
+    await page.route("https://world.openfoodfacts.org/**", (route) =>
+      route.fulfill({ json: { products: [] } })
+    );
+    try {
+      await page.goto(`${server.url}/index.html`);
+      await page.click('[data-tab="settings"]');
+      await page.waitForFunction(() =>
+        /Included in the app/.test(document.getElementById("nevoStatus").textContent)
+      );
+      assert.equal(
+        await page.textContent("#nevoStatus"),
+        "Included in the app: NEVO 2025/9.0, 2,328 foods."
+      );
+      assert.equal(
+        await page.textContent("#nevoReference"),
+        "Based on data from NEVO online version 2025/9.0, RIVM, Bilthoven and other data sources"
+      );
+      // The included table can't be removed; only an imported file can.
+      assert.equal(await page.isDisabled("#removeNevoButton"), true);
+
+      // A real NEVO food is found by name in Add food.
+      await page.click('[data-tab="today"]');
+      await page.click("#addFoodButton");
+      await page.fill("#logSearchInput", "ui");
+      await page.press("#logSearchInput", "Enter");
+      await page.waitForSelector("#logSearchResults .food-result");
+      assert.match(
+        await page.textContent("#logSearchResults .food-result >> nth=0"),
+        /^Ui rauwOnions raw · NEVO 2025\/9\.0/
+      );
       assert.deepEqual(errors, []);
     } finally {
       await browser.close();

@@ -67,6 +67,9 @@ test(
 
     await page.clock.setFixedTime(new Date(2026, 10, 20, 12, 30));
     let prompt = "";
+    // AI recipe values here are fixed test numbers, so the NEVO table included with the app is left out
+    // (tests/e2e/nevo.e2e.test.mjs covers it).
+    await page.route("**/data/nevo.json", (route) => route.fulfill({ json: {} }));
     await page.route("https://api.anthropic.com/**", (route) => {
       prompt = route.request().postDataJSON().messages[0].content;
       return route.fulfill({
@@ -121,7 +124,7 @@ test(
         buffer: makeFakeNevoXlsx()
       });
       await page.waitForFunction(() =>
-        /imported\./.test(document.getElementById("nevoStatus").textContent)
+        /Imported:/.test(document.getElementById("nevoStatus").textContent)
       );
 
       // 1. Each ingredient gets the best source: pantry, NEVO, Open Food Facts (looked up afterwards), estimate.

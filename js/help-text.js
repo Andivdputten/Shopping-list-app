@@ -52,7 +52,7 @@ export const HELP_SECTIONS = {
     lines: [
       "Your Anthropic API key, the language for AI recipes, and the AI tokens used this month against an optional budget.",
       "Daily targets (with a calculator) and how the day is split over meals.",
-      "Import the NEVO table from RIVM to search generic foods by name.",
+      "NEVO, the Dutch food table, is included; import a newer NEVO file here when RIVM publishes one.",
       "Export a backup now and then: your data lives only in this browser.",
       "What's new and the release history are at the bottom."
     ]

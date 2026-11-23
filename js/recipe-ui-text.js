@@ -41,6 +41,9 @@ const TEXTS = {
     preferencesPlaceholder: "Optional: e.g. vegetarian, quick meals, spicy",
     // The meal-type choice next to the suggest button; "any" asks for a mix, as before.
     anyMeal: "Any meal",
+    // Shown under the suggestions: AI recipes are untested, as RIVM also pointed out.
+    aiDisclaimer:
+      "AI recipes aren't tested by a cook: check amounts, cooking times and temperatures before you cook.",
     complexToggle: "Complex recipes (more technique and time)",
     mealChoiceLabel: "Meal",
     suggestButton: "Suggest recipes from my stock",
@@ -139,6 +142,9 @@ const TEXTS = {
     preferencesPlaceholder: "Optioneel: bijv. vegetarisch, snelle maaltijden, pittig",
     // The meal-type choice next to the suggest button; "any" asks for a mix, as before.
     anyMeal: "Elke maaltijd",
+    // Shown under the suggestions: AI recipes are untested, as RIVM also pointed out.
+    aiDisclaimer:
+      "AI-recepten zijn niet door een kok getest: controleer hoeveelheden, bereidingstijden en temperaturen voordat je kookt.",
     complexToggle: "Uitgebreide recepten (meer techniek en tijd)",
     mealChoiceLabel: "Maaltijd",
     suggestButton: "Recepten voorstellen uit mijn voorraad",
@@ -240,6 +246,9 @@ const TEXTS = {
     preferencesPlaceholder: "Optional: z. B. vegetarisch, schnelle Gerichte, scharf",
     // The meal-type choice next to the suggest button; "any" asks for a mix, as before.
     anyMeal: "Jede Mahlzeit",
+    // Shown under the suggestions: AI recipes are untested, as RIVM also pointed out.
+    aiDisclaimer:
+      "KI-Rezepte sind nicht von einem Koch getestet: Prüfe Mengen, Garzeiten und Temperaturen, bevor du kochst.",
     complexToggle: "Aufwendige Rezepte (mehr Technik und Zeit)",
     mealChoiceLabel: "Mahlzeit",
     suggestButton: "Rezepte aus meinem Vorrat vorschlagen",
@@ -339,6 +348,9 @@ const TEXTS = {
     preferencesPlaceholder: "Facultatif : ex. végétarien, repas rapides, épicé",
     // The meal-type choice next to the suggest button; "any" asks for a mix, as before.
     anyMeal: "Tous les repas",
+    // Shown under the suggestions: AI recipes are untested, as RIVM also pointed out.
+    aiDisclaimer:
+      "Les recettes de l'IA ne sont pas testées par un cuisinier : vérifiez les quantités, les temps de cuisson et les températures avant de cuisiner.",
     complexToggle: "Recettes élaborées (plus de technique et de temps)",
     mealChoiceLabel: "Repas",
     suggestButton: "Proposer des recettes avec mon stock",
@@ -443,6 +455,9 @@ const TEXTS = {
     preferencesPlaceholder: "Opcional: p. ej. vegetariano, comidas rápidas, picante",
     // The meal-type choice next to the suggest button; "any" asks for a mix, as before.
     anyMeal: "Cualquier comida",
+    // Shown under the suggestions: AI recipes are untested, as RIVM also pointed out.
+    aiDisclaimer:
+      "Las recetas de la IA no las ha probado un cocinero: revisa cantidades, tiempos de cocción y temperaturas antes de cocinar.",
     complexToggle: "Recetas elaboradas (más técnica y tiempo)",
     mealChoiceLabel: "Comida",
     suggestButton: "Sugerir recetas con mi despensa",
@@ -546,6 +561,9 @@ const TEXTS = {
     preferencesPlaceholder: "Opcional: ex. vegetariano, refeições rápidas, picante",
     // The meal-type choice next to the suggest button; "any" asks for a mix, as before.
     anyMeal: "Qualquer refeição",
+    // Shown under the suggestions: AI recipes are untested, as RIVM also pointed out.
+    aiDisclaimer:
+      "As receitas da IA não foram testadas por um cozinheiro: confira quantidades, tempos de cozimento e temperaturas antes de cozinhar.",
     complexToggle: "Receitas elaboradas (mais técnica e tempo)",
     mealChoiceLabel: "Refeição",
     suggestButton: "Sugerir receitas com a minha despensa",
