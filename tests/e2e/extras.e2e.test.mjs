@@ -52,6 +52,9 @@ test(
 
     const prompts = [];
     const thinkingModes = [];
+    // AI recipe values here are fixed test numbers, so the NEVO table included with the app is left out
+    // (tests/e2e/nevo.e2e.test.mjs covers it).
+    await page.route("**/data/nevo.json", (route) => route.fulfill({ json: {} }));
     await page.route("https://api.anthropic.com/**", (route) => {
       const body = route.request().postDataJSON();
       prompts.push(body.messages[0].content);
@@ -139,6 +142,9 @@ test(
     page.on("pageerror", (error) => errors.push(error.message));
 
     // The stock-only request is cut off at the token limit; the extras request answers normally.
+    // AI recipe values here are fixed test numbers, so the NEVO table included with the app is left out
+    // (tests/e2e/nevo.e2e.test.mjs covers it).
+    await page.route("**/data/nevo.json", (route) => route.fulfill({ json: {} }));
     await page.route("https://api.anthropic.com/**", (route) => {
       const prompt = route.request().postDataJSON().messages[0].content;
       const extras = /"ready": leave this empty/.test(prompt);

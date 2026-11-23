@@ -175,6 +175,9 @@ test("main flows match the recorded reference", { timeout: 120000 }, async () =>
       ? route.fulfill({ json: { status: 1, product } })
       : route.fulfill({ status: 404, json: { status: 0 } });
   });
+  // AI recipe values here are fixed test numbers, so the NEVO table included with the app is left out
+  // (tests/e2e/nevo.e2e.test.mjs covers it).
+  await page.route("**/data/nevo.json", (route) => route.fulfill({ json: {} }));
   await page.route("https://api.anthropic.com/**", (route) => {
     const body = JSON.parse(route.request().postData());
     const text = body.output_config && body.output_config.format ? JSON.stringify(AI_REPLY) : "OK";

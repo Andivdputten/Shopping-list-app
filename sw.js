@@ -1,7 +1,7 @@
 // Bump this version on every release. It is required whenever a cache-first file
 // (icons, manifest.json, vendor/) changes, because returning users otherwise keep the old copy;
 // bumping also deletes old caches. Network-first core files (see CORE_FILES) update without it.
-const CACHE_VERSION = "v41";
+const CACHE_VERSION = "v42";
 const CACHE_NAME = `grocery-scanner-${CACHE_VERSION}`;
 
 // Core app files: these change often during development. They're fetched
@@ -64,6 +64,8 @@ const CORE_FILES = [
 // Static assets: these essentially never change once created, so caching
 // them aggressively (cache-first) is safe and saves a network round trip.
 const STATIC_FILES = [
+  // NEVO 2025/9.0 as shipped (data/README.md); replaced only with a new release, which bumps CACHE_VERSION.
+  "./data/nevo.json",
   "./manifest.json",
   "./Icons/icon-192.png",
   "./Icons/icon-512.png",

@@ -3,6 +3,16 @@
 
 export const RELEASE_NOTES = [
   {
+    version: "v42",
+    date: "2026-11-23",
+    title: "NEVO included",
+    notes: [
+      "The NEVO food table (2025/9.0) now comes with the app, with RIVM's permission: searching fruit, vegetables, cooked rice and more by name works without importing a file.",
+      "A NEVO file you imported yourself is still used; remove it in Settings to switch to the included table.",
+      "AI recipes now say they aren't tested by a cook: check amounts, times and temperatures."
+    ]
+  },
+  {
     version: "v41",
     date: "2026-11-22",
     title: "Faster recipe suggestions",

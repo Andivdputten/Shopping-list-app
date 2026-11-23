@@ -5,8 +5,9 @@ products (looked up in Open Food Facts), track what is in stock, build recipes w
 and get AI recipe suggestions from your own Anthropic API key.
 
 Foods without a barcode (fruit, vegetables, cooked rice) can be searched by name in NEVO, the Dutch food
-composition table from RIVM. Each user requests the NEVO file from RIVM and imports it in Settings; the
-repository contains no NEVO data, and the tests use a made-up table (`tests/helpers/make-xlsx.mjs`).
+composition table from RIVM. NEVO 2025/9.0 is included in `data/nevo.json` with RIVM's permission; see
+[data/README.md](data/README.md) for what comes from NEVO, the required reference and how to update it. The
+tests use a made-up table (`tests/helpers/make-xlsx.mjs`).
 
 The app has **no build step**: GitHub Pages serves the files in this repository as they are.
 

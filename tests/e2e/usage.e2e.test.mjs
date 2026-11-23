@@ -44,6 +44,9 @@ test(
     await page.clock.setFixedTime(new Date(2026, 10, 20, 12, 0));
     // Each answer reports 10,000 input and 30,000 output tokens: 0.001 + 0.015 = $0.016 at list price;
     // a suggestion makes two requests (stock-only and extras).
+    // AI recipe values here are fixed test numbers, so the NEVO table included with the app is left out
+    // (tests/e2e/nevo.e2e.test.mjs covers it).
+    await page.route("**/data/nevo.json", (route) => route.fulfill({ json: {} }));
     await page.route("https://api.anthropic.com/**", (route) =>
       route.fulfill({
         headers: { "access-control-allow-origin": "*" },

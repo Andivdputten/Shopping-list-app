@@ -46,6 +46,9 @@ test("cooking deducts from the pantry and Undo restores it", { timeout: 60000 },
   const errors = [];
   page.on("pageerror", (error) => errors.push(error.message));
 
+  // AI recipe values here are fixed test numbers, so the NEVO table included with the app is left out
+  // (tests/e2e/nevo.e2e.test.mjs covers it).
+  await page.route("**/data/nevo.json", (route) => route.fulfill({ json: {} }));
   await page.route("https://api.anthropic.com/**", (route) =>
     route.fulfill({
       headers: { "access-control-allow-origin": "*" },

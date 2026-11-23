@@ -97,6 +97,10 @@ export function applyRecipeSectionLanguage() {
     mealSelect.value = chosen;
     mealSelect.setAttribute("aria-label", t.mealChoiceLabel);
   }
+  const disclaimer = document.getElementById("aiDisclaimer");
+  if (disclaimer) {
+    disclaimer.textContent = t.aiDisclaimer;
+  }
   const complexText = document.getElementById("aiComplexText");
   if (complexText) {
     complexText.textContent = t.complexToggle;
