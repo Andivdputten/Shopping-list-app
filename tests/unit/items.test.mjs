@@ -44,6 +44,7 @@ test("new items get safe defaults for missing or wrongly typed fields", () => {
       fiber100g: null
     },
     nutritionAmount: null,
+    packGrams: null,
     nutritionSource: null,
     nevoVersion: null,
     bought: false
@@ -67,4 +68,31 @@ test("merging pantry items adds quantities only when the units match", () => {
 test("only known categories are kept", () => {
   assert.equal(normalizeCategory(" Dairy "), "Dairy");
   assert.equal(normalizeCategory("Snacks"), "");
+});
+
+test("the weight of one pack is read from package texts; none without a weight", async () => {
+  const { parsePackGrams } = await import("../../js/items.js");
+  assert.equal(parsePackGrams("5 kg"), 5000);
+  assert.equal(parsePackGrams("Rijst 1kg"), 1000);
+  assert.equal(parsePackGrams("6 x 330 ml"), 1980);
+  assert.equal(parsePackGrams("4×125g"), 500);
+  assert.equal(parsePackGrams("75 cl"), 750);
+  assert.equal(parsePackGrams("0,5 l"), 500);
+  assert.equal(parsePackGrams("10 stuks"), null);
+  assert.equal(parsePackGrams(null), null);
+});
+
+test("a pack weight is kept when merging and validated on new items", () => {
+  assert.equal(createStockItem({ name: "Rijst", packGrams: 5000 }).packGrams, 5000);
+  assert.equal(createStockItem({ name: "Rijst", packGrams: -1 }).packGrams, null);
+  const known = createStockItem({ name: "Rijst", quantity: 1, unit: "pack", packGrams: 5000 });
+  assert.equal(
+    mergeStockItems(known, { quantity: 1, unit: "pack", packGrams: 1000 }).packGrams,
+    5000
+  );
+  const unknown = createStockItem({ name: "Rijst", quantity: 1, unit: "pack" });
+  assert.equal(
+    mergeStockItems(unknown, { quantity: 1, unit: "pack", packGrams: 1000 }).packGrams,
+    1000
+  );
 });

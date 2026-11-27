@@ -130,3 +130,11 @@ test("applying a plan subtracts amounts and removes used-up items, without chang
   assert.equal(items[0].quantity, 500);
   assert.equal(items.length, 5);
 });
+
+test("a known pack or piece weight converts grams to packs and pieces", async () => {
+  const { gramsToStockUnit } = await import("../../js/cooking.js");
+  assert.equal(gramsToStockUnit(300, "pack", 5000), 0.06);
+  assert.equal(gramsToStockUnit(120, "pcs", 60), 2);
+  assert.equal(gramsToStockUnit(300, "pack"), null);
+  assert.equal(gramsToStockUnit(300, "kg", 5000), 0.3);
+});

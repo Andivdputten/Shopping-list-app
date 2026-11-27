@@ -3,7 +3,13 @@ import { stockEmptyMessage, stockList } from "./dom.js";
 import { formatNutritionSummary, formatNutritionTotalSummary } from "./format.js";
 import { createShoppingItem, getCategoryLabel, normalizeIngredientName } from "./items.js";
 import { getQuantityStep, hasAnyNutrition } from "./nutrition.js";
-import { openFindNutrition, pantrySourceText } from "./pantry-nutrition.js";
+import {
+  needsPackWeight,
+  openFindNutrition,
+  openPackWeight,
+  packWeightText,
+  pantrySourceText
+} from "./pantry-nutrition.js";
 import { saveItems, saveStockItems } from "./persistence.js";
 import { renderRecipeItemOptions } from "./recipe-builder.js";
 import { renderList } from "./shopping-list.js";
@@ -186,6 +192,14 @@ export function renderStockList() {
       infoWrap.appendChild(nutritionTotalSpan);
     }
 
+    const weightText = packWeightText(item);
+    if (weightText !== "") {
+      const weightSpan = document.createElement("span");
+      weightSpan.className = "item-meta";
+      weightSpan.textContent = weightText;
+      infoWrap.appendChild(weightSpan);
+    }
+
     const sourceText = pantrySourceText(item);
     if (sourceText !== "") {
       const sourceSpan = document.createElement("span");
@@ -207,7 +221,8 @@ export function renderStockList() {
     infoWrap.appendChild(categoryLabel);
 
     const actions = document.createElement("div");
-    actions.className = "item-actions";
+    // Stacked, so Return, Set weight and Find nutrition all fit next to the item on a phone.
+    actions.className = "item-actions stacked-actions";
 
     const returnButton = document.createElement("button");
     returnButton.className = "edit-button";
@@ -217,6 +232,19 @@ export function renderStockList() {
     });
 
     actions.appendChild(returnButton);
+
+    // Packs and pieces get a weight, so "1 pack" of rice counts as 5000 g in recipes, cooking and statistics.
+    if (needsPackWeight(item)) {
+      const weightButton = document.createElement("button");
+      weightButton.className = "edit-button";
+      weightButton.textContent = item.packGrams > 0 ? "Weight" : "Set weight";
+      weightButton.setAttribute(
+        "aria-label",
+        `Set weight per ${item.unit || "piece"} for ${item.name}`
+      );
+      weightButton.addEventListener("click", () => openPackWeight(index, renderStockList));
+      actions.appendChild(weightButton);
+    }
 
     // Only items without any data get the search, so looked-up or typed values are never overwritten by it.
     if (!hasAnyNutrition(item.nutrition)) {

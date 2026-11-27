@@ -1161,3 +1161,9 @@ button:disabled {
 .progress-fill.warning {
   background: #f59e0b;
 }
+
+/* Pantry buttons (Return, Set weight, Find nutrition) stacked on the right, so none is cut off on a phone. */
+.stacked-actions {
+  flex-direction: column;
+  align-items: stretch;
+}

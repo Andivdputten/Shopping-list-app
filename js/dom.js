@@ -12,6 +12,7 @@ export const nutritionCarbsInput = document.getElementById("nutritionCarbsInput"
 export const nutritionFatInput = document.getElementById("nutritionFatInput");
 export const nutritionFiberInput = document.getElementById("nutritionFiberInput");
 export const nutritionAmountInput = document.getElementById("nutritionAmountInput");
+export const packGramsInput = document.getElementById("packGramsInput");
 export const barcodePreview = document.getElementById("barcodePreview");
 export const clearBarcodeButton = document.getElementById("clearBarcodeButton");
 export const addButton = document.getElementById("addButton");
@@ -111,6 +112,7 @@ export function allElementsPresent() {
     nutritionFatInput,
     nutritionFiberInput,
     nutritionAmountInput,
+    packGramsInput,
     barcodePreview,
     clearBarcodeButton,
     addButton,

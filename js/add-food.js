@@ -235,8 +235,10 @@ export function openAddFood() {
     }
     const stockUnit = item.unit || "";
     const converted =
-      amount.value === "" ? null : gramsToStockUnit(Number(amount.value), stockUnit);
-    const needsAmount = gramsToStockUnit(1, stockUnit) === null;
+      amount.value === ""
+        ? null
+        : gramsToStockUnit(Number(amount.value), stockUnit, item.packGrams);
+    const needsAmount = gramsToStockUnit(1, stockUnit, item.packGrams) === null;
     manualAmountLabel.classList.toggle("hidden", !needsAmount);
     manualAmount.classList.toggle("hidden", !needsAmount);
     manualAmountLabel.textContent = `Amount to take from the pantry (${stockUnit || "pieces"})`;
@@ -432,7 +434,7 @@ export function openAddFood() {
     let undoPantry = null;
     const item = pantryItem();
     if (item && take.checked) {
-      const converted = gramsToStockUnit(quantity, item.unit || "");
+      const converted = gramsToStockUnit(quantity, item.unit || "", item.packGrams);
       const fromPantry = converted !== null ? converted : Number(manualAmount.value) || 0;
       if (fromPantry > 0) {
         undoPantry = takeFromPantry(

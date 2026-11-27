@@ -3,6 +3,16 @@
 
 export const RELEASE_NOTES = [
   {
+    version: "v43",
+    date: "2026-11-27",
+    title: "Recipes see your whole pantry",
+    notes: [
+      'Pantry items counted in packs or pieces can get a weight ("Set weight": e.g. 5000 g per pack of rice, 60 g per egg). Scanned products get it automatically when the package states it.',
+      "AI recipes now see the real amount (1 pack = 5000 g of rice), and recognise your pantry items reliably, also when the item name and the recipe are in different languages.",
+      '"Cook this" and "Add food" take grams off packs and pieces automatically once a weight is set, and the statistics count those items too.'
+    ]
+  },
+  {
     version: "v42",
     date: "2026-11-23",
     title: "NEVO included",

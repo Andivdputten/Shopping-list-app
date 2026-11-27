@@ -109,3 +109,10 @@ test("fibre is added up and shown only when an ingredient has fibre data", () =>
     "250 kcal · P 20g · C 50g · F 2g · Fib 10g"
   );
 });
+
+test("a pack or piece weight lets counted items join the statistics", async () => {
+  const { estimateItemGrams } = await import("../../js/nutrition.js");
+  assert.equal(estimateItemGrams({ quantity: 1, unit: "pack", packGrams: 5000 }), 5000);
+  assert.equal(estimateItemGrams({ quantity: 30, unit: "pcs", packGrams: 60 }), 1800);
+  assert.equal(estimateItemGrams({ quantity: 1, unit: "pack" }), null);
+});

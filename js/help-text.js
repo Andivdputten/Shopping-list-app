@@ -22,6 +22,7 @@ export const HELP_SECTIONS = {
     title: "Pantry",
     lines: [
       "What you have in stock, with quantities you change with - and +.",
+      'Counted in packs or pieces? "Set weight" (e.g. 5000 g per pack of rice) lets recipes, cooking and statistics use the real amount.',
       "Scan to add products straight to the pantry.",
       'Items without nutrition data get "Find nutrition": search NEVO or Open Food Facts by name.',
       "Return puts an item back on the shopping list."

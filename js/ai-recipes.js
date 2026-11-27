@@ -48,8 +48,10 @@ export function aiText() {
 // "tomato sauce" is not "tomato"). The plain text matching below is only a
 // fallback for responses that don't include that mapping.
 export function resolveStockMatch(ingredient) {
+  // The AI said "not in stock", but an ingredient whose name is exactly a pantry item's name (case and a
+  // plural "s" aside) is that item: safe, as only identical names count ("Ei" is Ei, never "Eiwit").
   if (ingredient.stockItem === null) {
-    return null;
+    return findMatchingStockItem(ingredient.name);
   }
 
   if (typeof ingredient.stockItem === "string") {

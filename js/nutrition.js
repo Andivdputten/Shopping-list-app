@@ -189,8 +189,11 @@ export function estimateItemGrams(item) {
     return item.quantity * 1000;
   }
 
-  // Countable units (pcs, pack, bottle, can) or no unit: we don't know
-  // the gram weight, so this item can't be included in totals.
+  // Countable units (pcs, pack, bottle, can): the weight per pack or piece gives the total, when known;
+  // otherwise this item can't be included in totals.
+  if (typeof item.packGrams === "number" && item.packGrams > 0) {
+    return item.quantity * item.packGrams;
+  }
   return null;
 }
 
