@@ -10,7 +10,7 @@ import {
   shoppingSections
 } from "./dom.js";
 import { buildMetaText, formatNutritionSummary, formatNutritionTotalSummary } from "./format.js";
-import { resetForm, startEdit, updateFormMode } from "./item-form.js";
+import { resetForm, startEdit } from "./item-form.js";
 import {
   createShoppingItem,
   createStockItem,
@@ -71,11 +71,8 @@ export function moveItemToStock(index) {
   const movedName = item.name;
   state.items.splice(index, 1);
 
-  if (state.editIndex === index) {
+  if (state.editId === item.id) {
     resetForm();
-  } else if (state.editIndex !== null && index < state.editIndex) {
-    state.editIndex -= 1;
-    updateFormMode();
   }
 
   saveItems();
@@ -154,14 +151,12 @@ export function toggleBought(index) {
 }
 
 export function deleteItem(index) {
-  const removedItem = state.items[index].name;
+  const removed = state.items[index];
+  const removedItem = removed.name;
   state.items.splice(index, 1);
 
-  if (state.editIndex === index) {
+  if (state.editId === removed.id) {
     resetForm();
-  } else if (state.editIndex !== null && index < state.editIndex) {
-    state.editIndex -= 1;
-    updateFormMode();
   }
 
   saveItems();

@@ -29,7 +29,10 @@ test("ingredient names match regardless of case, spacing and a plural s", () => 
 });
 
 test("new items get safe defaults for missing or wrongly typed fields", () => {
-  assert.deepEqual(createShoppingItem({ name: "Melk", quantity: -2, unit: 5 }), {
+  const { id, updatedAt, ...rest } = createShoppingItem({ name: "Melk", quantity: -2, unit: 5 });
+  assert.match(id, /^[0-9a-f-]{36}$/);
+  assert.ok(!Number.isNaN(Date.parse(updatedAt)));
+  assert.deepEqual(rest, {
     name: "Melk",
     quantity: null,
     unit: "",
@@ -95,4 +98,22 @@ test("a pack weight is kept when merging and validated on new items", () => {
     mergeStockItems(unknown, { quantity: 1, unit: "pack", packGrams: 1000 }).packGrams,
     1000
   );
+});
+
+test("items keep a stable id and time; repeated or missing ids are replaced", async () => {
+  const { ensureUniqueIds, newItemId } = await import("../../js/items.js");
+  const kept = createStockItem({ name: "Rijst", id: "abc", updatedAt: "2026-01-01T00:00:00.000Z" });
+  assert.equal(kept.id, "abc");
+  assert.equal(kept.updatedAt, "2026-01-01T00:00:00.000Z");
+  // A list item made from a pantry item (and back) keeps the same id.
+  assert.equal(createShoppingItem(kept).id, "abc");
+  assert.notEqual(newItemId(), newItemId());
+
+  const list = [{ id: "a" }, { id: "a" }, { id: "" }, { id: "b" }];
+  assert.equal(ensureUniqueIds(list), true);
+  assert.equal(list[0].id, "a");
+  assert.notEqual(list[1].id, "a");
+  assert.notEqual(list[2].id, "");
+  assert.equal(new Set(list.map((item) => item.id)).size, 4);
+  assert.equal(ensureUniqueIds(list), false);
 });

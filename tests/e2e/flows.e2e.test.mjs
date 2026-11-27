@@ -84,6 +84,30 @@ const AI_REPLY = {
   ]
 };
 
+// List and pantry items get random ids (crypto.randomUUID). They are replaced by "id-1", "id-2", …
+// in order of first appearance, so the recording is the same on every run but still shows when an
+// item keeps its id (moved to the pantry and back) or gets a new one.
+const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
+function normalizeIds(value, names) {
+  if (Array.isArray(value)) {
+    return value.map((entry) => normalizeIds(entry, names));
+  }
+  if (value === null || typeof value !== "object") {
+    return value;
+  }
+  return Object.fromEntries(
+    Object.entries(value).map(([key, entry]) => {
+      if (key === "id" && typeof entry === "string" && UUID.test(entry)) {
+        if (!names.has(entry)) {
+          names.set(entry, `id-${names.size + 1}`);
+        }
+        return [key, names.get(entry)];
+      }
+      return [key, normalizeIds(entry, names)];
+    })
+  );
+}
+
 // Everything a step can change: visible text of the main areas plus all stored data.
 async function capture(page) {
   return page.evaluate(() => {
@@ -198,7 +222,9 @@ test("main flows match the recorded reference", { timeout: 120000 }, async () =>
   page.on("dialog", (dialog) => (dialogAnswers.shift() ? dialog.accept() : dialog.dismiss()));
 
   const steps = [];
-  const record = async (name) => steps.push({ name, ...(await capture(page)) });
+  const idNames = new Map();
+  const record = async (name) =>
+    steps.push(normalizeIds({ name, ...(await capture(page)) }, idNames));
 
   // DOM helpers that work regardless of which tab is visible.
   const click = (selector) => page.evaluate((s) => document.querySelector(s).click(), selector);
@@ -410,7 +436,12 @@ test("main flows match the recorded reference", { timeout: 120000 }, async () =>
       click("#exportDataButton")
     ]);
     const exported = JSON.parse(await readFile(await download.path(), "utf8"));
-    steps.push({ name: "exported backup", file: download.suggestedFilename(), exported });
+    steps.push(
+      normalizeIds(
+        { name: "exported backup", file: download.suggestedFilename(), exported },
+        idNames
+      )
+    );
     await tab("pantry");
     await click("#clearStockButton");
     await record("clear stock cancelled");

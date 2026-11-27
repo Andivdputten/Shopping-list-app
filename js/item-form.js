@@ -25,7 +25,7 @@ import { saveItems } from "./persistence.js";
 import { buildLookupNote } from "./product-lookup.js";
 import { startScanner } from "./scanner.js";
 import { findDuplicateBarcodeIndex, renderList } from "./shopping-list.js";
-import { parsePackGrams } from "./items.js";
+import { createShoppingItem, parsePackGrams, touchItem } from "./items.js";
 import { state } from "./state.js";
 import { switchTab } from "./tabs.js";
 import { setStatus, showToast } from "./ui.js";
@@ -63,7 +63,8 @@ export function submitForm() {
   const nutritionAmount = parseOptionalNumberInput(nutritionAmountInput.value);
   const packGrams = parseOptionalNumberInput(packGramsInput.value);
 
-  const duplicateBarcodeIndex = findDuplicateBarcodeIndex(state.pendingBarcode, state.editIndex);
+  const editIndex = findEditIndex();
+  const duplicateBarcodeIndex = findDuplicateBarcodeIndex(state.pendingBarcode, editIndex);
 
   if (duplicateBarcodeIndex !== null) {
     const existingItem = state.items[duplicateBarcodeIndex];
@@ -87,13 +88,16 @@ export function submitForm() {
     bought: false
   };
 
-  if (state.editIndex === null) {
-    state.items.push(itemData);
+  if (editIndex === null) {
+    state.items.push(createShoppingItem(itemData));
     setStatus(`Added "${name}".`);
     showToast(`${name} added to your list`);
   } else {
-    itemData.bought = state.items[state.editIndex].bought;
-    state.items[state.editIndex] = itemData;
+    const existing = state.items[editIndex];
+    // createShoppingItem() keeps the id and resets "bought", so the bought state is copied back after it.
+    const updated = createShoppingItem({ ...existing, ...itemData });
+    updated.bought = existing.bought;
+    state.items[editIndex] = touchItem(updated);
     setStatus(`Updated "${name}".`);
     showToast(`${name} updated`);
   }
@@ -104,10 +108,19 @@ export function submitForm() {
   showAddMoreButton();
 }
 
+// Where the item being edited is in the list now, or null when adding (or when it was removed meanwhile).
+function findEditIndex() {
+  if (state.editId === null) {
+    return null;
+  }
+  const index = state.items.findIndex((item) => item.id === state.editId);
+  return index === -1 ? null : index;
+}
+
 export function startEdit(index) {
   const item = state.items[index];
 
-  state.editIndex = index;
+  state.editId = item.id;
   itemInput.value = item.name;
   quantityInput.value = item.quantity === null ? "" : String(item.quantity);
   unitInput.value = item.unit;
@@ -133,17 +146,18 @@ export function startEdit(index) {
 }
 
 export function cancelEdit() {
-  if (state.editIndex === null) {
+  const editIndex = findEditIndex();
+  if (state.editId === null) {
     return;
   }
 
-  const itemName = state.items[state.editIndex] ? state.items[state.editIndex].name : "item";
+  const itemName = editIndex !== null ? state.items[editIndex].name : "item";
   resetForm();
   setStatus(`Edit cancelled for "${itemName}".`);
 }
 
 export function resetForm() {
-  state.editIndex = null;
+  state.editId = null;
   itemInput.value = "";
   quantityInput.value = "";
   unitInput.value = "";
@@ -160,7 +174,7 @@ export function resetForm() {
 }
 
 export function updateFormMode() {
-  if (state.editIndex === null) {
+  if (state.editId === null) {
     formTitle.textContent = "Add item";
     addButton.textContent = "Add item";
     cancelEditButton.classList.add("hidden");

@@ -68,6 +68,44 @@ export function parsePackageQuantity(text) {
   return { quantity: Math.round(quantity * 100) / 100, unit };
 }
 
+// A new stable id for a list or pantry item. crypto.randomUUID() needs a secure context (https or localhost);
+// elsewhere a random version-4 UUID is built from crypto.getRandomValues().
+export function newItemId() {
+  if (typeof crypto !== "undefined" && typeof crypto.randomUUID === "function") {
+    return crypto.randomUUID();
+  }
+  const bytes = crypto.getRandomValues(new Uint8Array(16));
+  bytes[6] = (bytes[6] & 0x0f) | 0x40;
+  bytes[8] = (bytes[8] & 0x3f) | 0x80;
+  const hex = [...bytes].map((b) => b.toString(16).padStart(2, "0")).join("");
+  return `${hex.slice(0, 8)}-${hex.slice(8, 12)}-${hex.slice(12, 16)}-${hex.slice(16, 20)}-${hex.slice(20)}`;
+}
+
+export function isItemId(value) {
+  return typeof value === "string" && value.trim() !== "";
+}
+
+// Marks an item as changed now, so a future sync can tell which copy is newer.
+export function touchItem(item) {
+  item.updatedAt = new Date().toISOString();
+  return item;
+}
+
+// Gives every item an id that is unique within its list: missing ids are created and the second
+// copy of a repeated id gets a new one. Returns whether anything changed, so the caller can save it.
+export function ensureUniqueIds(items) {
+  const seen = new Set();
+  let changed = false;
+  items.forEach((item) => {
+    if (!isItemId(item.id) || seen.has(item.id)) {
+      item.id = newItemId();
+      changed = true;
+    }
+    seen.add(item.id);
+  });
+  return changed;
+}
+
 // Turns a number into a positive quantity, or null when it is missing, zero, negative or not a number.
 export function positiveQuantityOrNull(value) {
   return typeof value === "number" && Number.isFinite(value) && value > 0 ? value : null;
@@ -77,6 +115,9 @@ export function positiveQuantityOrNull(value) {
 // The single definition of a pantry item; shopping items are the same plus a "bought" flag.
 export function createStockItem(item) {
   return {
+    // Stable identity, so edits, Undo and moves never depend on an item's position in the list.
+    id: isItemId(item.id) ? item.id : newItemId(),
+    updatedAt: typeof item.updatedAt === "string" ? item.updatedAt : new Date().toISOString(),
     name: typeof item.name === "string" ? item.name : "",
     quantity: positiveQuantityOrNull(item.quantity),
     unit: typeof item.unit === "string" ? item.unit : "",

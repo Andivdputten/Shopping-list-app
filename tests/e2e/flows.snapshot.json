@@ -111,6 +111,8 @@
     "storage": {
       "grocery_scanner_items_v6": [
         {
+          "id": "id-1",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Appels",
           "quantity": null,
           "unit": "",
@@ -190,6 +192,8 @@
     "storage": {
       "grocery_scanner_items_v6": [
         {
+          "id": "id-1",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Appels",
           "quantity": null,
           "unit": "",
@@ -289,6 +293,8 @@
       },
       "grocery_scanner_items_v6": [
         {
+          "id": "id-1",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Appels",
           "quantity": null,
           "unit": "",
@@ -389,6 +395,8 @@
       },
       "grocery_scanner_items_v6": [
         {
+          "id": "id-1",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Appels",
           "quantity": null,
           "unit": "",
@@ -409,6 +417,8 @@
           "bought": false
         },
         {
+          "id": "id-2",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Halfvolle melk",
           "quantity": 2,
           "unit": "",
@@ -424,6 +434,8 @@
           },
           "nutritionAmount": null,
           "packGrams": 1000,
+          "nutritionSource": null,
+          "nevoVersion": null,
           "bought": false
         }
       ],
@@ -507,6 +519,8 @@
       },
       "grocery_scanner_items_v6": [
         {
+          "id": "id-1",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Appels",
           "quantity": null,
           "unit": "",
@@ -527,6 +541,8 @@
           "bought": false
         },
         {
+          "id": "id-2",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Halfvolle melk",
           "quantity": 2,
           "unit": "",
@@ -542,6 +558,8 @@
           },
           "nutritionAmount": null,
           "packGrams": 1000,
+          "nutritionSource": null,
+          "nevoVersion": null,
           "bought": false
         }
       ],
@@ -630,6 +648,8 @@
       },
       "grocery_scanner_items_v6": [
         {
+          "id": "id-1",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Appels",
           "quantity": null,
           "unit": "",
@@ -650,6 +670,8 @@
           "bought": false
         },
         {
+          "id": "id-2",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Halfvolle melk",
           "quantity": 2,
           "unit": "",
@@ -665,6 +687,8 @@
           },
           "nutritionAmount": null,
           "packGrams": 1000,
+          "nutritionSource": null,
+          "nevoVersion": null,
           "bought": false
         }
       ],
@@ -754,6 +778,8 @@
       },
       "grocery_scanner_items_v6": [
         {
+          "id": "id-1",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Appels",
           "quantity": null,
           "unit": "",
@@ -774,6 +800,8 @@
           "bought": false
         },
         {
+          "id": "id-2",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Halfvolle melk",
           "quantity": 2,
           "unit": "",
@@ -789,9 +817,13 @@
           },
           "nutritionAmount": null,
           "packGrams": 1000,
+          "nutritionSource": null,
+          "nevoVersion": null,
           "bought": false
         },
         {
+          "id": "id-3",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Mysterie",
           "quantity": null,
           "unit": "",
@@ -807,6 +839,8 @@
           },
           "nutritionAmount": null,
           "packGrams": null,
+          "nutritionSource": null,
+          "nevoVersion": null,
           "bought": false
         }
       ],
@@ -915,6 +949,8 @@
       },
       "grocery_scanner_items_v6": [
         {
+          "id": "id-1",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Appels",
           "quantity": null,
           "unit": "",
@@ -935,6 +971,8 @@
           "bought": false
         },
         {
+          "id": "id-2",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Halfvolle melk",
           "quantity": 2,
           "unit": "",
@@ -950,9 +988,13 @@
           },
           "nutritionAmount": null,
           "packGrams": 1000,
+          "nutritionSource": null,
+          "nevoVersion": null,
           "bought": false
         },
         {
+          "id": "id-3",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Mysterie",
           "quantity": null,
           "unit": "",
@@ -968,9 +1010,13 @@
           },
           "nutritionAmount": null,
           "packGrams": null,
+          "nutritionSource": null,
+          "nevoVersion": null,
           "bought": false
         },
         {
+          "id": "id-4",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Volkoren pasta",
           "quantity": null,
           "unit": "",
@@ -986,6 +1032,8 @@
           },
           "nutritionAmount": null,
           "packGrams": 500,
+          "nutritionSource": null,
+          "nevoVersion": null,
           "bought": false
         }
       ],
@@ -1094,6 +1142,8 @@
       },
       "grocery_scanner_items_v6": [
         {
+          "id": "id-1",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Appels",
           "quantity": null,
           "unit": "",
@@ -1114,6 +1164,8 @@
           "bought": false
         },
         {
+          "id": "id-2",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Halfvolle melk",
           "quantity": 2,
           "unit": "",
@@ -1129,9 +1181,13 @@
           },
           "nutritionAmount": null,
           "packGrams": 1000,
+          "nutritionSource": null,
+          "nevoVersion": null,
           "bought": true
         },
         {
+          "id": "id-3",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Mysterie",
           "quantity": null,
           "unit": "",
@@ -1147,9 +1203,13 @@
           },
           "nutritionAmount": null,
           "packGrams": null,
+          "nutritionSource": null,
+          "nevoVersion": null,
           "bought": false
         },
         {
+          "id": "id-4",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Volkoren pasta",
           "quantity": null,
           "unit": "",
@@ -1165,6 +1225,8 @@
           },
           "nutritionAmount": null,
           "packGrams": 500,
+          "nutritionSource": null,
+          "nevoVersion": null,
           "bought": false
         }
       ],
@@ -1273,6 +1335,8 @@
       },
       "grocery_scanner_items_v6": [
         {
+          "id": "id-1",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Appels",
           "quantity": null,
           "unit": "",
@@ -1293,6 +1357,8 @@
           "bought": false
         },
         {
+          "id": "id-3",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Mysterie",
           "quantity": null,
           "unit": "",
@@ -1308,9 +1374,13 @@
           },
           "nutritionAmount": null,
           "packGrams": null,
+          "nutritionSource": null,
+          "nevoVersion": null,
           "bought": false
         },
         {
+          "id": "id-4",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Volkoren pasta",
           "quantity": null,
           "unit": "",
@@ -1326,12 +1396,16 @@
           },
           "nutritionAmount": null,
           "packGrams": 500,
+          "nutritionSource": null,
+          "nevoVersion": null,
           "bought": false
         }
       ],
       "grocery_scanner_release_seen_v1": "v44",
       "grocery_scanner_stock_v1": [
         {
+          "id": "id-2",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Halfvolle melk",
           "quantity": 2,
           "unit": "",
@@ -1455,6 +1529,8 @@
       },
       "grocery_scanner_items_v6": [
         {
+          "id": "id-1",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Appels",
           "quantity": null,
           "unit": "",
@@ -1475,6 +1551,8 @@
           "bought": false
         },
         {
+          "id": "id-3",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Mysterie",
           "quantity": null,
           "unit": "",
@@ -1490,12 +1568,16 @@
           },
           "nutritionAmount": null,
           "packGrams": null,
+          "nutritionSource": null,
+          "nevoVersion": null,
           "bought": false
         }
       ],
       "grocery_scanner_release_seen_v1": "v44",
       "grocery_scanner_stock_v1": [
         {
+          "id": "id-2",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Halfvolle melk",
           "quantity": 2,
           "unit": "",
@@ -1515,6 +1597,8 @@
           "nevoVersion": null
         },
         {
+          "id": "id-4",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Volkoren pasta",
           "quantity": null,
           "unit": "",
@@ -1638,6 +1722,8 @@
       },
       "grocery_scanner_items_v6": [
         {
+          "id": "id-1",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Rode appels",
           "quantity": null,
           "unit": "",
@@ -1653,9 +1739,13 @@
           },
           "nutritionAmount": null,
           "packGrams": null,
+          "nutritionSource": null,
+          "nevoVersion": null,
           "bought": false
         },
         {
+          "id": "id-3",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Mysterie",
           "quantity": null,
           "unit": "",
@@ -1671,12 +1761,16 @@
           },
           "nutritionAmount": null,
           "packGrams": null,
+          "nutritionSource": null,
+          "nevoVersion": null,
           "bought": false
         }
       ],
       "grocery_scanner_release_seen_v1": "v44",
       "grocery_scanner_stock_v1": [
         {
+          "id": "id-2",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Halfvolle melk",
           "quantity": 2,
           "unit": "",
@@ -1696,6 +1790,8 @@
           "nevoVersion": null
         },
         {
+          "id": "id-4",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Volkoren pasta",
           "quantity": null,
           "unit": "",
@@ -1818,6 +1914,8 @@
       },
       "grocery_scanner_items_v6": [
         {
+          "id": "id-1",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Rode appels",
           "quantity": null,
           "unit": "",
@@ -1833,12 +1931,16 @@
           },
           "nutritionAmount": null,
           "packGrams": null,
+          "nutritionSource": null,
+          "nevoVersion": null,
           "bought": false
         }
       ],
       "grocery_scanner_release_seen_v1": "v44",
       "grocery_scanner_stock_v1": [
         {
+          "id": "id-2",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Halfvolle melk",
           "quantity": 2,
           "unit": "",
@@ -1858,6 +1960,8 @@
           "nevoVersion": null
         },
         {
+          "id": "id-4",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Volkoren pasta",
           "quantity": null,
           "unit": "",
@@ -1980,6 +2084,8 @@
       },
       "grocery_scanner_items_v6": [
         {
+          "id": "id-1",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Rode appels",
           "quantity": null,
           "unit": "",
@@ -1995,12 +2101,16 @@
           },
           "nutritionAmount": null,
           "packGrams": null,
+          "nutritionSource": null,
+          "nevoVersion": null,
           "bought": false
         }
       ],
       "grocery_scanner_release_seen_v1": "v44",
       "grocery_scanner_stock_v1": [
         {
+          "id": "id-2",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Halfvolle melk",
           "quantity": 3,
           "unit": "",
@@ -2020,6 +2130,8 @@
           "nevoVersion": null
         },
         {
+          "id": "id-4",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Volkoren pasta",
           "quantity": null,
           "unit": "",
@@ -2142,6 +2254,8 @@
       },
       "grocery_scanner_items_v6": [
         {
+          "id": "id-1",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Rode appels",
           "quantity": null,
           "unit": "",
@@ -2157,12 +2271,16 @@
           },
           "nutritionAmount": null,
           "packGrams": null,
+          "nutritionSource": null,
+          "nevoVersion": null,
           "bought": false
         }
       ],
       "grocery_scanner_release_seen_v1": "v44",
       "grocery_scanner_stock_v1": [
         {
+          "id": "id-2",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Halfvolle melk",
           "quantity": 3,
           "unit": "",
@@ -2182,6 +2300,8 @@
           "nevoVersion": null
         },
         {
+          "id": "id-4",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Volkoren pasta",
           "quantity": null,
           "unit": "",
@@ -2304,6 +2424,8 @@
       },
       "grocery_scanner_items_v6": [
         {
+          "id": "id-1",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Rode appels",
           "quantity": null,
           "unit": "",
@@ -2319,12 +2441,16 @@
           },
           "nutritionAmount": null,
           "packGrams": null,
+          "nutritionSource": null,
+          "nevoVersion": null,
           "bought": false
         }
       ],
       "grocery_scanner_release_seen_v1": "v44",
       "grocery_scanner_stock_v1": [
         {
+          "id": "id-2",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Halfvolle melk",
           "quantity": 3,
           "unit": "",
@@ -2344,6 +2470,8 @@
           "nevoVersion": null
         },
         {
+          "id": "id-4",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Volkoren pasta",
           "quantity": 750,
           "unit": "",
@@ -2466,6 +2594,8 @@
       },
       "grocery_scanner_items_v6": [
         {
+          "id": "id-1",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Rode appels",
           "quantity": null,
           "unit": "",
@@ -2481,12 +2611,16 @@
           },
           "nutritionAmount": null,
           "packGrams": null,
+          "nutritionSource": null,
+          "nevoVersion": null,
           "bought": false
         }
       ],
       "grocery_scanner_release_seen_v1": "v44",
       "grocery_scanner_stock_v1": [
         {
+          "id": "id-2",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Halfvolle melk",
           "quantity": 3,
           "unit": "",
@@ -2506,6 +2640,8 @@
           "nevoVersion": null
         },
         {
+          "id": "id-4",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Volkoren pasta",
           "quantity": 750,
           "unit": "",
@@ -2633,6 +2769,8 @@
       },
       "grocery_scanner_items_v6": [
         {
+          "id": "id-1",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Rode appels",
           "quantity": null,
           "unit": "",
@@ -2648,12 +2786,16 @@
           },
           "nutritionAmount": null,
           "packGrams": null,
+          "nutritionSource": null,
+          "nevoVersion": null,
           "bought": false
         }
       ],
       "grocery_scanner_release_seen_v1": "v44",
       "grocery_scanner_stock_v1": [
         {
+          "id": "id-2",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Halfvolle melk",
           "quantity": 3,
           "unit": "",
@@ -2673,6 +2815,8 @@
           "nevoVersion": null
         },
         {
+          "id": "id-4",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Volkoren pasta",
           "quantity": 750,
           "unit": "",
@@ -2801,6 +2945,8 @@
       },
       "grocery_scanner_items_v6": [
         {
+          "id": "id-1",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Rode appels",
           "quantity": null,
           "unit": "",
@@ -2816,12 +2962,16 @@
           },
           "nutritionAmount": null,
           "packGrams": null,
+          "nutritionSource": null,
+          "nevoVersion": null,
           "bought": false
         }
       ],
       "grocery_scanner_release_seen_v1": "v44",
       "grocery_scanner_stock_v1": [
         {
+          "id": "id-2",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Halfvolle melk",
           "quantity": 3,
           "unit": "",
@@ -2841,6 +2991,8 @@
           "nevoVersion": null
         },
         {
+          "id": "id-4",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Volkoren pasta",
           "quantity": 750,
           "unit": "",
@@ -2860,6 +3012,8 @@
           "nevoVersion": null
         },
         {
+          "id": "id-5",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Kruidenmix",
           "quantity": 1,
           "unit": "pack",
@@ -2993,6 +3147,8 @@
       },
       "grocery_scanner_items_v6": [
         {
+          "id": "id-1",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Rode appels",
           "quantity": null,
           "unit": "",
@@ -3008,12 +3164,16 @@
           },
           "nutritionAmount": null,
           "packGrams": null,
+          "nutritionSource": null,
+          "nevoVersion": null,
           "bought": false
         }
       ],
       "grocery_scanner_release_seen_v1": "v44",
       "grocery_scanner_stock_v1": [
         {
+          "id": "id-2",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Halfvolle melk",
           "quantity": 3,
           "unit": "",
@@ -3033,6 +3193,8 @@
           "nevoVersion": null
         },
         {
+          "id": "id-4",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Volkoren pasta",
           "quantity": 750,
           "unit": "",
@@ -3052,6 +3214,8 @@
           "nevoVersion": null
         },
         {
+          "id": "id-5",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Kruidenmix",
           "quantity": 1,
           "unit": "pack",
@@ -3185,6 +3349,8 @@
       },
       "grocery_scanner_items_v6": [
         {
+          "id": "id-1",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Rode appels",
           "quantity": null,
           "unit": "",
@@ -3200,9 +3366,13 @@
           },
           "nutritionAmount": null,
           "packGrams": null,
+          "nutritionSource": null,
+          "nevoVersion": null,
           "bought": false
         },
         {
+          "id": "id-5",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Kruidenmix",
           "quantity": 1,
           "unit": "pack",
@@ -3226,6 +3396,8 @@
       "grocery_scanner_release_seen_v1": "v44",
       "grocery_scanner_stock_v1": [
         {
+          "id": "id-2",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Halfvolle melk",
           "quantity": 3,
           "unit": "",
@@ -3245,6 +3417,8 @@
           "nevoVersion": null
         },
         {
+          "id": "id-4",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Volkoren pasta",
           "quantity": 750,
           "unit": "",
@@ -3378,6 +3552,8 @@
       },
       "grocery_scanner_items_v6": [
         {
+          "id": "id-1",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Rode appels",
           "quantity": null,
           "unit": "",
@@ -3393,9 +3569,13 @@
           },
           "nutritionAmount": null,
           "packGrams": null,
+          "nutritionSource": null,
+          "nevoVersion": null,
           "bought": false
         },
         {
+          "id": "id-5",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Kruidenmix",
           "quantity": 1,
           "unit": "pack",
@@ -3419,6 +3599,8 @@
       "grocery_scanner_release_seen_v1": "v44",
       "grocery_scanner_stock_v1": [
         {
+          "id": "id-2",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Halfvolle melk",
           "quantity": 3,
           "unit": "",
@@ -3438,6 +3620,8 @@
           "nevoVersion": null
         },
         {
+          "id": "id-4",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Volkoren pasta",
           "quantity": 750,
           "unit": "",
@@ -3571,6 +3755,8 @@
       },
       "grocery_scanner_items_v6": [
         {
+          "id": "id-1",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Rode appels",
           "quantity": null,
           "unit": "",
@@ -3586,9 +3772,13 @@
           },
           "nutritionAmount": null,
           "packGrams": null,
+          "nutritionSource": null,
+          "nevoVersion": null,
           "bought": false
         },
         {
+          "id": "id-5",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Kruidenmix",
           "quantity": 1,
           "unit": "pack",
@@ -3612,6 +3802,8 @@
       "grocery_scanner_release_seen_v1": "v44",
       "grocery_scanner_stock_v1": [
         {
+          "id": "id-2",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Halfvolle melk",
           "quantity": 3,
           "unit": "",
@@ -3631,6 +3823,8 @@
           "nevoVersion": null
         },
         {
+          "id": "id-4",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Volkoren pasta",
           "quantity": 750,
           "unit": "",
@@ -3764,6 +3958,8 @@
       },
       "grocery_scanner_items_v6": [
         {
+          "id": "id-1",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Rode appels",
           "quantity": null,
           "unit": "",
@@ -3779,9 +3975,13 @@
           },
           "nutritionAmount": null,
           "packGrams": null,
+          "nutritionSource": null,
+          "nevoVersion": null,
           "bought": false
         },
         {
+          "id": "id-5",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Kruidenmix",
           "quantity": 1,
           "unit": "pack",
@@ -3850,6 +4050,8 @@
       "grocery_scanner_release_seen_v1": "v44",
       "grocery_scanner_stock_v1": [
         {
+          "id": "id-2",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Halfvolle melk",
           "quantity": 3,
           "unit": "",
@@ -3869,6 +4071,8 @@
           "nevoVersion": null
         },
         {
+          "id": "id-4",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Volkoren pasta",
           "quantity": 750,
           "unit": "",
@@ -4002,6 +4206,8 @@
       },
       "grocery_scanner_items_v6": [
         {
+          "id": "id-1",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Rode appels",
           "quantity": null,
           "unit": "",
@@ -4017,9 +4223,13 @@
           },
           "nutritionAmount": null,
           "packGrams": null,
+          "nutritionSource": null,
+          "nevoVersion": null,
           "bought": false
         },
         {
+          "id": "id-5",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Kruidenmix",
           "quantity": 1,
           "unit": "pack",
@@ -4088,6 +4298,8 @@
       "grocery_scanner_release_seen_v1": "v44",
       "grocery_scanner_stock_v1": [
         {
+          "id": "id-2",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Halfvolle melk",
           "quantity": 3,
           "unit": "",
@@ -4107,6 +4319,8 @@
           "nevoVersion": null
         },
         {
+          "id": "id-4",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Volkoren pasta",
           "quantity": 750,
           "unit": "",
@@ -4240,6 +4454,8 @@
       },
       "grocery_scanner_items_v6": [
         {
+          "id": "id-1",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Rode appels",
           "quantity": null,
           "unit": "",
@@ -4255,9 +4471,13 @@
           },
           "nutritionAmount": null,
           "packGrams": null,
+          "nutritionSource": null,
+          "nevoVersion": null,
           "bought": false
         },
         {
+          "id": "id-5",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Kruidenmix",
           "quantity": 1,
           "unit": "pack",
@@ -4369,6 +4589,8 @@
       "grocery_scanner_release_seen_v1": "v44",
       "grocery_scanner_stock_v1": [
         {
+          "id": "id-2",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Halfvolle melk",
           "quantity": 3,
           "unit": "",
@@ -4388,6 +4610,8 @@
           "nevoVersion": null
         },
         {
+          "id": "id-4",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Volkoren pasta",
           "quantity": 750,
           "unit": "",
@@ -4521,6 +4745,8 @@
       },
       "grocery_scanner_items_v6": [
         {
+          "id": "id-1",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Rode appels",
           "quantity": null,
           "unit": "",
@@ -4536,9 +4762,13 @@
           },
           "nutritionAmount": null,
           "packGrams": null,
+          "nutritionSource": null,
+          "nevoVersion": null,
           "bought": false
         },
         {
+          "id": "id-5",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Kruidenmix",
           "quantity": 1,
           "unit": "pack",
@@ -4650,6 +4880,8 @@
       "grocery_scanner_release_seen_v1": "v44",
       "grocery_scanner_stock_v1": [
         {
+          "id": "id-2",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Halfvolle melk",
           "quantity": 3,
           "unit": "",
@@ -4669,6 +4901,8 @@
           "nevoVersion": null
         },
         {
+          "id": "id-4",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Volkoren pasta",
           "quantity": 750,
           "unit": "",
@@ -4802,6 +5036,8 @@
       },
       "grocery_scanner_items_v6": [
         {
+          "id": "id-1",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Rode appels",
           "quantity": null,
           "unit": "",
@@ -4817,9 +5053,13 @@
           },
           "nutritionAmount": null,
           "packGrams": null,
+          "nutritionSource": null,
+          "nevoVersion": null,
           "bought": false
         },
         {
+          "id": "id-5",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Kruidenmix",
           "quantity": 1,
           "unit": "pack",
@@ -4931,6 +5171,8 @@
       "grocery_scanner_release_seen_v1": "v44",
       "grocery_scanner_stock_v1": [
         {
+          "id": "id-2",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Halfvolle melk",
           "quantity": 3,
           "unit": "",
@@ -4950,6 +5192,8 @@
           "nevoVersion": null
         },
         {
+          "id": "id-4",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Volkoren pasta",
           "quantity": 750,
           "unit": "",
@@ -5083,6 +5327,8 @@
       },
       "grocery_scanner_items_v6": [
         {
+          "id": "id-1",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Rode appels",
           "quantity": null,
           "unit": "",
@@ -5098,9 +5344,13 @@
           },
           "nutritionAmount": null,
           "packGrams": null,
+          "nutritionSource": null,
+          "nevoVersion": null,
           "bought": false
         },
         {
+          "id": "id-5",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Kruidenmix",
           "quantity": 1,
           "unit": "pack",
@@ -5169,6 +5419,8 @@
       "grocery_scanner_release_seen_v1": "v44",
       "grocery_scanner_stock_v1": [
         {
+          "id": "id-2",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Halfvolle melk",
           "quantity": 3,
           "unit": "",
@@ -5188,6 +5440,8 @@
           "nevoVersion": null
         },
         {
+          "id": "id-4",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Volkoren pasta",
           "quantity": 750,
           "unit": "",
@@ -5321,6 +5575,8 @@
       },
       "grocery_scanner_items_v6": [
         {
+          "id": "id-1",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Rode appels",
           "quantity": null,
           "unit": "",
@@ -5336,9 +5592,13 @@
           },
           "nutritionAmount": null,
           "packGrams": null,
+          "nutritionSource": null,
+          "nevoVersion": null,
           "bought": false
         },
         {
+          "id": "id-5",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Kruidenmix",
           "quantity": 1,
           "unit": "pack",
@@ -5407,6 +5667,8 @@
       "grocery_scanner_release_seen_v1": "v44",
       "grocery_scanner_stock_v1": [
         {
+          "id": "id-2",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Halfvolle melk",
           "quantity": 3,
           "unit": "",
@@ -5426,6 +5688,8 @@
           "nevoVersion": null
         },
         {
+          "id": "id-4",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Volkoren pasta",
           "quantity": 750,
           "unit": "",
@@ -5559,6 +5823,8 @@
       },
       "grocery_scanner_items_v6": [
         {
+          "id": "id-1",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Rode appels",
           "quantity": null,
           "unit": "",
@@ -5574,9 +5840,13 @@
           },
           "nutritionAmount": null,
           "packGrams": null,
+          "nutritionSource": null,
+          "nevoVersion": null,
           "bought": false
         },
         {
+          "id": "id-5",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Kruidenmix",
           "quantity": 1,
           "unit": "pack",
@@ -5645,6 +5915,8 @@
       "grocery_scanner_release_seen_v1": "v44",
       "grocery_scanner_stock_v1": [
         {
+          "id": "id-2",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Halfvolle melk",
           "quantity": 3,
           "unit": "",
@@ -5664,6 +5936,8 @@
           "nevoVersion": null
         },
         {
+          "id": "id-4",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Volkoren pasta",
           "quantity": 750,
           "unit": "",
@@ -5797,6 +6071,8 @@
       },
       "grocery_scanner_items_v6": [
         {
+          "id": "id-1",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Rode appels",
           "quantity": null,
           "unit": "",
@@ -5812,9 +6088,13 @@
           },
           "nutritionAmount": null,
           "packGrams": null,
+          "nutritionSource": null,
+          "nevoVersion": null,
           "bought": false
         },
         {
+          "id": "id-5",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Kruidenmix",
           "quantity": 1,
           "unit": "pack",
@@ -5883,6 +6163,8 @@
       "grocery_scanner_release_seen_v1": "v44",
       "grocery_scanner_stock_v1": [
         {
+          "id": "id-2",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Halfvolle melk",
           "quantity": 3,
           "unit": "",
@@ -5902,6 +6184,8 @@
           "nevoVersion": null
         },
         {
+          "id": "id-4",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Volkoren pasta",
           "quantity": 750,
           "unit": "",
@@ -6036,6 +6320,8 @@
       },
       "grocery_scanner_items_v6": [
         {
+          "id": "id-1",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Rode appels",
           "quantity": null,
           "unit": "",
@@ -6051,9 +6337,13 @@
           },
           "nutritionAmount": null,
           "packGrams": null,
+          "nutritionSource": null,
+          "nevoVersion": null,
           "bought": false
         },
         {
+          "id": "id-5",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Kruidenmix",
           "quantity": 1,
           "unit": "pack",
@@ -6122,6 +6412,8 @@
       "grocery_scanner_release_seen_v1": "v44",
       "grocery_scanner_stock_v1": [
         {
+          "id": "id-2",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Halfvolle melk",
           "quantity": 3,
           "unit": "",
@@ -6141,6 +6433,8 @@
           "nevoVersion": null
         },
         {
+          "id": "id-4",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Volkoren pasta",
           "quantity": 750,
           "unit": "",
@@ -6275,6 +6569,8 @@
       },
       "grocery_scanner_items_v6": [
         {
+          "id": "id-1",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Rode appels",
           "quantity": null,
           "unit": "",
@@ -6290,9 +6586,13 @@
           },
           "nutritionAmount": null,
           "packGrams": null,
+          "nutritionSource": null,
+          "nevoVersion": null,
           "bought": false
         },
         {
+          "id": "id-5",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Kruidenmix",
           "quantity": 1,
           "unit": "pack",
@@ -6361,6 +6661,8 @@
       "grocery_scanner_release_seen_v1": "v44",
       "grocery_scanner_stock_v1": [
         {
+          "id": "id-2",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Halfvolle melk",
           "quantity": 3,
           "unit": "",
@@ -6380,6 +6682,8 @@
           "nevoVersion": null
         },
         {
+          "id": "id-4",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Volkoren pasta",
           "quantity": 750,
           "unit": "",
@@ -6514,6 +6818,8 @@
       },
       "grocery_scanner_items_v6": [
         {
+          "id": "id-1",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Rode appels",
           "quantity": null,
           "unit": "",
@@ -6529,9 +6835,13 @@
           },
           "nutritionAmount": null,
           "packGrams": null,
+          "nutritionSource": null,
+          "nevoVersion": null,
           "bought": false
         },
         {
+          "id": "id-5",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Kruidenmix",
           "quantity": 1,
           "unit": "pack",
@@ -6643,6 +6953,8 @@
       "grocery_scanner_release_seen_v1": "v44",
       "grocery_scanner_stock_v1": [
         {
+          "id": "id-2",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Halfvolle melk",
           "quantity": 3,
           "unit": "",
@@ -6662,6 +6974,8 @@
           "nevoVersion": null
         },
         {
+          "id": "id-4",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Volkoren pasta",
           "quantity": 750,
           "unit": "",
@@ -6798,6 +7112,8 @@
       },
       "grocery_scanner_items_v6": [
         {
+          "id": "id-1",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Rode appels",
           "quantity": null,
           "unit": "",
@@ -6813,9 +7129,13 @@
           },
           "nutritionAmount": null,
           "packGrams": null,
+          "nutritionSource": null,
+          "nevoVersion": null,
           "bought": false
         },
         {
+          "id": "id-5",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Kruidenmix",
           "quantity": 1,
           "unit": "pack",
@@ -6836,6 +7156,8 @@
           "bought": false
         },
         {
+          "id": "id-6",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Ui",
           "quantity": 1,
           "unit": "pcs",
@@ -6856,6 +7178,8 @@
           "bought": false
         },
         {
+          "id": "id-7",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Olijfolie",
           "quantity": null,
           "unit": "",
@@ -6967,6 +7291,8 @@
       "grocery_scanner_release_seen_v1": "v44",
       "grocery_scanner_stock_v1": [
         {
+          "id": "id-2",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Halfvolle melk",
           "quantity": 3,
           "unit": "",
@@ -6986,6 +7312,8 @@
           "nevoVersion": null
         },
         {
+          "id": "id-4",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Volkoren pasta",
           "quantity": 750,
           "unit": "",
@@ -7122,6 +7450,8 @@
       },
       "grocery_scanner_items_v6": [
         {
+          "id": "id-1",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Rode appels",
           "quantity": null,
           "unit": "",
@@ -7137,9 +7467,13 @@
           },
           "nutritionAmount": null,
           "packGrams": null,
+          "nutritionSource": null,
+          "nevoVersion": null,
           "bought": false
         },
         {
+          "id": "id-5",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Kruidenmix",
           "quantity": 1,
           "unit": "pack",
@@ -7160,6 +7494,8 @@
           "bought": false
         },
         {
+          "id": "id-6",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Ui",
           "quantity": 1,
           "unit": "pcs",
@@ -7180,6 +7516,8 @@
           "bought": false
         },
         {
+          "id": "id-7",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Olijfolie",
           "quantity": null,
           "unit": "",
@@ -7292,6 +7630,8 @@
       "grocery_scanner_release_seen_v1": "v44",
       "grocery_scanner_stock_v1": [
         {
+          "id": "id-2",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Halfvolle melk",
           "quantity": 3,
           "unit": "",
@@ -7311,6 +7651,8 @@
           "nevoVersion": null
         },
         {
+          "id": "id-4",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Volkoren pasta",
           "quantity": 750,
           "unit": "",
@@ -7447,6 +7789,8 @@
       },
       "grocery_scanner_items_v6": [
         {
+          "id": "id-1",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Rode appels",
           "quantity": null,
           "unit": "",
@@ -7462,9 +7806,13 @@
           },
           "nutritionAmount": null,
           "packGrams": null,
+          "nutritionSource": null,
+          "nevoVersion": null,
           "bought": false
         },
         {
+          "id": "id-5",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Kruidenmix",
           "quantity": 1,
           "unit": "pack",
@@ -7485,6 +7833,8 @@
           "bought": false
         },
         {
+          "id": "id-6",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Ui",
           "quantity": 1,
           "unit": "pcs",
@@ -7505,6 +7855,8 @@
           "bought": false
         },
         {
+          "id": "id-7",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Olijfolie",
           "quantity": null,
           "unit": "",
@@ -7675,6 +8027,8 @@
       "grocery_scanner_release_seen_v1": "v44",
       "grocery_scanner_stock_v1": [
         {
+          "id": "id-2",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Halfvolle melk",
           "quantity": 3,
           "unit": "",
@@ -7694,6 +8048,8 @@
           "nevoVersion": null
         },
         {
+          "id": "id-4",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Volkoren pasta",
           "quantity": 750,
           "unit": "",
@@ -7724,6 +8080,8 @@
       "exportedAt": "2026-01-15T10:00:00.000Z",
       "items": [
         {
+          "id": "id-1",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Rode appels",
           "quantity": null,
           "unit": "",
@@ -7739,9 +8097,13 @@
           },
           "nutritionAmount": null,
           "packGrams": null,
+          "nutritionSource": null,
+          "nevoVersion": null,
           "bought": false
         },
         {
+          "id": "id-5",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Kruidenmix",
           "quantity": 1,
           "unit": "pack",
@@ -7762,6 +8124,8 @@
           "bought": false
         },
         {
+          "id": "id-6",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Ui",
           "quantity": 1,
           "unit": "pcs",
@@ -7782,6 +8146,8 @@
           "bought": false
         },
         {
+          "id": "id-7",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Olijfolie",
           "quantity": null,
           "unit": "",
@@ -7804,6 +8170,8 @@
       ],
       "stockItems": [
         {
+          "id": "id-2",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Halfvolle melk",
           "quantity": 3,
           "unit": "",
@@ -7823,6 +8191,8 @@
           "nevoVersion": null
         },
         {
+          "id": "id-4",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Volkoren pasta",
           "quantity": 750,
           "unit": "",
@@ -8129,6 +8499,8 @@
       },
       "grocery_scanner_items_v6": [
         {
+          "id": "id-1",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Rode appels",
           "quantity": null,
           "unit": "",
@@ -8144,9 +8516,13 @@
           },
           "nutritionAmount": null,
           "packGrams": null,
+          "nutritionSource": null,
+          "nevoVersion": null,
           "bought": false
         },
         {
+          "id": "id-5",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Kruidenmix",
           "quantity": 1,
           "unit": "pack",
@@ -8167,6 +8543,8 @@
           "bought": false
         },
         {
+          "id": "id-6",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Ui",
           "quantity": 1,
           "unit": "pcs",
@@ -8187,6 +8565,8 @@
           "bought": false
         },
         {
+          "id": "id-7",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Olijfolie",
           "quantity": null,
           "unit": "",
@@ -8357,6 +8737,8 @@
       "grocery_scanner_release_seen_v1": "v44",
       "grocery_scanner_stock_v1": [
         {
+          "id": "id-2",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Halfvolle melk",
           "quantity": 3,
           "unit": "",
@@ -8376,6 +8758,8 @@
           "nevoVersion": null
         },
         {
+          "id": "id-4",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Volkoren pasta",
           "quantity": 750,
           "unit": "",
@@ -8510,6 +8894,8 @@
       },
       "grocery_scanner_items_v6": [
         {
+          "id": "id-1",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Rode appels",
           "quantity": null,
           "unit": "",
@@ -8525,9 +8911,13 @@
           },
           "nutritionAmount": null,
           "packGrams": null,
+          "nutritionSource": null,
+          "nevoVersion": null,
           "bought": false
         },
         {
+          "id": "id-5",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Kruidenmix",
           "quantity": 1,
           "unit": "pack",
@@ -8548,6 +8938,8 @@
           "bought": false
         },
         {
+          "id": "id-6",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Ui",
           "quantity": 1,
           "unit": "pcs",
@@ -8568,6 +8960,8 @@
           "bought": false
         },
         {
+          "id": "id-7",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Olijfolie",
           "quantity": null,
           "unit": "",
@@ -9114,6 +9508,8 @@
       "grocery_scanner_intake_v1": [],
       "grocery_scanner_items_v6": [
         {
+          "id": "id-1",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Rode appels",
           "quantity": null,
           "unit": "",
@@ -9129,9 +9525,13 @@
           },
           "nutritionAmount": null,
           "packGrams": null,
+          "nutritionSource": null,
+          "nevoVersion": null,
           "bought": false
         },
         {
+          "id": "id-5",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Kruidenmix",
           "quantity": 1,
           "unit": "pack",
@@ -9152,6 +9552,8 @@
           "bought": false
         },
         {
+          "id": "id-6",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Ui",
           "quantity": 1,
           "unit": "pcs",
@@ -9172,6 +9574,8 @@
           "bought": false
         },
         {
+          "id": "id-7",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Olijfolie",
           "quantity": null,
           "unit": "",
@@ -9342,6 +9746,8 @@
       "grocery_scanner_release_seen_v1": "v44",
       "grocery_scanner_stock_v1": [
         {
+          "id": "id-2",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Halfvolle melk",
           "quantity": 3,
           "unit": "",
@@ -9361,6 +9767,8 @@
           "nevoVersion": null
         },
         {
+          "id": "id-4",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Volkoren pasta",
           "quantity": 750,
           "unit": "",
