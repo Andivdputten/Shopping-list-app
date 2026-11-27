@@ -3,6 +3,15 @@
 
 export const RELEASE_NOTES = [
   {
+    version: "v44",
+    date: "2026-11-27",
+    title: "See recipes arrive",
+    notes: [
+      'AI suggestions now appear one by one, as soon as each recipe is written, instead of all at once at the end; the status line counts along ("Writing recipe 2 of 6… 7 s").',
+      "If an answer breaks off part-way, the recipes that were already complete stay on screen."
+    ]
+  },
+  {
     version: "v43",
     date: "2026-11-27",
     title: "Recipes see your whole pantry",

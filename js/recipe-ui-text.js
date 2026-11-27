@@ -42,6 +42,8 @@ const TEXTS = {
     // The meal-type choice next to the suggest button; "any" asks for a mix, as before.
     anyMeal: "Any meal",
     // Shown under the suggestions: AI recipes are untested, as RIVM also pointed out.
+    // Progress while recipes arrive one by one (n = the recipe being written, of the total asked for).
+    writingRecipe: (n, total, seconds) => `Writing recipe ${n} of ${total}… ${seconds} s`,
     aiDisclaimer:
       "AI recipes aren't tested by a cook: check amounts, cooking times and temperatures before you cook.",
     complexToggle: "Complex recipes (more technique and time)",
@@ -143,6 +145,8 @@ const TEXTS = {
     // The meal-type choice next to the suggest button; "any" asks for a mix, as before.
     anyMeal: "Elke maaltijd",
     // Shown under the suggestions: AI recipes are untested, as RIVM also pointed out.
+    // Progress while recipes arrive one by one (n = the recipe being written, of the total asked for).
+    writingRecipe: (n, total, seconds) => `Recept ${n} van ${total} wordt geschreven… ${seconds} s`,
     aiDisclaimer:
       "AI-recepten zijn niet door een kok getest: controleer hoeveelheden, bereidingstijden en temperaturen voordat je kookt.",
     complexToggle: "Uitgebreide recepten (meer techniek en tijd)",
@@ -247,6 +251,8 @@ const TEXTS = {
     // The meal-type choice next to the suggest button; "any" asks for a mix, as before.
     anyMeal: "Jede Mahlzeit",
     // Shown under the suggestions: AI recipes are untested, as RIVM also pointed out.
+    // Progress while recipes arrive one by one (n = the recipe being written, of the total asked for).
+    writingRecipe: (n, total, seconds) => `Rezept ${n} von ${total} wird geschrieben… ${seconds} s`,
     aiDisclaimer:
       "KI-Rezepte sind nicht von einem Koch getestet: Prüfe Mengen, Garzeiten und Temperaturen, bevor du kochst.",
     complexToggle: "Aufwendige Rezepte (mehr Technik und Zeit)",
@@ -349,6 +355,8 @@ const TEXTS = {
     // The meal-type choice next to the suggest button; "any" asks for a mix, as before.
     anyMeal: "Tous les repas",
     // Shown under the suggestions: AI recipes are untested, as RIVM also pointed out.
+    // Progress while recipes arrive one by one (n = the recipe being written, of the total asked for).
+    writingRecipe: (n, total, seconds) => `Rédaction de la recette ${n} sur ${total}… ${seconds} s`,
     aiDisclaimer:
       "Les recettes de l'IA ne sont pas testées par un cuisinier : vérifiez les quantités, les temps de cuisson et les températures avant de cuisiner.",
     complexToggle: "Recettes élaborées (plus de technique et de temps)",
@@ -456,6 +464,8 @@ const TEXTS = {
     // The meal-type choice next to the suggest button; "any" asks for a mix, as before.
     anyMeal: "Cualquier comida",
     // Shown under the suggestions: AI recipes are untested, as RIVM also pointed out.
+    // Progress while recipes arrive one by one (n = the recipe being written, of the total asked for).
+    writingRecipe: (n, total, seconds) => `Escribiendo la receta ${n} de ${total}… ${seconds} s`,
     aiDisclaimer:
       "Las recetas de la IA no las ha probado un cocinero: revisa cantidades, tiempos de cocción y temperaturas antes de cocinar.",
     complexToggle: "Recetas elaboradas (más técnica y tiempo)",
@@ -562,6 +572,8 @@ const TEXTS = {
     // The meal-type choice next to the suggest button; "any" asks for a mix, as before.
     anyMeal: "Qualquer refeição",
     // Shown under the suggestions: AI recipes are untested, as RIVM also pointed out.
+    // Progress while recipes arrive one by one (n = the recipe being written, of the total asked for).
+    writingRecipe: (n, total, seconds) => `Escrevendo a receita ${n} de ${total}… ${seconds} s`,
     aiDisclaimer:
       "As receitas da IA não foram testadas por um cozinheiro: confira quantidades, tempos de cozimento e temperaturas antes de cozinhar.",
     complexToggle: "Receitas elaboradas (mais técnica e tempo)",

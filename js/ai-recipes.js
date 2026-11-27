@@ -680,7 +680,9 @@ export async function handleSuggestRecipesClick() {
   aiSuggestStatus.textContent = t.asking;
   aiRecipeResults.innerHTML = "";
 
+  const progress = startProgress(6, []);
   const result = await RecipeAI.generateRecipes(state.stockItems, aiPreferencesInput.value, {
+    onRecipe: progress.onRecipe,
     language: getRecipeLanguage(),
     // Saved recipe names are sent so the AI suggests new recipes instead of ones you already have.
     avoidNames: state.savedRecipes.map((recipe) => recipe.name),
@@ -688,6 +690,7 @@ export async function handleSuggestRecipesClick() {
     mealType: document.getElementById("aiMealTypeSelect").value,
     complex: document.getElementById("aiComplexToggle").checked
   });
+  progress.stop();
 
   suggestRecipesButton.disabled = false;
   suggestRecipesButton.textContent = previousLabel;
@@ -710,6 +713,32 @@ export async function handleSuggestRecipesClick() {
   }
 
   aiSuggestStatus.textContent = message;
+}
+
+// Live feedback while suggestions are written: every recipe is shown the moment it is complete, and the
+// status line counts up ("Writing recipe 2 of 6… 7 s"). base = recipes already on screen, kept above.
+function startProgress(total, base) {
+  const t = aiText();
+  const started = Date.now();
+  const received = [];
+  const update = () => {
+    const seconds = Math.round((Date.now() - started) / 1000);
+    aiSuggestStatus.textContent = t.writingRecipe(
+      Math.min(received.length + 1, total),
+      total,
+      seconds
+    );
+  };
+  update();
+  const timer = setInterval(update, 1000);
+  return {
+    onRecipe: (recipe) => {
+      received.push(recipe);
+      renderAiRecipes([...base, ...received]);
+      update();
+    },
+    stop: () => clearInterval(timer)
+  };
 }
 
 // The current suggestions, so a follow-up request can add to them instead of replacing them.
@@ -739,7 +768,9 @@ async function requestExtras(button) {
   button.disabled = true;
   button.textContent = t.thinking;
   aiSuggestStatus.textContent = t.asking;
+  const progress = startProgress(3, shownRecipes);
   const result = await RecipeAI.generateRecipes(state.stockItems, aiPreferencesInput.value, {
+    onRecipe: progress.onRecipe,
     language: getRecipeLanguage(),
     // Also the names on screen, so the new recipes differ from the ones just suggested.
     avoidNames: [...state.savedRecipes, ...shownRecipes].map((recipe) => recipe.name),
@@ -747,6 +778,7 @@ async function requestExtras(button) {
     complex: document.getElementById("aiComplexToggle").checked,
     onlyExtras: true
   });
+  progress.stop();
   if (!result.ok) {
     button.disabled = false;
     button.textContent = t.moreWithExtras;
