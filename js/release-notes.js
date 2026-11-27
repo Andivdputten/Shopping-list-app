@@ -3,6 +3,19 @@
 
 export const RELEASE_NOTES = [
   {
+    version: "v45",
+    date: "2026-11-27",
+    title: "A new shopping list: Plan and Shop",
+    notes: [
+      'Plan your list at home: type "2 l milk" or "500g mince" and the amount is read for you. Items you put in an aisle before, or have in your pantry, land in that aisle, and typing something already on the list offers to add to it instead.',
+      "Use − and + for things you count; tap an amount in grams or litres, or an item's name, to change it, its aisle or note. Deleting can be undone.",
+      'Shop in the store with big tick boxes and your progress at the top; "Done shopping" shows what goes into the pantry and moves it all at once.',
+      "An empty list suggests pantry items that are running low: at or below a fifth of what you last stocked up to.",
+      "Dark mode follows your phone's setting, and keyboard users see where they are.",
+      "If you ever go back to an older version of the app, items lose their new ids and restock amounts; nothing else is lost."
+    ]
+  },
+  {
     version: "v44",
     date: "2026-11-27",
     title: "See recipes arrive",

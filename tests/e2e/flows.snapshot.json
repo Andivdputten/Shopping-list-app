@@ -57,7 +57,7 @@
     ],
     "toast": "",
     "storage": {
-      "grocery_scanner_release_seen_v1": "v44"
+      "grocery_scanner_release_seen_v1": "v45"
     }
   },
   {
@@ -144,7 +144,7 @@
           "bought": false
         }
       ],
-      "grocery_scanner_release_seen_v1": "v44"
+      "grocery_scanner_release_seen_v1": "v45"
     }
   },
   {
@@ -231,7 +231,7 @@
           "bought": false
         }
       ],
-      "grocery_scanner_release_seen_v1": "v44"
+      "grocery_scanner_release_seen_v1": "v45"
     }
   },
   {
@@ -318,7 +318,7 @@
           "bought": false
         }
       ],
-      "grocery_scanner_release_seen_v1": "v44"
+      "grocery_scanner_release_seen_v1": "v45"
     }
   },
   {
@@ -425,7 +425,7 @@
           "bought": false
         }
       ],
-      "grocery_scanner_release_seen_v1": "v44"
+      "grocery_scanner_release_seen_v1": "v45"
     }
   },
   {
@@ -559,7 +559,7 @@
           "bought": false
         }
       ],
-      "grocery_scanner_release_seen_v1": "v44"
+      "grocery_scanner_release_seen_v1": "v45"
     }
   },
   {
@@ -693,7 +693,7 @@
           "bought": false
         }
       ],
-      "grocery_scanner_release_seen_v1": "v44"
+      "grocery_scanner_release_seen_v1": "v45"
     }
   },
   {
@@ -832,7 +832,7 @@
           "bought": false
         }
       ],
-      "grocery_scanner_release_seen_v1": "v44"
+      "grocery_scanner_release_seen_v1": "v45"
     }
   },
   {
@@ -996,7 +996,7 @@
           "bought": false
         }
       ],
-      "grocery_scanner_release_seen_v1": "v44"
+      "grocery_scanner_release_seen_v1": "v45"
     }
   },
   {
@@ -1203,7 +1203,7 @@
           "bought": false
         }
       ],
-      "grocery_scanner_release_seen_v1": "v44"
+      "grocery_scanner_release_seen_v1": "v45"
     }
   },
   {
@@ -1411,7 +1411,7 @@
         }
       ],
       "grocery_scanner_list_mode_v1": "shop",
-      "grocery_scanner_release_seen_v1": "v44"
+      "grocery_scanner_release_seen_v1": "v45"
     }
   },
   {
@@ -1619,7 +1619,7 @@
         }
       ],
       "grocery_scanner_list_mode_v1": "shop",
-      "grocery_scanner_release_seen_v1": "v44"
+      "grocery_scanner_release_seen_v1": "v45"
     }
   },
   {
@@ -1827,7 +1827,7 @@
         }
       ],
       "grocery_scanner_list_mode_v1": "shop",
-      "grocery_scanner_release_seen_v1": "v44"
+      "grocery_scanner_release_seen_v1": "v45"
     }
   },
   {
@@ -2012,7 +2012,7 @@
         }
       ],
       "grocery_scanner_list_mode_v1": "shop",
-      "grocery_scanner_release_seen_v1": "v44",
+      "grocery_scanner_release_seen_v1": "v45",
       "grocery_scanner_stock_v1": [
         {
           "id": "id-2",
@@ -2198,7 +2198,7 @@
         }
       ],
       "grocery_scanner_list_mode_v1": "shop",
-      "grocery_scanner_release_seen_v1": "v44",
+      "grocery_scanner_release_seen_v1": "v45",
       "grocery_scanner_stock_v1": [
         {
           "id": "id-2",
@@ -2406,7 +2406,7 @@
         }
       ],
       "grocery_scanner_list_mode_v1": "plan",
-      "grocery_scanner_release_seen_v1": "v44",
+      "grocery_scanner_release_seen_v1": "v45",
       "grocery_scanner_stock_v1": [
         {
           "id": "id-2",
@@ -2590,7 +2590,7 @@
         }
       ],
       "grocery_scanner_list_mode_v1": "plan",
-      "grocery_scanner_release_seen_v1": "v44",
+      "grocery_scanner_release_seen_v1": "v45",
       "grocery_scanner_stock_v1": [
         {
           "id": "id-2",
@@ -2798,7 +2798,7 @@
         }
       ],
       "grocery_scanner_list_mode_v1": "plan",
-      "grocery_scanner_release_seen_v1": "v44",
+      "grocery_scanner_release_seen_v1": "v45",
       "grocery_scanner_stock_v1": [
         {
           "id": "id-2",
@@ -2982,7 +2982,7 @@
         }
       ],
       "grocery_scanner_list_mode_v1": "plan",
-      "grocery_scanner_release_seen_v1": "v44",
+      "grocery_scanner_release_seen_v1": "v45",
       "grocery_scanner_stock_v1": [
         {
           "id": "id-2",
@@ -3166,7 +3166,7 @@
         }
       ],
       "grocery_scanner_list_mode_v1": "plan",
-      "grocery_scanner_release_seen_v1": "v44",
+      "grocery_scanner_release_seen_v1": "v45",
       "grocery_scanner_stock_v1": [
         {
           "id": "id-2",
@@ -3350,7 +3350,7 @@
         }
       ],
       "grocery_scanner_list_mode_v1": "plan",
-      "grocery_scanner_release_seen_v1": "v44",
+      "grocery_scanner_release_seen_v1": "v45",
       "grocery_scanner_stock_v1": [
         {
           "id": "id-2",
@@ -3534,7 +3534,7 @@
         }
       ],
       "grocery_scanner_list_mode_v1": "plan",
-      "grocery_scanner_release_seen_v1": "v44",
+      "grocery_scanner_release_seen_v1": "v45",
       "grocery_scanner_stock_v1": [
         {
           "id": "id-2",
@@ -3718,7 +3718,7 @@
         }
       ],
       "grocery_scanner_list_mode_v1": "plan",
-      "grocery_scanner_release_seen_v1": "v44",
+      "grocery_scanner_release_seen_v1": "v45",
       "grocery_scanner_stock_v1": [
         {
           "id": "id-2",
@@ -3907,7 +3907,7 @@
         }
       ],
       "grocery_scanner_list_mode_v1": "plan",
-      "grocery_scanner_release_seen_v1": "v44",
+      "grocery_scanner_release_seen_v1": "v45",
       "grocery_scanner_stock_v1": [
         {
           "id": "id-2",
@@ -4097,7 +4097,7 @@
         }
       ],
       "grocery_scanner_list_mode_v1": "plan",
-      "grocery_scanner_release_seen_v1": "v44",
+      "grocery_scanner_release_seen_v1": "v45",
       "grocery_scanner_stock_v1": [
         {
           "id": "id-2",
@@ -4314,7 +4314,7 @@
         }
       ],
       "grocery_scanner_list_mode_v1": "plan",
-      "grocery_scanner_release_seen_v1": "v44",
+      "grocery_scanner_release_seen_v1": "v45",
       "grocery_scanner_stock_v1": [
         {
           "id": "id-2",
@@ -4554,7 +4554,7 @@
         }
       ],
       "grocery_scanner_list_mode_v1": "plan",
-      "grocery_scanner_release_seen_v1": "v44",
+      "grocery_scanner_release_seen_v1": "v45",
       "grocery_scanner_stock_v1": [
         {
           "id": "id-2",
@@ -4772,7 +4772,7 @@
         }
       ],
       "grocery_scanner_list_mode_v1": "plan",
-      "grocery_scanner_release_seen_v1": "v44",
+      "grocery_scanner_release_seen_v1": "v45",
       "grocery_scanner_stock_v1": [
         {
           "id": "id-2",
@@ -4990,7 +4990,7 @@
         }
       ],
       "grocery_scanner_list_mode_v1": "plan",
-      "grocery_scanner_release_seen_v1": "v44",
+      "grocery_scanner_release_seen_v1": "v45",
       "grocery_scanner_stock_v1": [
         {
           "id": "id-2",
@@ -5253,7 +5253,7 @@
           ]
         }
       ],
-      "grocery_scanner_release_seen_v1": "v44",
+      "grocery_scanner_release_seen_v1": "v45",
       "grocery_scanner_stock_v1": [
         {
           "id": "id-2",
@@ -5516,7 +5516,7 @@
           ]
         }
       ],
-      "grocery_scanner_release_seen_v1": "v44",
+      "grocery_scanner_release_seen_v1": "v45",
       "grocery_scanner_stock_v1": [
         {
           "id": "id-2",
@@ -5822,7 +5822,7 @@
           ]
         }
       ],
-      "grocery_scanner_release_seen_v1": "v44",
+      "grocery_scanner_release_seen_v1": "v45",
       "grocery_scanner_stock_v1": [
         {
           "id": "id-2",
@@ -6128,7 +6128,7 @@
           ]
         }
       ],
-      "grocery_scanner_release_seen_v1": "v44",
+      "grocery_scanner_release_seen_v1": "v45",
       "grocery_scanner_stock_v1": [
         {
           "id": "id-2",
@@ -6434,7 +6434,7 @@
           ]
         }
       ],
-      "grocery_scanner_release_seen_v1": "v44",
+      "grocery_scanner_release_seen_v1": "v45",
       "grocery_scanner_stock_v1": [
         {
           "id": "id-2",
@@ -6697,7 +6697,7 @@
           ]
         }
       ],
-      "grocery_scanner_release_seen_v1": "v44",
+      "grocery_scanner_release_seen_v1": "v45",
       "grocery_scanner_stock_v1": [
         {
           "id": "id-2",
@@ -6960,7 +6960,7 @@
           ]
         }
       ],
-      "grocery_scanner_release_seen_v1": "v44",
+      "grocery_scanner_release_seen_v1": "v45",
       "grocery_scanner_stock_v1": [
         {
           "id": "id-2",
@@ -7223,7 +7223,7 @@
           ]
         }
       ],
-      "grocery_scanner_release_seen_v1": "v44",
+      "grocery_scanner_release_seen_v1": "v45",
       "grocery_scanner_stock_v1": [
         {
           "id": "id-2",
@@ -7486,7 +7486,7 @@
           ]
         }
       ],
-      "grocery_scanner_release_seen_v1": "v44",
+      "grocery_scanner_release_seen_v1": "v45",
       "grocery_scanner_stock_v1": [
         {
           "id": "id-2",
@@ -7750,7 +7750,7 @@
           ]
         }
       ],
-      "grocery_scanner_release_seen_v1": "v44",
+      "grocery_scanner_release_seen_v1": "v45",
       "grocery_scanner_stock_v1": [
         {
           "id": "id-2",
@@ -8014,7 +8014,7 @@
           ]
         }
       ],
-      "grocery_scanner_release_seen_v1": "v44",
+      "grocery_scanner_release_seen_v1": "v45",
       "grocery_scanner_stock_v1": [
         {
           "id": "id-2",
@@ -8321,7 +8321,7 @@
           ]
         }
       ],
-      "grocery_scanner_release_seen_v1": "v44",
+      "grocery_scanner_release_seen_v1": "v45",
       "grocery_scanner_stock_v1": [
         {
           "id": "id-2",
@@ -8676,7 +8676,7 @@
           ]
         }
       ],
-      "grocery_scanner_release_seen_v1": "v44",
+      "grocery_scanner_release_seen_v1": "v45",
       "grocery_scanner_stock_v1": [
         {
           "id": "id-2",
@@ -9032,7 +9032,7 @@
           ]
         }
       ],
-      "grocery_scanner_release_seen_v1": "v44",
+      "grocery_scanner_release_seen_v1": "v45",
       "grocery_scanner_stock_v1": [
         {
           "id": "id-2",
@@ -9446,7 +9446,7 @@
           ]
         }
       ],
-      "grocery_scanner_release_seen_v1": "v44",
+      "grocery_scanner_release_seen_v1": "v45",
       "grocery_scanner_stock_v1": [
         {
           "id": "id-2",
@@ -10179,7 +10179,7 @@
           ]
         }
       ],
-      "grocery_scanner_release_seen_v1": "v44",
+      "grocery_scanner_release_seen_v1": "v45",
       "grocery_scanner_stock_v1": [
         {
           "id": "id-2",
@@ -10591,7 +10591,7 @@
           ]
         }
       ],
-      "grocery_scanner_release_seen_v1": "v44",
+      "grocery_scanner_release_seen_v1": "v45",
       "grocery_scanner_stock_v1": []
     }
   },
@@ -10861,7 +10861,7 @@
           ]
         }
       ],
-      "grocery_scanner_release_seen_v1": "v44",
+      "grocery_scanner_release_seen_v1": "v45",
       "grocery_scanner_stock_v1": []
     }
   },
@@ -11231,7 +11231,7 @@
           ]
         }
       ],
-      "grocery_scanner_release_seen_v1": "v44",
+      "grocery_scanner_release_seen_v1": "v45",
       "grocery_scanner_stock_v1": [
         {
           "id": "id-2",
