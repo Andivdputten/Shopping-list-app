@@ -6,7 +6,9 @@
     name="viewport"
     content="width=device-width, initial-scale=1.0, viewport-fit=cover"
   />
-  <meta name="theme-color" content="#2e7d32" />
+  <meta name="theme-color" content="#2e7d32" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#173a1b" media="(prefers-color-scheme: dark)" />
+  <meta name="color-scheme" content="light dark" />
   <!-- Content-Security-Policy: only our own scripts may run and data may only be sent to Open Food Facts and the Anthropic API.
        This limits the damage of any injected script, since the API key sits in localStorage. -->
   <meta

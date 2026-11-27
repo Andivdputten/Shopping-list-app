@@ -247,9 +247,9 @@ export function buildMacroDonutSvg(proteinKcal, carbsKcal, fatKcal) {
   const circumference = 2 * Math.PI * radius;
 
   const segments = [
-    { kcal: proteinKcal, color: "#2e7d32" },
-    { kcal: carbsKcal, color: "#f59e0b" },
-    { kcal: fatKcal, color: "#dc2626" }
+    { kcal: proteinKcal, color: "#2e7d32", token: "--macro-protein" },
+    { kcal: carbsKcal, color: "#f59e0b", token: "--macro-carbs" },
+    { kcal: fatKcal, color: "#dc2626", token: "--macro-fat" }
   ];
 
   const totalKcal = proteinKcal + carbsKcal + fatKcal;
@@ -265,7 +265,7 @@ export function buildMacroDonutSvg(proteinKcal, carbsKcal, fatKcal) {
       const gap = circumference - dash;
       const offset = -cumulative;
       cumulative += dash;
-      return `<circle cx="${center}" cy="${center}" r="${radius}" fill="none" stroke="${segment.color}" stroke-width="${strokeWidth}" stroke-dasharray="${dash} ${gap}" stroke-dashoffset="${offset}" />`;
+      return `<circle cx="${center}" cy="${center}" r="${radius}" fill="none" stroke="${segment.color}" style="stroke: var(${segment.token}, ${segment.color})" stroke-width="${strokeWidth}" stroke-dasharray="${dash} ${gap}" stroke-dashoffset="${offset}" />`;
     })
     .join("");
 

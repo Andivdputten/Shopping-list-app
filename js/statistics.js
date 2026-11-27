@@ -39,9 +39,9 @@ export function renderMacroStatBlock(itemArray, chartEl, legendEl, coverageEl) {
   legendEl.appendChild(totalRow);
 
   const rows = [
-    { label: "Protein", value: totals.protein, color: "#2e7d32", kcal: proteinKcal },
-    { label: "Carbs", value: totals.carbs, color: "#f59e0b", kcal: carbsKcal },
-    { label: "Fat", value: totals.fat, color: "#dc2626", kcal: fatKcal }
+    { label: "Protein", value: totals.protein, color: "var(--macro-protein)", kcal: proteinKcal },
+    { label: "Carbs", value: totals.carbs, color: "var(--macro-carbs)", kcal: carbsKcal },
+    { label: "Fat", value: totals.fat, color: "var(--macro-fat)", kcal: fatKcal }
   ];
 
   rows.forEach((row) => {
