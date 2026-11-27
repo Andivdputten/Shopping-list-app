@@ -82,6 +82,12 @@ export const NEVO_STORAGE_KEY = "grocery_scanner_nevo_v1";
 // The last release whose notes were shown on this device, so "What's new" opens only once per update.
 export const RELEASE_SEEN_STORAGE_KEY = "grocery_scanner_release_seen_v1";
 
+// Which aisle each item name was last put in, on this device only (js/aisle-memory.js). Not in backups.
+export const AISLE_MEMORY_STORAGE_KEY = "grocery_scanner_aisle_memory_v1";
+
+// The shopping list's last mode on this device: "plan" or "shop".
+export const LIST_MODE_STORAGE_KEY = "grocery_scanner_list_mode_v1";
+
 export const BACKUP_APP_ID = "grocery-scanner-backup";
 
 export const BACKUP_FORMAT_VERSION = 1;
