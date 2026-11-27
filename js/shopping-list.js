@@ -15,6 +15,7 @@ import {
   createShoppingItem,
   createStockItem,
   getCategoryLabel,
+  markRestocked,
   mergeStockItems,
   normalizeCategory
 } from "./items.js";
@@ -63,9 +64,13 @@ export function moveItemToStock(index) {
   const stockIndex = findMatchingStockIndex(item);
 
   if (stockIndex === null) {
-    state.stockItems.push(createStockItem(item));
+    state.stockItems.push(markRestocked(createStockItem(item), null));
   } else {
-    state.stockItems[stockIndex] = mergeStockItems(state.stockItems[stockIndex], item);
+    const quantityBefore = state.stockItems[stockIndex].quantity;
+    state.stockItems[stockIndex] = markRestocked(
+      mergeStockItems(state.stockItems[stockIndex], item),
+      quantityBefore
+    );
   }
 
   const movedName = item.name;

@@ -1,7 +1,13 @@
 // The pantry stock list: rendering, quantities, returning items and clearing stock.
 import { stockEmptyMessage, stockList } from "./dom.js";
 import { formatNutritionSummary, formatNutritionTotalSummary } from "./format.js";
-import { createShoppingItem, getCategoryLabel, normalizeIngredientName } from "./items.js";
+import {
+  createShoppingItem,
+  getCategoryLabel,
+  markRestocked,
+  normalizeIngredientName,
+  touchItem
+} from "./items.js";
 import { getQuantityStep, hasAnyNutrition } from "./nutrition.js";
 import {
   needsPackWeight,
@@ -86,7 +92,11 @@ export function setStockQuantity(index, rawValue) {
   // Avoid float drift like 0.1 + 0.1 + 0.1 !== 0.3 from repeated +/- taps.
   value = Math.round(value * 100) / 100;
 
+  const quantityBefore = item.quantity;
   item.quantity = value > 0 ? value : null;
+  // Raising the amount by hand counts as a restock.
+  markRestocked(item, quantityBefore);
+  touchItem(item);
 
   saveStockItems();
   renderStockList();

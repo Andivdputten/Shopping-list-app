@@ -131,8 +131,34 @@ export function createStockItem(item) {
     packGrams: positiveQuantityOrNull(item.packGrams),
     // Set when nutrition was found by name ("nevo" or "off"), so its source (and NEVO version) can be shown.
     nutritionSource: ["nevo", "off"].includes(item.nutritionSource) ? item.nutritionSource : null,
-    nevoVersion: typeof item.nevoVersion === "string" ? item.nevoVersion : null
+    nevoVersion: typeof item.nevoVersion === "string" ? item.nevoVersion : null,
+    // The pantry quantity right after the last restock (moved in from the list, scanned in, or raised
+    // by hand); "running low" is measured against it. null when unknown.
+    restockQuantity: positiveQuantityOrNull(item.restockQuantity)
   };
+}
+
+// Records a restock: when the quantity went up (or was unknown before), the new quantity becomes the
+// level "running low" is measured against. Lowering a quantity (cooking, using) never changes it.
+export function markRestocked(item, quantityBefore) {
+  const now = positiveQuantityOrNull(item.quantity);
+  const before = positiveQuantityOrNull(quantityBefore);
+  if (now !== null && (before === null || now > before)) {
+    item.restockQuantity = now;
+  }
+  return item;
+}
+
+// A pantry item is running low at or below 20% of its last restock, rounded up to a whole number:
+// restocked to 6 it is low at 2 or fewer, restocked to 3 at 1 or fewer. Items without a quantity or
+// a known restock amount are never counted as low.
+export function isRunningLow(item) {
+  const quantity = positiveQuantityOrNull(item.quantity);
+  const restock = positiveQuantityOrNull(item.restockQuantity);
+  if (quantity === null || restock === null) {
+    return false;
+  }
+  return quantity <= Math.ceil(0.2 * restock);
 }
 
 export function mergeStockItems(existingItem, incomingItem) {

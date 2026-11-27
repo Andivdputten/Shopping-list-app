@@ -16,7 +16,14 @@ import {
   pantryUnknownNameInput,
   pantryUnknownText
 } from "./dom.js";
-import { createStockItem, mergeStockItems, parsePackageQuantity, parsePackGrams } from "./items.js";
+import {
+  createStockItem,
+  markRestocked,
+  mergeStockItems,
+  parsePackageQuantity,
+  parsePackGrams,
+  touchItem
+} from "./items.js";
 import { normalizeNutrition } from "./nutrition.js";
 import { findMatchingStockIndex, renderStockList } from "./pantry.js";
 import { getCachedBarcodeLookup, saveStockItems, setCachedBarcodeLookup } from "./persistence.js";
@@ -58,11 +65,13 @@ export function addScannedItemToPantry(barcode, productData, nameOverride) {
   let message;
 
   if (existingIndex === null) {
-    state.stockItems.push(createStockItem(incoming));
+    state.stockItems.push(markRestocked(createStockItem(incoming), null));
     message = `${name} added to pantry`;
   } else {
     const quantityBefore = state.stockItems[existingIndex].quantity;
-    state.stockItems[existingIndex] = mergeStockItems(state.stockItems[existingIndex], incoming);
+    state.stockItems[existingIndex] = touchItem(
+      markRestocked(mergeStockItems(state.stockItems[existingIndex], incoming), quantityBefore)
+    );
     const merged = state.stockItems[existingIndex];
     const unitText = merged.unit ? ` ${merged.unit}` : "";
 

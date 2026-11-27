@@ -81,3 +81,18 @@ test("items saved before ids existed get ids on load, written back so they stay 
     stockIds
   );
 });
+
+test("the restock amount is kept, and pantry data from before it existed still loads", () => {
+  store.set(
+    STOCK_STORAGE_KEY,
+    JSON.stringify([
+      { name: "Eggs", quantity: 2, unit: "pcs", restockQuantity: 10 },
+      // As written by the app (or a backup) before restock tracking: no id, no restockQuantity.
+      { name: "Rijst", quantity: 500, unit: "g", category: "Pantry" }
+    ])
+  );
+  const [eggs, rice] = loadStockItems();
+  assert.equal(eggs.restockQuantity, 10);
+  assert.equal(rice.restockQuantity, null);
+  assert.equal(rice.quantity, 500);
+});
