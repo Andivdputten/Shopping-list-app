@@ -16,6 +16,27 @@ export function normalizeIngredientName(name) {
 // Pantry scanner: scanned items go straight into pantry stock, and the camera
 // stays on so several items can be scanned in a row.
 // ---------------------------------------------------------------------------
+// The weight in grams (ml counts as grams) of one pack, from a package text such as "5 kg", "6 x 330 ml"
+// or "Rijst 1kg"; null when it holds no weight. Used when the quantity itself is counted in packs.
+export function parsePackGrams(text) {
+  if (typeof text !== "string") {
+    return null;
+  }
+  const lower = text.toLowerCase();
+  const toGrams = (amount, unit) => {
+    const value = parseFloat(amount.replace(",", "."));
+    const factor = { g: 1, ml: 1, cl: 10, kg: 1000, l: 1000 }[unit];
+    return Number.isFinite(value) && value > 0 ? value * factor : null;
+  };
+  const multi = lower.match(/(\d+)\s*[x×]\s*(\d+(?:[.,]\d+)?)\s*(kg|g|ml|cl|l)\b/);
+  if (multi) {
+    const each = toGrams(multi[2], multi[3]);
+    return each === null ? null : Math.round(Number(multi[1]) * each * 100) / 100;
+  }
+  const single = lower.match(/(\d+(?:[.,]\d+)?)\s*(kg|g|ml|cl|l)\b/);
+  return single ? toGrams(single[1], single[2]) : null;
+}
+
 export function parsePackageQuantity(text) {
   const fallback = { quantity: 1, unit: "pack" };
 
@@ -64,6 +85,9 @@ export function createStockItem(item) {
     barcode: typeof item.barcode === "string" ? item.barcode : "",
     nutrition: normalizeNutrition(item.nutrition),
     nutritionAmount: normalizeNutritionNumber(item.nutritionAmount),
+    // Weight in grams (or ml) of one pack or piece, for items counted in packs or pieces: "1 pack" of rice
+    // is then 5000 g for the AI, for cooking and for the statistics. null when unknown.
+    packGrams: positiveQuantityOrNull(item.packGrams),
     // Set when nutrition was found by name ("nevo" or "off"), so its source (and NEVO version) can be shown.
     nutritionSource: ["nevo", "off"].includes(item.nutritionSource) ? item.nutritionSource : null,
     nevoVersion: typeof item.nevoVersion === "string" ? item.nevoVersion : null
@@ -99,6 +123,10 @@ export function mergeStockItems(existingItem, incomingItem) {
     typeof incomingItem.note === "string"
   ) {
     merged.note = incomingItem.note;
+  }
+
+  if (positiveQuantityOrNull(merged.packGrams) === null) {
+    merged.packGrams = positiveQuantityOrNull(incomingItem.packGrams);
   }
 
   if (!hasAnyNutrition(merged.nutrition) && hasAnyNutrition(incomingItem.nutrition)) {

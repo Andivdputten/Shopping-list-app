@@ -10,6 +10,7 @@ import {
   itemInput,
   noteInput,
   nutritionAmountInput,
+  packGramsInput,
   nutritionCarbsInput,
   nutritionFatInput,
   nutritionFiberInput,
@@ -24,6 +25,7 @@ import { saveItems } from "./persistence.js";
 import { buildLookupNote } from "./product-lookup.js";
 import { startScanner } from "./scanner.js";
 import { findDuplicateBarcodeIndex, renderList } from "./shopping-list.js";
+import { parsePackGrams } from "./items.js";
 import { state } from "./state.js";
 import { switchTab } from "./tabs.js";
 import { setStatus, showToast } from "./ui.js";
@@ -59,6 +61,7 @@ export function submitForm() {
 
   state.pendingNutrition = readNutritionFromInputs();
   const nutritionAmount = parseOptionalNumberInput(nutritionAmountInput.value);
+  const packGrams = parseOptionalNumberInput(packGramsInput.value);
 
   const duplicateBarcodeIndex = findDuplicateBarcodeIndex(state.pendingBarcode, state.editIndex);
 
@@ -80,6 +83,7 @@ export function submitForm() {
     barcode: state.pendingBarcode,
     nutrition: normalizeNutrition(state.pendingNutrition),
     nutritionAmount,
+    packGrams: packGrams !== null && packGrams > 0 ? packGrams : null,
     bought: false
   };
 
@@ -113,6 +117,8 @@ export function startEdit(index) {
   state.pendingNutrition = normalizeNutrition(item.nutrition);
   syncNutritionInputsFromPending();
   nutritionAmountInput.value = formatNutritionInputValue(item.nutritionAmount);
+  packGramsInput.value =
+    item.packGrams === null || item.packGrams === undefined ? "" : String(item.packGrams);
   updatePendingBarcodeUI();
   updateFormMode();
 
@@ -147,6 +153,7 @@ export function resetForm() {
   state.pendingNutrition = createEmptyNutrition();
   syncNutritionInputsFromPending();
   nutritionAmountInput.value = "";
+  packGramsInput.value = "";
   updatePendingBarcodeUI();
   updateFormMode();
   itemInput.focus();
@@ -215,6 +222,13 @@ export function applyLookupToForm(productData) {
 
   if (generatedNote !== "" && noteInput.value.trim() === "") {
     noteInput.value = generatedNote;
+  }
+
+  // The weight of one pack from the package text ("5 kg", "6 x 330 ml"), so the item carries it into the
+  // pantry and recipes know how much a pack holds; left alone when already filled in.
+  const packGrams = parsePackGrams(productData.packageQuantity);
+  if (packGrams !== null && packGramsInput.value.trim() === "") {
+    packGramsInput.value = String(packGrams);
   }
 
   state.pendingNutrition = normalizeNutrition(productData.nutrition);

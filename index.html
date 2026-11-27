@@ -178,6 +178,16 @@
             placeholder="Optional nutrition amount in grams, e.g. 50"
           />
 
+          <!-- For items counted in packs or pieces: how much one holds, so "1 pack" of rice is 5000 g. -->
+          <input
+            id="packGramsInput"
+            type="number"
+            inputmode="decimal"
+            min="0"
+            step="any"
+            placeholder="Optional weight per pack or piece in grams, e.g. 5000"
+          />
+
           <div class="action-row">
             <button id="addButton" class="primary-button">Add item</button>
             <button id="cancelEditButton" class="secondary-button hidden">Cancel edit</button>

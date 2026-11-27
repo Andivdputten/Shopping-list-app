@@ -52,7 +52,7 @@
     ],
     "toast": "",
     "storage": {
-      "grocery_scanner_release_seen_v1": "v42"
+      "grocery_scanner_release_seen_v1": "v43"
     }
   },
   {
@@ -125,12 +125,13 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": null,
           "nutritionSource": null,
           "nevoVersion": null,
           "bought": false
         }
       ],
-      "grocery_scanner_release_seen_v1": "v42"
+      "grocery_scanner_release_seen_v1": "v43"
     }
   },
   {
@@ -203,12 +204,13 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": null,
           "nutritionSource": null,
           "nevoVersion": null,
           "bought": false
         }
       ],
-      "grocery_scanner_release_seen_v1": "v42"
+      "grocery_scanner_release_seen_v1": "v43"
     }
   },
   {
@@ -301,12 +303,13 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": null,
           "nutritionSource": null,
           "nevoVersion": null,
           "bought": false
         }
       ],
-      "grocery_scanner_release_seen_v1": "v42"
+      "grocery_scanner_release_seen_v1": "v43"
     }
   },
   {
@@ -359,8 +362,8 @@
     "stats": [
       "",
       "",
-      "",
-      "0 of 2 items counted."
+      "920 kcal totalProtein70g (30%)Carbs96g (41%)Fat30g (29%)",
+      "Based on 1 of 2 items with known amount and nutrition data."
     ],
     "toast": "✓ Halfvolle melk added to your list",
     "storage": {
@@ -400,6 +403,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": null,
           "nutritionSource": null,
           "nevoVersion": null,
           "bought": false
@@ -419,10 +423,11 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": 1000,
           "bought": false
         }
       ],
-      "grocery_scanner_release_seen_v1": "v42"
+      "grocery_scanner_release_seen_v1": "v43"
     }
   },
   {
@@ -475,8 +480,8 @@
     "stats": [
       "",
       "",
-      "",
-      "0 of 2 items counted."
+      "920 kcal totalProtein70g (30%)Carbs96g (41%)Fat30g (29%)",
+      "Based on 1 of 2 items with known amount and nutrition data."
     ],
     "toast": "✓ Halfvolle melk added to your list",
     "storage": {
@@ -516,6 +521,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": null,
           "nutritionSource": null,
           "nevoVersion": null,
           "bought": false
@@ -535,10 +541,11 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": 1000,
           "bought": false
         }
       ],
-      "grocery_scanner_release_seen_v1": "v42"
+      "grocery_scanner_release_seen_v1": "v43"
     }
   },
   {
@@ -591,8 +598,8 @@
     "stats": [
       "",
       "",
-      "",
-      "0 of 2 items counted."
+      "920 kcal totalProtein70g (30%)Carbs96g (41%)Fat30g (29%)",
+      "Based on 1 of 2 items with known amount and nutrition data."
     ],
     "toast": "✓ Halfvolle melk added to your list",
     "storage": {
@@ -637,6 +644,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": null,
           "nutritionSource": null,
           "nevoVersion": null,
           "bought": false
@@ -656,10 +664,11 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": 1000,
           "bought": false
         }
       ],
-      "grocery_scanner_release_seen_v1": "v42"
+      "grocery_scanner_release_seen_v1": "v43"
     }
   },
   {
@@ -713,8 +722,8 @@
     "stats": [
       "",
       "",
-      "",
-      "0 of 3 items counted."
+      "920 kcal totalProtein70g (30%)Carbs96g (41%)Fat30g (29%)",
+      "Based on 1 of 3 items with known amount and nutrition data."
     ],
     "toast": "✓ Mysterie added to your list",
     "storage": {
@@ -759,6 +768,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": null,
           "nutritionSource": null,
           "nevoVersion": null,
           "bought": false
@@ -778,6 +788,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": 1000,
           "bought": false
         },
         {
@@ -795,10 +806,11 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": null,
           "bought": false
         }
       ],
-      "grocery_scanner_release_seen_v1": "v42"
+      "grocery_scanner_release_seen_v1": "v43"
     }
   },
   {
@@ -853,8 +865,8 @@
     "stats": [
       "",
       "",
-      "",
-      "0 of 4 items counted."
+      "920 kcal totalProtein70g (30%)Carbs96g (41%)Fat30g (29%)",
+      "Based on 1 of 4 items with known amount and nutrition data."
     ],
     "toast": "✓ Volkoren pasta added to your list",
     "storage": {
@@ -917,6 +929,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": null,
           "nutritionSource": null,
           "nevoVersion": null,
           "bought": false
@@ -936,6 +949,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": 1000,
           "bought": false
         },
         {
@@ -953,6 +967,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": null,
           "bought": false
         },
         {
@@ -970,10 +985,11 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": 500,
           "bought": false
         }
       ],
-      "grocery_scanner_release_seen_v1": "v42"
+      "grocery_scanner_release_seen_v1": "v43"
     }
   },
   {
@@ -1028,8 +1044,8 @@
     "stats": [
       "",
       "",
-      "",
-      "0 of 4 items counted."
+      "920 kcal totalProtein70g (30%)Carbs96g (41%)Fat30g (29%)",
+      "Based on 1 of 4 items with known amount and nutrition data."
     ],
     "toast": "✓ Volkoren pasta added to your list",
     "storage": {
@@ -1092,6 +1108,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": null,
           "nutritionSource": null,
           "nevoVersion": null,
           "bought": false
@@ -1111,6 +1128,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": 1000,
           "bought": true
         },
         {
@@ -1128,6 +1146,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": null,
           "bought": false
         },
         {
@@ -1145,10 +1164,11 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": 500,
           "bought": false
         }
       ],
-      "grocery_scanner_release_seen_v1": "v42"
+      "grocery_scanner_release_seen_v1": "v43"
     }
   },
   {
@@ -1175,7 +1195,7 @@
       "3",
       "1"
     ],
-    "stockList": "Halfvolle melk−+Brand: Testmerk Pack size: 1 l Nutri-Score: APer 100g: 46 kcal · P 3.5g · C 4.8g · F 1.5gBarcode: 8710000000001DairyReturn",
+    "stockList": "Halfvolle melk−+Brand: Testmerk Pack size: 1 l Nutri-Score: APer 100g: 46 kcal · P 3.5g · C 4.8g · F 1.5g1000 g eachBarcode: 8710000000001DairyReturnWeight",
     "pantryScanMessage": "Scanner idle.",
     "pantryUnknownText": "",
     "recipeEditorModeText": "Creating a new recipe.",
@@ -1201,8 +1221,8 @@
     "apiKeyStatus": "No API key saved yet.",
     "backupStatus": "",
     "stats": [
-      "",
-      "0 of 1 item counted.",
+      "920 kcal totalProtein70g (30%)Carbs96g (41%)Fat30g (29%)",
+      "Based on 1 of 1 item with known amount and nutrition data.",
       "",
       "0 of 3 items counted."
     ],
@@ -1267,6 +1287,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": null,
           "nutritionSource": null,
           "nevoVersion": null,
           "bought": false
@@ -1286,6 +1307,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": null,
           "bought": false
         },
         {
@@ -1303,10 +1325,11 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": 500,
           "bought": false
         }
       ],
-      "grocery_scanner_release_seen_v1": "v42",
+      "grocery_scanner_release_seen_v1": "v43",
       "grocery_scanner_stock_v1": [
         {
           "name": "Halfvolle melk",
@@ -1323,6 +1346,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": 1000,
           "nutritionSource": null,
           "nevoVersion": null
         }
@@ -1353,7 +1377,7 @@
       "2",
       "2"
     ],
-    "stockList": "Halfvolle melk−+Brand: Testmerk Pack size: 1 l Nutri-Score: APer 100g: 46 kcal · P 3.5g · C 4.8g · F 1.5gBarcode: 8710000000001DairyReturnVolkoren pasta−+Brand: Testmerk Pack size: 500 g Nutri-Score: APer 100g: 350 kcal · P 13g · C 64g · F 2.5gBarcode: 8710000000002PantryReturn",
+    "stockList": "Halfvolle melk−+Brand: Testmerk Pack size: 1 l Nutri-Score: APer 100g: 46 kcal · P 3.5g · C 4.8g · F 1.5g1000 g eachBarcode: 8710000000001DairyReturnWeightVolkoren pasta−+Brand: Testmerk Pack size: 500 g Nutri-Score: APer 100g: 350 kcal · P 13g · C 64g · F 2.5g500 g eachBarcode: 8710000000002PantryReturnWeight",
     "pantryScanMessage": "Scanner idle.",
     "pantryUnknownText": "",
     "recipeEditorModeText": "Creating a new recipe.",
@@ -1379,8 +1403,8 @@
     "apiKeyStatus": "No API key saved yet.",
     "backupStatus": "",
     "stats": [
-      "",
-      "0 of 2 items counted.",
+      "920 kcal totalProtein70g (30%)Carbs96g (41%)Fat30g (29%)",
+      "Based on 1 of 2 items with known amount and nutrition data.",
       "",
       "0 of 2 items counted."
     ],
@@ -1445,6 +1469,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": null,
           "nutritionSource": null,
           "nevoVersion": null,
           "bought": false
@@ -1464,10 +1489,11 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": null,
           "bought": false
         }
       ],
-      "grocery_scanner_release_seen_v1": "v42",
+      "grocery_scanner_release_seen_v1": "v43",
       "grocery_scanner_stock_v1": [
         {
           "name": "Halfvolle melk",
@@ -1484,6 +1510,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": 1000,
           "nutritionSource": null,
           "nevoVersion": null
         },
@@ -1502,6 +1529,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": 500,
           "nutritionSource": null,
           "nevoVersion": null
         }
@@ -1532,7 +1560,7 @@
       "2",
       "2"
     ],
-    "stockList": "Halfvolle melk−+Brand: Testmerk Pack size: 1 l Nutri-Score: APer 100g: 46 kcal · P 3.5g · C 4.8g · F 1.5gBarcode: 8710000000001DairyReturnVolkoren pasta−+Brand: Testmerk Pack size: 500 g Nutri-Score: APer 100g: 350 kcal · P 13g · C 64g · F 2.5gBarcode: 8710000000002PantryReturn",
+    "stockList": "Halfvolle melk−+Brand: Testmerk Pack size: 1 l Nutri-Score: APer 100g: 46 kcal · P 3.5g · C 4.8g · F 1.5g1000 g eachBarcode: 8710000000001DairyReturnWeightVolkoren pasta−+Brand: Testmerk Pack size: 500 g Nutri-Score: APer 100g: 350 kcal · P 13g · C 64g · F 2.5g500 g eachBarcode: 8710000000002PantryReturnWeight",
     "pantryScanMessage": "Scanner idle.",
     "pantryUnknownText": "",
     "recipeEditorModeText": "Creating a new recipe.",
@@ -1558,8 +1586,8 @@
     "apiKeyStatus": "No API key saved yet.",
     "backupStatus": "",
     "stats": [
-      "",
-      "0 of 2 items counted.",
+      "920 kcal totalProtein70g (30%)Carbs96g (41%)Fat30g (29%)",
+      "Based on 1 of 2 items with known amount and nutrition data.",
       "",
       "0 of 2 items counted."
     ],
@@ -1624,6 +1652,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": null,
           "bought": false
         },
         {
@@ -1641,10 +1670,11 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": null,
           "bought": false
         }
       ],
-      "grocery_scanner_release_seen_v1": "v42",
+      "grocery_scanner_release_seen_v1": "v43",
       "grocery_scanner_stock_v1": [
         {
           "name": "Halfvolle melk",
@@ -1661,6 +1691,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": 1000,
           "nutritionSource": null,
           "nevoVersion": null
         },
@@ -1679,6 +1710,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": 500,
           "nutritionSource": null,
           "nevoVersion": null
         }
@@ -1709,7 +1741,7 @@
       "1",
       "2"
     ],
-    "stockList": "Halfvolle melk−+Brand: Testmerk Pack size: 1 l Nutri-Score: APer 100g: 46 kcal · P 3.5g · C 4.8g · F 1.5gBarcode: 8710000000001DairyReturnVolkoren pasta−+Brand: Testmerk Pack size: 500 g Nutri-Score: APer 100g: 350 kcal · P 13g · C 64g · F 2.5gBarcode: 8710000000002PantryReturn",
+    "stockList": "Halfvolle melk−+Brand: Testmerk Pack size: 1 l Nutri-Score: APer 100g: 46 kcal · P 3.5g · C 4.8g · F 1.5g1000 g eachBarcode: 8710000000001DairyReturnWeightVolkoren pasta−+Brand: Testmerk Pack size: 500 g Nutri-Score: APer 100g: 350 kcal · P 13g · C 64g · F 2.5g500 g eachBarcode: 8710000000002PantryReturnWeight",
     "pantryScanMessage": "Scanner idle.",
     "pantryUnknownText": "",
     "recipeEditorModeText": "Creating a new recipe.",
@@ -1734,8 +1766,8 @@
     "apiKeyStatus": "No API key saved yet.",
     "backupStatus": "",
     "stats": [
-      "",
-      "0 of 2 items counted.",
+      "920 kcal totalProtein70g (30%)Carbs96g (41%)Fat30g (29%)",
+      "Based on 1 of 2 items with known amount and nutrition data.",
       "",
       "0 of 1 item counted."
     ],
@@ -1800,10 +1832,11 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": null,
           "bought": false
         }
       ],
-      "grocery_scanner_release_seen_v1": "v42",
+      "grocery_scanner_release_seen_v1": "v43",
       "grocery_scanner_stock_v1": [
         {
           "name": "Halfvolle melk",
@@ -1820,6 +1853,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": 1000,
           "nutritionSource": null,
           "nevoVersion": null
         },
@@ -1838,6 +1872,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": 500,
           "nutritionSource": null,
           "nevoVersion": null
         }
@@ -1868,7 +1903,7 @@
       "1",
       "2"
     ],
-    "stockList": "Halfvolle melk−+Brand: Testmerk Pack size: 1 l Nutri-Score: APer 100g: 46 kcal · P 3.5g · C 4.8g · F 1.5gBarcode: 8710000000001DairyReturnVolkoren pasta−+Brand: Testmerk Pack size: 500 g Nutri-Score: APer 100g: 350 kcal · P 13g · C 64g · F 2.5gBarcode: 8710000000002PantryReturn",
+    "stockList": "Halfvolle melk−+Brand: Testmerk Pack size: 1 l Nutri-Score: APer 100g: 46 kcal · P 3.5g · C 4.8g · F 1.5g1000 g eachBarcode: 8710000000001DairyReturnWeightVolkoren pasta−+Brand: Testmerk Pack size: 500 g Nutri-Score: APer 100g: 350 kcal · P 13g · C 64g · F 2.5g500 g eachBarcode: 8710000000002PantryReturnWeight",
     "pantryScanMessage": "Scanner idle.",
     "pantryUnknownText": "",
     "recipeEditorModeText": "Creating a new recipe.",
@@ -1893,8 +1928,8 @@
     "apiKeyStatus": "No API key saved yet.",
     "backupStatus": "",
     "stats": [
-      "",
-      "0 of 2 items counted.",
+      "1380 kcal totalProtein105g (30%)Carbs144g (41%)Fat45g (29%)",
+      "Based on 1 of 2 items with known amount and nutrition data.",
       "",
       "0 of 1 item counted."
     ],
@@ -1959,10 +1994,11 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": null,
           "bought": false
         }
       ],
-      "grocery_scanner_release_seen_v1": "v42",
+      "grocery_scanner_release_seen_v1": "v43",
       "grocery_scanner_stock_v1": [
         {
           "name": "Halfvolle melk",
@@ -1979,6 +2015,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": 1000,
           "nutritionSource": null,
           "nevoVersion": null
         },
@@ -1997,6 +2034,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": 500,
           "nutritionSource": null,
           "nevoVersion": null
         }
@@ -2027,7 +2065,7 @@
       "1",
       "2"
     ],
-    "stockList": "Halfvolle melk−+Brand: Testmerk Pack size: 1 l Nutri-Score: APer 100g: 46 kcal · P 3.5g · C 4.8g · F 1.5gBarcode: 8710000000001DairyReturnVolkoren pasta−+Brand: Testmerk Pack size: 500 g Nutri-Score: APer 100g: 350 kcal · P 13g · C 64g · F 2.5gBarcode: 8710000000002PantryReturn",
+    "stockList": "Halfvolle melk−+Brand: Testmerk Pack size: 1 l Nutri-Score: APer 100g: 46 kcal · P 3.5g · C 4.8g · F 1.5g1000 g eachBarcode: 8710000000001DairyReturnWeightVolkoren pasta−+Brand: Testmerk Pack size: 500 g Nutri-Score: APer 100g: 350 kcal · P 13g · C 64g · F 2.5g500 g eachBarcode: 8710000000002PantryReturnWeight",
     "pantryScanMessage": "Scanner idle.",
     "pantryUnknownText": "",
     "recipeEditorModeText": "Creating a new recipe.",
@@ -2052,8 +2090,8 @@
     "apiKeyStatus": "No API key saved yet.",
     "backupStatus": "",
     "stats": [
-      "",
-      "0 of 2 items counted.",
+      "1380 kcal totalProtein105g (30%)Carbs144g (41%)Fat45g (29%)",
+      "Based on 1 of 2 items with known amount and nutrition data.",
       "",
       "0 of 1 item counted."
     ],
@@ -2118,10 +2156,11 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": null,
           "bought": false
         }
       ],
-      "grocery_scanner_release_seen_v1": "v42",
+      "grocery_scanner_release_seen_v1": "v43",
       "grocery_scanner_stock_v1": [
         {
           "name": "Halfvolle melk",
@@ -2138,6 +2177,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": 1000,
           "nutritionSource": null,
           "nevoVersion": null
         },
@@ -2156,6 +2196,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": 500,
           "nutritionSource": null,
           "nevoVersion": null
         }
@@ -2186,7 +2227,7 @@
       "1",
       "2"
     ],
-    "stockList": "Halfvolle melk−+Brand: Testmerk Pack size: 1 l Nutri-Score: APer 100g: 46 kcal · P 3.5g · C 4.8g · F 1.5gBarcode: 8710000000001DairyReturnVolkoren pasta−+Brand: Testmerk Pack size: 500 g Nutri-Score: APer 100g: 350 kcal · P 13g · C 64g · F 2.5gBarcode: 8710000000002PantryReturn",
+    "stockList": "Halfvolle melk−+Brand: Testmerk Pack size: 1 l Nutri-Score: APer 100g: 46 kcal · P 3.5g · C 4.8g · F 1.5g1000 g eachBarcode: 8710000000001DairyReturnWeightVolkoren pasta−+Brand: Testmerk Pack size: 500 g Nutri-Score: APer 100g: 350 kcal · P 13g · C 64g · F 2.5g500 g eachBarcode: 8710000000002PantryReturnWeight",
     "pantryScanMessage": "Scanner idle.",
     "pantryUnknownText": "",
     "recipeEditorModeText": "Creating a new recipe.",
@@ -2211,8 +2252,8 @@
     "apiKeyStatus": "No API key saved yet.",
     "backupStatus": "",
     "stats": [
-      "",
-      "0 of 2 items counted.",
+      "1313880 kcal totalProtein48855g (16%)Carbs240144g (77%)Fat9420g (7%)",
+      "Based on 2 of 2 items with known amount and nutrition data.",
       "",
       "0 of 1 item counted."
     ],
@@ -2277,10 +2318,11 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": null,
           "bought": false
         }
       ],
-      "grocery_scanner_release_seen_v1": "v42",
+      "grocery_scanner_release_seen_v1": "v43",
       "grocery_scanner_stock_v1": [
         {
           "name": "Halfvolle melk",
@@ -2297,6 +2339,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": 1000,
           "nutritionSource": null,
           "nevoVersion": null
         },
@@ -2315,6 +2358,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": 500,
           "nutritionSource": null,
           "nevoVersion": null
         }
@@ -2345,7 +2389,7 @@
       "1",
       "2"
     ],
-    "stockList": "Halfvolle melk−+Brand: Testmerk Pack size: 1 l Nutri-Score: APer 100g: 46 kcal · P 3.5g · C 4.8g · F 1.5gBarcode: 8710000000001DairyReturnVolkoren pasta−+Brand: Testmerk Pack size: 500 g Nutri-Score: APer 100g: 350 kcal · P 13g · C 64g · F 2.5gBarcode: 8710000000002PantryReturn",
+    "stockList": "Halfvolle melk−+Brand: Testmerk Pack size: 1 l Nutri-Score: APer 100g: 46 kcal · P 3.5g · C 4.8g · F 1.5g1000 g eachBarcode: 8710000000001DairyReturnWeightVolkoren pasta−+Brand: Testmerk Pack size: 500 g Nutri-Score: APer 100g: 350 kcal · P 13g · C 64g · F 2.5g500 g eachBarcode: 8710000000002PantryReturnWeight",
     "pantryScanMessage": "Added. Point at the next barcode.",
     "pantryUnknownText": "",
     "recipeEditorModeText": "Creating a new recipe.",
@@ -2370,8 +2414,8 @@
     "apiKeyStatus": "No API key saved yet.",
     "backupStatus": "",
     "stats": [
-      "",
-      "0 of 2 items counted.",
+      "1313880 kcal totalProtein48855g (16%)Carbs240144g (77%)Fat9420g (7%)",
+      "Based on 2 of 2 items with known amount and nutrition data.",
       "",
       "0 of 1 item counted."
     ],
@@ -2436,10 +2480,11 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": null,
           "bought": false
         }
       ],
-      "grocery_scanner_release_seen_v1": "v42",
+      "grocery_scanner_release_seen_v1": "v43",
       "grocery_scanner_stock_v1": [
         {
           "name": "Halfvolle melk",
@@ -2456,6 +2501,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": 1000,
           "nutritionSource": null,
           "nevoVersion": null
         },
@@ -2474,6 +2520,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": 500,
           "nutritionSource": null,
           "nevoVersion": null
         }
@@ -2504,7 +2551,7 @@
       "1",
       "2"
     ],
-    "stockList": "Halfvolle melk−+Brand: Testmerk Pack size: 1 l Nutri-Score: APer 100g: 46 kcal · P 3.5g · C 4.8g · F 1.5gBarcode: 8710000000001DairyReturnVolkoren pasta−+Brand: Testmerk Pack size: 500 g Nutri-Score: APer 100g: 350 kcal · P 13g · C 64g · F 2.5gBarcode: 8710000000002PantryReturn",
+    "stockList": "Halfvolle melk−+Brand: Testmerk Pack size: 1 l Nutri-Score: APer 100g: 46 kcal · P 3.5g · C 4.8g · F 1.5g1000 g eachBarcode: 8710000000001DairyReturnWeightVolkoren pasta−+Brand: Testmerk Pack size: 500 g Nutri-Score: APer 100g: 350 kcal · P 13g · C 64g · F 2.5g500 g eachBarcode: 8710000000002PantryReturnWeight",
     "pantryScanMessage": "Waiting for a name...",
     "pantryUnknownText": "Barcode 8710000000077 wasn't found. Enter a name to add it to your pantry.",
     "recipeEditorModeText": "Creating a new recipe.",
@@ -2529,8 +2576,8 @@
     "apiKeyStatus": "No API key saved yet.",
     "backupStatus": "",
     "stats": [
-      "",
-      "0 of 2 items counted.",
+      "1313880 kcal totalProtein48855g (16%)Carbs240144g (77%)Fat9420g (7%)",
+      "Based on 2 of 2 items with known amount and nutrition data.",
       "",
       "0 of 1 item counted."
     ],
@@ -2600,10 +2647,11 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": null,
           "bought": false
         }
       ],
-      "grocery_scanner_release_seen_v1": "v42",
+      "grocery_scanner_release_seen_v1": "v43",
       "grocery_scanner_stock_v1": [
         {
           "name": "Halfvolle melk",
@@ -2620,6 +2668,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": 1000,
           "nutritionSource": null,
           "nevoVersion": null
         },
@@ -2638,6 +2687,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": 500,
           "nutritionSource": null,
           "nevoVersion": null
         }
@@ -2668,7 +2718,7 @@
       "1",
       "3"
     ],
-    "stockList": "Halfvolle melk−+Brand: Testmerk Pack size: 1 l Nutri-Score: APer 100g: 46 kcal · P 3.5g · C 4.8g · F 1.5gBarcode: 8710000000001DairyReturnVolkoren pasta−+Brand: Testmerk Pack size: 500 g Nutri-Score: APer 100g: 350 kcal · P 13g · C 64g · F 2.5gBarcode: 8710000000002PantryReturnKruidenmix−+packBarcode: 8710000000077UncategorisedReturnFind nutrition",
+    "stockList": "Halfvolle melk−+Brand: Testmerk Pack size: 1 l Nutri-Score: APer 100g: 46 kcal · P 3.5g · C 4.8g · F 1.5g1000 g eachBarcode: 8710000000001DairyReturnWeightVolkoren pasta−+Brand: Testmerk Pack size: 500 g Nutri-Score: APer 100g: 350 kcal · P 13g · C 64g · F 2.5g500 g eachBarcode: 8710000000002PantryReturnWeightKruidenmix−+packBarcode: 8710000000077UncategorisedReturnSet weightFind nutrition",
     "pantryScanMessage": "Added. Point at the next barcode.",
     "pantryUnknownText": "Barcode 8710000000077 wasn't found. Enter a name to add it to your pantry.",
     "recipeEditorModeText": "Creating a new recipe.",
@@ -2694,8 +2744,8 @@
     "apiKeyStatus": "No API key saved yet.",
     "backupStatus": "",
     "stats": [
-      "",
-      "0 of 3 items counted.",
+      "1313880 kcal totalProtein48855g (16%)Carbs240144g (77%)Fat9420g (7%)",
+      "Based on 2 of 3 items with known amount and nutrition data.",
       "",
       "0 of 1 item counted."
     ],
@@ -2765,10 +2815,11 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": null,
           "bought": false
         }
       ],
-      "grocery_scanner_release_seen_v1": "v42",
+      "grocery_scanner_release_seen_v1": "v43",
       "grocery_scanner_stock_v1": [
         {
           "name": "Halfvolle melk",
@@ -2785,6 +2836,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": 1000,
           "nutritionSource": null,
           "nevoVersion": null
         },
@@ -2803,6 +2855,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": 500,
           "nutritionSource": null,
           "nevoVersion": null
         },
@@ -2821,6 +2874,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": null,
           "nutritionSource": null,
           "nevoVersion": null
         }
@@ -2851,7 +2905,7 @@
       "1",
       "3"
     ],
-    "stockList": "Halfvolle melk−+Brand: Testmerk Pack size: 1 l Nutri-Score: APer 100g: 46 kcal · P 3.5g · C 4.8g · F 1.5gBarcode: 8710000000001DairyReturnVolkoren pasta−+Brand: Testmerk Pack size: 500 g Nutri-Score: APer 100g: 350 kcal · P 13g · C 64g · F 2.5gBarcode: 8710000000002PantryReturnKruidenmix−+packBarcode: 8710000000077UncategorisedReturnFind nutrition",
+    "stockList": "Halfvolle melk−+Brand: Testmerk Pack size: 1 l Nutri-Score: APer 100g: 46 kcal · P 3.5g · C 4.8g · F 1.5g1000 g eachBarcode: 8710000000001DairyReturnWeightVolkoren pasta−+Brand: Testmerk Pack size: 500 g Nutri-Score: APer 100g: 350 kcal · P 13g · C 64g · F 2.5g500 g eachBarcode: 8710000000002PantryReturnWeightKruidenmix−+packBarcode: 8710000000077UncategorisedReturnSet weightFind nutrition",
     "pantryScanMessage": "Skipped. Point at the next barcode.",
     "pantryUnknownText": "Barcode 8710000000066 wasn't found. Enter a name to add it to your pantry.",
     "recipeEditorModeText": "Creating a new recipe.",
@@ -2877,8 +2931,8 @@
     "apiKeyStatus": "No API key saved yet.",
     "backupStatus": "",
     "stats": [
-      "",
-      "0 of 3 items counted.",
+      "1313880 kcal totalProtein48855g (16%)Carbs240144g (77%)Fat9420g (7%)",
+      "Based on 2 of 3 items with known amount and nutrition data.",
       "",
       "0 of 1 item counted."
     ],
@@ -2953,10 +3007,11 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": null,
           "bought": false
         }
       ],
-      "grocery_scanner_release_seen_v1": "v42",
+      "grocery_scanner_release_seen_v1": "v43",
       "grocery_scanner_stock_v1": [
         {
           "name": "Halfvolle melk",
@@ -2973,6 +3028,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": 1000,
           "nutritionSource": null,
           "nevoVersion": null
         },
@@ -2991,6 +3047,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": 500,
           "nutritionSource": null,
           "nevoVersion": null
         },
@@ -3009,6 +3066,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": null,
           "nutritionSource": null,
           "nevoVersion": null
         }
@@ -3039,7 +3097,7 @@
       "2",
       "2"
     ],
-    "stockList": "Halfvolle melk−+Brand: Testmerk Pack size: 1 l Nutri-Score: APer 100g: 46 kcal · P 3.5g · C 4.8g · F 1.5gBarcode: 8710000000001DairyReturnVolkoren pasta−+Brand: Testmerk Pack size: 500 g Nutri-Score: APer 100g: 350 kcal · P 13g · C 64g · F 2.5gBarcode: 8710000000002PantryReturn",
+    "stockList": "Halfvolle melk−+Brand: Testmerk Pack size: 1 l Nutri-Score: APer 100g: 46 kcal · P 3.5g · C 4.8g · F 1.5g1000 g eachBarcode: 8710000000001DairyReturnWeightVolkoren pasta−+Brand: Testmerk Pack size: 500 g Nutri-Score: APer 100g: 350 kcal · P 13g · C 64g · F 2.5g500 g eachBarcode: 8710000000002PantryReturnWeight",
     "pantryScanMessage": "Scanner stopped.",
     "pantryUnknownText": "Barcode 8710000000066 wasn't found. Enter a name to add it to your pantry.",
     "recipeEditorModeText": "Creating a new recipe.",
@@ -3065,8 +3123,8 @@
     "apiKeyStatus": "No API key saved yet.",
     "backupStatus": "",
     "stats": [
-      "",
-      "0 of 2 items counted.",
+      "1313880 kcal totalProtein48855g (16%)Carbs240144g (77%)Fat9420g (7%)",
+      "Based on 2 of 2 items with known amount and nutrition data.",
       "",
       "0 of 2 items counted."
     ],
@@ -3141,6 +3199,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": null,
           "bought": false
         },
         {
@@ -3158,12 +3217,13 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": null,
           "nutritionSource": null,
           "nevoVersion": null,
           "bought": false
         }
       ],
-      "grocery_scanner_release_seen_v1": "v42",
+      "grocery_scanner_release_seen_v1": "v43",
       "grocery_scanner_stock_v1": [
         {
           "name": "Halfvolle melk",
@@ -3180,6 +3240,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": 1000,
           "nutritionSource": null,
           "nevoVersion": null
         },
@@ -3198,6 +3259,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": 500,
           "nutritionSource": null,
           "nevoVersion": null
         }
@@ -3228,7 +3290,7 @@
       "2",
       "2"
     ],
-    "stockList": "Halfvolle melk−+Brand: Testmerk Pack size: 1 l Nutri-Score: APer 100g: 46 kcal · P 3.5g · C 4.8g · F 1.5gBarcode: 8710000000001DairyReturnVolkoren pasta−+Brand: Testmerk Pack size: 500 g Nutri-Score: APer 100g: 350 kcal · P 13g · C 64g · F 2.5gBarcode: 8710000000002PantryReturn",
+    "stockList": "Halfvolle melk−+Brand: Testmerk Pack size: 1 l Nutri-Score: APer 100g: 46 kcal · P 3.5g · C 4.8g · F 1.5g1000 g eachBarcode: 8710000000001DairyReturnWeightVolkoren pasta−+Brand: Testmerk Pack size: 500 g Nutri-Score: APer 100g: 350 kcal · P 13g · C 64g · F 2.5g500 g eachBarcode: 8710000000002PantryReturnWeight",
     "pantryScanMessage": "Scanner stopped.",
     "pantryUnknownText": "Barcode 8710000000066 wasn't found. Enter a name to add it to your pantry.",
     "recipeEditorModeText": "Creating a new recipe.",
@@ -3254,8 +3316,8 @@
     "apiKeyStatus": "No API key saved yet.",
     "backupStatus": "",
     "stats": [
-      "",
-      "0 of 2 items counted.",
+      "1313880 kcal totalProtein48855g (16%)Carbs240144g (77%)Fat9420g (7%)",
+      "Based on 2 of 2 items with known amount and nutrition data.",
       "",
       "0 of 2 items counted."
     ],
@@ -3330,6 +3392,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": null,
           "bought": false
         },
         {
@@ -3347,12 +3410,13 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": null,
           "nutritionSource": null,
           "nevoVersion": null,
           "bought": false
         }
       ],
-      "grocery_scanner_release_seen_v1": "v42",
+      "grocery_scanner_release_seen_v1": "v43",
       "grocery_scanner_stock_v1": [
         {
           "name": "Halfvolle melk",
@@ -3369,6 +3433,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": 1000,
           "nutritionSource": null,
           "nevoVersion": null
         },
@@ -3387,6 +3452,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": 500,
           "nutritionSource": null,
           "nevoVersion": null
         }
@@ -3417,7 +3483,7 @@
       "2",
       "2"
     ],
-    "stockList": "Halfvolle melk−+Brand: Testmerk Pack size: 1 l Nutri-Score: APer 100g: 46 kcal · P 3.5g · C 4.8g · F 1.5gBarcode: 8710000000001DairyReturnVolkoren pasta−+Brand: Testmerk Pack size: 500 g Nutri-Score: APer 100g: 350 kcal · P 13g · C 64g · F 2.5gBarcode: 8710000000002PantryReturn",
+    "stockList": "Halfvolle melk−+Brand: Testmerk Pack size: 1 l Nutri-Score: APer 100g: 46 kcal · P 3.5g · C 4.8g · F 1.5g1000 g eachBarcode: 8710000000001DairyReturnWeightVolkoren pasta−+Brand: Testmerk Pack size: 500 g Nutri-Score: APer 100g: 350 kcal · P 13g · C 64g · F 2.5g500 g eachBarcode: 8710000000002PantryReturnWeight",
     "pantryScanMessage": "Scanner stopped.",
     "pantryUnknownText": "Barcode 8710000000066 wasn't found. Enter a name to add it to your pantry.",
     "recipeEditorModeText": "Creating a new recipe.",
@@ -3443,8 +3509,8 @@
     "apiKeyStatus": "No API key saved yet.",
     "backupStatus": "",
     "stats": [
-      "",
-      "0 of 2 items counted.",
+      "1313880 kcal totalProtein48855g (16%)Carbs240144g (77%)Fat9420g (7%)",
+      "Based on 2 of 2 items with known amount and nutrition data.",
       "",
       "0 of 2 items counted."
     ],
@@ -3519,6 +3585,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": null,
           "bought": false
         },
         {
@@ -3536,12 +3603,13 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": null,
           "nutritionSource": null,
           "nevoVersion": null,
           "bought": false
         }
       ],
-      "grocery_scanner_release_seen_v1": "v42",
+      "grocery_scanner_release_seen_v1": "v43",
       "grocery_scanner_stock_v1": [
         {
           "name": "Halfvolle melk",
@@ -3558,6 +3626,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": 1000,
           "nutritionSource": null,
           "nevoVersion": null
         },
@@ -3576,6 +3645,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": 500,
           "nutritionSource": null,
           "nevoVersion": null
         }
@@ -3606,7 +3676,7 @@
       "2",
       "2"
     ],
-    "stockList": "Halfvolle melk−+Brand: Testmerk Pack size: 1 l Nutri-Score: APer 100g: 46 kcal · P 3.5g · C 4.8g · F 1.5gBarcode: 8710000000001DairyReturnVolkoren pasta−+Brand: Testmerk Pack size: 500 g Nutri-Score: APer 100g: 350 kcal · P 13g · C 64g · F 2.5gBarcode: 8710000000002PantryReturn",
+    "stockList": "Halfvolle melk−+Brand: Testmerk Pack size: 1 l Nutri-Score: APer 100g: 46 kcal · P 3.5g · C 4.8g · F 1.5g1000 g eachBarcode: 8710000000001DairyReturnWeightVolkoren pasta−+Brand: Testmerk Pack size: 500 g Nutri-Score: APer 100g: 350 kcal · P 13g · C 64g · F 2.5g500 g eachBarcode: 8710000000002PantryReturnWeight",
     "pantryScanMessage": "Scanner stopped.",
     "pantryUnknownText": "Barcode 8710000000066 wasn't found. Enter a name to add it to your pantry.",
     "recipeEditorModeText": "Editing a saved recipe.",
@@ -3632,8 +3702,8 @@
     "apiKeyStatus": "No API key saved yet.",
     "backupStatus": "",
     "stats": [
-      "",
-      "0 of 2 items counted.",
+      "1313880 kcal totalProtein48855g (16%)Carbs240144g (77%)Fat9420g (7%)",
+      "Based on 2 of 2 items with known amount and nutrition data.",
       "",
       "0 of 2 items counted."
     ],
@@ -3708,6 +3778,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": null,
           "bought": false
         },
         {
@@ -3725,6 +3796,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": null,
           "nutritionSource": null,
           "nevoVersion": null,
           "bought": false
@@ -3775,7 +3847,7 @@
           ]
         }
       ],
-      "grocery_scanner_release_seen_v1": "v42",
+      "grocery_scanner_release_seen_v1": "v43",
       "grocery_scanner_stock_v1": [
         {
           "name": "Halfvolle melk",
@@ -3792,6 +3864,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": 1000,
           "nutritionSource": null,
           "nevoVersion": null
         },
@@ -3810,6 +3883,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": 500,
           "nutritionSource": null,
           "nevoVersion": null
         }
@@ -3840,7 +3914,7 @@
       "2",
       "2"
     ],
-    "stockList": "Halfvolle melk−+Brand: Testmerk Pack size: 1 l Nutri-Score: APer 100g: 46 kcal · P 3.5g · C 4.8g · F 1.5gBarcode: 8710000000001DairyReturnVolkoren pasta−+Brand: Testmerk Pack size: 500 g Nutri-Score: APer 100g: 350 kcal · P 13g · C 64g · F 2.5gBarcode: 8710000000002PantryReturn",
+    "stockList": "Halfvolle melk−+Brand: Testmerk Pack size: 1 l Nutri-Score: APer 100g: 46 kcal · P 3.5g · C 4.8g · F 1.5g1000 g eachBarcode: 8710000000001DairyReturnWeightVolkoren pasta−+Brand: Testmerk Pack size: 500 g Nutri-Score: APer 100g: 350 kcal · P 13g · C 64g · F 2.5g500 g eachBarcode: 8710000000002PantryReturnWeight",
     "pantryScanMessage": "Scanner stopped.",
     "pantryUnknownText": "Barcode 8710000000066 wasn't found. Enter a name to add it to your pantry.",
     "recipeEditorModeText": "Creating a new recipe.",
@@ -3866,8 +3940,8 @@
     "apiKeyStatus": "No API key saved yet.",
     "backupStatus": "",
     "stats": [
-      "",
-      "0 of 2 items counted.",
+      "1313880 kcal totalProtein48855g (16%)Carbs240144g (77%)Fat9420g (7%)",
+      "Based on 2 of 2 items with known amount and nutrition data.",
       "",
       "0 of 2 items counted."
     ],
@@ -3942,6 +4016,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": null,
           "bought": false
         },
         {
@@ -3959,6 +4034,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": null,
           "nutritionSource": null,
           "nevoVersion": null,
           "bought": false
@@ -4009,7 +4085,7 @@
           ]
         }
       ],
-      "grocery_scanner_release_seen_v1": "v42",
+      "grocery_scanner_release_seen_v1": "v43",
       "grocery_scanner_stock_v1": [
         {
           "name": "Halfvolle melk",
@@ -4026,6 +4102,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": 1000,
           "nutritionSource": null,
           "nevoVersion": null
         },
@@ -4044,6 +4121,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": 500,
           "nutritionSource": null,
           "nevoVersion": null
         }
@@ -4074,7 +4152,7 @@
       "2",
       "2"
     ],
-    "stockList": "Halfvolle melk−+Brand: Testmerk Pack size: 1 l Nutri-Score: APer 100g: 46 kcal · P 3.5g · C 4.8g · F 1.5gBarcode: 8710000000001DairyReturnVolkoren pasta−+Brand: Testmerk Pack size: 500 g Nutri-Score: APer 100g: 350 kcal · P 13g · C 64g · F 2.5gBarcode: 8710000000002PantryReturn",
+    "stockList": "Halfvolle melk−+Brand: Testmerk Pack size: 1 l Nutri-Score: APer 100g: 46 kcal · P 3.5g · C 4.8g · F 1.5g1000 g eachBarcode: 8710000000001DairyReturnWeightVolkoren pasta−+Brand: Testmerk Pack size: 500 g Nutri-Score: APer 100g: 350 kcal · P 13g · C 64g · F 2.5g500 g eachBarcode: 8710000000002PantryReturnWeight",
     "pantryScanMessage": "Scanner stopped.",
     "pantryUnknownText": "Barcode 8710000000066 wasn't found. Enter a name to add it to your pantry.",
     "recipeEditorModeText": "Editing a saved recipe.",
@@ -4100,8 +4178,8 @@
     "apiKeyStatus": "No API key saved yet.",
     "backupStatus": "",
     "stats": [
-      "",
-      "0 of 2 items counted.",
+      "1313880 kcal totalProtein48855g (16%)Carbs240144g (77%)Fat9420g (7%)",
+      "Based on 2 of 2 items with known amount and nutrition data.",
       "",
       "0 of 2 items counted."
     ],
@@ -4176,6 +4254,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": null,
           "bought": false
         },
         {
@@ -4193,6 +4272,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": null,
           "nutritionSource": null,
           "nevoVersion": null,
           "bought": false
@@ -4286,7 +4366,7 @@
           ]
         }
       ],
-      "grocery_scanner_release_seen_v1": "v42",
+      "grocery_scanner_release_seen_v1": "v43",
       "grocery_scanner_stock_v1": [
         {
           "name": "Halfvolle melk",
@@ -4303,6 +4383,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": 1000,
           "nutritionSource": null,
           "nevoVersion": null
         },
@@ -4321,6 +4402,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": 500,
           "nutritionSource": null,
           "nevoVersion": null
         }
@@ -4351,7 +4433,7 @@
       "2",
       "2"
     ],
-    "stockList": "Halfvolle melk−+Brand: Testmerk Pack size: 1 l Nutri-Score: APer 100g: 46 kcal · P 3.5g · C 4.8g · F 1.5gBarcode: 8710000000001DairyReturnVolkoren pasta−+Brand: Testmerk Pack size: 500 g Nutri-Score: APer 100g: 350 kcal · P 13g · C 64g · F 2.5gBarcode: 8710000000002PantryReturn",
+    "stockList": "Halfvolle melk−+Brand: Testmerk Pack size: 1 l Nutri-Score: APer 100g: 46 kcal · P 3.5g · C 4.8g · F 1.5g1000 g eachBarcode: 8710000000001DairyReturnWeightVolkoren pasta−+Brand: Testmerk Pack size: 500 g Nutri-Score: APer 100g: 350 kcal · P 13g · C 64g · F 2.5g500 g eachBarcode: 8710000000002PantryReturnWeight",
     "pantryScanMessage": "Scanner stopped.",
     "pantryUnknownText": "Barcode 8710000000066 wasn't found. Enter a name to add it to your pantry.",
     "recipeEditorModeText": "Editing a saved recipe.",
@@ -4377,8 +4459,8 @@
     "apiKeyStatus": "No API key saved yet.",
     "backupStatus": "",
     "stats": [
-      "",
-      "0 of 2 items counted.",
+      "1313880 kcal totalProtein48855g (16%)Carbs240144g (77%)Fat9420g (7%)",
+      "Based on 2 of 2 items with known amount and nutrition data.",
       "",
       "0 of 2 items counted."
     ],
@@ -4453,6 +4535,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": null,
           "bought": false
         },
         {
@@ -4470,6 +4553,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": null,
           "nutritionSource": null,
           "nevoVersion": null,
           "bought": false
@@ -4563,7 +4647,7 @@
           ]
         }
       ],
-      "grocery_scanner_release_seen_v1": "v42",
+      "grocery_scanner_release_seen_v1": "v43",
       "grocery_scanner_stock_v1": [
         {
           "name": "Halfvolle melk",
@@ -4580,6 +4664,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": 1000,
           "nutritionSource": null,
           "nevoVersion": null
         },
@@ -4598,6 +4683,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": 500,
           "nutritionSource": null,
           "nevoVersion": null
         }
@@ -4628,7 +4714,7 @@
       "2",
       "2"
     ],
-    "stockList": "Halfvolle melk−+Brand: Testmerk Pack size: 1 l Nutri-Score: APer 100g: 46 kcal · P 3.5g · C 4.8g · F 1.5gBarcode: 8710000000001DairyReturnVolkoren pasta−+Brand: Testmerk Pack size: 500 g Nutri-Score: APer 100g: 350 kcal · P 13g · C 64g · F 2.5gBarcode: 8710000000002PantryReturn",
+    "stockList": "Halfvolle melk−+Brand: Testmerk Pack size: 1 l Nutri-Score: APer 100g: 46 kcal · P 3.5g · C 4.8g · F 1.5g1000 g eachBarcode: 8710000000001DairyReturnWeightVolkoren pasta−+Brand: Testmerk Pack size: 500 g Nutri-Score: APer 100g: 350 kcal · P 13g · C 64g · F 2.5g500 g eachBarcode: 8710000000002PantryReturnWeight",
     "pantryScanMessage": "Scanner stopped.",
     "pantryUnknownText": "Barcode 8710000000066 wasn't found. Enter a name to add it to your pantry.",
     "recipeEditorModeText": "Editing a saved recipe.",
@@ -4654,8 +4740,8 @@
     "apiKeyStatus": "No API key saved yet.",
     "backupStatus": "",
     "stats": [
-      "",
-      "0 of 2 items counted.",
+      "1313880 kcal totalProtein48855g (16%)Carbs240144g (77%)Fat9420g (7%)",
+      "Based on 2 of 2 items with known amount and nutrition data.",
       "",
       "0 of 2 items counted."
     ],
@@ -4730,6 +4816,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": null,
           "bought": false
         },
         {
@@ -4747,6 +4834,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": null,
           "nutritionSource": null,
           "nevoVersion": null,
           "bought": false
@@ -4840,7 +4928,7 @@
           ]
         }
       ],
-      "grocery_scanner_release_seen_v1": "v42",
+      "grocery_scanner_release_seen_v1": "v43",
       "grocery_scanner_stock_v1": [
         {
           "name": "Halfvolle melk",
@@ -4857,6 +4945,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": 1000,
           "nutritionSource": null,
           "nevoVersion": null
         },
@@ -4875,6 +4964,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": 500,
           "nutritionSource": null,
           "nevoVersion": null
         }
@@ -4905,7 +4995,7 @@
       "2",
       "2"
     ],
-    "stockList": "Halfvolle melk−+Brand: Testmerk Pack size: 1 l Nutri-Score: APer 100g: 46 kcal · P 3.5g · C 4.8g · F 1.5gBarcode: 8710000000001DairyReturnVolkoren pasta−+Brand: Testmerk Pack size: 500 g Nutri-Score: APer 100g: 350 kcal · P 13g · C 64g · F 2.5gBarcode: 8710000000002PantryReturn",
+    "stockList": "Halfvolle melk−+Brand: Testmerk Pack size: 1 l Nutri-Score: APer 100g: 46 kcal · P 3.5g · C 4.8g · F 1.5g1000 g eachBarcode: 8710000000001DairyReturnWeightVolkoren pasta−+Brand: Testmerk Pack size: 500 g Nutri-Score: APer 100g: 350 kcal · P 13g · C 64g · F 2.5g500 g eachBarcode: 8710000000002PantryReturnWeight",
     "pantryScanMessage": "Scanner stopped.",
     "pantryUnknownText": "Barcode 8710000000066 wasn't found. Enter a name to add it to your pantry.",
     "recipeEditorModeText": "Editing a saved recipe.",
@@ -4931,8 +5021,8 @@
     "apiKeyStatus": "No API key saved yet.",
     "backupStatus": "",
     "stats": [
-      "",
-      "0 of 2 items counted.",
+      "1313880 kcal totalProtein48855g (16%)Carbs240144g (77%)Fat9420g (7%)",
+      "Based on 2 of 2 items with known amount and nutrition data.",
       "",
       "0 of 2 items counted."
     ],
@@ -5007,6 +5097,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": null,
           "bought": false
         },
         {
@@ -5024,6 +5115,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": null,
           "nutritionSource": null,
           "nevoVersion": null,
           "bought": false
@@ -5074,7 +5166,7 @@
           ]
         }
       ],
-      "grocery_scanner_release_seen_v1": "v42",
+      "grocery_scanner_release_seen_v1": "v43",
       "grocery_scanner_stock_v1": [
         {
           "name": "Halfvolle melk",
@@ -5091,6 +5183,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": 1000,
           "nutritionSource": null,
           "nevoVersion": null
         },
@@ -5109,6 +5202,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": 500,
           "nutritionSource": null,
           "nevoVersion": null
         }
@@ -5139,7 +5233,7 @@
       "2",
       "2"
     ],
-    "stockList": "Halfvolle melk−+Brand: Testmerk Pack size: 1 l Nutri-Score: APer 100g: 46 kcal · P 3.5g · C 4.8g · F 1.5gBarcode: 8710000000001DairyReturnVolkoren pasta−+Brand: Testmerk Pack size: 500 g Nutri-Score: APer 100g: 350 kcal · P 13g · C 64g · F 2.5gBarcode: 8710000000002PantryReturn",
+    "stockList": "Halfvolle melk−+Brand: Testmerk Pack size: 1 l Nutri-Score: APer 100g: 46 kcal · P 3.5g · C 4.8g · F 1.5g1000 g eachBarcode: 8710000000001DairyReturnWeightVolkoren pasta−+Brand: Testmerk Pack size: 500 g Nutri-Score: APer 100g: 350 kcal · P 13g · C 64g · F 2.5g500 g eachBarcode: 8710000000002PantryReturnWeight",
     "pantryScanMessage": "Scanner stopped.",
     "pantryUnknownText": "Barcode 8710000000066 wasn't found. Enter a name to add it to your pantry.",
     "recipeEditorModeText": "Editing a saved recipe.",
@@ -5165,8 +5259,8 @@
     "apiKeyStatus": "No API key saved yet.",
     "backupStatus": "",
     "stats": [
-      "",
-      "0 of 2 items counted.",
+      "1313880 kcal totalProtein48855g (16%)Carbs240144g (77%)Fat9420g (7%)",
+      "Based on 2 of 2 items with known amount and nutrition data.",
       "",
       "0 of 2 items counted."
     ],
@@ -5241,6 +5335,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": null,
           "bought": false
         },
         {
@@ -5258,6 +5353,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": null,
           "nutritionSource": null,
           "nevoVersion": null,
           "bought": false
@@ -5308,7 +5404,7 @@
           ]
         }
       ],
-      "grocery_scanner_release_seen_v1": "v42",
+      "grocery_scanner_release_seen_v1": "v43",
       "grocery_scanner_stock_v1": [
         {
           "name": "Halfvolle melk",
@@ -5325,6 +5421,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": 1000,
           "nutritionSource": null,
           "nevoVersion": null
         },
@@ -5343,6 +5440,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": 500,
           "nutritionSource": null,
           "nevoVersion": null
         }
@@ -5373,7 +5471,7 @@
       "2",
       "2"
     ],
-    "stockList": "Halfvolle melk−+Brand: Testmerk Pack size: 1 l Nutri-Score: APer 100g: 46 kcal · P 3.5g · C 4.8g · F 1.5gBarcode: 8710000000001DairyReturnVolkoren pasta−+Brand: Testmerk Pack size: 500 g Nutri-Score: APer 100g: 350 kcal · P 13g · C 64g · F 2.5gBarcode: 8710000000002PantryReturn",
+    "stockList": "Halfvolle melk−+Brand: Testmerk Pack size: 1 l Nutri-Score: APer 100g: 46 kcal · P 3.5g · C 4.8g · F 1.5g1000 g eachBarcode: 8710000000001DairyReturnWeightVolkoren pasta−+Brand: Testmerk Pack size: 500 g Nutri-Score: APer 100g: 350 kcal · P 13g · C 64g · F 2.5g500 g eachBarcode: 8710000000002PantryReturnWeight",
     "pantryScanMessage": "Scanner stopped.",
     "pantryUnknownText": "Barcode 8710000000066 wasn't found. Enter a name to add it to your pantry.",
     "recipeEditorModeText": "Creating a new recipe.",
@@ -5399,8 +5497,8 @@
     "apiKeyStatus": "No API key saved yet.",
     "backupStatus": "",
     "stats": [
-      "",
-      "0 of 2 items counted.",
+      "1313880 kcal totalProtein48855g (16%)Carbs240144g (77%)Fat9420g (7%)",
+      "Based on 2 of 2 items with known amount and nutrition data.",
       "",
       "0 of 2 items counted."
     ],
@@ -5475,6 +5573,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": null,
           "bought": false
         },
         {
@@ -5492,6 +5591,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": null,
           "nutritionSource": null,
           "nevoVersion": null,
           "bought": false
@@ -5542,7 +5642,7 @@
           ]
         }
       ],
-      "grocery_scanner_release_seen_v1": "v42",
+      "grocery_scanner_release_seen_v1": "v43",
       "grocery_scanner_stock_v1": [
         {
           "name": "Halfvolle melk",
@@ -5559,6 +5659,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": 1000,
           "nutritionSource": null,
           "nevoVersion": null
         },
@@ -5577,6 +5678,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": 500,
           "nutritionSource": null,
           "nevoVersion": null
         }
@@ -5607,7 +5709,7 @@
       "2",
       "2"
     ],
-    "stockList": "Halfvolle melk−+Brand: Testmerk Pack size: 1 l Nutri-Score: APer 100g: 46 kcal · P 3.5g · C 4.8g · F 1.5gBarcode: 8710000000001DairyReturnVolkoren pasta−+Brand: Testmerk Pack size: 500 g Nutri-Score: APer 100g: 350 kcal · P 13g · C 64g · F 2.5gBarcode: 8710000000002PantryReturn",
+    "stockList": "Halfvolle melk−+Brand: Testmerk Pack size: 1 l Nutri-Score: APer 100g: 46 kcal · P 3.5g · C 4.8g · F 1.5g1000 g eachBarcode: 8710000000001DairyReturnWeightVolkoren pasta−+Brand: Testmerk Pack size: 500 g Nutri-Score: APer 100g: 350 kcal · P 13g · C 64g · F 2.5g500 g eachBarcode: 8710000000002PantryReturnWeight",
     "pantryScanMessage": "Scanner stopped.",
     "pantryUnknownText": "Barcode 8710000000066 wasn't found. Enter a name to add it to your pantry.",
     "recipeEditorModeText": "Creating a new recipe.",
@@ -5633,8 +5735,8 @@
     "apiKeyStatus": "No API key saved yet.",
     "backupStatus": "",
     "stats": [
-      "",
-      "0 of 2 items counted.",
+      "1313880 kcal totalProtein48855g (16%)Carbs240144g (77%)Fat9420g (7%)",
+      "Based on 2 of 2 items with known amount and nutrition data.",
       "",
       "0 of 2 items counted."
     ],
@@ -5709,6 +5811,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": null,
           "bought": false
         },
         {
@@ -5726,6 +5829,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": null,
           "nutritionSource": null,
           "nevoVersion": null,
           "bought": false
@@ -5776,7 +5880,7 @@
           ]
         }
       ],
-      "grocery_scanner_release_seen_v1": "v42",
+      "grocery_scanner_release_seen_v1": "v43",
       "grocery_scanner_stock_v1": [
         {
           "name": "Halfvolle melk",
@@ -5793,6 +5897,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": 1000,
           "nutritionSource": null,
           "nevoVersion": null
         },
@@ -5811,6 +5916,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": 500,
           "nutritionSource": null,
           "nevoVersion": null
         }
@@ -5841,7 +5947,7 @@
       "2",
       "2"
     ],
-    "stockList": "Halfvolle melk−+Brand: Testmerk Pack size: 1 l Nutri-Score: APer 100g: 46 kcal · P 3.5g · C 4.8g · F 1.5gBarcode: 8710000000001DairyReturnVolkoren pasta−+Brand: Testmerk Pack size: 500 g Nutri-Score: APer 100g: 350 kcal · P 13g · C 64g · F 2.5gBarcode: 8710000000002PantryReturn",
+    "stockList": "Halfvolle melk−+Brand: Testmerk Pack size: 1 l Nutri-Score: APer 100g: 46 kcal · P 3.5g · C 4.8g · F 1.5g1000 g eachBarcode: 8710000000001DairyReturnWeightVolkoren pasta−+Brand: Testmerk Pack size: 500 g Nutri-Score: APer 100g: 350 kcal · P 13g · C 64g · F 2.5g500 g eachBarcode: 8710000000002PantryReturnWeight",
     "pantryScanMessage": "Scanner stopped.",
     "pantryUnknownText": "Barcode 8710000000066 wasn't found. Enter a name to add it to your pantry.",
     "recipeEditorModeText": "Creating a new recipe.",
@@ -5867,8 +5973,8 @@
     "apiKeyStatus": "Connected successfully.",
     "backupStatus": "",
     "stats": [
-      "",
-      "0 of 2 items counted.",
+      "1313880 kcal totalProtein48855g (16%)Carbs240144g (77%)Fat9420g (7%)",
+      "Based on 2 of 2 items with known amount and nutrition data.",
       "",
       "0 of 2 items counted."
     ],
@@ -5944,6 +6050,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": null,
           "bought": false
         },
         {
@@ -5961,6 +6068,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": null,
           "nutritionSource": null,
           "nevoVersion": null,
           "bought": false
@@ -6011,7 +6119,7 @@
           ]
         }
       ],
-      "grocery_scanner_release_seen_v1": "v42",
+      "grocery_scanner_release_seen_v1": "v43",
       "grocery_scanner_stock_v1": [
         {
           "name": "Halfvolle melk",
@@ -6028,6 +6136,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": 1000,
           "nutritionSource": null,
           "nevoVersion": null
         },
@@ -6046,6 +6155,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": 500,
           "nutritionSource": null,
           "nevoVersion": null
         }
@@ -6076,7 +6186,7 @@
       "2",
       "2"
     ],
-    "stockList": "Halfvolle melk−+Brand: Testmerk Pack size: 1 l Nutri-Score: APer 100g: 46 kcal · P 3.5g · C 4.8g · F 1.5gBarcode: 8710000000001DairyReturnVolkoren pasta−+Brand: Testmerk Pack size: 500 g Nutri-Score: APer 100g: 350 kcal · P 13g · C 64g · F 2.5gBarcode: 8710000000002PantryReturn",
+    "stockList": "Halfvolle melk−+Brand: Testmerk Pack size: 1 l Nutri-Score: APer 100g: 46 kcal · P 3.5g · C 4.8g · F 1.5g1000 g eachBarcode: 8710000000001DairyReturnWeightVolkoren pasta−+Brand: Testmerk Pack size: 500 g Nutri-Score: APer 100g: 350 kcal · P 13g · C 64g · F 2.5g500 g eachBarcode: 8710000000002PantryReturnWeight",
     "pantryScanMessage": "Scanner stopped.",
     "pantryUnknownText": "Barcode 8710000000066 wasn't found. Enter a name to add it to your pantry.",
     "recipeEditorModeText": "Creating a new recipe.",
@@ -6102,8 +6212,8 @@
     "apiKeyStatus": "Connected successfully.",
     "backupStatus": "",
     "stats": [
-      "",
-      "0 of 2 items counted.",
+      "1313880 kcal totalProtein48855g (16%)Carbs240144g (77%)Fat9420g (7%)",
+      "Based on 2 of 2 items with known amount and nutrition data.",
       "",
       "0 of 2 items counted."
     ],
@@ -6179,6 +6289,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": null,
           "bought": false
         },
         {
@@ -6196,6 +6307,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": null,
           "nutritionSource": null,
           "nevoVersion": null,
           "bought": false
@@ -6246,7 +6358,7 @@
           ]
         }
       ],
-      "grocery_scanner_release_seen_v1": "v42",
+      "grocery_scanner_release_seen_v1": "v43",
       "grocery_scanner_stock_v1": [
         {
           "name": "Halfvolle melk",
@@ -6263,6 +6375,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": 1000,
           "nutritionSource": null,
           "nevoVersion": null
         },
@@ -6281,6 +6394,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": 500,
           "nutritionSource": null,
           "nevoVersion": null
         }
@@ -6311,7 +6425,7 @@
       "2",
       "2"
     ],
-    "stockList": "Halfvolle melk−+Brand: Testmerk Pack size: 1 l Nutri-Score: APer 100g: 46 kcal · P 3.5g · C 4.8g · F 1.5gBarcode: 8710000000001DairyReturnVolkoren pasta−+Brand: Testmerk Pack size: 500 g Nutri-Score: APer 100g: 350 kcal · P 13g · C 64g · F 2.5gBarcode: 8710000000002PantryReturn",
+    "stockList": "Halfvolle melk−+Brand: Testmerk Pack size: 1 l Nutri-Score: APer 100g: 46 kcal · P 3.5g · C 4.8g · F 1.5g1000 g eachBarcode: 8710000000001DairyReturnWeightVolkoren pasta−+Brand: Testmerk Pack size: 500 g Nutri-Score: APer 100g: 350 kcal · P 13g · C 64g · F 2.5g500 g eachBarcode: 8710000000002PantryReturnWeight",
     "pantryScanMessage": "Scanner stopped.",
     "pantryUnknownText": "Barcode 8710000000066 wasn't found. Enter a name to add it to your pantry.",
     "recipeEditorModeText": "Creating a new recipe.",
@@ -6337,8 +6451,8 @@
     "apiKeyStatus": "Connected successfully.",
     "backupStatus": "",
     "stats": [
-      "",
-      "0 of 2 items counted.",
+      "1313880 kcal totalProtein48855g (16%)Carbs240144g (77%)Fat9420g (7%)",
+      "Based on 2 of 2 items with known amount and nutrition data.",
       "",
       "0 of 2 items counted."
     ],
@@ -6414,6 +6528,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": null,
           "bought": false
         },
         {
@@ -6431,6 +6546,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": null,
           "nutritionSource": null,
           "nevoVersion": null,
           "bought": false
@@ -6524,7 +6640,7 @@
           ]
         }
       ],
-      "grocery_scanner_release_seen_v1": "v42",
+      "grocery_scanner_release_seen_v1": "v43",
       "grocery_scanner_stock_v1": [
         {
           "name": "Halfvolle melk",
@@ -6541,6 +6657,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": 1000,
           "nutritionSource": null,
           "nevoVersion": null
         },
@@ -6559,6 +6676,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": 500,
           "nutritionSource": null,
           "nevoVersion": null
         }
@@ -6589,7 +6707,7 @@
       "4",
       "2"
     ],
-    "stockList": "Halfvolle melk−+Brand: Testmerk Pack size: 1 l Nutri-Score: APer 100g: 46 kcal · P 3.5g · C 4.8g · F 1.5gBarcode: 8710000000001DairyReturnVolkoren pasta−+Brand: Testmerk Pack size: 500 g Nutri-Score: APer 100g: 350 kcal · P 13g · C 64g · F 2.5gBarcode: 8710000000002PantryReturn",
+    "stockList": "Halfvolle melk−+Brand: Testmerk Pack size: 1 l Nutri-Score: APer 100g: 46 kcal · P 3.5g · C 4.8g · F 1.5g1000 g eachBarcode: 8710000000001DairyReturnWeightVolkoren pasta−+Brand: Testmerk Pack size: 500 g Nutri-Score: APer 100g: 350 kcal · P 13g · C 64g · F 2.5g500 g eachBarcode: 8710000000002PantryReturnWeight",
     "pantryScanMessage": "Scanner stopped.",
     "pantryUnknownText": "Barcode 8710000000066 wasn't found. Enter a name to add it to your pantry.",
     "recipeEditorModeText": "Creating a new recipe.",
@@ -6617,8 +6735,8 @@
     "apiKeyStatus": "Connected successfully.",
     "backupStatus": "",
     "stats": [
-      "",
-      "0 of 2 items counted.",
+      "1313880 kcal totalProtein48855g (16%)Carbs240144g (77%)Fat9420g (7%)",
+      "Based on 2 of 2 items with known amount and nutrition data.",
       "",
       "0 of 4 items counted."
     ],
@@ -6694,6 +6812,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": null,
           "bought": false
         },
         {
@@ -6711,6 +6830,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": null,
           "nutritionSource": null,
           "nevoVersion": null,
           "bought": false
@@ -6730,6 +6850,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": null,
           "nutritionSource": null,
           "nevoVersion": null,
           "bought": false
@@ -6749,6 +6870,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": null,
           "nutritionSource": null,
           "nevoVersion": null,
           "bought": false
@@ -6842,7 +6964,7 @@
           ]
         }
       ],
-      "grocery_scanner_release_seen_v1": "v42",
+      "grocery_scanner_release_seen_v1": "v43",
       "grocery_scanner_stock_v1": [
         {
           "name": "Halfvolle melk",
@@ -6859,6 +6981,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": 1000,
           "nutritionSource": null,
           "nevoVersion": null
         },
@@ -6877,6 +7000,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": 500,
           "nutritionSource": null,
           "nevoVersion": null
         }
@@ -6907,7 +7031,7 @@
       "4",
       "2"
     ],
-    "stockList": "Halfvolle melk−+Brand: Testmerk Pack size: 1 l Nutri-Score: APer 100g: 46 kcal · P 3.5g · C 4.8g · F 1.5gBarcode: 8710000000001DairyReturnVolkoren pasta−+Brand: Testmerk Pack size: 500 g Nutri-Score: APer 100g: 350 kcal · P 13g · C 64g · F 2.5gBarcode: 8710000000002PantryReturn",
+    "stockList": "Halfvolle melk−+Brand: Testmerk Pack size: 1 l Nutri-Score: APer 100g: 46 kcal · P 3.5g · C 4.8g · F 1.5g1000 g eachBarcode: 8710000000001DairyReturnWeightVolkoren pasta−+Brand: Testmerk Pack size: 500 g Nutri-Score: APer 100g: 350 kcal · P 13g · C 64g · F 2.5g500 g eachBarcode: 8710000000002PantryReturnWeight",
     "pantryScanMessage": "Scanner stopped.",
     "pantryUnknownText": "Barcode 8710000000066 wasn't found. Enter a name to add it to your pantry.",
     "recipeEditorModeText": "Creating a new recipe.",
@@ -6935,8 +7059,8 @@
     "apiKeyStatus": "Connected successfully.",
     "backupStatus": "",
     "stats": [
-      "",
-      "0 of 2 items counted.",
+      "1313880 kcal totalProtein48855g (16%)Carbs240144g (77%)Fat9420g (7%)",
+      "Based on 2 of 2 items with known amount and nutrition data.",
       "",
       "0 of 4 items counted."
     ],
@@ -7012,6 +7136,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": null,
           "bought": false
         },
         {
@@ -7029,6 +7154,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": null,
           "nutritionSource": null,
           "nevoVersion": null,
           "bought": false
@@ -7048,6 +7174,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": null,
           "nutritionSource": null,
           "nevoVersion": null,
           "bought": false
@@ -7067,6 +7194,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": null,
           "nutritionSource": null,
           "nevoVersion": null,
           "bought": false
@@ -7161,7 +7289,7 @@
           ]
         }
       ],
-      "grocery_scanner_release_seen_v1": "v42",
+      "grocery_scanner_release_seen_v1": "v43",
       "grocery_scanner_stock_v1": [
         {
           "name": "Halfvolle melk",
@@ -7178,6 +7306,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": 1000,
           "nutritionSource": null,
           "nevoVersion": null
         },
@@ -7196,6 +7325,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": 500,
           "nutritionSource": null,
           "nevoVersion": null
         }
@@ -7226,7 +7356,7 @@
       "4",
       "2"
     ],
-    "stockList": "Halfvolle melk−+Brand: Testmerk Pack size: 1 l Nutri-Score: APer 100g: 46 kcal · P 3.5g · C 4.8g · F 1.5gBarcode: 8710000000001DairyReturnVolkoren pasta−+Brand: Testmerk Pack size: 500 g Nutri-Score: APer 100g: 350 kcal · P 13g · C 64g · F 2.5gBarcode: 8710000000002PantryReturn",
+    "stockList": "Halfvolle melk−+Brand: Testmerk Pack size: 1 l Nutri-Score: APer 100g: 46 kcal · P 3.5g · C 4.8g · F 1.5g1000 g eachBarcode: 8710000000001DairyReturnWeightVolkoren pasta−+Brand: Testmerk Pack size: 500 g Nutri-Score: APer 100g: 350 kcal · P 13g · C 64g · F 2.5g500 g eachBarcode: 8710000000002PantryReturnWeight",
     "pantryScanMessage": "Scanner stopped.",
     "pantryUnknownText": "Barcode 8710000000066 wasn't found. Enter a name to add it to your pantry.",
     "recipeEditorModeText": "Creating a new recipe.",
@@ -7254,8 +7384,8 @@
     "apiKeyStatus": "Connected successfully.",
     "backupStatus": "",
     "stats": [
-      "",
-      "0 of 2 items counted.",
+      "1313880 kcal totalProtein48855g (16%)Carbs240144g (77%)Fat9420g (7%)",
+      "Based on 2 of 2 items with known amount and nutrition data.",
       "",
       "0 of 4 items counted."
     ],
@@ -7331,6 +7461,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": null,
           "bought": false
         },
         {
@@ -7348,6 +7479,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": null,
           "nutritionSource": null,
           "nevoVersion": null,
           "bought": false
@@ -7367,6 +7499,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": null,
           "nutritionSource": null,
           "nevoVersion": null,
           "bought": false
@@ -7386,6 +7519,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": null,
           "nutritionSource": null,
           "nevoVersion": null,
           "bought": false
@@ -7538,7 +7672,7 @@
           ]
         }
       ],
-      "grocery_scanner_release_seen_v1": "v42",
+      "grocery_scanner_release_seen_v1": "v43",
       "grocery_scanner_stock_v1": [
         {
           "name": "Halfvolle melk",
@@ -7555,6 +7689,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": 1000,
           "nutritionSource": null,
           "nevoVersion": null
         },
@@ -7573,6 +7708,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": 500,
           "nutritionSource": null,
           "nevoVersion": null
         }
@@ -7602,6 +7738,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": null,
           "bought": false
         },
         {
@@ -7619,6 +7756,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": null,
           "nutritionSource": null,
           "nevoVersion": null,
           "bought": false
@@ -7638,6 +7776,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": null,
           "nutritionSource": null,
           "nevoVersion": null,
           "bought": false
@@ -7657,6 +7796,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": null,
           "nutritionSource": null,
           "nevoVersion": null,
           "bought": false
@@ -7678,6 +7818,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": 1000,
           "nutritionSource": null,
           "nevoVersion": null
         },
@@ -7696,6 +7837,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": 500,
           "nutritionSource": null,
           "nevoVersion": null
         }
@@ -7896,7 +8038,7 @@
       "4",
       "2"
     ],
-    "stockList": "Halfvolle melk−+Brand: Testmerk Pack size: 1 l Nutri-Score: APer 100g: 46 kcal · P 3.5g · C 4.8g · F 1.5gBarcode: 8710000000001DairyReturnVolkoren pasta−+Brand: Testmerk Pack size: 500 g Nutri-Score: APer 100g: 350 kcal · P 13g · C 64g · F 2.5gBarcode: 8710000000002PantryReturn",
+    "stockList": "Halfvolle melk−+Brand: Testmerk Pack size: 1 l Nutri-Score: APer 100g: 46 kcal · P 3.5g · C 4.8g · F 1.5g1000 g eachBarcode: 8710000000001DairyReturnWeightVolkoren pasta−+Brand: Testmerk Pack size: 500 g Nutri-Score: APer 100g: 350 kcal · P 13g · C 64g · F 2.5g500 g eachBarcode: 8710000000002PantryReturnWeight",
     "pantryScanMessage": "Scanner stopped.",
     "pantryUnknownText": "Barcode 8710000000066 wasn't found. Enter a name to add it to your pantry.",
     "recipeEditorModeText": "Creating a new recipe.",
@@ -7924,8 +8066,8 @@
     "apiKeyStatus": "Connected successfully.",
     "backupStatus": "Exported 4 list item(s), 2 pantry item(s) and 3 recipe(s).",
     "stats": [
-      "",
-      "0 of 2 items counted.",
+      "1313880 kcal totalProtein48855g (16%)Carbs240144g (77%)Fat9420g (7%)",
+      "Based on 2 of 2 items with known amount and nutrition data.",
       "",
       "0 of 4 items counted."
     ],
@@ -8001,6 +8143,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": null,
           "bought": false
         },
         {
@@ -8018,6 +8161,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": null,
           "nutritionSource": null,
           "nevoVersion": null,
           "bought": false
@@ -8037,6 +8181,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": null,
           "nutritionSource": null,
           "nevoVersion": null,
           "bought": false
@@ -8056,6 +8201,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": null,
           "nutritionSource": null,
           "nevoVersion": null,
           "bought": false
@@ -8208,7 +8354,7 @@
           ]
         }
       ],
-      "grocery_scanner_release_seen_v1": "v42",
+      "grocery_scanner_release_seen_v1": "v43",
       "grocery_scanner_stock_v1": [
         {
           "name": "Halfvolle melk",
@@ -8225,6 +8371,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": 1000,
           "nutritionSource": null,
           "nevoVersion": null
         },
@@ -8243,6 +8390,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": 500,
           "nutritionSource": null,
           "nevoVersion": null
         }
@@ -8376,6 +8524,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": null,
           "bought": false
         },
         {
@@ -8393,6 +8542,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": null,
           "nutritionSource": null,
           "nevoVersion": null,
           "bought": false
@@ -8412,6 +8562,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": null,
           "nutritionSource": null,
           "nevoVersion": null,
           "bought": false
@@ -8431,6 +8582,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": null,
           "nutritionSource": null,
           "nevoVersion": null,
           "bought": false
@@ -8583,7 +8735,7 @@
           ]
         }
       ],
-      "grocery_scanner_release_seen_v1": "v42",
+      "grocery_scanner_release_seen_v1": "v43",
       "grocery_scanner_stock_v1": []
     }
   },
@@ -8842,7 +8994,7 @@
           ]
         }
       ],
-      "grocery_scanner_release_seen_v1": "v42",
+      "grocery_scanner_release_seen_v1": "v43",
       "grocery_scanner_stock_v1": []
     }
   },
@@ -8870,7 +9022,7 @@
       "4",
       "2"
     ],
-    "stockList": "Halfvolle melk−+Brand: Testmerk Pack size: 1 l Nutri-Score: APer 100g: 46 kcal · P 3.5g · C 4.8g · F 1.5gBarcode: 8710000000001DairyReturnVolkoren pasta−+Brand: Testmerk Pack size: 500 g Nutri-Score: APer 100g: 350 kcal · P 13g · C 64g · F 2.5gBarcode: 8710000000002PantryReturn",
+    "stockList": "Halfvolle melk−+Brand: Testmerk Pack size: 1 l Nutri-Score: APer 100g: 46 kcal · P 3.5g · C 4.8g · F 1.5g1000 g eachBarcode: 8710000000001DairyReturnWeightVolkoren pasta−+Brand: Testmerk Pack size: 500 g Nutri-Score: APer 100g: 350 kcal · P 13g · C 64g · F 2.5g500 g eachBarcode: 8710000000002PantryReturnWeight",
     "pantryScanMessage": "Scanner idle.",
     "pantryUnknownText": "",
     "recipeEditorModeText": "Creating a new recipe.",
@@ -8898,8 +9050,8 @@
     "apiKeyStatus": "API key saved. Tap \"Test connection\" to verify it works.",
     "backupStatus": "",
     "stats": [
-      "",
-      "0 of 2 items counted.",
+      "1313880 kcal totalProtein48855g (16%)Carbs240144g (77%)Fat9420g (7%)",
+      "Based on 2 of 2 items with known amount and nutrition data.",
       "",
       "0 of 4 items counted."
     ],
@@ -8976,6 +9128,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": null,
           "bought": false
         },
         {
@@ -8993,6 +9146,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": null,
           "nutritionSource": null,
           "nevoVersion": null,
           "bought": false
@@ -9012,6 +9166,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": null,
           "nutritionSource": null,
           "nevoVersion": null,
           "bought": false
@@ -9031,6 +9186,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": null,
           "nutritionSource": null,
           "nevoVersion": null,
           "bought": false
@@ -9183,7 +9339,7 @@
           ]
         }
       ],
-      "grocery_scanner_release_seen_v1": "v42",
+      "grocery_scanner_release_seen_v1": "v43",
       "grocery_scanner_stock_v1": [
         {
           "name": "Halfvolle melk",
@@ -9200,6 +9356,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": 1000,
           "nutritionSource": null,
           "nevoVersion": null
         },
@@ -9218,6 +9375,7 @@
             "fiber100g": null
           },
           "nutritionAmount": null,
+          "packGrams": 500,
           "nutritionSource": null,
           "nevoVersion": null
         }

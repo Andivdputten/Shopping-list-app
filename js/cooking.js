@@ -12,7 +12,9 @@ function round2(value) {
 
 // Converts a recipe's grams into a pantry unit, or null when that unit has no known weight.
 // 1 ml is counted as 1 g: exact for water and milk, close enough for most cooking liquids.
-export function gramsToStockUnit(grams, unit) {
+// packGrams, when known, converts grams to packs or pieces too (300 g from a 5000 g pack is 0.06 pack);
+// without it those units return null and the amount is entered by hand.
+export function gramsToStockUnit(grams, unit, packGrams = null) {
   switch (typeof unit === "string" ? unit.trim().toLowerCase() : "") {
     case "g":
     case "ml":
@@ -21,7 +23,7 @@ export function gramsToStockUnit(grams, unit) {
     case "l":
       return grams / 1000;
     default:
-      return null;
+      return typeof packGrams === "number" && packGrams > 0 ? grams / packGrams : null;
   }
 }
 
@@ -54,7 +56,8 @@ export function findStockIndex(ingredient, stockItems) {
 function neededAmount(ingredient, stockItem, scale) {
   const grams =
     typeof ingredient.grams === "number" && ingredient.grams > 0 ? ingredient.grams : null;
-  const converted = grams === null ? null : gramsToStockUnit(grams, stockItem.unit);
+  const converted =
+    grams === null ? null : gramsToStockUnit(grams, stockItem.unit, stockItem.packGrams);
   if (converted !== null) {
     return { kind: "convert", amount: converted * scale };
   }

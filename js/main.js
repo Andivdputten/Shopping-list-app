@@ -21,6 +21,7 @@ import {
   duplicateRecipeButton,
   itemInput,
   nutritionAmountInput,
+  packGramsInput,
   nutritionCarbsInput,
   nutritionFatInput,
   nutritionFiberInput,
@@ -224,6 +225,7 @@ function startApp() {
   nutritionFatInput.addEventListener("keydown", handleEnterToSubmit);
   nutritionFiberInput.addEventListener("keydown", handleEnterToSubmit);
   nutritionAmountInput.addEventListener("keydown", handleEnterToSubmit);
+  packGramsInput.addEventListener("keydown", handleEnterToSubmit);
 }
 
 startApp();

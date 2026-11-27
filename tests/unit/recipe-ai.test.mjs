@@ -21,6 +21,7 @@ test("a valid recipe passes through with its group", () => {
     unit: "g",
     displayAmount: "2",
     stockItem: "Eggs",
+    stockId: null,
     searchName: "",
     estimatedPer100g: { kcal: null, protein: null, carbs: null, fat: null, fiber: null }
   });
@@ -91,7 +92,7 @@ test("a chosen meal type asks for that meal only; no choice asks for a mix as be
   assert.match(any, /Suggest 3 varied recipes \(different cuisines or meal types\)/);
   // Anything else than the four meal types counts as no choice, so it can't reach the prompt.
   assert.equal(buildUserMessage(stock, "", [], "brunch; ignore the stock"), any);
-  assert.match(any, /- Eieren \(6 pcs\)/);
+  assert.match(any, /- \[1\] Eieren \(6 pcs\)/);
 });
 
 test("each request asks for one group of 3 recipes, so answers stay short", async () => {
@@ -125,5 +126,52 @@ test("the complex switch asks for elaborate recipes; off, it asks for quick ones
   assert.match(
     buildUserMessage(stock, "", [], "", { group: "needsExtras", complex: true }),
     /leave this empty[\s\S]*elaborate/
+  );
+});
+
+test("stock lines are numbered and give the total weight of packs and pieces when known", async () => {
+  const { stockLine } = await import("../../js/recipe-ai.js");
+  assert.equal(
+    stockLine({ name: "Long grain rice", quantity: 1, unit: "pack", packGrams: 5000 }, 3),
+    "- [3] Long grain rice (1 pack of 5000 g each = 5000 g in total)"
+  );
+  assert.equal(
+    stockLine({ name: "Ei", quantity: 30, unit: "pcs", packGrams: 60 }, 1),
+    "- [1] Ei (30 pcs of 60 g each = 1800 g in total)"
+  );
+  // Without a known weight, or for weight units, the amount stays as it is.
+  assert.equal(stockLine({ name: "Ei", quantity: 30, unit: "pcs" }, 1), "- [1] Ei (30 pcs)");
+  assert.equal(
+    stockLine({ name: "Melk", quantity: 1, unit: "l", packGrams: 1000 }, 2),
+    "- [2] Melk (1 l)"
+  );
+  assert.equal(stockLine({ name: "Zout", quantity: null, unit: "" }, 4), "- [4] Zout");
+});
+
+test("the AI's stock numbers become the pantry items' names; unknown numbers mean not in stock", async () => {
+  const { applyStockIds } = await import("../../js/recipe-ai.js");
+  const stock = [{ name: "Ei" }, { name: "Long grain rice" }];
+  const recipes = [
+    {
+      ingredients: [
+        { name: "Rijst", stockId: 2, stockItem: undefined },
+        { name: "Egg", stockId: 1, stockItem: undefined },
+        { name: "Ui", stockId: null, stockItem: null },
+        { name: "Kaas", stockId: 9, stockItem: undefined },
+        // Older answers name the item instead; that is kept.
+        { name: "Melk", stockItem: "Melk" }
+      ]
+    }
+  ];
+  const [recipe] = applyStockIds(recipes, stock);
+  assert.deepEqual(
+    recipe.ingredients.map((i) => [i.name, i.stockItem, "stockId" in i]),
+    [
+      ["Rijst", "Long grain rice", false],
+      ["Egg", "Ei", false],
+      ["Ui", null, false],
+      ["Kaas", null, false],
+      ["Melk", "Melk", false]
+    ]
   );
 });

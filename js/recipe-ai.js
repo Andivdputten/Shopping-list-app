@@ -297,6 +297,9 @@ export function sanitizeRecipe(raw, group) {
             // null = the AI says it's not in stock,
             // undefined = the AI didn't say (older response format)
             stockItem: normalizeStockItemField(ing.stockItem),
+            // The number of the matching stock item in the request's list (1-based), or null; turned into
+            // the item's name by generateRecipes(), which has that list.
+            stockId: Number.isInteger(ing.stockId) && ing.stockId > 0 ? ing.stockId : null,
             // English name in NEVO's style, used to look the ingredient up in the NEVO table.
             searchName: typeof ing.searchName === "string" ? ing.searchName.trim() : "",
             // The AI's own values per 100 g, the last resort when neither pantry nor NEVO nor Open Food Facts has data.
@@ -380,7 +383,7 @@ const RECIPE_SCHEMA = {
               amount: { type: "number" },
               unit: { type: "string", enum: ["g"] },
               displayAmount: { anyOf: [{ type: "string" }, { type: "null" }] },
-              stockItem: { anyOf: [{ type: "string" }, { type: "null" }] },
+              stockId: { anyOf: [{ type: "integer" }, { type: "null" }] },
               searchName: { type: "string" },
               estimatedPer100g: { $ref: "#/$defs/nutrients" }
             },
@@ -389,7 +392,7 @@ const RECIPE_SCHEMA = {
               "amount",
               "unit",
               "displayAmount",
-              "stockItem",
+              "stockId",
               "searchName",
               "estimatedPer100g"
             ],
@@ -419,13 +422,13 @@ const RECIPE_SCHEMA = {
 function buildSystemPrompt(languageName) {
   return `You suggest home-cooking recipes based on the food someone has in their kitchen. Your answer feeds a shopping-list app: it checks each ingredient against the user's stock, adds missing ones to their shopping list, and calculates nutrition from the gram amounts. Accuracy in those fields matters more than creative wording.
 
-- Language: write recipe names, descriptions, ingredient names, displayAmount and instructions in ${languageName}. The one exception is stockItem, described below.
+- Language: write recipe names, descriptions, ingredient names, displayAmount and instructions in ${languageName}.
 - Amounts: give every ingredient two amounts that describe the same quantity.
   - amount is the weight in grams (unit "g"), used for nutrition calculations. Convert pieces and volumes to an approximate weight, e.g. 1 medium egg ≈ 50 g, 1 tbsp oil ≈ 14 g, 1 onion ≈ 150 g, 1 garlic clove ≈ 5 g.
   - displayAmount is how a cook would measure it, without the ingredient name, in ${languageName}. For countable items give just the number ("1" for one egg, "2" for two onions). For small amounts give the kitchen measure ("2 tbsp", "1 clove", "a pinch"). Use null when grams are the natural measure, such as rice, pasta, flour, cheese or meat.
 - Staples: assume water, salt and black pepper are always available and leave them out of the ingredient lists.
-- Stock matching: for each ingredient, set stockItem to the name of the matching stock item, copied character for character from the stock list (never translated), or null. Match by meaning and across languages ("Halfvolle melk" is milk), but only when it is the same ingredient: "tomato sauce" is not "tomato" and "peanut butter" is not "butter". When unsure, use null. A wrong match means the user discovers mid-recipe that they lack something; a missed match only adds an item to their shopping list.
-- Quantities: when a stock item lists an amount, use no more of it than that.
+- Stock matching: every stock item has a number in square brackets. For each ingredient, set stockId to the number of the matching stock item, or null. Match by meaning and across languages ("Halfvolle melk" and "Long grain rice" can be milk and rice in any recipe language), but only when it is the same ingredient: "tomato sauce" is not "tomato" and "peanut butter" is not "butter". When unsure, use null. A wrong match means the user discovers mid-recipe that they lack something; a missed match only adds an item to their shopping list.
+- Quantities: each stock item lists how much there is, in total grams where known (e.g. "1 pack of 5000 g each = 5000 g in total"); use no more of it than that.
 - Instructions: short, concrete steps that include times and temperatures.
 - Meal type: set mealType to the meal the recipe suits best: breakfast, lunch, dinner or snack.
 - Food table lookup: the app looks each ingredient up in the Dutch food composition table (NEVO) by its English name, so give searchName in English and in that table's style: the main food first, then variety and state as weighed, e.g. "onion raw", "pepper sweet red raw", "oil olive", "rice white raw", "pasta white raw", "chicken fillet raw", "egg whole raw", "tomatoes tinned", "cheese parmesan". Always English, whatever the recipe language, because the table has no other names.
@@ -437,19 +440,46 @@ const MEAL_TYPE_NAMES = ["breakfast", "lunch", "dinner", "snack"];
 
 // The request text: the stock, the preferences, saved recipes to avoid and, when chosen, the one meal
 // type all suggestions must suit (instead of a mix of meal types).
+// One numbered stock line for the request, e.g. "- [3] Long grain rice (1 pack of 5000 g each = 5000 g in
+// total)". The AI answers with the number, so names never have to be copied or translated back; the
+// total weight tells it how much there really is when an item is counted in packs or pieces.
+export function stockLine(item, number) {
+  const qty = typeof item.quantity === "number" ? item.quantity : null;
+  const unit = typeof item.unit === "string" ? item.unit.trim() : "";
+  const perPack = typeof item.packGrams === "number" && item.packGrams > 0 ? item.packGrams : null;
+  const weightUnit = ["g", "kg", "ml", "l"].includes(unit.toLowerCase());
+  let amount = [qty === null ? "" : String(qty), unit].filter(Boolean).join(" ");
+  if (!weightUnit && perPack !== null) {
+    const each = `${perPack} g each`;
+    amount =
+      qty === null
+        ? `${unit || "pack"} of ${each}`
+        : `${amount} of ${each} = ${Math.round(qty * perPack)} g in total`;
+  }
+  return amount === "" ? `- [${number}] ${item.name}` : `- [${number}] ${item.name} (${amount})`;
+}
+
+// Turns each ingredient's stockId (the number in the request's stock list) into that item's name, as the
+// rest of the app links ingredients to pantry items by name. An unknown number means not in stock.
+export function applyStockIds(recipes, stockList) {
+  recipes.forEach((recipe) => {
+    recipe.ingredients.forEach((ingredient) => {
+      if (ingredient.stockId !== null && ingredient.stockId !== undefined) {
+        const item = stockList[ingredient.stockId - 1];
+        ingredient.stockItem = item ? item.name : null;
+      }
+      delete ingredient.stockId;
+    });
+  });
+  return recipes;
+}
+
 // One request asks for one group of 3 recipes: options.group "ready" (only stock) or "needsExtras" (each
 // needs 1-3 ingredients not in stock). Splitting the 6 suggestions into two requests keeps every answer
 // short enough for the token limit and the time limit. options.complex asks for more elaborate cooking.
 export function buildUserMessage(stockList, preferences, avoidNames, mealType, options = {}) {
   const group = options.group === "needsExtras" ? "needsExtras" : "ready";
-  const stockLines = stockList
-    .map((item) => {
-      const qty = typeof item.quantity === "number" ? item.quantity : "";
-      const unit = typeof item.unit === "string" ? item.unit : "";
-      const amountText = [qty, unit].filter((part) => part !== "").join(" ");
-      return amountText !== "" ? `- ${item.name} (${amountText})` : `- ${item.name}`;
-    })
-    .join("\n");
+  const stockLines = stockList.map((item, index) => stockLine(item, index + 1)).join("\n");
 
   const preferenceText =
     typeof preferences === "string" && preferences.trim() !== ""
@@ -541,6 +571,7 @@ async function generateRecipes(stockItems, preferences, options) {
       seen.add(key);
       return true;
     });
+  applyStockIds(recipes, stockList);
   // A chosen meal type is what was asked for, so the fit badge compares against that meal's share.
   if (MEAL_TYPE_NAMES.includes(settings.mealType)) {
     recipes.forEach((recipe) => {

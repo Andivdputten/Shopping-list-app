@@ -16,7 +16,7 @@ import {
   pantryUnknownNameInput,
   pantryUnknownText
 } from "./dom.js";
-import { createStockItem, mergeStockItems, parsePackageQuantity } from "./items.js";
+import { createStockItem, mergeStockItems, parsePackageQuantity, parsePackGrams } from "./items.js";
 import { normalizeNutrition } from "./nutrition.js";
 import { findMatchingStockIndex, renderStockList } from "./pantry.js";
 import { getCachedBarcodeLookup, saveStockItems, setCachedBarcodeLookup } from "./persistence.js";
@@ -45,7 +45,13 @@ export function addScannedItemToPantry(barcode, productData, nameOverride) {
     note: productData ? buildLookupNote(productData) : "",
     barcode,
     nutrition: normalizeNutrition(productData ? productData.nutrition : null),
-    nutritionAmount: null
+    nutritionAmount: null,
+    // Counted in packs (the size wasn't a plain "500 g"): the weight of one pack, when the package text
+    // gives it ("6 x 330 ml"), so recipes and cooking know how much a pack holds.
+    packGrams:
+      productData && !["g", "kg", "ml", "l"].includes(pack.unit)
+        ? parsePackGrams(productData.packageQuantity)
+        : null
   };
 
   const existingIndex = findMatchingStockIndex(incoming);
