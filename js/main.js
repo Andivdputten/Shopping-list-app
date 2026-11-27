@@ -9,7 +9,6 @@ import {
   cancelRecipeEditButton,
   categoryInput,
   clearBarcodeButton,
-  clearButton,
   clearRecipeButton,
   clearStockButton,
   customIngredientCarbsInput,
@@ -33,13 +32,11 @@ import {
   pantryUnknownNameInput,
   pantryUnknownSkipButton,
   quantityInput,
-  quickAddButton,
   recipeGramsInput,
   recipeItemSelect,
   recipeServingLabelInput,
   recipeServingsInput,
   saveRecipeButton,
-  searchInput,
   startScannerButton,
   stopScannerButton,
   suggestRecipesButton,
@@ -84,12 +81,7 @@ import {
   initComplexRecipesToggle,
   initRecipeLanguageSetting
 } from "./settings.js";
-import {
-  clearAllItems,
-  quickAddItem,
-  renderList,
-  updateQuickAddButtonState
-} from "./shopping-list.js";
+import { initShoppingList, renderList } from "./shopping-list.js";
 import { state } from "./state.js";
 import {
   loadBarcodeCache,
@@ -126,10 +118,10 @@ function startApp() {
   state.intakeLog = loadIntakeLog();
   state.nevo = loadNevoData();
   state.todayDate = dateKey(new Date());
+  initShoppingList();
   renderList();
   updateFormMode();
   updatePendingBarcodeUI();
-  updateQuickAddButtonState();
   initApiKeySettings();
   initBackupSettings();
   initRecipeLanguageSetting();
@@ -152,7 +144,6 @@ function startApp() {
 
   addButton.addEventListener("click", submitForm);
   cancelEditButton.addEventListener("click", cancelEdit);
-  clearButton.addEventListener("click", clearAllItems);
   clearBarcodeButton.addEventListener("click", clearPendingBarcode);
   addRecipeIngredientButton.addEventListener("click", addRecipeIngredient);
   recipeItemSelect.addEventListener("change", updateCustomIngredientVisibility);
@@ -199,19 +190,6 @@ function startApp() {
   pantryUnknownNameInput.addEventListener("keydown", (event) => {
     if (event.key === "Enter") {
       submitPantryUnknown();
-    }
-  });
-
-  searchInput.addEventListener("input", () => {
-    renderList();
-    updateQuickAddButtonState();
-  });
-
-  quickAddButton.addEventListener("click", quickAddItem);
-
-  searchInput.addEventListener("keydown", (event) => {
-    if (event.key === "Enter" && !quickAddButton.disabled) {
-      quickAddItem();
     }
   });
 

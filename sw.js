@@ -32,6 +32,7 @@ const CORE_FILES = [
   "./js/info-dialogs.js",
   "./js/ingredient-nutrition.js",
   "./js/items.js",
+  "./js/list-item-sheet.js",
   "./js/nevo-settings.js",
   "./js/nevo.js",
   "./js/main.js",

@@ -276,8 +276,9 @@ button:disabled {
   color: var(--button-neutral-ink);
 }
 
+/* !important so a component's own display (flex, grid) never shows something marked hidden. */
 .hidden {
-  display: none;
+  display: none !important;
 }
 
 .status-text {
@@ -326,27 +327,6 @@ button:disabled {
   gap: 12px;
 }
 
-.status-section {
-  margin-top: 16px;
-}
-
-.status-heading {
-  margin: 0 0 8px;
-  font-size: 18px;
-}
-
-.category-block {
-  margin-top: 14px;
-}
-
-.category-heading {
-  margin: 0 0 6px;
-  font-size: 15px;
-  color: var(--ink-soft);
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-}
-
 .shopping-list {
   list-style: none;
   padding: 0;
@@ -369,10 +349,6 @@ button:disabled {
   color: var(--ink);
   padding: 0;
   border: 0;
-}
-
-.item-button.bought {
-  opacity: 0.55;
 }
 
 .item-name {
@@ -426,17 +402,6 @@ button:disabled {
   color: var(--ink-soft);
 }
 
-.quick-add-button {
-  flex: 0 0 auto;
-  padding-left: 20px;
-  padding-right: 20px;
-}
-
-.quick-add-button:disabled {
-  background: var(--button-disabled);
-  color: var(--button-disabled-ink);
-}
-
 .item-note {
   display: block;
   margin-top: 6px;
@@ -462,13 +427,6 @@ button:disabled {
   border-radius: 999px;
   background: var(--brand-tint);
   color: var(--brand);
-}
-
-.item-button.bought .item-name,
-.item-button.bought .item-meta,
-.item-button.bought .item-note,
-.item-button.bought .item-barcode {
-  text-decoration: line-through;
 }
 
 .item-actions {
@@ -964,9 +922,15 @@ button:disabled {
   color: var(--ink-soft);
 }
 
-/* A pop-up with a button (Undo) must be tappable, unlike the plain message. */
-.toast.has-action {
+/* A pop-up with a button (Undo) must be tappable while it shows, unlike the plain message; once it
+   fades out it must not block taps on what is underneath. */
+.toast.has-action.visible {
   pointer-events: auto;
+}
+
+.toast.has-action {
+  min-width: min(320px, calc(100% - 32px));
+  justify-content: space-between;
   display: flex;
   align-items: center;
   gap: 12px;
@@ -1259,4 +1223,729 @@ button:disabled {
 .stacked-actions {
   flex-direction: column;
   align-items: stretch;
+}
+
+/* ================= Shopping list: Plan and Shop ================= */
+
+/* Room for the action bar ("Start shopping", "Done shopping") above the tab bar. */
+.list-panel {
+  max-width: 720px;
+  margin: 0 auto;
+  padding-bottom: 76px;
+}
+
+.text-button {
+  background: transparent;
+  color: var(--brand-dark);
+  font-weight: 700;
+  padding: 12px 14px;
+}
+
+.text-button.danger {
+  color: var(--danger);
+}
+
+.tonal-button {
+  flex: 1;
+  background: var(--brand-tint);
+  color: var(--brand-dark);
+  font-weight: 700;
+}
+
+.icon-button {
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  padding: 0;
+  display: grid;
+  place-items: center;
+  background: transparent;
+  color: var(--ink);
+}
+
+.icon-button svg {
+  width: 22px;
+  height: 22px;
+}
+
+.list-modebar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.segmented {
+  flex: 1;
+  display: flex;
+  padding: 3px;
+  border-radius: 12px;
+  background: var(--surface-2);
+}
+
+.segmented button {
+  flex: 1;
+  min-height: 44px;
+  padding: 0 8px;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--ink-soft);
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.segmented button[aria-pressed="true"] {
+  background: var(--seg-on);
+  color: var(--ink);
+  box-shadow: var(--shadow);
+}
+
+.list-menu-wrap {
+  position: relative;
+}
+
+.list-menu {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 4px);
+  z-index: 6;
+  min-width: 200px;
+  padding: 6px 0;
+  border-radius: 14px;
+  background: var(--surface);
+  box-shadow: var(--shadow-lift);
+}
+
+.list-menu-item {
+  width: 100%;
+  min-height: 48px;
+  border-radius: 0;
+  background: transparent;
+  text-align: left;
+  font-size: 15px;
+}
+
+.list-menu-item:hover {
+  background: var(--surface-2);
+}
+
+.list-menu-item.danger {
+  color: var(--danger);
+}
+
+.list-addbox {
+  padding: 6px;
+}
+
+.list-addbox:focus-within {
+  outline: 2px solid var(--brand);
+}
+
+.list-add-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* The add field sits inside the card, which carries the border and focus outline instead. */
+.list-add-row input {
+  flex: 1;
+  border: 0;
+  background: transparent;
+  padding: 12px 10px;
+}
+
+.list-add-row input:focus-visible {
+  outline: none;
+}
+
+.list-add-row .primary-button {
+  flex: 0 0 auto;
+  min-height: 48px;
+  font-weight: 700;
+}
+
+.list-add-row .primary-button:disabled {
+  background: var(--button-disabled);
+  color: var(--button-disabled-ink);
+  opacity: 1;
+}
+
+.list-add-preview {
+  margin-top: 6px;
+  padding: 10px 6px 6px;
+  border-top: 1px solid var(--border);
+}
+
+.list-add-label {
+  margin: 0 0 8px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.chips-center {
+  justify-content: center;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 40px;
+  padding: 0 12px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--ink);
+  font-size: 14px;
+}
+
+.chip-static {
+  min-height: 32px;
+}
+
+.chip-on,
+.chip[aria-pressed="true"],
+.chip-choice:has(input:checked) {
+  border-color: var(--brand);
+  background: var(--brand-tint);
+  color: var(--brand-dark);
+  font-weight: 700;
+}
+
+.chip-note {
+  white-space: nowrap;
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--ink-soft);
+}
+
+/* Aisle choices are real radio buttons (arrow keys work); the round dot itself is hidden. */
+.chip-choice input {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+}
+
+.chip-choice:has(input:focus-visible) {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+}
+
+.dupe-warning {
+  margin-top: 10px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: var(--warn-bg);
+  color: var(--warn-strong);
+  font-size: 14px;
+}
+
+.dupe-warning strong {
+  display: block;
+}
+
+.dupe-button {
+  margin-top: 8px;
+  min-height: 44px;
+  padding: 0 14px;
+  border: 1.5px solid currentColor;
+  background: transparent;
+  color: inherit;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.plan-card {
+  padding: 4px 0;
+}
+
+.aisle-heading {
+  display: flex;
+  justify-content: space-between;
+  margin: 0;
+  padding: 12px 14px 4px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+.plan-list,
+.shop-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.plan-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 60px;
+  padding: 4px 8px 4px 0;
+  border-top: 1px solid var(--border);
+}
+
+.plan-row-main {
+  flex: 1;
+  min-width: 0;
+  align-self: stretch;
+  padding: 8px 6px 8px 14px;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--ink);
+  text-align: left;
+}
+
+.plan-row-main:hover {
+  background: var(--surface-2);
+}
+
+.plan-row-name {
+  display: block;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.plan-row-sub {
+  display: block;
+  margin-top: 2px;
+  font-size: 14px;
+  color: var(--ink-soft);
+  overflow-wrap: anywhere;
+}
+
+.stepper {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.stepper-button {
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border-radius: 12px;
+  background: var(--brand-tint);
+  color: var(--brand-dark);
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.stepper-button:disabled {
+  background: var(--surface-2);
+  color: var(--ink-soft);
+  opacity: 1;
+}
+
+.stepper-value {
+  min-width: 64px;
+  padding: 0 4px;
+  white-space: nowrap;
+  text-align: center;
+  font-size: 15px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Grams and litres: the amount opens the item sheet, which has presets for the unit. */
+.amount-button {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-width: 144px;
+  min-height: 44px;
+  padding: 0 12px;
+  border: 1.5px solid var(--border);
+  background: var(--surface);
+  color: var(--ink);
+  font-size: 15px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.amount-button:hover {
+  border-color: var(--brand);
+}
+
+.amount-button svg {
+  width: 14px;
+  height: 14px;
+  color: var(--ink-soft);
+}
+
+.amount-button.ghost {
+  border-style: dashed;
+  color: var(--ink-soft);
+  font-weight: 500;
+}
+
+.list-action-bar {
+  position: fixed;
+  left: 16px;
+  right: 16px;
+  bottom: calc(80px + env(safe-area-inset-bottom));
+  z-index: 8;
+  display: flex;
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.list-action-bar button {
+  min-height: 52px;
+  font-weight: 700;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+}
+
+.list-empty,
+.list-all-done {
+  padding: 28px 20px 22px;
+  text-align: center;
+}
+
+.list-empty h3,
+.list-all-done h3 {
+  margin: 0 0 6px;
+  font-size: 18px;
+}
+
+.list-empty p:not(.list-add-label),
+.list-all-done p {
+  margin: 0 0 18px;
+  color: var(--ink-soft);
+  line-height: 1.45;
+}
+
+.list-all-done p {
+  margin-bottom: 0;
+}
+
+.list-empty-glyph {
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  margin: 0 auto 12px;
+  border-radius: 16px;
+  background: var(--brand-tint);
+  color: var(--brand-dark);
+}
+
+.list-empty-glyph.round {
+  border-radius: 50%;
+}
+
+.list-empty-glyph svg {
+  width: 28px;
+  height: 28px;
+}
+
+.shop-progress {
+  margin: 0 2px 4px;
+}
+
+.shop-progress-label {
+  margin: 4px 0 8px;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.shop-progress-bar {
+  height: 10px;
+  overflow: hidden;
+  border-radius: 5px;
+  background: var(--surface-2);
+}
+
+.shop-progress-fill {
+  display: block;
+  height: 100%;
+  border-radius: 5px;
+  background: var(--brand);
+}
+
+.shop-aisle {
+  margin: 0;
+  padding: 18px 4px 6px;
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+.shop-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-height: 68px;
+  padding: 8px 14px;
+  border-top: 1px solid var(--border);
+  cursor: pointer;
+}
+
+.shop-list li:first-child .shop-row {
+  border-top: 0;
+}
+
+.shop-row input {
+  appearance: none;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 30px;
+  height: 30px;
+  margin: 0;
+  padding: 0;
+  border: 2.5px solid var(--ink-soft);
+  border-radius: 9px;
+  background: var(--surface);
+  cursor: pointer;
+}
+
+.shop-row input:checked {
+  border-color: var(--brand);
+  background: var(--brand);
+}
+
+.shop-row input:checked::after {
+  content: "";
+  width: 8px;
+  height: 14px;
+  border: solid var(--on-brand);
+  border-width: 0 3px 3px 0;
+  transform: translateY(-2px) rotate(45deg);
+}
+
+.shop-name {
+  flex: 1;
+  min-width: 0;
+  font-size: 19px;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.shop-note {
+  display: block;
+  margin-top: 2px;
+  font-size: 15px;
+  font-weight: 400;
+  color: var(--ink-soft);
+}
+
+.shop-amount {
+  font-size: 18px;
+  font-weight: 700;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Ticked: struck through and softer, but still at least 4.5:1 (no opacity). */
+.shop-row:has(input:checked) .shop-name,
+.shop-row:has(input:checked) .shop-amount {
+  color: var(--ink-soft);
+  font-weight: 500;
+  text-decoration: line-through;
+}
+
+.save-error {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 12px;
+  padding: 12px 12px 12px 14px;
+  border: 1.5px solid var(--danger);
+  border-radius: 14px;
+  background: var(--surface);
+  font-size: 14px;
+}
+
+.save-error-icon {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  margin-top: 1px;
+  color: var(--danger);
+}
+
+.save-error strong {
+  display: block;
+  margin-bottom: 2px;
+  color: var(--danger);
+  font-size: 15px;
+}
+
+.save-error p {
+  margin: 0 0 8px;
+}
+
+.save-error button {
+  padding: 10px 14px;
+  font-size: 14px;
+}
+
+/* The item sheet and "Done shopping" confirmation: a bottom sheet on phones, a dialog on wider screens. */
+.sheet-dialog form {
+  margin: 0;
+}
+
+.sheet-label {
+  display: block;
+  margin: 14px 0 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink-soft);
+}
+
+.sheet-amount {
+  display: flex;
+  gap: 8px;
+}
+
+.sheet-amount select {
+  flex: 0 0 112px;
+}
+
+#listItemPresets {
+  margin-top: 8px;
+}
+
+.sheet-aisles {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.sheet-more {
+  margin-top: 14px;
+  border-top: 1px solid var(--border);
+}
+
+.sheet-more summary {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4px 8px;
+  min-height: 48px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.sheet-more summary small {
+  font-weight: 400;
+  font-size: 13px;
+  color: var(--ink-soft);
+}
+
+.sheet-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.sheet-error {
+  margin: 10px 0 0;
+  color: var(--danger);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.sheet-error:empty {
+  display: none;
+}
+
+.sheet-sub {
+  margin: 0 0 12px;
+  color: var(--ink-soft);
+  font-size: 14px;
+}
+
+.sheet-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.sheet-actions-end {
+  display: flex;
+  gap: 8px;
+  margin-left: auto;
+}
+
+.sheet-actions .primary-button {
+  flex: 0 0 auto;
+  font-weight: 700;
+}
+
+.move-list {
+  list-style: none;
+  max-height: 300px;
+  overflow-y: auto;
+  margin: 0;
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+
+.move-list li {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 12px;
+  border-top: 1px solid var(--border);
+}
+
+.move-list li:first-child {
+  border-top: 0;
+}
+
+.move-name {
+  overflow-wrap: anywhere;
+}
+
+.move-tag {
+  font-size: 13px;
+  color: var(--ink-soft);
+  text-align: right;
+  white-space: nowrap;
+}
+
+.move-tag b {
+  color: var(--brand-dark);
+}
+
+#moveStayNote {
+  margin: 12px 0 0;
+}
+
+@media (max-width: 600px) {
+  .sheet-dialog {
+    width: 100%;
+    max-width: 100%;
+    max-height: 88vh;
+    margin: auto 0 0;
+    border-radius: 20px 20px 0 0;
+    padding-bottom: calc(20px + env(safe-area-inset-bottom));
+  }
+}
+
+/* Keep pop-ups (such as Undo) above the list's action bar instead of on top of it. */
+body:has(.list-panel.active .list-action-bar:not(.hidden)) .toast {
+  bottom: calc(144px + env(safe-area-inset-bottom));
 }

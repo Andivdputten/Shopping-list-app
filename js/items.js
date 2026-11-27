@@ -291,3 +291,42 @@ export function normalizeStockLink(value) {
   }
   return typeof value === "string" && value.trim() !== "" ? value.trim() : undefined;
 }
+
+// Weight and volume units: amounts like 300 g have no sensible +1 step, so the list opens the item
+// sheet with presets instead. Everything else (no unit, pcs, pack, bottle, can) is counted in ones.
+const MEASURED_UNITS = ["g", "kg", "ml", "l"];
+
+export function isCountableUnit(unit) {
+  const normalized = typeof unit === "string" ? unit.trim().toLowerCase() : "";
+  return !MEASURED_UNITS.includes(normalized);
+}
+
+// Quick amounts offered in the item sheet for a unit: [{ quantity, unit }], empty for counted units.
+export function unitPresets(unit) {
+  const normalized = typeof unit === "string" ? unit.trim().toLowerCase() : "";
+  const presets = {
+    g: [
+      [100, "g"],
+      [250, "g"],
+      [500, "g"],
+      [1, "kg"]
+    ],
+    kg: [
+      [0.5, "kg"],
+      [1, "kg"],
+      [2, "kg"]
+    ],
+    ml: [
+      [250, "ml"],
+      [500, "ml"],
+      [1, "l"]
+    ],
+    l: [
+      [0.5, "l"],
+      [1, "l"],
+      [1.5, "l"],
+      [2, "l"]
+    ]
+  }[normalized];
+  return (presets || []).map(([quantity, presetUnit]) => ({ quantity, unit: presetUnit }));
+}

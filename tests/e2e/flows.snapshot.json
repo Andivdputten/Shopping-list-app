@@ -18,7 +18,12 @@
     ],
     "barcodePreview": "",
     "scannerMessage": "Scanner idle.",
-    "shoppingSections": "",
+    "subtitle": "Scan a barcode or add an item by hand",
+    "listMode": "Plan / Shop",
+    "listAddPreview": "",
+    "shoppingSections": "Your shopping list is emptyType what you need above, or scan a product on the Scanner tab.",
+    "listAction": "",
+    "moveList": "",
     "badges": [
       "0",
       "0"
@@ -74,7 +79,12 @@
     ],
     "barcodePreview": "",
     "scannerMessage": "Scanner idle.",
-    "shoppingSections": "To buy (1)Uncategorised (1)AppelsUncategorisedEditDelete",
+    "subtitle": "1 to buy",
+    "listMode": "Plan / Shop · 1",
+    "listAddPreview": "",
+    "shoppingSections": "No aisle1Edit AppelsSet amount",
+    "listAction": "Start shopping · 1 item",
+    "moveList": "",
     "badges": [
       "1",
       "0"
@@ -138,7 +148,7 @@
     }
   },
   {
-    "name": "search with no match",
+    "name": "add box finds the same item",
     "title": "Shopping list",
     "status": "Added \"Appels\" to your shopping list.",
     "formTitle": "Add item",
@@ -156,7 +166,12 @@
     ],
     "barcodePreview": "",
     "scannerMessage": "Scanner idle.",
-    "shoppingSections": "",
+    "subtitle": "1 to buy",
+    "listMode": "Plan / Shop · 1",
+    "listAddPreview": "Will be added asAppels2No aisleAppels is already on your list.Add as a separate item instead",
+    "shoppingSections": "No aisle1Edit AppelsSet amount",
+    "listAction": "Start shopping · 1 item",
+    "moveList": "",
     "badges": [
       "1",
       "0"
@@ -197,6 +212,93 @@
           "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Appels",
           "quantity": null,
+          "unit": "",
+          "category": "",
+          "note": "",
+          "barcode": "",
+          "nutrition": {
+            "kcal100g": null,
+            "protein100g": null,
+            "carbs100g": null,
+            "fat100g": null,
+            "fiber100g": null
+          },
+          "nutritionAmount": null,
+          "packGrams": null,
+          "nutritionSource": null,
+          "nevoVersion": null,
+          "restockQuantity": null,
+          "bought": false
+        }
+      ],
+      "grocery_scanner_release_seen_v1": "v44"
+    }
+  },
+  {
+    "name": "amount added to existing item",
+    "title": "Shopping list",
+    "status": "Updated \"Appels\" to 2.",
+    "formTitle": "Add item",
+    "form": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
+    "barcodePreview": "",
+    "scannerMessage": "Scanner idle.",
+    "subtitle": "1 to buy",
+    "listMode": "Plan / Shop · 1",
+    "listAddPreview": "",
+    "shoppingSections": "No aisle1Edit Appels−2+",
+    "listAction": "Start shopping · 1 item",
+    "moveList": "",
+    "badges": [
+      "1",
+      "0"
+    ],
+    "stockList": "",
+    "pantryScanMessage": "Scanner idle.",
+    "pantryUnknownText": "",
+    "recipeEditorModeText": "Creating a new recipe.",
+    "recipeBuilderMessage": "",
+    "recipeItemOptions": [
+      "Select an ingredient",
+      "Appels (no nutrition data)",
+      "+ Other ingredient (not in pantry)"
+    ],
+    "recipeIngredientsList": "",
+    "recipeTotals": "",
+    "savedRecipesList": "",
+    "aiSection": [
+      "AI recipe suggestions",
+      "Get recipe ideas based on what's currently in your pantry stock.",
+      "Suggest recipes from my stock"
+    ],
+    "aiSuggestStatus": "",
+    "aiRecipeResults": "",
+    "apiKeyStatus": "No API key saved yet.",
+    "backupStatus": "",
+    "stats": [
+      "",
+      "",
+      "",
+      "0 of 1 item counted."
+    ],
+    "toast": "✓ Appels is now 2",
+    "storage": {
+      "grocery_scanner_items_v6": [
+        {
+          "id": "id-1",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
+          "name": "Appels",
+          "quantity": 2,
           "unit": "",
           "category": "",
           "note": "",
@@ -238,7 +340,12 @@
     ],
     "barcodePreview": "",
     "scannerMessage": "External match: Halfvolle melk",
-    "shoppingSections": "To buy (1)Uncategorised (1)AppelsUncategorisedEditDelete",
+    "subtitle": "Scan a barcode or add an item by hand",
+    "listMode": "Plan / Shop · 1",
+    "listAddPreview": "",
+    "shoppingSections": "No aisle1Edit Appels−2+",
+    "listAction": "Start shopping · 1 item",
+    "moveList": "",
     "badges": [
       "1",
       "0"
@@ -271,7 +378,7 @@
       "",
       "0 of 1 item counted."
     ],
-    "toast": "✓ Appels added to your list",
+    "toast": "✓ Appels is now 2",
     "storage": {
       "grocery_scanner_barcode_cache_v1": {
         "8710000000001": {
@@ -298,7 +405,7 @@
           "id": "id-1",
           "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Appels",
-          "quantity": null,
+          "quantity": 2,
           "unit": "",
           "category": "",
           "note": "",
@@ -340,7 +447,12 @@
     ],
     "barcodePreview": "",
     "scannerMessage": "External match: Halfvolle melk",
-    "shoppingSections": "To buy (2)Uncategorised (1)AppelsUncategorisedEditDeleteDairy (1)Halfvolle melk2Brand: Testmerk Pack size: 1 l Nutri-Score: APer 100g: 46 kcal · P 3.5g · C 4.8g · F 1.5gBarcode: 8710000000001DairyEditDelete",
+    "subtitle": "Scan a barcode or add an item by hand",
+    "listMode": "Plan / Shop · 2",
+    "listAddPreview": "",
+    "shoppingSections": "No aisle1Edit Appels−2+Dairy1Edit Halfvolle melkBrand: Testmerk Pack size: 1 l Nutri-Score: A · Scanned−2+",
+    "listAction": "Start shopping · 2 items",
+    "moveList": "",
     "badges": [
       "2",
       "0"
@@ -376,6 +488,9 @@
     ],
     "toast": "✓ Halfvolle melk added to your list",
     "storage": {
+      "grocery_scanner_aisle_memory_v1": {
+        "halfvolle melk": "Dairy"
+      },
       "grocery_scanner_barcode_cache_v1": {
         "8710000000001": {
           "found": true,
@@ -401,7 +516,7 @@
           "id": "id-1",
           "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Appels",
-          "quantity": null,
+          "quantity": 2,
           "unit": "",
           "category": "",
           "note": "",
@@ -466,7 +581,12 @@
     ],
     "barcodePreview": "",
     "scannerMessage": "Matched existing item: Halfvolle melk",
-    "shoppingSections": "To buy (2)Uncategorised (1)AppelsUncategorisedEditDeleteDairy (1)Halfvolle melk2Brand: Testmerk Pack size: 1 l Nutri-Score: APer 100g: 46 kcal · P 3.5g · C 4.8g · F 1.5gBarcode: 8710000000001DairyEditDelete",
+    "subtitle": "Scan a barcode or add an item by hand",
+    "listMode": "Plan / Shop · 2",
+    "listAddPreview": "",
+    "shoppingSections": "No aisle1Edit Appels−2+Dairy1Edit Halfvolle melkBrand: Testmerk Pack size: 1 l Nutri-Score: A · Scanned−2+",
+    "listAction": "Start shopping · 2 items",
+    "moveList": "",
     "badges": [
       "2",
       "0"
@@ -502,6 +622,9 @@
     ],
     "toast": "✓ Halfvolle melk added to your list",
     "storage": {
+      "grocery_scanner_aisle_memory_v1": {
+        "halfvolle melk": "Dairy"
+      },
       "grocery_scanner_barcode_cache_v1": {
         "8710000000001": {
           "found": true,
@@ -527,7 +650,7 @@
           "id": "id-1",
           "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Appels",
-          "quantity": null,
+          "quantity": 2,
           "unit": "",
           "category": "",
           "note": "",
@@ -592,7 +715,12 @@
     ],
     "barcodePreview": "",
     "scannerMessage": "New barcode ready: 8710000000099",
-    "shoppingSections": "To buy (2)Uncategorised (1)AppelsUncategorisedEditDeleteDairy (1)Halfvolle melk2Brand: Testmerk Pack size: 1 l Nutri-Score: APer 100g: 46 kcal · P 3.5g · C 4.8g · F 1.5gBarcode: 8710000000001DairyEditDelete",
+    "subtitle": "Scan a barcode or add an item by hand",
+    "listMode": "Plan / Shop · 2",
+    "listAddPreview": "",
+    "shoppingSections": "No aisle1Edit Appels−2+Dairy1Edit Halfvolle melkBrand: Testmerk Pack size: 1 l Nutri-Score: A · Scanned−2+",
+    "listAction": "Start shopping · 2 items",
+    "moveList": "",
     "badges": [
       "2",
       "0"
@@ -628,6 +756,9 @@
     ],
     "toast": "✓ Halfvolle melk added to your list",
     "storage": {
+      "grocery_scanner_aisle_memory_v1": {
+        "halfvolle melk": "Dairy"
+      },
       "grocery_scanner_barcode_cache_v1": {
         "8710000000001": {
           "found": true,
@@ -658,7 +789,7 @@
           "id": "id-1",
           "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Appels",
-          "quantity": null,
+          "quantity": 2,
           "unit": "",
           "category": "",
           "note": "",
@@ -723,7 +854,12 @@
     ],
     "barcodePreview": "",
     "scannerMessage": "New barcode ready: 8710000000099",
-    "shoppingSections": "To buy (3)Uncategorised (1)AppelsUncategorisedEditDeleteDairy (1)Halfvolle melk2Brand: Testmerk Pack size: 1 l Nutri-Score: APer 100g: 46 kcal · P 3.5g · C 4.8g · F 1.5gBarcode: 8710000000001DairyEditDeletePantry (1)MysterieBarcode: 8710000000099PantryEditDelete",
+    "subtitle": "Scan a barcode or add an item by hand",
+    "listMode": "Plan / Shop · 3",
+    "listAddPreview": "",
+    "shoppingSections": "No aisle1Edit Appels−2+Dairy1Edit Halfvolle melkBrand: Testmerk Pack size: 1 l Nutri-Score: A · Scanned−2+Pantry1Edit MysterieScannedSet amount",
+    "listAction": "Start shopping · 3 items",
+    "moveList": "",
     "badges": [
       "3",
       "0"
@@ -760,6 +896,10 @@
     ],
     "toast": "✓ Mysterie added to your list",
     "storage": {
+      "grocery_scanner_aisle_memory_v1": {
+        "halfvolle melk": "Dairy",
+        "mysterie": "Pantry"
+      },
       "grocery_scanner_barcode_cache_v1": {
         "8710000000001": {
           "found": true,
@@ -790,7 +930,7 @@
           "id": "id-1",
           "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Appels",
-          "quantity": null,
+          "quantity": 2,
           "unit": "",
           "category": "",
           "note": "",
@@ -878,7 +1018,12 @@
     ],
     "barcodePreview": "",
     "scannerMessage": "External match: Volkoren pasta",
-    "shoppingSections": "To buy (4)Uncategorised (1)AppelsUncategorisedEditDeleteDairy (1)Halfvolle melk2Brand: Testmerk Pack size: 1 l Nutri-Score: APer 100g: 46 kcal · P 3.5g · C 4.8g · F 1.5gBarcode: 8710000000001DairyEditDeletePantry (2)MysterieBarcode: 8710000000099PantryEditDeleteVolkoren pastaBrand: Testmerk Pack size: 500 g Nutri-Score: APer 100g: 350 kcal · P 13g · C 64g · F 2.5gBarcode: 8710000000002PantryEditDelete",
+    "subtitle": "Scan a barcode or add an item by hand",
+    "listMode": "Plan / Shop · 4",
+    "listAddPreview": "",
+    "shoppingSections": "No aisle1Edit Appels−2+Dairy1Edit Halfvolle melkBrand: Testmerk Pack size: 1 l Nutri-Score: A · Scanned−2+Pantry2Edit MysterieScannedSet amountEdit Volkoren pastaBrand: Testmerk Pack size: 500 g Nutri-Score: A · ScannedSet amount",
+    "listAction": "Start shopping · 4 items",
+    "moveList": "",
     "badges": [
       "4",
       "0"
@@ -916,6 +1061,11 @@
     ],
     "toast": "✓ Volkoren pasta added to your list",
     "storage": {
+      "grocery_scanner_aisle_memory_v1": {
+        "halfvolle melk": "Dairy",
+        "mysterie": "Pantry",
+        "volkoren pasta": "Pantry"
+      },
       "grocery_scanner_barcode_cache_v1": {
         "8710000000001": {
           "found": true,
@@ -964,7 +1114,7 @@
           "id": "id-1",
           "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Appels",
-          "quantity": null,
+          "quantity": 2,
           "unit": "",
           "category": "",
           "note": "",
@@ -1057,9 +1207,9 @@
     }
   },
   {
-    "name": "mark bought",
+    "name": "shop mode",
     "title": "Shopping list",
-    "status": "Marked \"Halfvolle melk\" as bought.",
+    "status": "Added \"Volkoren pasta\".",
     "formTitle": "Add item",
     "form": [
       "",
@@ -1075,9 +1225,14 @@
     ],
     "barcodePreview": "",
     "scannerMessage": "External match: Volkoren pasta",
-    "shoppingSections": "To buy (3)Uncategorised (1)AppelsUncategorisedEditDeletePantry (2)MysterieBarcode: 8710000000099PantryEditDeleteVolkoren pastaBrand: Testmerk Pack size: 500 g Nutri-Score: APer 100g: 350 kcal · P 13g · C 64g · F 2.5gBarcode: 8710000000002PantryEditDeleteBought (1)Dairy (1)Halfvolle melk2Brand: Testmerk Pack size: 1 l Nutri-Score: APer 100g: 46 kcal · P 3.5g · C 4.8g · F 1.5gBarcode: 8710000000001DairyTo stockEditDelete",
+    "subtitle": "4 to buy",
+    "listMode": "Plan / Shop · 4",
+    "listAddPreview": "",
+    "shoppingSections": "0 of 4 in your basketNo aisleAppels2DairyHalfvolle melkBrand: Testmerk Pack size: 1 l Nutri-Score: A2PantryMysterieVolkoren pastaBrand: Testmerk Pack size: 500 g Nutri-Score: A",
+    "listAction": "",
+    "moveList": "",
     "badges": [
-      "3",
+      "4",
       "0"
     ],
     "stockList": "",
@@ -1113,6 +1268,11 @@
     ],
     "toast": "✓ Volkoren pasta added to your list",
     "storage": {
+      "grocery_scanner_aisle_memory_v1": {
+        "halfvolle melk": "Dairy",
+        "mysterie": "Pantry",
+        "volkoren pasta": "Pantry"
+      },
       "grocery_scanner_barcode_cache_v1": {
         "8710000000001": {
           "found": true,
@@ -1161,7 +1321,215 @@
           "id": "id-1",
           "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Appels",
+          "quantity": 2,
+          "unit": "",
+          "category": "",
+          "note": "",
+          "barcode": "",
+          "nutrition": {
+            "kcal100g": null,
+            "protein100g": null,
+            "carbs100g": null,
+            "fat100g": null,
+            "fiber100g": null
+          },
+          "nutritionAmount": null,
+          "packGrams": null,
+          "nutritionSource": null,
+          "nevoVersion": null,
+          "restockQuantity": null,
+          "bought": false
+        },
+        {
+          "id": "id-2",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
+          "name": "Halfvolle melk",
+          "quantity": 2,
+          "unit": "",
+          "category": "Dairy",
+          "note": "Brand: Testmerk\nPack size: 1 l\nNutri-Score: A",
+          "barcode": "8710000000001",
+          "nutrition": {
+            "kcal100g": 46,
+            "protein100g": 3.5,
+            "carbs100g": 4.8,
+            "fat100g": 1.5,
+            "fiber100g": null
+          },
+          "nutritionAmount": null,
+          "packGrams": 1000,
+          "nutritionSource": null,
+          "nevoVersion": null,
+          "restockQuantity": null,
+          "bought": false
+        },
+        {
+          "id": "id-3",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
+          "name": "Mysterie",
           "quantity": null,
+          "unit": "",
+          "category": "Pantry",
+          "note": "",
+          "barcode": "8710000000099",
+          "nutrition": {
+            "kcal100g": null,
+            "protein100g": null,
+            "carbs100g": null,
+            "fat100g": null,
+            "fiber100g": null
+          },
+          "nutritionAmount": null,
+          "packGrams": null,
+          "nutritionSource": null,
+          "nevoVersion": null,
+          "restockQuantity": null,
+          "bought": false
+        },
+        {
+          "id": "id-4",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
+          "name": "Volkoren pasta",
+          "quantity": null,
+          "unit": "",
+          "category": "Pantry",
+          "note": "Brand: Testmerk\nPack size: 500 g\nNutri-Score: A",
+          "barcode": "8710000000002",
+          "nutrition": {
+            "kcal100g": 350,
+            "protein100g": 13,
+            "carbs100g": 64,
+            "fat100g": 2.5,
+            "fiber100g": null
+          },
+          "nutritionAmount": null,
+          "packGrams": 500,
+          "nutritionSource": null,
+          "nevoVersion": null,
+          "restockQuantity": null,
+          "bought": false
+        }
+      ],
+      "grocery_scanner_list_mode_v1": "shop",
+      "grocery_scanner_release_seen_v1": "v44"
+    }
+  },
+  {
+    "name": "mark bought",
+    "title": "Shopping list",
+    "status": "Marked \"Halfvolle melk\" as bought.",
+    "formTitle": "Add item",
+    "form": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
+    "barcodePreview": "",
+    "scannerMessage": "External match: Volkoren pasta",
+    "subtitle": "3 to buy",
+    "listMode": "Plan / Shop · 3",
+    "listAddPreview": "",
+    "shoppingSections": "1 of 4 in your basketNo aisleAppels2DairyHalfvolle melkBrand: Testmerk Pack size: 1 l Nutri-Score: A2PantryMysterieVolkoren pastaBrand: Testmerk Pack size: 500 g Nutri-Score: A",
+    "listAction": "Done shopping · move 1 to pantry",
+    "moveList": "",
+    "badges": [
+      "3",
+      "0"
+    ],
+    "stockList": "",
+    "pantryScanMessage": "Scanner idle.",
+    "pantryUnknownText": "",
+    "recipeEditorModeText": "Creating a new recipe.",
+    "recipeBuilderMessage": "",
+    "recipeItemOptions": [
+      "Select an ingredient",
+      "Appels (no nutrition data)",
+      "Halfvolle melk",
+      "Mysterie (no nutrition data)",
+      "Volkoren pasta",
+      "+ Other ingredient (not in pantry)"
+    ],
+    "recipeIngredientsList": "",
+    "recipeTotals": "",
+    "savedRecipesList": "",
+    "aiSection": [
+      "AI recipe suggestions",
+      "Get recipe ideas based on what's currently in your pantry stock.",
+      "Suggest recipes from my stock"
+    ],
+    "aiSuggestStatus": "",
+    "aiRecipeResults": "",
+    "apiKeyStatus": "No API key saved yet.",
+    "backupStatus": "",
+    "stats": [
+      "",
+      "",
+      "920 kcal totalProtein70g (30%)Carbs96g (41%)Fat30g (29%)",
+      "Based on 1 of 4 items with known amount and nutrition data."
+    ],
+    "toast": "✓ Volkoren pasta added to your list",
+    "storage": {
+      "grocery_scanner_aisle_memory_v1": {
+        "halfvolle melk": "Dairy",
+        "mysterie": "Pantry",
+        "volkoren pasta": "Pantry"
+      },
+      "grocery_scanner_barcode_cache_v1": {
+        "8710000000001": {
+          "found": true,
+          "data": {
+            "name": "Halfvolle melk",
+            "brand": "Testmerk",
+            "packageQuantity": "1 l",
+            "category": "Dairy",
+            "nutriScore": "a",
+            "nutrition": {
+              "kcal100g": 46,
+              "protein100g": 3.5,
+              "carbs100g": 4.8,
+              "fat100g": 1.5,
+              "fiber100g": null
+            }
+          },
+          "cachedAt": 1768471200000
+        },
+        "8710000000099": {
+          "found": false,
+          "data": null,
+          "cachedAt": 1768471200000
+        },
+        "8710000000002": {
+          "found": true,
+          "data": {
+            "name": "Volkoren pasta",
+            "brand": "Testmerk",
+            "packageQuantity": "500 g",
+            "category": "Pantry",
+            "nutriScore": "a",
+            "nutrition": {
+              "kcal100g": 350,
+              "protein100g": 13,
+              "carbs100g": 64,
+              "fat100g": 2.5,
+              "fiber100g": null
+            }
+          },
+          "cachedAt": 1768471200000
+        }
+      },
+      "grocery_scanner_items_v6": [
+        {
+          "id": "id-1",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
+          "name": "Appels",
+          "quantity": 2,
           "unit": "",
           "category": "",
           "note": "",
@@ -1250,13 +1618,14 @@
           "bought": false
         }
       ],
+      "grocery_scanner_list_mode_v1": "shop",
       "grocery_scanner_release_seen_v1": "v44"
     }
   },
   {
-    "name": "move to stock",
+    "name": "done shopping confirmation",
     "title": "Shopping list",
-    "status": "Moved \"Halfvolle melk\" to pantry stock.",
+    "status": "Marked \"Halfvolle melk\" as bought.",
     "formTitle": "Add item",
     "form": [
       "",
@@ -1272,20 +1641,25 @@
     ],
     "barcodePreview": "",
     "scannerMessage": "External match: Volkoren pasta",
-    "shoppingSections": "To buy (3)Uncategorised (1)AppelsUncategorisedEditDeletePantry (2)MysterieBarcode: 8710000000099PantryEditDeleteVolkoren pastaBrand: Testmerk Pack size: 500 g Nutri-Score: APer 100g: 350 kcal · P 13g · C 64g · F 2.5gBarcode: 8710000000002PantryEditDelete",
+    "subtitle": "3 to buy",
+    "listMode": "Plan / Shop · 3",
+    "listAddPreview": "",
+    "shoppingSections": "1 of 4 in your basketNo aisleAppels2DairyHalfvolle melkBrand: Testmerk Pack size: 1 l Nutri-Score: A2PantryMysterieVolkoren pastaBrand: Testmerk Pack size: 500 g Nutri-Score: A",
+    "listAction": "Done shopping · move 1 to pantry",
+    "moveList": "Halfvolle melkNew · 2",
     "badges": [
       "3",
-      "1"
+      "0"
     ],
-    "stockList": "Halfvolle melk−+Brand: Testmerk Pack size: 1 l Nutri-Score: APer 100g: 46 kcal · P 3.5g · C 4.8g · F 1.5g1000 g eachBarcode: 8710000000001DairyReturnWeight",
+    "stockList": "",
     "pantryScanMessage": "Scanner idle.",
     "pantryUnknownText": "",
     "recipeEditorModeText": "Creating a new recipe.",
     "recipeBuilderMessage": "",
     "recipeItemOptions": [
       "Select an ingredient",
-      "Halfvolle melk",
       "Appels (no nutrition data)",
+      "Halfvolle melk",
       "Mysterie (no nutrition data)",
       "Volkoren pasta",
       "+ Other ingredient (not in pantry)"
@@ -1303,13 +1677,18 @@
     "apiKeyStatus": "No API key saved yet.",
     "backupStatus": "",
     "stats": [
-      "920 kcal totalProtein70g (30%)Carbs96g (41%)Fat30g (29%)",
-      "Based on 1 of 1 item with known amount and nutrition data.",
       "",
-      "0 of 3 items counted."
+      "",
+      "920 kcal totalProtein70g (30%)Carbs96g (41%)Fat30g (29%)",
+      "Based on 1 of 4 items with known amount and nutrition data."
     ],
     "toast": "✓ Volkoren pasta added to your list",
     "storage": {
+      "grocery_scanner_aisle_memory_v1": {
+        "halfvolle melk": "Dairy",
+        "mysterie": "Pantry",
+        "volkoren pasta": "Pantry"
+      },
       "grocery_scanner_barcode_cache_v1": {
         "8710000000001": {
           "found": true,
@@ -1358,7 +1737,215 @@
           "id": "id-1",
           "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Appels",
+          "quantity": 2,
+          "unit": "",
+          "category": "",
+          "note": "",
+          "barcode": "",
+          "nutrition": {
+            "kcal100g": null,
+            "protein100g": null,
+            "carbs100g": null,
+            "fat100g": null,
+            "fiber100g": null
+          },
+          "nutritionAmount": null,
+          "packGrams": null,
+          "nutritionSource": null,
+          "nevoVersion": null,
+          "restockQuantity": null,
+          "bought": false
+        },
+        {
+          "id": "id-2",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
+          "name": "Halfvolle melk",
+          "quantity": 2,
+          "unit": "",
+          "category": "Dairy",
+          "note": "Brand: Testmerk\nPack size: 1 l\nNutri-Score: A",
+          "barcode": "8710000000001",
+          "nutrition": {
+            "kcal100g": 46,
+            "protein100g": 3.5,
+            "carbs100g": 4.8,
+            "fat100g": 1.5,
+            "fiber100g": null
+          },
+          "nutritionAmount": null,
+          "packGrams": 1000,
+          "nutritionSource": null,
+          "nevoVersion": null,
+          "restockQuantity": null,
+          "bought": true
+        },
+        {
+          "id": "id-3",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
+          "name": "Mysterie",
           "quantity": null,
+          "unit": "",
+          "category": "Pantry",
+          "note": "",
+          "barcode": "8710000000099",
+          "nutrition": {
+            "kcal100g": null,
+            "protein100g": null,
+            "carbs100g": null,
+            "fat100g": null,
+            "fiber100g": null
+          },
+          "nutritionAmount": null,
+          "packGrams": null,
+          "nutritionSource": null,
+          "nevoVersion": null,
+          "restockQuantity": null,
+          "bought": false
+        },
+        {
+          "id": "id-4",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
+          "name": "Volkoren pasta",
+          "quantity": null,
+          "unit": "",
+          "category": "Pantry",
+          "note": "Brand: Testmerk\nPack size: 500 g\nNutri-Score: A",
+          "barcode": "8710000000002",
+          "nutrition": {
+            "kcal100g": 350,
+            "protein100g": 13,
+            "carbs100g": 64,
+            "fat100g": 2.5,
+            "fiber100g": null
+          },
+          "nutritionAmount": null,
+          "packGrams": 500,
+          "nutritionSource": null,
+          "nevoVersion": null,
+          "restockQuantity": null,
+          "bought": false
+        }
+      ],
+      "grocery_scanner_list_mode_v1": "shop",
+      "grocery_scanner_release_seen_v1": "v44"
+    }
+  },
+  {
+    "name": "move to stock",
+    "title": "Shopping list",
+    "status": "Moved 1 item to your pantry.",
+    "formTitle": "Add item",
+    "form": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
+    "barcodePreview": "",
+    "scannerMessage": "External match: Volkoren pasta",
+    "subtitle": "3 to buy",
+    "listMode": "Plan / Shop · 3",
+    "listAddPreview": "",
+    "shoppingSections": "0 of 3 in your basketNo aisleAppels2PantryMysterieVolkoren pastaBrand: Testmerk Pack size: 500 g Nutri-Score: A",
+    "listAction": "",
+    "moveList": "Halfvolle melkNew · 2",
+    "badges": [
+      "3",
+      "1"
+    ],
+    "stockList": "Halfvolle melk−+Brand: Testmerk Pack size: 1 l Nutri-Score: APer 100g: 46 kcal · P 3.5g · C 4.8g · F 1.5g1000 g eachBarcode: 8710000000001DairyReturnWeight",
+    "pantryScanMessage": "Scanner idle.",
+    "pantryUnknownText": "",
+    "recipeEditorModeText": "Creating a new recipe.",
+    "recipeBuilderMessage": "",
+    "recipeItemOptions": [
+      "Select an ingredient",
+      "Halfvolle melk",
+      "Appels (no nutrition data)",
+      "Mysterie (no nutrition data)",
+      "Volkoren pasta",
+      "+ Other ingredient (not in pantry)"
+    ],
+    "recipeIngredientsList": "",
+    "recipeTotals": "",
+    "savedRecipesList": "",
+    "aiSection": [
+      "AI recipe suggestions",
+      "Get recipe ideas based on what's currently in your pantry stock.",
+      "Suggest recipes from my stock"
+    ],
+    "aiSuggestStatus": "",
+    "aiRecipeResults": "",
+    "apiKeyStatus": "No API key saved yet.",
+    "backupStatus": "",
+    "stats": [
+      "920 kcal totalProtein70g (30%)Carbs96g (41%)Fat30g (29%)",
+      "Based on 1 of 1 item with known amount and nutrition data.",
+      "",
+      "0 of 3 items counted."
+    ],
+    "toast": "✓ 1 item moved to your pantry",
+    "storage": {
+      "grocery_scanner_aisle_memory_v1": {
+        "halfvolle melk": "Dairy",
+        "mysterie": "Pantry",
+        "volkoren pasta": "Pantry"
+      },
+      "grocery_scanner_barcode_cache_v1": {
+        "8710000000001": {
+          "found": true,
+          "data": {
+            "name": "Halfvolle melk",
+            "brand": "Testmerk",
+            "packageQuantity": "1 l",
+            "category": "Dairy",
+            "nutriScore": "a",
+            "nutrition": {
+              "kcal100g": 46,
+              "protein100g": 3.5,
+              "carbs100g": 4.8,
+              "fat100g": 1.5,
+              "fiber100g": null
+            }
+          },
+          "cachedAt": 1768471200000
+        },
+        "8710000000099": {
+          "found": false,
+          "data": null,
+          "cachedAt": 1768471200000
+        },
+        "8710000000002": {
+          "found": true,
+          "data": {
+            "name": "Volkoren pasta",
+            "brand": "Testmerk",
+            "packageQuantity": "500 g",
+            "category": "Pantry",
+            "nutriScore": "a",
+            "nutrition": {
+              "kcal100g": 350,
+              "protein100g": 13,
+              "carbs100g": 64,
+              "fat100g": 2.5,
+              "fiber100g": null
+            }
+          },
+          "cachedAt": 1768471200000
+        }
+      },
+      "grocery_scanner_items_v6": [
+        {
+          "id": "id-1",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
+          "name": "Appels",
+          "quantity": 2,
           "unit": "",
           "category": "",
           "note": "",
@@ -1424,6 +2011,7 @@
           "bought": false
         }
       ],
+      "grocery_scanner_list_mode_v1": "shop",
       "grocery_scanner_release_seen_v1": "v44",
       "grocery_scanner_stock_v1": [
         {
@@ -1454,7 +2042,7 @@
   {
     "name": "move pasta to stock",
     "title": "Shopping list",
-    "status": "Moved \"Volkoren pasta\" to pantry stock.",
+    "status": "Moved 1 item to your pantry.",
     "formTitle": "Add item",
     "form": [
       "",
@@ -1470,7 +2058,12 @@
     ],
     "barcodePreview": "",
     "scannerMessage": "External match: Volkoren pasta",
-    "shoppingSections": "To buy (2)Uncategorised (1)AppelsUncategorisedEditDeletePantry (1)MysterieBarcode: 8710000000099PantryEditDelete",
+    "subtitle": "2 to buy",
+    "listMode": "Plan / Shop · 2",
+    "listAddPreview": "",
+    "shoppingSections": "0 of 2 in your basketNo aisleAppels2PantryMysterie",
+    "listAction": "",
+    "moveList": "Volkoren pastaNew",
     "badges": [
       "2",
       "2"
@@ -1506,8 +2099,13 @@
       "",
       "0 of 2 items counted."
     ],
-    "toast": "✓ Volkoren pasta added to your list",
+    "toast": "✓ 1 item moved to your pantry",
     "storage": {
+      "grocery_scanner_aisle_memory_v1": {
+        "halfvolle melk": "Dairy",
+        "mysterie": "Pantry",
+        "volkoren pasta": "Pantry"
+      },
       "grocery_scanner_barcode_cache_v1": {
         "8710000000001": {
           "found": true,
@@ -1556,7 +2154,7 @@
           "id": "id-1",
           "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Appels",
-          "quantity": null,
+          "quantity": 2,
           "unit": "",
           "category": "",
           "note": "",
@@ -1599,6 +2197,7 @@
           "bought": false
         }
       ],
+      "grocery_scanner_list_mode_v1": "shop",
       "grocery_scanner_release_seen_v1": "v44",
       "grocery_scanner_stock_v1": [
         {
@@ -1650,7 +2249,7 @@
   },
   {
     "name": "edit item",
-    "title": "Scanner",
+    "title": "Shopping list",
     "status": "Updated \"Rode appels\".",
     "formTitle": "Add item",
     "form": [
@@ -1667,7 +2266,12 @@
     ],
     "barcodePreview": "",
     "scannerMessage": "External match: Volkoren pasta",
-    "shoppingSections": "To buy (2)Uncategorised (1)Rode appelsElstarUncategorisedEditDeletePantry (1)MysterieBarcode: 8710000000099PantryEditDelete",
+    "subtitle": "2 to buy",
+    "listMode": "Plan / Shop · 2",
+    "listAddPreview": "",
+    "shoppingSections": "No aisle1Edit Rode appelsElstar−2+Pantry1Edit MysterieScannedSet amount",
+    "listAction": "Start shopping · 2 items",
+    "moveList": "Volkoren pastaNew",
     "badges": [
       "2",
       "2"
@@ -1705,6 +2309,11 @@
     ],
     "toast": "✓ Rode appels updated",
     "storage": {
+      "grocery_scanner_aisle_memory_v1": {
+        "halfvolle melk": "Dairy",
+        "mysterie": "Pantry",
+        "volkoren pasta": "Pantry"
+      },
       "grocery_scanner_barcode_cache_v1": {
         "8710000000001": {
           "found": true,
@@ -1753,7 +2362,7 @@
           "id": "id-1",
           "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Rode appels",
-          "quantity": null,
+          "quantity": 2,
           "unit": "",
           "category": "",
           "note": "Elstar",
@@ -1796,6 +2405,7 @@
           "bought": false
         }
       ],
+      "grocery_scanner_list_mode_v1": "plan",
       "grocery_scanner_release_seen_v1": "v44",
       "grocery_scanner_stock_v1": [
         {
@@ -1847,7 +2457,7 @@
   },
   {
     "name": "delete item",
-    "title": "Scanner",
+    "title": "Shopping list",
     "status": "Removed \"Mysterie\".",
     "formTitle": "Add item",
     "form": [
@@ -1864,7 +2474,12 @@
     ],
     "barcodePreview": "",
     "scannerMessage": "External match: Volkoren pasta",
-    "shoppingSections": "To buy (1)Uncategorised (1)Rode appelsElstarUncategorisedEditDelete",
+    "subtitle": "1 to buy",
+    "listMode": "Plan / Shop · 1",
+    "listAddPreview": "",
+    "shoppingSections": "No aisle1Edit Rode appelsElstar−2+",
+    "listAction": "Start shopping · 1 item",
+    "moveList": "Volkoren pastaNew",
     "badges": [
       "1",
       "2"
@@ -1899,8 +2514,13 @@
       "",
       "0 of 1 item counted."
     ],
-    "toast": "✓ Rode appels updated",
+    "toast": "Mysterie deletedUndo",
     "storage": {
+      "grocery_scanner_aisle_memory_v1": {
+        "halfvolle melk": "Dairy",
+        "mysterie": "Pantry",
+        "volkoren pasta": "Pantry"
+      },
       "grocery_scanner_barcode_cache_v1": {
         "8710000000001": {
           "found": true,
@@ -1949,7 +2569,7 @@
           "id": "id-1",
           "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Rode appels",
-          "quantity": null,
+          "quantity": 2,
           "unit": "",
           "category": "",
           "note": "Elstar",
@@ -1969,6 +2589,399 @@
           "bought": false
         }
       ],
+      "grocery_scanner_list_mode_v1": "plan",
+      "grocery_scanner_release_seen_v1": "v44",
+      "grocery_scanner_stock_v1": [
+        {
+          "id": "id-2",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
+          "name": "Halfvolle melk",
+          "quantity": 2,
+          "unit": "",
+          "category": "Dairy",
+          "note": "Brand: Testmerk\nPack size: 1 l\nNutri-Score: A",
+          "barcode": "8710000000001",
+          "nutrition": {
+            "kcal100g": 46,
+            "protein100g": 3.5,
+            "carbs100g": 4.8,
+            "fat100g": 1.5,
+            "fiber100g": null
+          },
+          "nutritionAmount": null,
+          "packGrams": 1000,
+          "nutritionSource": null,
+          "nevoVersion": null,
+          "restockQuantity": 2
+        },
+        {
+          "id": "id-4",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
+          "name": "Volkoren pasta",
+          "quantity": null,
+          "unit": "",
+          "category": "Pantry",
+          "note": "Brand: Testmerk\nPack size: 500 g\nNutri-Score: A",
+          "barcode": "8710000000002",
+          "nutrition": {
+            "kcal100g": 350,
+            "protein100g": 13,
+            "carbs100g": 64,
+            "fat100g": 2.5,
+            "fiber100g": null
+          },
+          "nutritionAmount": null,
+          "packGrams": 500,
+          "nutritionSource": null,
+          "nevoVersion": null,
+          "restockQuantity": null
+        }
+      ]
+    }
+  },
+  {
+    "name": "undo delete",
+    "title": "Shopping list",
+    "status": "Put \"Mysterie\" back on your list.",
+    "formTitle": "Add item",
+    "form": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
+    "barcodePreview": "",
+    "scannerMessage": "External match: Volkoren pasta",
+    "subtitle": "2 to buy",
+    "listMode": "Plan / Shop · 2",
+    "listAddPreview": "",
+    "shoppingSections": "No aisle1Edit Rode appelsElstar−2+Pantry1Edit MysterieScannedSet amount",
+    "listAction": "Start shopping · 2 items",
+    "moveList": "Volkoren pastaNew",
+    "badges": [
+      "2",
+      "2"
+    ],
+    "stockList": "Halfvolle melk−+Brand: Testmerk Pack size: 1 l Nutri-Score: APer 100g: 46 kcal · P 3.5g · C 4.8g · F 1.5g1000 g eachBarcode: 8710000000001DairyReturnWeightVolkoren pasta−+Brand: Testmerk Pack size: 500 g Nutri-Score: APer 100g: 350 kcal · P 13g · C 64g · F 2.5g500 g eachBarcode: 8710000000002PantryReturnWeight",
+    "pantryScanMessage": "Scanner idle.",
+    "pantryUnknownText": "",
+    "recipeEditorModeText": "Creating a new recipe.",
+    "recipeBuilderMessage": "",
+    "recipeItemOptions": [
+      "Select an ingredient",
+      "Halfvolle melk",
+      "Volkoren pasta",
+      "Mysterie (no nutrition data)",
+      "Rode appels (no nutrition data)",
+      "+ Other ingredient (not in pantry)"
+    ],
+    "recipeIngredientsList": "",
+    "recipeTotals": "",
+    "savedRecipesList": "",
+    "aiSection": [
+      "AI recipe suggestions",
+      "Get recipe ideas based on what's currently in your pantry stock.",
+      "Suggest recipes from my stock"
+    ],
+    "aiSuggestStatus": "",
+    "aiRecipeResults": "",
+    "apiKeyStatus": "No API key saved yet.",
+    "backupStatus": "",
+    "stats": [
+      "920 kcal totalProtein70g (30%)Carbs96g (41%)Fat30g (29%)",
+      "Based on 1 of 2 items with known amount and nutrition data.",
+      "",
+      "0 of 2 items counted."
+    ],
+    "toast": "Mysterie deletedUndo",
+    "storage": {
+      "grocery_scanner_aisle_memory_v1": {
+        "halfvolle melk": "Dairy",
+        "mysterie": "Pantry",
+        "volkoren pasta": "Pantry"
+      },
+      "grocery_scanner_barcode_cache_v1": {
+        "8710000000001": {
+          "found": true,
+          "data": {
+            "name": "Halfvolle melk",
+            "brand": "Testmerk",
+            "packageQuantity": "1 l",
+            "category": "Dairy",
+            "nutriScore": "a",
+            "nutrition": {
+              "kcal100g": 46,
+              "protein100g": 3.5,
+              "carbs100g": 4.8,
+              "fat100g": 1.5,
+              "fiber100g": null
+            }
+          },
+          "cachedAt": 1768471200000
+        },
+        "8710000000099": {
+          "found": false,
+          "data": null,
+          "cachedAt": 1768471200000
+        },
+        "8710000000002": {
+          "found": true,
+          "data": {
+            "name": "Volkoren pasta",
+            "brand": "Testmerk",
+            "packageQuantity": "500 g",
+            "category": "Pantry",
+            "nutriScore": "a",
+            "nutrition": {
+              "kcal100g": 350,
+              "protein100g": 13,
+              "carbs100g": 64,
+              "fat100g": 2.5,
+              "fiber100g": null
+            }
+          },
+          "cachedAt": 1768471200000
+        }
+      },
+      "grocery_scanner_items_v6": [
+        {
+          "id": "id-1",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
+          "name": "Rode appels",
+          "quantity": 2,
+          "unit": "",
+          "category": "",
+          "note": "Elstar",
+          "barcode": "",
+          "nutrition": {
+            "kcal100g": null,
+            "protein100g": null,
+            "carbs100g": null,
+            "fat100g": null,
+            "fiber100g": null
+          },
+          "nutritionAmount": null,
+          "packGrams": null,
+          "nutritionSource": null,
+          "nevoVersion": null,
+          "restockQuantity": null,
+          "bought": false
+        },
+        {
+          "id": "id-3",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
+          "name": "Mysterie",
+          "quantity": null,
+          "unit": "",
+          "category": "Pantry",
+          "note": "",
+          "barcode": "8710000000099",
+          "nutrition": {
+            "kcal100g": null,
+            "protein100g": null,
+            "carbs100g": null,
+            "fat100g": null,
+            "fiber100g": null
+          },
+          "nutritionAmount": null,
+          "packGrams": null,
+          "nutritionSource": null,
+          "nevoVersion": null,
+          "restockQuantity": null,
+          "bought": false
+        }
+      ],
+      "grocery_scanner_list_mode_v1": "plan",
+      "grocery_scanner_release_seen_v1": "v44",
+      "grocery_scanner_stock_v1": [
+        {
+          "id": "id-2",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
+          "name": "Halfvolle melk",
+          "quantity": 2,
+          "unit": "",
+          "category": "Dairy",
+          "note": "Brand: Testmerk\nPack size: 1 l\nNutri-Score: A",
+          "barcode": "8710000000001",
+          "nutrition": {
+            "kcal100g": 46,
+            "protein100g": 3.5,
+            "carbs100g": 4.8,
+            "fat100g": 1.5,
+            "fiber100g": null
+          },
+          "nutritionAmount": null,
+          "packGrams": 1000,
+          "nutritionSource": null,
+          "nevoVersion": null,
+          "restockQuantity": 2
+        },
+        {
+          "id": "id-4",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
+          "name": "Volkoren pasta",
+          "quantity": null,
+          "unit": "",
+          "category": "Pantry",
+          "note": "Brand: Testmerk\nPack size: 500 g\nNutri-Score: A",
+          "barcode": "8710000000002",
+          "nutrition": {
+            "kcal100g": 350,
+            "protein100g": 13,
+            "carbs100g": 64,
+            "fat100g": 2.5,
+            "fiber100g": null
+          },
+          "nutritionAmount": null,
+          "packGrams": 500,
+          "nutritionSource": null,
+          "nevoVersion": null,
+          "restockQuantity": null
+        }
+      ]
+    }
+  },
+  {
+    "name": "delete item again",
+    "title": "Shopping list",
+    "status": "Removed \"Mysterie\".",
+    "formTitle": "Add item",
+    "form": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
+    "barcodePreview": "",
+    "scannerMessage": "External match: Volkoren pasta",
+    "subtitle": "1 to buy",
+    "listMode": "Plan / Shop · 1",
+    "listAddPreview": "",
+    "shoppingSections": "No aisle1Edit Rode appelsElstar−2+",
+    "listAction": "Start shopping · 1 item",
+    "moveList": "Volkoren pastaNew",
+    "badges": [
+      "1",
+      "2"
+    ],
+    "stockList": "Halfvolle melk−+Brand: Testmerk Pack size: 1 l Nutri-Score: APer 100g: 46 kcal · P 3.5g · C 4.8g · F 1.5g1000 g eachBarcode: 8710000000001DairyReturnWeightVolkoren pasta−+Brand: Testmerk Pack size: 500 g Nutri-Score: APer 100g: 350 kcal · P 13g · C 64g · F 2.5g500 g eachBarcode: 8710000000002PantryReturnWeight",
+    "pantryScanMessage": "Scanner idle.",
+    "pantryUnknownText": "",
+    "recipeEditorModeText": "Creating a new recipe.",
+    "recipeBuilderMessage": "",
+    "recipeItemOptions": [
+      "Select an ingredient",
+      "Halfvolle melk",
+      "Volkoren pasta",
+      "Rode appels (no nutrition data)",
+      "+ Other ingredient (not in pantry)"
+    ],
+    "recipeIngredientsList": "",
+    "recipeTotals": "",
+    "savedRecipesList": "",
+    "aiSection": [
+      "AI recipe suggestions",
+      "Get recipe ideas based on what's currently in your pantry stock.",
+      "Suggest recipes from my stock"
+    ],
+    "aiSuggestStatus": "",
+    "aiRecipeResults": "",
+    "apiKeyStatus": "No API key saved yet.",
+    "backupStatus": "",
+    "stats": [
+      "920 kcal totalProtein70g (30%)Carbs96g (41%)Fat30g (29%)",
+      "Based on 1 of 2 items with known amount and nutrition data.",
+      "",
+      "0 of 1 item counted."
+    ],
+    "toast": "Mysterie deletedUndo",
+    "storage": {
+      "grocery_scanner_aisle_memory_v1": {
+        "halfvolle melk": "Dairy",
+        "mysterie": "Pantry",
+        "volkoren pasta": "Pantry"
+      },
+      "grocery_scanner_barcode_cache_v1": {
+        "8710000000001": {
+          "found": true,
+          "data": {
+            "name": "Halfvolle melk",
+            "brand": "Testmerk",
+            "packageQuantity": "1 l",
+            "category": "Dairy",
+            "nutriScore": "a",
+            "nutrition": {
+              "kcal100g": 46,
+              "protein100g": 3.5,
+              "carbs100g": 4.8,
+              "fat100g": 1.5,
+              "fiber100g": null
+            }
+          },
+          "cachedAt": 1768471200000
+        },
+        "8710000000099": {
+          "found": false,
+          "data": null,
+          "cachedAt": 1768471200000
+        },
+        "8710000000002": {
+          "found": true,
+          "data": {
+            "name": "Volkoren pasta",
+            "brand": "Testmerk",
+            "packageQuantity": "500 g",
+            "category": "Pantry",
+            "nutriScore": "a",
+            "nutrition": {
+              "kcal100g": 350,
+              "protein100g": 13,
+              "carbs100g": 64,
+              "fat100g": 2.5,
+              "fiber100g": null
+            }
+          },
+          "cachedAt": 1768471200000
+        }
+      },
+      "grocery_scanner_items_v6": [
+        {
+          "id": "id-1",
+          "updatedAt": "2026-01-15T10:00:00.000Z",
+          "name": "Rode appels",
+          "quantity": 2,
+          "unit": "",
+          "category": "",
+          "note": "Elstar",
+          "barcode": "",
+          "nutrition": {
+            "kcal100g": null,
+            "protein100g": null,
+            "carbs100g": null,
+            "fat100g": null,
+            "fiber100g": null
+          },
+          "nutritionAmount": null,
+          "packGrams": null,
+          "nutritionSource": null,
+          "nevoVersion": null,
+          "restockQuantity": null,
+          "bought": false
+        }
+      ],
+      "grocery_scanner_list_mode_v1": "plan",
       "grocery_scanner_release_seen_v1": "v44",
       "grocery_scanner_stock_v1": [
         {
@@ -2037,7 +3050,12 @@
     ],
     "barcodePreview": "",
     "scannerMessage": "External match: Volkoren pasta",
-    "shoppingSections": "To buy (1)Uncategorised (1)Rode appelsElstarUncategorisedEditDelete",
+    "subtitle": "What you already have in stock",
+    "listMode": "Plan / Shop · 1",
+    "listAddPreview": "",
+    "shoppingSections": "No aisle1Edit Rode appelsElstar−2+",
+    "listAction": "Start shopping · 1 item",
+    "moveList": "Volkoren pastaNew",
     "badges": [
       "1",
       "2"
@@ -2072,8 +3090,13 @@
       "",
       "0 of 1 item counted."
     ],
-    "toast": "✓ Rode appels updated",
+    "toast": "Mysterie deletedUndo",
     "storage": {
+      "grocery_scanner_aisle_memory_v1": {
+        "halfvolle melk": "Dairy",
+        "mysterie": "Pantry",
+        "volkoren pasta": "Pantry"
+      },
       "grocery_scanner_barcode_cache_v1": {
         "8710000000001": {
           "found": true,
@@ -2122,7 +3145,7 @@
           "id": "id-1",
           "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Rode appels",
-          "quantity": null,
+          "quantity": 2,
           "unit": "",
           "category": "",
           "note": "Elstar",
@@ -2142,6 +3165,7 @@
           "bought": false
         }
       ],
+      "grocery_scanner_list_mode_v1": "plan",
       "grocery_scanner_release_seen_v1": "v44",
       "grocery_scanner_stock_v1": [
         {
@@ -2210,7 +3234,12 @@
     ],
     "barcodePreview": "",
     "scannerMessage": "External match: Volkoren pasta",
-    "shoppingSections": "To buy (1)Uncategorised (1)Rode appelsElstarUncategorisedEditDelete",
+    "subtitle": "What you already have in stock",
+    "listMode": "Plan / Shop · 1",
+    "listAddPreview": "",
+    "shoppingSections": "No aisle1Edit Rode appelsElstar−2+",
+    "listAction": "Start shopping · 1 item",
+    "moveList": "Volkoren pastaNew",
     "badges": [
       "1",
       "2"
@@ -2245,8 +3274,13 @@
       "",
       "0 of 1 item counted."
     ],
-    "toast": "✓ Rode appels updated",
+    "toast": "Mysterie deletedUndo",
     "storage": {
+      "grocery_scanner_aisle_memory_v1": {
+        "halfvolle melk": "Dairy",
+        "mysterie": "Pantry",
+        "volkoren pasta": "Pantry"
+      },
       "grocery_scanner_barcode_cache_v1": {
         "8710000000001": {
           "found": true,
@@ -2295,7 +3329,7 @@
           "id": "id-1",
           "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Rode appels",
-          "quantity": null,
+          "quantity": 2,
           "unit": "",
           "category": "",
           "note": "Elstar",
@@ -2315,6 +3349,7 @@
           "bought": false
         }
       ],
+      "grocery_scanner_list_mode_v1": "plan",
       "grocery_scanner_release_seen_v1": "v44",
       "grocery_scanner_stock_v1": [
         {
@@ -2383,7 +3418,12 @@
     ],
     "barcodePreview": "",
     "scannerMessage": "External match: Volkoren pasta",
-    "shoppingSections": "To buy (1)Uncategorised (1)Rode appelsElstarUncategorisedEditDelete",
+    "subtitle": "What you already have in stock",
+    "listMode": "Plan / Shop · 1",
+    "listAddPreview": "",
+    "shoppingSections": "No aisle1Edit Rode appelsElstar−2+",
+    "listAction": "Start shopping · 1 item",
+    "moveList": "Volkoren pastaNew",
     "badges": [
       "1",
       "2"
@@ -2418,8 +3458,13 @@
       "",
       "0 of 1 item counted."
     ],
-    "toast": "✓ Rode appels updated",
+    "toast": "Mysterie deletedUndo",
     "storage": {
+      "grocery_scanner_aisle_memory_v1": {
+        "halfvolle melk": "Dairy",
+        "mysterie": "Pantry",
+        "volkoren pasta": "Pantry"
+      },
       "grocery_scanner_barcode_cache_v1": {
         "8710000000001": {
           "found": true,
@@ -2468,7 +3513,7 @@
           "id": "id-1",
           "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Rode appels",
-          "quantity": null,
+          "quantity": 2,
           "unit": "",
           "category": "",
           "note": "Elstar",
@@ -2488,6 +3533,7 @@
           "bought": false
         }
       ],
+      "grocery_scanner_list_mode_v1": "plan",
       "grocery_scanner_release_seen_v1": "v44",
       "grocery_scanner_stock_v1": [
         {
@@ -2556,7 +3602,12 @@
     ],
     "barcodePreview": "",
     "scannerMessage": "External match: Volkoren pasta",
-    "shoppingSections": "To buy (1)Uncategorised (1)Rode appelsElstarUncategorisedEditDelete",
+    "subtitle": "What you already have in stock",
+    "listMode": "Plan / Shop · 1",
+    "listAddPreview": "",
+    "shoppingSections": "No aisle1Edit Rode appelsElstar−2+",
+    "listAction": "Start shopping · 1 item",
+    "moveList": "Volkoren pastaNew",
     "badges": [
       "1",
       "2"
@@ -2593,6 +3644,11 @@
     ],
     "toast": "✓ Halfvolle melk is already in your pantry (quantity unchanged)",
     "storage": {
+      "grocery_scanner_aisle_memory_v1": {
+        "halfvolle melk": "Dairy",
+        "mysterie": "Pantry",
+        "volkoren pasta": "Pantry"
+      },
       "grocery_scanner_barcode_cache_v1": {
         "8710000000001": {
           "found": true,
@@ -2641,7 +3697,7 @@
           "id": "id-1",
           "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Rode appels",
-          "quantity": null,
+          "quantity": 2,
           "unit": "",
           "category": "",
           "note": "Elstar",
@@ -2661,6 +3717,7 @@
           "bought": false
         }
       ],
+      "grocery_scanner_list_mode_v1": "plan",
       "grocery_scanner_release_seen_v1": "v44",
       "grocery_scanner_stock_v1": [
         {
@@ -2729,7 +3786,12 @@
     ],
     "barcodePreview": "",
     "scannerMessage": "External match: Volkoren pasta",
-    "shoppingSections": "To buy (1)Uncategorised (1)Rode appelsElstarUncategorisedEditDelete",
+    "subtitle": "What you already have in stock",
+    "listMode": "Plan / Shop · 1",
+    "listAddPreview": "",
+    "shoppingSections": "No aisle1Edit Rode appelsElstar−2+",
+    "listAction": "Start shopping · 1 item",
+    "moveList": "Volkoren pastaNew",
     "badges": [
       "1",
       "2"
@@ -2766,6 +3828,11 @@
     ],
     "toast": "✓ Halfvolle melk is already in your pantry (quantity unchanged)",
     "storage": {
+      "grocery_scanner_aisle_memory_v1": {
+        "halfvolle melk": "Dairy",
+        "mysterie": "Pantry",
+        "volkoren pasta": "Pantry"
+      },
       "grocery_scanner_barcode_cache_v1": {
         "8710000000001": {
           "found": true,
@@ -2819,7 +3886,7 @@
           "id": "id-1",
           "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Rode appels",
-          "quantity": null,
+          "quantity": 2,
           "unit": "",
           "category": "",
           "note": "Elstar",
@@ -2839,6 +3906,7 @@
           "bought": false
         }
       ],
+      "grocery_scanner_list_mode_v1": "plan",
       "grocery_scanner_release_seen_v1": "v44",
       "grocery_scanner_stock_v1": [
         {
@@ -2907,7 +3975,12 @@
     ],
     "barcodePreview": "",
     "scannerMessage": "External match: Volkoren pasta",
-    "shoppingSections": "To buy (1)Uncategorised (1)Rode appelsElstarUncategorisedEditDelete",
+    "subtitle": "What you already have in stock",
+    "listMode": "Plan / Shop · 1",
+    "listAddPreview": "",
+    "shoppingSections": "No aisle1Edit Rode appelsElstar−2+",
+    "listAction": "Start shopping · 1 item",
+    "moveList": "Volkoren pastaNew",
     "badges": [
       "1",
       "3"
@@ -2945,6 +4018,11 @@
     ],
     "toast": "✓ Kruidenmix added to pantry",
     "storage": {
+      "grocery_scanner_aisle_memory_v1": {
+        "halfvolle melk": "Dairy",
+        "mysterie": "Pantry",
+        "volkoren pasta": "Pantry"
+      },
       "grocery_scanner_barcode_cache_v1": {
         "8710000000001": {
           "found": true,
@@ -2998,7 +4076,7 @@
           "id": "id-1",
           "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Rode appels",
-          "quantity": null,
+          "quantity": 2,
           "unit": "",
           "category": "",
           "note": "Elstar",
@@ -3018,6 +4096,7 @@
           "bought": false
         }
       ],
+      "grocery_scanner_list_mode_v1": "plan",
       "grocery_scanner_release_seen_v1": "v44",
       "grocery_scanner_stock_v1": [
         {
@@ -3108,7 +4187,12 @@
     ],
     "barcodePreview": "",
     "scannerMessage": "External match: Volkoren pasta",
-    "shoppingSections": "To buy (1)Uncategorised (1)Rode appelsElstarUncategorisedEditDelete",
+    "subtitle": "What you already have in stock",
+    "listMode": "Plan / Shop · 1",
+    "listAddPreview": "",
+    "shoppingSections": "No aisle1Edit Rode appelsElstar−2+",
+    "listAction": "Start shopping · 1 item",
+    "moveList": "Volkoren pastaNew",
     "badges": [
       "1",
       "3"
@@ -3146,6 +4230,11 @@
     ],
     "toast": "✓ Kruidenmix added to pantry",
     "storage": {
+      "grocery_scanner_aisle_memory_v1": {
+        "halfvolle melk": "Dairy",
+        "mysterie": "Pantry",
+        "volkoren pasta": "Pantry"
+      },
       "grocery_scanner_barcode_cache_v1": {
         "8710000000001": {
           "found": true,
@@ -3204,7 +4293,7 @@
           "id": "id-1",
           "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Rode appels",
-          "quantity": null,
+          "quantity": 2,
           "unit": "",
           "category": "",
           "note": "Elstar",
@@ -3224,6 +4313,7 @@
           "bought": false
         }
       ],
+      "grocery_scanner_list_mode_v1": "plan",
       "grocery_scanner_release_seen_v1": "v44",
       "grocery_scanner_stock_v1": [
         {
@@ -3314,7 +4404,12 @@
     ],
     "barcodePreview": "",
     "scannerMessage": "External match: Volkoren pasta",
-    "shoppingSections": "To buy (2)Uncategorised (2)Rode appelsElstarUncategorisedEditDeleteKruidenmix1 packBarcode: 8710000000077UncategorisedEditDelete",
+    "subtitle": "What you already have in stock",
+    "listMode": "Plan / Shop · 2",
+    "listAddPreview": "",
+    "shoppingSections": "No aisle2Edit Rode appelsElstar−2+Edit KruidenmixScanned−1 pack+",
+    "listAction": "Start shopping · 2 items",
+    "moveList": "Volkoren pastaNew",
     "badges": [
       "2",
       "2"
@@ -3352,6 +4447,11 @@
     ],
     "toast": "✓ Kruidenmix added to pantry",
     "storage": {
+      "grocery_scanner_aisle_memory_v1": {
+        "halfvolle melk": "Dairy",
+        "mysterie": "Pantry",
+        "volkoren pasta": "Pantry"
+      },
       "grocery_scanner_barcode_cache_v1": {
         "8710000000001": {
           "found": true,
@@ -3410,7 +4510,7 @@
           "id": "id-1",
           "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Rode appels",
-          "quantity": null,
+          "quantity": 2,
           "unit": "",
           "category": "",
           "note": "Elstar",
@@ -3453,6 +4553,7 @@
           "bought": false
         }
       ],
+      "grocery_scanner_list_mode_v1": "plan",
       "grocery_scanner_release_seen_v1": "v44",
       "grocery_scanner_stock_v1": [
         {
@@ -3521,7 +4622,12 @@
     ],
     "barcodePreview": "",
     "scannerMessage": "External match: Volkoren pasta",
-    "shoppingSections": "To buy (2)Uncategorised (2)Rode appelsElstarUncategorisedEditDeleteKruidenmix1 packBarcode: 8710000000077UncategorisedEditDelete",
+    "subtitle": "Build and save recipes from your items",
+    "listMode": "Plan / Shop · 2",
+    "listAddPreview": "",
+    "shoppingSections": "No aisle2Edit Rode appelsElstar−2+Edit KruidenmixScanned−1 pack+",
+    "listAction": "Start shopping · 2 items",
+    "moveList": "Volkoren pastaNew",
     "badges": [
       "2",
       "2"
@@ -3559,6 +4665,11 @@
     ],
     "toast": "✓ Volkoren pasta added to the recipe",
     "storage": {
+      "grocery_scanner_aisle_memory_v1": {
+        "halfvolle melk": "Dairy",
+        "mysterie": "Pantry",
+        "volkoren pasta": "Pantry"
+      },
       "grocery_scanner_barcode_cache_v1": {
         "8710000000001": {
           "found": true,
@@ -3617,7 +4728,7 @@
           "id": "id-1",
           "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Rode appels",
-          "quantity": null,
+          "quantity": 2,
           "unit": "",
           "category": "",
           "note": "Elstar",
@@ -3660,6 +4771,7 @@
           "bought": false
         }
       ],
+      "grocery_scanner_list_mode_v1": "plan",
       "grocery_scanner_release_seen_v1": "v44",
       "grocery_scanner_stock_v1": [
         {
@@ -3728,7 +4840,12 @@
     ],
     "barcodePreview": "",
     "scannerMessage": "External match: Volkoren pasta",
-    "shoppingSections": "To buy (2)Uncategorised (2)Rode appelsElstarUncategorisedEditDeleteKruidenmix1 packBarcode: 8710000000077UncategorisedEditDelete",
+    "subtitle": "Build and save recipes from your items",
+    "listMode": "Plan / Shop · 2",
+    "listAddPreview": "",
+    "shoppingSections": "No aisle2Edit Rode appelsElstar−2+Edit KruidenmixScanned−1 pack+",
+    "listAction": "Start shopping · 2 items",
+    "moveList": "Volkoren pastaNew",
     "badges": [
       "2",
       "2"
@@ -3766,6 +4883,11 @@
     ],
     "toast": "✓ Tomatensaus added to the recipe",
     "storage": {
+      "grocery_scanner_aisle_memory_v1": {
+        "halfvolle melk": "Dairy",
+        "mysterie": "Pantry",
+        "volkoren pasta": "Pantry"
+      },
       "grocery_scanner_barcode_cache_v1": {
         "8710000000001": {
           "found": true,
@@ -3824,7 +4946,7 @@
           "id": "id-1",
           "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Rode appels",
-          "quantity": null,
+          "quantity": 2,
           "unit": "",
           "category": "",
           "note": "Elstar",
@@ -3867,6 +4989,7 @@
           "bought": false
         }
       ],
+      "grocery_scanner_list_mode_v1": "plan",
       "grocery_scanner_release_seen_v1": "v44",
       "grocery_scanner_stock_v1": [
         {
@@ -3935,7 +5058,12 @@
     ],
     "barcodePreview": "",
     "scannerMessage": "External match: Volkoren pasta",
-    "shoppingSections": "To buy (2)Uncategorised (2)Rode appelsElstarUncategorisedEditDeleteKruidenmix1 packBarcode: 8710000000077UncategorisedEditDelete",
+    "subtitle": "Build and save recipes from your items",
+    "listMode": "Plan / Shop · 2",
+    "listAddPreview": "",
+    "shoppingSections": "No aisle2Edit Rode appelsElstar−2+Edit KruidenmixScanned−1 pack+",
+    "listAction": "Start shopping · 2 items",
+    "moveList": "Volkoren pastaNew",
     "badges": [
       "2",
       "2"
@@ -3973,6 +5101,11 @@
     ],
     "toast": "✓ Tomatensaus added to the recipe",
     "storage": {
+      "grocery_scanner_aisle_memory_v1": {
+        "halfvolle melk": "Dairy",
+        "mysterie": "Pantry",
+        "volkoren pasta": "Pantry"
+      },
       "grocery_scanner_barcode_cache_v1": {
         "8710000000001": {
           "found": true,
@@ -4031,7 +5164,7 @@
           "id": "id-1",
           "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Rode appels",
-          "quantity": null,
+          "quantity": 2,
           "unit": "",
           "category": "",
           "note": "Elstar",
@@ -4074,6 +5207,7 @@
           "bought": false
         }
       ],
+      "grocery_scanner_list_mode_v1": "plan",
       "grocery_scanner_recipes_v1": [
         {
           "name": "Pasta rood",
@@ -4187,7 +5321,12 @@
     ],
     "barcodePreview": "",
     "scannerMessage": "External match: Volkoren pasta",
-    "shoppingSections": "To buy (2)Uncategorised (2)Rode appelsElstarUncategorisedEditDeleteKruidenmix1 packBarcode: 8710000000077UncategorisedEditDelete",
+    "subtitle": "Build and save recipes from your items",
+    "listMode": "Plan / Shop · 2",
+    "listAddPreview": "",
+    "shoppingSections": "No aisle2Edit Rode appelsElstar−2+Edit KruidenmixScanned−1 pack+",
+    "listAction": "Start shopping · 2 items",
+    "moveList": "Volkoren pastaNew",
     "badges": [
       "2",
       "2"
@@ -4225,6 +5364,11 @@
     ],
     "toast": "✓ Tomatensaus added to the recipe",
     "storage": {
+      "grocery_scanner_aisle_memory_v1": {
+        "halfvolle melk": "Dairy",
+        "mysterie": "Pantry",
+        "volkoren pasta": "Pantry"
+      },
       "grocery_scanner_barcode_cache_v1": {
         "8710000000001": {
           "found": true,
@@ -4283,7 +5427,7 @@
           "id": "id-1",
           "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Rode appels",
-          "quantity": null,
+          "quantity": 2,
           "unit": "",
           "category": "",
           "note": "Elstar",
@@ -4326,6 +5470,7 @@
           "bought": false
         }
       ],
+      "grocery_scanner_list_mode_v1": "plan",
       "grocery_scanner_recipes_v1": [
         {
           "name": "Pasta rood",
@@ -4439,7 +5584,12 @@
     ],
     "barcodePreview": "",
     "scannerMessage": "External match: Volkoren pasta",
-    "shoppingSections": "To buy (2)Uncategorised (2)Rode appelsElstarUncategorisedEditDeleteKruidenmix1 packBarcode: 8710000000077UncategorisedEditDelete",
+    "subtitle": "Build and save recipes from your items",
+    "listMode": "Plan / Shop · 2",
+    "listAddPreview": "",
+    "shoppingSections": "No aisle2Edit Rode appelsElstar−2+Edit KruidenmixScanned−1 pack+",
+    "listAction": "Start shopping · 2 items",
+    "moveList": "Volkoren pastaNew",
     "badges": [
       "2",
       "2"
@@ -4477,6 +5627,11 @@
     ],
     "toast": "✓ Tomatensaus added to the recipe",
     "storage": {
+      "grocery_scanner_aisle_memory_v1": {
+        "halfvolle melk": "Dairy",
+        "mysterie": "Pantry",
+        "volkoren pasta": "Pantry"
+      },
       "grocery_scanner_barcode_cache_v1": {
         "8710000000001": {
           "found": true,
@@ -4535,7 +5690,7 @@
           "id": "id-1",
           "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Rode appels",
-          "quantity": null,
+          "quantity": 2,
           "unit": "",
           "category": "",
           "note": "Elstar",
@@ -4578,6 +5733,7 @@
           "bought": false
         }
       ],
+      "grocery_scanner_list_mode_v1": "plan",
       "grocery_scanner_recipes_v1": [
         {
           "name": "Pasta rood",
@@ -4734,7 +5890,12 @@
     ],
     "barcodePreview": "",
     "scannerMessage": "External match: Volkoren pasta",
-    "shoppingSections": "To buy (2)Uncategorised (2)Rode appelsElstarUncategorisedEditDeleteKruidenmix1 packBarcode: 8710000000077UncategorisedEditDelete",
+    "subtitle": "Build and save recipes from your items",
+    "listMode": "Plan / Shop · 2",
+    "listAddPreview": "",
+    "shoppingSections": "No aisle2Edit Rode appelsElstar−2+Edit KruidenmixScanned−1 pack+",
+    "listAction": "Start shopping · 2 items",
+    "moveList": "Volkoren pastaNew",
     "badges": [
       "2",
       "2"
@@ -4772,6 +5933,11 @@
     ],
     "toast": "✓ Tomatensaus added to the recipe",
     "storage": {
+      "grocery_scanner_aisle_memory_v1": {
+        "halfvolle melk": "Dairy",
+        "mysterie": "Pantry",
+        "volkoren pasta": "Pantry"
+      },
       "grocery_scanner_barcode_cache_v1": {
         "8710000000001": {
           "found": true,
@@ -4830,7 +5996,7 @@
           "id": "id-1",
           "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Rode appels",
-          "quantity": null,
+          "quantity": 2,
           "unit": "",
           "category": "",
           "note": "Elstar",
@@ -4873,6 +6039,7 @@
           "bought": false
         }
       ],
+      "grocery_scanner_list_mode_v1": "plan",
       "grocery_scanner_recipes_v1": [
         {
           "name": "Pasta rood",
@@ -5029,7 +6196,12 @@
     ],
     "barcodePreview": "",
     "scannerMessage": "External match: Volkoren pasta",
-    "shoppingSections": "To buy (2)Uncategorised (2)Rode appelsElstarUncategorisedEditDeleteKruidenmix1 packBarcode: 8710000000077UncategorisedEditDelete",
+    "subtitle": "Build and save recipes from your items",
+    "listMode": "Plan / Shop · 2",
+    "listAddPreview": "",
+    "shoppingSections": "No aisle2Edit Rode appelsElstar−2+Edit KruidenmixScanned−1 pack+",
+    "listAction": "Start shopping · 2 items",
+    "moveList": "Volkoren pastaNew",
     "badges": [
       "2",
       "2"
@@ -5067,6 +6239,11 @@
     ],
     "toast": "✓ Tomatensaus added to the recipe",
     "storage": {
+      "grocery_scanner_aisle_memory_v1": {
+        "halfvolle melk": "Dairy",
+        "mysterie": "Pantry",
+        "volkoren pasta": "Pantry"
+      },
       "grocery_scanner_barcode_cache_v1": {
         "8710000000001": {
           "found": true,
@@ -5125,7 +6302,7 @@
           "id": "id-1",
           "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Rode appels",
-          "quantity": null,
+          "quantity": 2,
           "unit": "",
           "category": "",
           "note": "Elstar",
@@ -5168,6 +6345,7 @@
           "bought": false
         }
       ],
+      "grocery_scanner_list_mode_v1": "plan",
       "grocery_scanner_recipes_v1": [
         {
           "name": "Pasta rood",
@@ -5324,7 +6502,12 @@
     ],
     "barcodePreview": "",
     "scannerMessage": "External match: Volkoren pasta",
-    "shoppingSections": "To buy (2)Uncategorised (2)Rode appelsElstarUncategorisedEditDeleteKruidenmix1 packBarcode: 8710000000077UncategorisedEditDelete",
+    "subtitle": "Build and save recipes from your items",
+    "listMode": "Plan / Shop · 2",
+    "listAddPreview": "",
+    "shoppingSections": "No aisle2Edit Rode appelsElstar−2+Edit KruidenmixScanned−1 pack+",
+    "listAction": "Start shopping · 2 items",
+    "moveList": "Volkoren pastaNew",
     "badges": [
       "2",
       "2"
@@ -5362,6 +6545,11 @@
     ],
     "toast": "✓ Tomatensaus added to the recipe",
     "storage": {
+      "grocery_scanner_aisle_memory_v1": {
+        "halfvolle melk": "Dairy",
+        "mysterie": "Pantry",
+        "volkoren pasta": "Pantry"
+      },
       "grocery_scanner_barcode_cache_v1": {
         "8710000000001": {
           "found": true,
@@ -5420,7 +6608,7 @@
           "id": "id-1",
           "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Rode appels",
-          "quantity": null,
+          "quantity": 2,
           "unit": "",
           "category": "",
           "note": "Elstar",
@@ -5463,6 +6651,7 @@
           "bought": false
         }
       ],
+      "grocery_scanner_list_mode_v1": "plan",
       "grocery_scanner_recipes_v1": [
         {
           "name": "Pasta rood",
@@ -5576,7 +6765,12 @@
     ],
     "barcodePreview": "",
     "scannerMessage": "External match: Volkoren pasta",
-    "shoppingSections": "To buy (2)Uncategorised (2)Rode appelsElstarUncategorisedEditDeleteKruidenmix1 packBarcode: 8710000000077UncategorisedEditDelete",
+    "subtitle": "Build and save recipes from your items",
+    "listMode": "Plan / Shop · 2",
+    "listAddPreview": "",
+    "shoppingSections": "No aisle2Edit Rode appelsElstar−2+Edit KruidenmixScanned−1 pack+",
+    "listAction": "Start shopping · 2 items",
+    "moveList": "Volkoren pastaNew",
     "badges": [
       "2",
       "2"
@@ -5614,6 +6808,11 @@
     ],
     "toast": "✓ Tomatensaus added to the recipe",
     "storage": {
+      "grocery_scanner_aisle_memory_v1": {
+        "halfvolle melk": "Dairy",
+        "mysterie": "Pantry",
+        "volkoren pasta": "Pantry"
+      },
       "grocery_scanner_barcode_cache_v1": {
         "8710000000001": {
           "found": true,
@@ -5672,7 +6871,7 @@
           "id": "id-1",
           "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Rode appels",
-          "quantity": null,
+          "quantity": 2,
           "unit": "",
           "category": "",
           "note": "Elstar",
@@ -5715,6 +6914,7 @@
           "bought": false
         }
       ],
+      "grocery_scanner_list_mode_v1": "plan",
       "grocery_scanner_recipes_v1": [
         {
           "name": "Pasta rood",
@@ -5828,7 +7028,12 @@
     ],
     "barcodePreview": "",
     "scannerMessage": "External match: Volkoren pasta",
-    "shoppingSections": "To buy (2)Uncategorised (2)Rode appelsElstarUncategorisedEditDeleteKruidenmix1 packBarcode: 8710000000077UncategorisedEditDelete",
+    "subtitle": "Build and save recipes from your items",
+    "listMode": "Plan / Shop · 2",
+    "listAddPreview": "",
+    "shoppingSections": "No aisle2Edit Rode appelsElstar−2+Edit KruidenmixScanned−1 pack+",
+    "listAction": "Start shopping · 2 items",
+    "moveList": "Volkoren pastaNew",
     "badges": [
       "2",
       "2"
@@ -5866,6 +7071,11 @@
     ],
     "toast": "✓ Tomatensaus added to the recipe",
     "storage": {
+      "grocery_scanner_aisle_memory_v1": {
+        "halfvolle melk": "Dairy",
+        "mysterie": "Pantry",
+        "volkoren pasta": "Pantry"
+      },
       "grocery_scanner_barcode_cache_v1": {
         "8710000000001": {
           "found": true,
@@ -5924,7 +7134,7 @@
           "id": "id-1",
           "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Rode appels",
-          "quantity": null,
+          "quantity": 2,
           "unit": "",
           "category": "",
           "note": "Elstar",
@@ -5967,6 +7177,7 @@
           "bought": false
         }
       ],
+      "grocery_scanner_list_mode_v1": "plan",
       "grocery_scanner_recipes_v1": [
         {
           "name": "Pasta rood",
@@ -6080,7 +7291,12 @@
     ],
     "barcodePreview": "",
     "scannerMessage": "External match: Volkoren pasta",
-    "shoppingSections": "To buy (2)Uncategorised (2)Rode appelsElstarUncategorisedEditDeleteKruidenmix1 packBarcode: 8710000000077UncategorisedEditDelete",
+    "subtitle": "AI, daily targets, backup and statistics",
+    "listMode": "Plan / Shop · 2",
+    "listAddPreview": "",
+    "shoppingSections": "No aisle2Edit Rode appelsElstar−2+Edit KruidenmixScanned−1 pack+",
+    "listAction": "Start shopping · 2 items",
+    "moveList": "Volkoren pastaNew",
     "badges": [
       "2",
       "2"
@@ -6118,6 +7334,11 @@
     ],
     "toast": "✓ Tomatensaus added to the recipe",
     "storage": {
+      "grocery_scanner_aisle_memory_v1": {
+        "halfvolle melk": "Dairy",
+        "mysterie": "Pantry",
+        "volkoren pasta": "Pantry"
+      },
       "grocery_scanner_barcode_cache_v1": {
         "8710000000001": {
           "found": true,
@@ -6176,7 +7397,7 @@
           "id": "id-1",
           "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Rode appels",
-          "quantity": null,
+          "quantity": 2,
           "unit": "",
           "category": "",
           "note": "Elstar",
@@ -6219,6 +7440,7 @@
           "bought": false
         }
       ],
+      "grocery_scanner_list_mode_v1": "plan",
       "grocery_scanner_recipes_v1": [
         {
           "name": "Pasta rood",
@@ -6332,7 +7554,12 @@
     ],
     "barcodePreview": "",
     "scannerMessage": "External match: Volkoren pasta",
-    "shoppingSections": "To buy (2)Uncategorised (2)Rode appelsElstarUncategorisedEditDeleteKruidenmix1 packBarcode: 8710000000077UncategorisedEditDelete",
+    "subtitle": "AI, daily targets, backup and statistics",
+    "listMode": "Plan / Shop · 2",
+    "listAddPreview": "",
+    "shoppingSections": "No aisle2Edit Rode appelsElstar−2+Edit KruidenmixScanned−1 pack+",
+    "listAction": "Start shopping · 2 items",
+    "moveList": "Volkoren pastaNew",
     "badges": [
       "2",
       "2"
@@ -6370,6 +7597,11 @@
     ],
     "toast": "✓ Tomatensaus added to the recipe",
     "storage": {
+      "grocery_scanner_aisle_memory_v1": {
+        "halfvolle melk": "Dairy",
+        "mysterie": "Pantry",
+        "volkoren pasta": "Pantry"
+      },
       "grocery_scanner_anthropic_key_v1": "sk-ant-test",
       "grocery_scanner_barcode_cache_v1": {
         "8710000000001": {
@@ -6429,7 +7661,7 @@
           "id": "id-1",
           "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Rode appels",
-          "quantity": null,
+          "quantity": 2,
           "unit": "",
           "category": "",
           "note": "Elstar",
@@ -6472,6 +7704,7 @@
           "bought": false
         }
       ],
+      "grocery_scanner_list_mode_v1": "plan",
       "grocery_scanner_recipes_v1": [
         {
           "name": "Pasta rood",
@@ -6585,7 +7818,12 @@
     ],
     "barcodePreview": "",
     "scannerMessage": "External match: Volkoren pasta",
-    "shoppingSections": "To buy (2)Uncategorised (2)Rode appelsElstarUncategorisedEditDeleteKruidenmix1 packBarcode: 8710000000077UncategorisedEditDelete",
+    "subtitle": "Build and save recipes from your items",
+    "listMode": "Plan / Shop · 2",
+    "listAddPreview": "",
+    "shoppingSections": "No aisle2Edit Rode appelsElstar−2+Edit KruidenmixScanned−1 pack+",
+    "listAction": "Start shopping · 2 items",
+    "moveList": "Volkoren pastaNew",
     "badges": [
       "2",
       "2"
@@ -6623,6 +7861,11 @@
     ],
     "toast": "✓ Tomatensaus added to the recipe",
     "storage": {
+      "grocery_scanner_aisle_memory_v1": {
+        "halfvolle melk": "Dairy",
+        "mysterie": "Pantry",
+        "volkoren pasta": "Pantry"
+      },
       "grocery_scanner_anthropic_key_v1": "sk-ant-test",
       "grocery_scanner_barcode_cache_v1": {
         "8710000000001": {
@@ -6682,7 +7925,7 @@
           "id": "id-1",
           "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Rode appels",
-          "quantity": null,
+          "quantity": 2,
           "unit": "",
           "category": "",
           "note": "Elstar",
@@ -6725,6 +7968,7 @@
           "bought": false
         }
       ],
+      "grocery_scanner_list_mode_v1": "plan",
       "grocery_scanner_recipes_v1": [
         {
           "name": "Pasta rood",
@@ -6838,7 +8082,12 @@
     ],
     "barcodePreview": "",
     "scannerMessage": "External match: Volkoren pasta",
-    "shoppingSections": "To buy (2)Uncategorised (2)Rode appelsElstarUncategorisedEditDeleteKruidenmix1 packBarcode: 8710000000077UncategorisedEditDelete",
+    "subtitle": "Build and save recipes from your items",
+    "listMode": "Plan / Shop · 2",
+    "listAddPreview": "",
+    "shoppingSections": "No aisle2Edit Rode appelsElstar−2+Edit KruidenmixScanned−1 pack+",
+    "listAction": "Start shopping · 2 items",
+    "moveList": "Volkoren pastaNew",
     "badges": [
       "2",
       "2"
@@ -6876,6 +8125,11 @@
     ],
     "toast": "✓ Tomatensaus added to the recipe",
     "storage": {
+      "grocery_scanner_aisle_memory_v1": {
+        "halfvolle melk": "Dairy",
+        "mysterie": "Pantry",
+        "volkoren pasta": "Pantry"
+      },
       "grocery_scanner_anthropic_key_v1": "sk-ant-test",
       "grocery_scanner_barcode_cache_v1": {
         "8710000000001": {
@@ -6935,7 +8189,7 @@
           "id": "id-1",
           "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Rode appels",
-          "quantity": null,
+          "quantity": 2,
           "unit": "",
           "category": "",
           "note": "Elstar",
@@ -6978,6 +8232,7 @@
           "bought": false
         }
       ],
+      "grocery_scanner_list_mode_v1": "plan",
       "grocery_scanner_recipes_v1": [
         {
           "name": "Pasta rood",
@@ -7134,7 +8389,12 @@
     ],
     "barcodePreview": "",
     "scannerMessage": "External match: Volkoren pasta",
-    "shoppingSections": "To buy (4)Uncategorised (4)Rode appelsElstarUncategorisedEditDeleteKruidenmix1 packBarcode: 8710000000077UncategorisedEditDeleteUi1 pcsFor Pasta met ui: 150 gUncategorisedEditDeleteOlijfolieFor Pasta met ui: 2 el (28 g)UncategorisedEditDelete",
+    "subtitle": "Build and save recipes from your items",
+    "listMode": "Plan / Shop · 4",
+    "listAddPreview": "",
+    "shoppingSections": "No aisle4Edit Rode appelsElstar−2+Edit KruidenmixScanned−1 pack+Edit UiFor Pasta met ui: 150 g−1 pcs+Edit OlijfolieFor Pasta met ui: 2 el (28 g)Set amount",
+    "listAction": "Start shopping · 4 items",
+    "moveList": "Volkoren pastaNew",
     "badges": [
       "4",
       "2"
@@ -7174,6 +8434,11 @@
     ],
     "toast": "✓ Added 2 missing ingredients to your shopping list.",
     "storage": {
+      "grocery_scanner_aisle_memory_v1": {
+        "halfvolle melk": "Dairy",
+        "mysterie": "Pantry",
+        "volkoren pasta": "Pantry"
+      },
       "grocery_scanner_anthropic_key_v1": "sk-ant-test",
       "grocery_scanner_barcode_cache_v1": {
         "8710000000001": {
@@ -7233,7 +8498,7 @@
           "id": "id-1",
           "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Rode appels",
-          "quantity": null,
+          "quantity": 2,
           "unit": "",
           "category": "",
           "note": "Elstar",
@@ -7322,6 +8587,7 @@
           "bought": false
         }
       ],
+      "grocery_scanner_list_mode_v1": "plan",
       "grocery_scanner_recipes_v1": [
         {
           "name": "Pasta rood",
@@ -7478,7 +8744,12 @@
     ],
     "barcodePreview": "",
     "scannerMessage": "External match: Volkoren pasta",
-    "shoppingSections": "To buy (4)Uncategorised (4)Rode appelsElstarUncategorisedEditDeleteKruidenmix1 packBarcode: 8710000000077UncategorisedEditDeleteUi1 pcsFor Pasta met ui: 150 gUncategorisedEditDeleteOlijfolieFor Pasta met ui: 2 el (28 g)UncategorisedEditDelete",
+    "subtitle": "Build and save recipes from your items",
+    "listMode": "Plan / Shop · 4",
+    "listAddPreview": "",
+    "shoppingSections": "No aisle4Edit Rode appelsElstar−2+Edit KruidenmixScanned−1 pack+Edit UiFor Pasta met ui: 150 g−1 pcs+Edit OlijfolieFor Pasta met ui: 2 el (28 g)Set amount",
+    "listAction": "Start shopping · 4 items",
+    "moveList": "Volkoren pastaNew",
     "badges": [
       "4",
       "2"
@@ -7518,6 +8789,11 @@
     ],
     "toast": "✓ Added 2 missing ingredients to your shopping list.",
     "storage": {
+      "grocery_scanner_aisle_memory_v1": {
+        "halfvolle melk": "Dairy",
+        "mysterie": "Pantry",
+        "volkoren pasta": "Pantry"
+      },
       "grocery_scanner_anthropic_key_v1": "sk-ant-test",
       "grocery_scanner_barcode_cache_v1": {
         "8710000000001": {
@@ -7577,7 +8853,7 @@
           "id": "id-1",
           "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Rode appels",
-          "quantity": null,
+          "quantity": 2,
           "unit": "",
           "category": "",
           "note": "Elstar",
@@ -7666,6 +8942,7 @@
           "bought": false
         }
       ],
+      "grocery_scanner_list_mode_v1": "plan",
       "grocery_scanner_recipe_language_v1": "nl",
       "grocery_scanner_recipes_v1": [
         {
@@ -7823,7 +9100,12 @@
     ],
     "barcodePreview": "",
     "scannerMessage": "External match: Volkoren pasta",
-    "shoppingSections": "To buy (4)Uncategorised (4)Rode appelsElstarUncategorisedEditDeleteKruidenmix1 packBarcode: 8710000000077UncategorisedEditDeleteUi1 pcsFor Pasta met ui: 150 gUncategorisedEditDeleteOlijfolieFor Pasta met ui: 2 el (28 g)UncategorisedEditDelete",
+    "subtitle": "Build and save recipes from your items",
+    "listMode": "Plan / Shop · 4",
+    "listAddPreview": "",
+    "shoppingSections": "No aisle4Edit Rode appelsElstar−2+Edit KruidenmixScanned−1 pack+Edit UiFor Pasta met ui: 150 g−1 pcs+Edit OlijfolieFor Pasta met ui: 2 el (28 g)Set amount",
+    "listAction": "Start shopping · 4 items",
+    "moveList": "Volkoren pastaNew",
     "badges": [
       "4",
       "2"
@@ -7863,6 +9145,11 @@
     ],
     "toast": "✓ Added 2 missing ingredients to your shopping list.",
     "storage": {
+      "grocery_scanner_aisle_memory_v1": {
+        "halfvolle melk": "Dairy",
+        "mysterie": "Pantry",
+        "volkoren pasta": "Pantry"
+      },
       "grocery_scanner_anthropic_key_v1": "sk-ant-test",
       "grocery_scanner_barcode_cache_v1": {
         "8710000000001": {
@@ -7922,7 +9209,7 @@
           "id": "id-1",
           "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Rode appels",
-          "quantity": null,
+          "quantity": 2,
           "unit": "",
           "category": "",
           "note": "Elstar",
@@ -8011,6 +9298,7 @@
           "bought": false
         }
       ],
+      "grocery_scanner_list_mode_v1": "plan",
       "grocery_scanner_recipe_language_v1": "nl",
       "grocery_scanner_recipes_v1": [
         {
@@ -8219,7 +9507,7 @@
           "id": "id-1",
           "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Rode appels",
-          "quantity": null,
+          "quantity": 2,
           "unit": "",
           "category": "",
           "note": "Elstar",
@@ -8545,7 +9833,12 @@
     ],
     "barcodePreview": "",
     "scannerMessage": "External match: Volkoren pasta",
-    "shoppingSections": "To buy (4)Uncategorised (4)Rode appelsElstarUncategorisedEditDeleteKruidenmix1 packBarcode: 8710000000077UncategorisedEditDeleteUi1 pcsFor Pasta met ui: 150 gUncategorisedEditDeleteOlijfolieFor Pasta met ui: 2 el (28 g)UncategorisedEditDelete",
+    "subtitle": "What you already have in stock",
+    "listMode": "Plan / Shop · 4",
+    "listAddPreview": "",
+    "shoppingSections": "No aisle4Edit Rode appelsElstar−2+Edit KruidenmixScanned−1 pack+Edit UiFor Pasta met ui: 150 g−1 pcs+Edit OlijfolieFor Pasta met ui: 2 el (28 g)Set amount",
+    "listAction": "Start shopping · 4 items",
+    "moveList": "Volkoren pastaNew",
     "badges": [
       "4",
       "2"
@@ -8585,6 +9878,11 @@
     ],
     "toast": "✓ Added 2 missing ingredients to your shopping list.",
     "storage": {
+      "grocery_scanner_aisle_memory_v1": {
+        "halfvolle melk": "Dairy",
+        "mysterie": "Pantry",
+        "volkoren pasta": "Pantry"
+      },
       "grocery_scanner_anthropic_key_v1": "sk-ant-test",
       "grocery_scanner_barcode_cache_v1": {
         "8710000000001": {
@@ -8644,7 +9942,7 @@
           "id": "id-1",
           "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Rode appels",
-          "quantity": null,
+          "quantity": 2,
           "unit": "",
           "category": "",
           "note": "Elstar",
@@ -8733,6 +10031,7 @@
           "bought": false
         }
       ],
+      "grocery_scanner_list_mode_v1": "plan",
       "grocery_scanner_recipe_language_v1": "nl",
       "grocery_scanner_recipes_v1": [
         {
@@ -8948,7 +10247,12 @@
     ],
     "barcodePreview": "",
     "scannerMessage": "External match: Volkoren pasta",
-    "shoppingSections": "To buy (4)Uncategorised (4)Rode appelsElstarUncategorisedEditDeleteKruidenmix1 packBarcode: 8710000000077UncategorisedEditDeleteUi1 pcsFor Pasta met ui: 150 gUncategorisedEditDeleteOlijfolieFor Pasta met ui: 2 el (28 g)UncategorisedEditDelete",
+    "subtitle": "What you already have in stock",
+    "listMode": "Plan / Shop · 4",
+    "listAddPreview": "",
+    "shoppingSections": "No aisle4Edit Rode appelsElstar−2+Edit KruidenmixScanned−1 pack+Edit UiFor Pasta met ui: 150 g−1 pcs+Edit OlijfolieFor Pasta met ui: 2 el (28 g)Set amount",
+    "listAction": "Start shopping · 4 items",
+    "moveList": "Volkoren pastaNew",
     "badges": [
       "4",
       "2"
@@ -8986,6 +10290,11 @@
     ],
     "toast": "✓ Added 2 missing ingredients to your shopping list.",
     "storage": {
+      "grocery_scanner_aisle_memory_v1": {
+        "halfvolle melk": "Dairy",
+        "mysterie": "Pantry",
+        "volkoren pasta": "Pantry"
+      },
       "grocery_scanner_anthropic_key_v1": "sk-ant-test",
       "grocery_scanner_barcode_cache_v1": {
         "8710000000001": {
@@ -9045,7 +10354,7 @@
           "id": "id-1",
           "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Rode appels",
-          "quantity": null,
+          "quantity": 2,
           "unit": "",
           "category": "",
           "note": "Elstar",
@@ -9134,6 +10443,7 @@
           "bought": false
         }
       ],
+      "grocery_scanner_list_mode_v1": "plan",
       "grocery_scanner_recipe_language_v1": "nl",
       "grocery_scanner_recipes_v1": [
         {
@@ -9304,7 +10614,12 @@
     ],
     "barcodePreview": "",
     "scannerMessage": "External match: Volkoren pasta",
-    "shoppingSections": "",
+    "subtitle": "Nothing to buy",
+    "listMode": "Plan / Shop",
+    "listAddPreview": "",
+    "shoppingSections": "Your shopping list is emptyType what you need above, or scan a product on the Scanner tab.",
+    "listAction": "",
+    "moveList": "Volkoren pastaNew",
     "badges": [
       "4",
       "2"
@@ -9338,6 +10653,11 @@
     ],
     "toast": "✓ Added 2 missing ingredients to your shopping list.",
     "storage": {
+      "grocery_scanner_aisle_memory_v1": {
+        "halfvolle melk": "Dairy",
+        "mysterie": "Pantry",
+        "volkoren pasta": "Pantry"
+      },
       "grocery_scanner_anthropic_key_v1": "sk-ant-test",
       "grocery_scanner_barcode_cache_v1": {
         "8710000000001": {
@@ -9393,6 +10713,7 @@
         }
       },
       "grocery_scanner_items_v6": [],
+      "grocery_scanner_list_mode_v1": "plan",
       "grocery_scanner_recipe_language_v1": "nl",
       "grocery_scanner_recipes_v1": [
         {
@@ -9563,7 +10884,12 @@
     ],
     "barcodePreview": "",
     "scannerMessage": "Scanner idle.",
-    "shoppingSections": "To buy (4)Uncategorised (4)Rode appelsElstarUncategorisedEditDeleteKruidenmix1 packBarcode: 8710000000077UncategorisedEditDeleteUi1 pcsFor Pasta met ui: 150 gUncategorisedEditDeleteOlijfolieFor Pasta met ui: 2 el (28 g)UncategorisedEditDelete",
+    "subtitle": "Scan a barcode or add an item by hand",
+    "listMode": "Plan / Shop · 4",
+    "listAddPreview": "",
+    "shoppingSections": "No aisle4Edit Rode appelsElstar−2+Edit KruidenmixScanned−1 pack+Edit UiFor Pasta met ui: 150 g−1 pcs+Edit OlijfolieFor Pasta met ui: 2 el (28 g)Set amount",
+    "listAction": "Start shopping · 4 items",
+    "moveList": "",
     "badges": [
       "4",
       "2"
@@ -9603,6 +10929,11 @@
     ],
     "toast": "",
     "storage": {
+      "grocery_scanner_aisle_memory_v1": {
+        "halfvolle melk": "Dairy",
+        "mysterie": "Pantry",
+        "volkoren pasta": "Pantry"
+      },
       "grocery_scanner_anthropic_key_v1": "sk-ant-test",
       "grocery_scanner_barcode_cache_v1": {
         "8710000000001": {
@@ -9663,7 +10994,7 @@
           "id": "id-1",
           "updatedAt": "2026-01-15T10:00:00.000Z",
           "name": "Rode appels",
-          "quantity": null,
+          "quantity": 2,
           "unit": "",
           "category": "",
           "note": "Elstar",
@@ -9752,6 +11083,7 @@
           "bought": false
         }
       ],
+      "grocery_scanner_list_mode_v1": "plan",
       "grocery_scanner_recipe_language_v1": "nl",
       "grocery_scanner_recipes_v1": [
         {

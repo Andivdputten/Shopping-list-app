@@ -25,6 +25,7 @@ import { saveItems } from "./persistence.js";
 import { buildLookupNote } from "./product-lookup.js";
 import { startScanner } from "./scanner.js";
 import { findDuplicateBarcodeIndex, renderList } from "./shopping-list.js";
+import { rememberAisle } from "./aisle-memory.js";
 import { createShoppingItem, parsePackGrams, touchItem } from "./items.js";
 import { state } from "./state.js";
 import { switchTab } from "./tabs.js";
@@ -102,6 +103,7 @@ export function submitForm() {
     showToast(`${name} updated`);
   }
 
+  rememberAisle(name, category);
   saveItems();
   renderList();
   resetForm();

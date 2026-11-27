@@ -205,41 +205,70 @@
     </section>
 
     <!-- ================= LIST TAB ================= -->
-    <section class="tab-panel" id="panel-list" data-panel="list">
-      <section class="card">
-        <h2>Search &amp; quick add</h2>
+    <!-- Plan (build the list) and Shop (tick things off in the store); drawn by js/shopping-list.js. -->
+    <section class="tab-panel list-panel" id="panel-list" data-panel="list">
+      <div id="listSaveError" class="save-error hidden" role="alert">
+        <svg class="save-error-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="9" />
+          <path d="M12 7v6M12 16.5v.5" />
+        </svg>
+        <div>
+          <strong>Couldn't save your list</strong>
+          <p id="listSaveErrorText">
+            This device's storage for the app is full, so your last change will be gone after a reload.
+            Export a backup and remove old recipes in Settings to make room, then try again.
+          </p>
+          <button id="listSaveRetryButton" type="button" class="secondary-button">Try again</button>
+        </div>
+      </div>
 
-        <div class="input-row">
-          <input
-            id="searchInput"
-            type="text"
-            placeholder="Search, or type a new item name"
-            autocomplete="off"
-          />
-          <button id="quickAddButton" class="primary-button quick-add-button" disabled>
-            Add
+      <div class="list-modebar">
+        <div class="segmented" role="group" aria-label="List mode">
+          <button id="planModeButton" type="button" aria-pressed="true">Plan</button>
+          <button id="shopModeButton" type="button" aria-pressed="false">Shop</button>
+        </div>
+        <div class="list-menu-wrap">
+          <button
+            id="listMenuButton"
+            type="button"
+            class="icon-button"
+            aria-label="List actions"
+            aria-expanded="false"
+            aria-controls="listMenu"
+          >
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <circle cx="5" cy="12" r="2" />
+              <circle cx="12" cy="12" r="2" />
+              <circle cx="19" cy="12" r="2" />
+            </svg>
           </button>
+          <div id="listMenu" class="list-menu hidden">
+            <button id="clearButton" type="button" class="list-menu-item danger">Clear list…</button>
+          </div>
         </div>
+      </div>
+      <span id="shopModeHint" class="sr-only">Add items to start shopping</span>
 
-        <p class="hint-text">
-          Typing something that isn't on your list yet? Tap Add (or press Enter) to add it by name only — you can scan or fill in details later from the Edit button.
-        </p>
+      <section id="listAddBox" class="card list-addbox">
+        <div class="list-add-row">
+          <input
+            id="listAddInput"
+            type="text"
+            placeholder="Add an item, e.g. 2 l milk"
+            aria-label="Add an item"
+            autocomplete="off"
+            enterkeyhint="done"
+          />
+          <button id="listAddButton" type="button" class="primary-button" disabled>Add</button>
+        </div>
+        <div id="listAddPreview" class="list-add-preview hidden"></div>
       </section>
 
-      <section class="card">
-        <div class="list-header">
-          <h2>Your shopping list</h2>
-          <button id="clearButton" class="secondary-button">Clear all</button>
-        </div>
+      <div id="shoppingSections"></div>
 
-        <p class="hint-text">Tap an item to mark it bought or unbought.</p>
-
-        <div id="shoppingSections"></div>
-
-        <p id="emptyMessage" class="empty-message">
-          No items match the current filters.
-        </p>
-      </section>
+      <div id="listActionBar" class="list-action-bar hidden">
+        <button id="listActionButton" type="button" class="primary-button"></button>
+      </div>
     </section>
 
     <!-- ================= PANTRY TAB ================= -->
@@ -716,6 +745,72 @@
 
   <!-- Release notes and help (js/info-dialogs.js). -->
   <dialog id="infoDialog" class="cook-dialog" aria-labelledby="infoDialogTitle"></dialog>
+
+  <!-- Edit one shopping-list item (js/list-item-sheet.js). -->
+  <dialog id="listItemDialog" class="cook-dialog sheet-dialog" aria-labelledby="listItemDialogTitle">
+    <form id="listItemForm" method="dialog" novalidate>
+      <h2 id="listItemDialogTitle">Edit item</h2>
+      <label class="sheet-label" for="listItemName">Name</label>
+      <input id="listItemName" type="text" autocomplete="off" required />
+      <span class="sheet-label" id="listItemAmountLabel">Amount</span>
+      <div class="sheet-amount" role="group" aria-labelledby="listItemAmountLabel">
+        <input id="listItemQuantity" type="number" inputmode="decimal" min="0" step="any" placeholder="Amount" aria-label="Quantity" />
+        <select id="listItemUnit" aria-label="Unit">
+          <option value="">No unit</option>
+          <option value="pcs">pcs</option>
+          <option value="g">g</option>
+          <option value="kg">kg</option>
+          <option value="ml">ml</option>
+          <option value="l">l</option>
+          <option value="pack">pack</option>
+          <option value="bottle">bottle</option>
+          <option value="can">can</option>
+        </select>
+      </div>
+      <div id="listItemPresets" class="chips" role="group" aria-label="Quick amounts"></div>
+      <fieldset class="sheet-aisles">
+        <legend class="sheet-label">Aisle</legend>
+        <div id="listItemAisles" class="chips"></div>
+      </fieldset>
+      <label class="sheet-label" for="listItemNote">Note</label>
+      <input id="listItemNote" type="text" autocomplete="off" placeholder="e.g. cheapest brand, ripe ones" />
+      <details class="sheet-more">
+        <summary>More details <small>Barcode, nutrition per 100 g, pack weight</small></summary>
+        <label class="sheet-label" for="listItemBarcode">Barcode</label>
+        <input id="listItemBarcode" type="text" readonly placeholder="No barcode" />
+        <span class="sheet-label">Nutrition per 100 g</span>
+        <div class="sheet-grid">
+          <input id="listItemKcal" type="number" inputmode="decimal" min="0" step="any" placeholder="kcal" aria-label="kcal per 100 g" />
+          <input id="listItemProtein" type="number" inputmode="decimal" min="0" step="any" placeholder="protein (g)" aria-label="Protein per 100 g" />
+          <input id="listItemCarbs" type="number" inputmode="decimal" min="0" step="any" placeholder="carbs (g)" aria-label="Carbs per 100 g" />
+          <input id="listItemFat" type="number" inputmode="decimal" min="0" step="any" placeholder="fat (g)" aria-label="Fat per 100 g" />
+          <input id="listItemFiber" type="number" inputmode="decimal" min="0" step="any" placeholder="fibre (g)" aria-label="Fibre per 100 g" />
+        </div>
+        <label class="sheet-label" for="listItemPackGrams">Weight per pack or piece (g)</label>
+        <input id="listItemPackGrams" type="number" inputmode="decimal" min="0" step="any" placeholder="e.g. 5000" />
+      </details>
+      <p id="listItemError" class="sheet-error" role="alert"></p>
+      <div class="sheet-actions">
+        <button id="listItemDeleteButton" type="button" class="text-button danger">Delete</button>
+        <span class="sheet-actions-end">
+          <button id="listItemCancelButton" type="button" class="text-button">Cancel</button>
+          <button id="listItemSaveButton" type="submit" class="primary-button">Save</button>
+        </span>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- "Done shopping": confirm moving the ticked items to the pantry (js/shopping-list.js). -->
+  <dialog id="moveDialog" class="cook-dialog sheet-dialog" aria-labelledby="moveDialogTitle" aria-describedby="moveDialogText">
+    <h2 id="moveDialogTitle">Move items to your pantry?</h2>
+    <p id="moveDialogText" class="sheet-sub">They leave the shopping list and their amounts go into stock.</p>
+    <ul id="moveList" class="move-list"></ul>
+    <p id="moveStayNote" class="sheet-sub"></p>
+    <div class="sheet-actions">
+      <button id="moveCancelButton" type="button" class="text-button">Keep shopping</button>
+      <button id="moveConfirmButton" type="button" class="primary-button"></button>
+    </div>
+  </dialog>
 
   <nav class="bottom-tabs" id="bottomTabs" aria-label="Main navigation">
     <button class="tab-button" data-tab="scanner" aria-current="page">

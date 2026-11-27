@@ -64,14 +64,55 @@ export const recipeBuilderMessage = document.getElementById("recipeBuilderMessag
 export const recipeMissingNutritionNote = document.getElementById("recipeMissingNutritionNote");
 export const recipeWeightTotals = document.getElementById("recipeWeightTotals");
 export const recipePer100gTotals = document.getElementById("recipePer100gTotals");
-export const searchInput = document.getElementById("searchInput");
-export const quickAddButton = document.getElementById("quickAddButton");
 export const clearStockButton = document.getElementById("clearStockButton");
 export const stockList = document.getElementById("stockList");
 export const stockEmptyMessage = document.getElementById("stockEmptyMessage");
 export const clearButton = document.getElementById("clearButton");
 export const shoppingSections = document.getElementById("shoppingSections");
-export const emptyMessage = document.getElementById("emptyMessage");
+// The List tab's Plan and Shop modes, the item sheet and the "Done shopping" dialog.
+export const listEls = Object.fromEntries(
+  [
+    "listSaveError",
+    "listSaveErrorText",
+    "listSaveRetryButton",
+    "planModeButton",
+    "shopModeButton",
+    "shopModeHint",
+    "listMenuButton",
+    "listMenu",
+    "listAddBox",
+    "listAddInput",
+    "listAddButton",
+    "listAddPreview",
+    "listActionBar",
+    "listActionButton",
+    "listItemDialog",
+    "listItemForm",
+    "listItemDialogTitle",
+    "listItemName",
+    "listItemQuantity",
+    "listItemUnit",
+    "listItemPresets",
+    "listItemAisles",
+    "listItemNote",
+    "listItemBarcode",
+    "listItemKcal",
+    "listItemProtein",
+    "listItemCarbs",
+    "listItemFat",
+    "listItemFiber",
+    "listItemPackGrams",
+    "listItemError",
+    "listItemDeleteButton",
+    "listItemCancelButton",
+    "moveDialog",
+    "moveDialogTitle",
+    "moveList",
+    "moveStayNote",
+    "moveCancelButton",
+    "moveConfirmButton"
+  ].map((id) => [id, document.getElementById(id)])
+);
 export const statusEl = document.getElementById("status");
 export const bottomTabs = document.getElementById("bottomTabs");
 export const tabButtons = document.querySelectorAll(".tab-button");
@@ -150,10 +191,8 @@ export function allElementsPresent() {
     recipeEditorModeText,
     duplicateRecipeButton,
     cancelRecipeEditButton,
-    searchInput,
     clearButton,
     shoppingSections,
-    emptyMessage,
     clearStockButton,
     stockList,
     stockEmptyMessage,
@@ -177,7 +216,7 @@ export function allElementsPresent() {
     pageSubtitle,
     listTabBadge,
     pantryTabBadge,
-    quickAddButton,
+    ...Object.values(listEls),
     apiKeyInput,
     saveApiKeyButton,
     clearApiKeyButton,

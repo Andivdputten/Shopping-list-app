@@ -145,7 +145,12 @@ async function capture(page) {
       ].map(value),
       barcodePreview: text("barcodePreview"),
       scannerMessage: text("scannerMessage"),
+      subtitle: text("pageSubtitle"),
+      listMode: text("planModeButton") + " / " + text("shopModeButton"),
+      listAddPreview: text("listAddPreview"),
       shoppingSections: text("shoppingSections"),
+      listAction: text("listActionButton"),
+      moveList: text("moveList"),
       badges: [text("listTabBadge"), text("pantryTabBadge")],
       stockList: text("stockList"),
       pantryScanMessage: text("pantryScanMessage"),
@@ -266,14 +271,15 @@ test("main flows match the recorded reference", { timeout: 120000 }, async () =>
     await settle();
     await record("start");
 
-    // Shopping list: quick add, search filter.
+    // Shopping list: add by name, then the same name with an amount, which is added to the item.
     await tab("list");
-    await setValue("searchInput", "Appels");
-    await click("#quickAddButton");
+    await setValue("listAddInput", "Appels");
+    await click("#listAddButton");
     await record("quick add");
-    await setValue("searchInput", "zzz");
-    await record("search with no match");
-    await setValue("searchInput", "");
+    await setValue("listAddInput", "2 appels");
+    await record("add box finds the same item");
+    await click("#listAddButton");
+    await record("amount added to existing item");
 
     // Scanner: known product, rescan of the same product, unknown product.
     await tab("scanner");
@@ -303,32 +309,45 @@ test("main flows match the recorded reference", { timeout: 120000 }, async () =>
     await click("#addButton");
     await record("add second known product");
 
-    // List: mark bought, move to stock, edit, delete.
+    // List: Shop mode, tick, "Done shopping" to the pantry, then edit, delete and Undo in Plan mode.
     await tab("list");
-    await page.evaluate(() => {
-      const button = [...document.querySelectorAll("#shoppingSections .item-button")].find((b) =>
-        b.textContent.includes("Halfvolle melk")
-      );
-      button.click();
-    });
+    const tick = (name) =>
+      page.evaluate((itemName) => {
+        const row = [...document.querySelectorAll("#shoppingSections .shop-row")].find((r) =>
+          r.textContent.includes(itemName)
+        );
+        row.querySelector("input").click();
+      }, name);
+    await click("#shopModeButton");
+    await record("shop mode");
+    await tick("Halfvolle melk");
     await record("mark bought");
-    await clickButton("shoppingSections", "To stock");
+    await click("#listActionButton");
+    await record("done shopping confirmation");
+    await click("#moveConfirmButton");
     await record("move to stock");
-    await page.evaluate(() => {
-      const button = [...document.querySelectorAll("#shoppingSections .item-button")].find((b) =>
-        b.textContent.includes("Volkoren pasta")
-      );
-      button.click();
-    });
-    await clickButton("shoppingSections", "To stock");
+    await tick("Volkoren pasta");
+    await click("#listActionButton");
+    await click("#moveConfirmButton");
     await record("move pasta to stock");
-    await clickButton("shoppingSections", "Edit");
-    await setValue("itemInput", "Rode appels");
-    await setValue("noteInput", "Elstar");
-    await click("#addButton");
+    await click("#planModeButton");
+    await click("#shoppingSections .plan-row-main");
+    await setValue("listItemName", "Rode appels");
+    await setValue("listItemNote", "Elstar");
+    await click("#listItemSaveButton");
     await record("edit item");
-    await clickButton("shoppingSections", "Delete", 1);
+    await page.evaluate(() =>
+      document.querySelectorAll("#shoppingSections .plan-row-main")[1].click()
+    );
+    await click("#listItemDeleteButton");
     await record("delete item");
+    await click("#toast .toast-action");
+    await record("undo delete");
+    await page.evaluate(() =>
+      document.querySelectorAll("#shoppingSections .plan-row-main")[1].click()
+    );
+    await click("#listItemDeleteButton");
+    await record("delete item again");
 
     // Pantry: quantity controls, pantry scanner with known, unknown and skipped barcodes, return to list.
     await tab("pantry");

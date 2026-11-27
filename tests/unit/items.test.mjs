@@ -146,3 +146,26 @@ test("a restock is recorded only when the quantity goes up", async () => {
   assert.equal(markRestocked({ quantity: 6, restockQuantity: 6 }, 6).restockQuantity, 6);
   assert.equal(markRestocked({ quantity: null, restockQuantity: 6 }, 6).restockQuantity, 6);
 });
+
+test("counted units get steppers; weights and volumes get presets instead", async () => {
+  const { isCountableUnit, unitPresets } = await import("../../js/items.js");
+  for (const unit of ["", "pcs", "pack", "bottle", "can", " PCS "]) {
+    assert.equal(isCountableUnit(unit), true, unit);
+    assert.deepEqual(unitPresets(unit), [], unit);
+  }
+  for (const unit of ["g", "kg", "ml", "l", "KG"]) {
+    assert.equal(isCountableUnit(unit), false, unit);
+  }
+  assert.deepEqual(
+    unitPresets("g").map((p) => `${p.quantity} ${p.unit}`),
+    ["100 g", "250 g", "500 g", "1 kg"]
+  );
+  assert.deepEqual(
+    unitPresets("ml").map((p) => `${p.quantity} ${p.unit}`),
+    ["250 ml", "500 ml", "1 l"]
+  );
+  assert.deepEqual(
+    unitPresets("l").map((p) => `${p.quantity} ${p.unit}`),
+    ["0.5 l", "1 l", "1.5 l", "2 l"]
+  );
+});
