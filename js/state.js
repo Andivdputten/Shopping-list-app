@@ -3,7 +3,8 @@
 // main.js fills in the stored data at start-up.
 export const state = {
   items: null,
-  editIndex: null,
+  // The id of the list item loaded in the Scanner tab's form for editing, or null when adding.
+  editId: null,
   pendingBarcode: "",
   pendingNutrition: null,
   html5QrCode: null,

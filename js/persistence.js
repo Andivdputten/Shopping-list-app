@@ -54,12 +54,65 @@ export function setCachedBarcodeLookup(barcode, productData) {
   saveBarcodeCache(state.barcodeCache);
 }
 
-export function saveStockItems() {
-  localStorage.setItem(STOCK_STORAGE_KEY, JSON.stringify(state.stockItems));
+// Called with the storage key when saving the list or pantry fails (storage full, private browsing),
+// so the shopping list can show an error instead of the change silently disappearing on reload.
+let saveFailureHandler = null;
+
+export function setSaveFailureHandler(handler) {
+  saveFailureHandler = handler;
 }
 
+function reportSaveFailure(key) {
+  if (saveFailureHandler) {
+    saveFailureHandler(key);
+  }
+  return false;
+}
+
+// Returns true when saved, false when the browser refused the write.
+export function saveStockItems() {
+  try {
+    localStorage.setItem(STOCK_STORAGE_KEY, JSON.stringify(state.stockItems));
+    return true;
+  } catch (error) {
+    return reportSaveFailure(STOCK_STORAGE_KEY);
+  }
+}
+
+// Returns true when saved, false when the browser refused the write.
 export function saveItems() {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(state.items));
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state.items));
+    return true;
+  } catch (error) {
+    return reportSaveFailure(STORAGE_KEY);
+  }
+}
+
+// Saves the list and the pantry together, for changes that move items from one to the other.
+// Both writes succeed, or both stored values are put back as they were, so an item is never
+// lost from both or saved in both. Returns false (after reporting it) when it was rolled back.
+export function saveListAndStock() {
+  const keys = [STORAGE_KEY, STOCK_STORAGE_KEY];
+  const previous = keys.map((key) => localStorage.getItem(key));
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state.items));
+    localStorage.setItem(STOCK_STORAGE_KEY, JSON.stringify(state.stockItems));
+    return true;
+  } catch (error) {
+    keys.forEach((key, i) => {
+      try {
+        if (previous[i] === null) {
+          localStorage.removeItem(key);
+        } else {
+          localStorage.setItem(key, previous[i]);
+        }
+      } catch (restoreError) {
+        // Putting back the old, smaller value can't normally fail; nothing more can be done if it does.
+      }
+    });
+    return reportSaveFailure(STORAGE_KEY);
+  }
 }
 
 // Saves the daily target settings; storage can fail (full or private browsing), which only loses this change.

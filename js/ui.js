@@ -4,8 +4,9 @@ import { state } from "./state.js";
 
 // Shows a short pop-up at the bottom of the screen. An optional action ({ label, onClick, durationMs })
 // adds a button, such as Undo, and keeps the pop-up up longer so there is time to tap it.
-export function showToast(message, action) {
-  toastEl.textContent = `✓ ${message}`;
+// options.icon = false leaves out the check mark, for messages such as "Spinach deleted".
+export function showToast(message, action, options = {}) {
+  toastEl.textContent = options.icon === false ? message : `✓ ${message}`;
   toastEl.classList.toggle("has-action", Boolean(action));
 
   if (action) {

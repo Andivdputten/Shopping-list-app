@@ -13,9 +13,12 @@ export const HELP_SECTIONS = {
   list: {
     title: "Shopping list",
     lines: [
-      "Search your list, or type a new item and tap Add to put it on the list by name only.",
-      "Tap an item when it's in your basket to mark it bought; Edit changes its details.",
-      "Bought items get To stock, which moves them to the pantry, so the app knows what you have at home."
+      'Plan: type an item with or without an amount, such as "2 l milk" or "500g mince", and tap Add. Items you put in an aisle before, or have in your pantry, land in that aisle.',
+      'Already on the list? The button offers to add the amount to it ("Make it 4 l") instead of a second copy.',
+      "Use − and + for things you count; tap an amount in g, kg, ml or l, or an item's name, to change it, its aisle or note, or to delete it (with Undo).",
+      "Shop: big tick boxes for the store, with your progress at the top. The list and mode are kept on this device only.",
+      '"Done shopping" moves everything you ticked into the pantry after you confirm; what you didn\'t tick stays on the list.',
+      "An empty list suggests pantry items that are running low (at or below a fifth of what you last stocked up to)."
     ]
   },
   pantry: {

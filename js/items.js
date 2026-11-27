@@ -68,6 +68,44 @@ export function parsePackageQuantity(text) {
   return { quantity: Math.round(quantity * 100) / 100, unit };
 }
 
+// A new stable id for a list or pantry item. crypto.randomUUID() needs a secure context (https or localhost);
+// elsewhere a random version-4 UUID is built from crypto.getRandomValues().
+export function newItemId() {
+  if (typeof crypto !== "undefined" && typeof crypto.randomUUID === "function") {
+    return crypto.randomUUID();
+  }
+  const bytes = crypto.getRandomValues(new Uint8Array(16));
+  bytes[6] = (bytes[6] & 0x0f) | 0x40;
+  bytes[8] = (bytes[8] & 0x3f) | 0x80;
+  const hex = [...bytes].map((b) => b.toString(16).padStart(2, "0")).join("");
+  return `${hex.slice(0, 8)}-${hex.slice(8, 12)}-${hex.slice(12, 16)}-${hex.slice(16, 20)}-${hex.slice(20)}`;
+}
+
+export function isItemId(value) {
+  return typeof value === "string" && value.trim() !== "";
+}
+
+// Marks an item as changed now, so a future sync can tell which copy is newer.
+export function touchItem(item) {
+  item.updatedAt = new Date().toISOString();
+  return item;
+}
+
+// Gives every item an id that is unique within its list: missing ids are created and the second
+// copy of a repeated id gets a new one. Returns whether anything changed, so the caller can save it.
+export function ensureUniqueIds(items) {
+  const seen = new Set();
+  let changed = false;
+  items.forEach((item) => {
+    if (!isItemId(item.id) || seen.has(item.id)) {
+      item.id = newItemId();
+      changed = true;
+    }
+    seen.add(item.id);
+  });
+  return changed;
+}
+
 // Turns a number into a positive quantity, or null when it is missing, zero, negative or not a number.
 export function positiveQuantityOrNull(value) {
   return typeof value === "number" && Number.isFinite(value) && value > 0 ? value : null;
@@ -77,6 +115,9 @@ export function positiveQuantityOrNull(value) {
 // The single definition of a pantry item; shopping items are the same plus a "bought" flag.
 export function createStockItem(item) {
   return {
+    // Stable identity, so edits, Undo and moves never depend on an item's position in the list.
+    id: isItemId(item.id) ? item.id : newItemId(),
+    updatedAt: typeof item.updatedAt === "string" ? item.updatedAt : new Date().toISOString(),
     name: typeof item.name === "string" ? item.name : "",
     quantity: positiveQuantityOrNull(item.quantity),
     unit: typeof item.unit === "string" ? item.unit : "",
@@ -90,8 +131,34 @@ export function createStockItem(item) {
     packGrams: positiveQuantityOrNull(item.packGrams),
     // Set when nutrition was found by name ("nevo" or "off"), so its source (and NEVO version) can be shown.
     nutritionSource: ["nevo", "off"].includes(item.nutritionSource) ? item.nutritionSource : null,
-    nevoVersion: typeof item.nevoVersion === "string" ? item.nevoVersion : null
+    nevoVersion: typeof item.nevoVersion === "string" ? item.nevoVersion : null,
+    // The pantry quantity right after the last restock (moved in from the list, scanned in, or raised
+    // by hand); "running low" is measured against it. null when unknown.
+    restockQuantity: positiveQuantityOrNull(item.restockQuantity)
   };
+}
+
+// Records a restock: when the quantity went up (or was unknown before), the new quantity becomes the
+// level "running low" is measured against. Lowering a quantity (cooking, using) never changes it.
+export function markRestocked(item, quantityBefore) {
+  const now = positiveQuantityOrNull(item.quantity);
+  const before = positiveQuantityOrNull(quantityBefore);
+  if (now !== null && (before === null || now > before)) {
+    item.restockQuantity = now;
+  }
+  return item;
+}
+
+// A pantry item is running low at or below 20% of its last restock, rounded up to a whole number:
+// restocked to 6 it is low at 2 or fewer, restocked to 3 at 1 or fewer. Items without a quantity or
+// a known restock amount are never counted as low.
+export function isRunningLow(item) {
+  const quantity = positiveQuantityOrNull(item.quantity);
+  const restock = positiveQuantityOrNull(item.restockQuantity);
+  if (quantity === null || restock === null) {
+    return false;
+  }
+  return quantity <= Math.ceil(0.2 * restock);
 }
 
 export function mergeStockItems(existingItem, incomingItem) {
@@ -223,4 +290,43 @@ export function normalizeStockLink(value) {
     return null;
   }
   return typeof value === "string" && value.trim() !== "" ? value.trim() : undefined;
+}
+
+// Weight and volume units: amounts like 300 g have no sensible +1 step, so the list opens the item
+// sheet with presets instead. Everything else (no unit, pcs, pack, bottle, can) is counted in ones.
+const MEASURED_UNITS = ["g", "kg", "ml", "l"];
+
+export function isCountableUnit(unit) {
+  const normalized = typeof unit === "string" ? unit.trim().toLowerCase() : "";
+  return !MEASURED_UNITS.includes(normalized);
+}
+
+// Quick amounts offered in the item sheet for a unit: [{ quantity, unit }], empty for counted units.
+export function unitPresets(unit) {
+  const normalized = typeof unit === "string" ? unit.trim().toLowerCase() : "";
+  const presets = {
+    g: [
+      [100, "g"],
+      [250, "g"],
+      [500, "g"],
+      [1, "kg"]
+    ],
+    kg: [
+      [0.5, "kg"],
+      [1, "kg"],
+      [2, "kg"]
+    ],
+    ml: [
+      [250, "ml"],
+      [500, "ml"],
+      [1, "l"]
+    ],
+    l: [
+      [0.5, "l"],
+      [1, "l"],
+      [1.5, "l"],
+      [2, "l"]
+    ]
+  }[normalized];
+  return (presets || []).map(([quantity, presetUnit]) => ({ quantity, unit: presetUnit }));
 }

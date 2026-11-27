@@ -25,8 +25,24 @@ export function initTabs() {
   switchTab("scanner");
 }
 
+// Tabs whose header subtitle changes with their content (the List tab shows "12 to buy").
+const subtitleProviders = {};
+let activeTab = null;
+
+export function setSubtitleProvider(tabName, provider) {
+  subtitleProviders[tabName] = provider;
+}
+
+// Updates the header subtitle when that tab is the one on screen.
+export function refreshSubtitle(tabName) {
+  if (activeTab === tabName && subtitleProviders[tabName]) {
+    pageSubtitle.textContent = subtitleProviders[tabName]();
+  }
+}
+
 export function switchTab(tabName) {
   const info = TAB_INFO[tabName] || TAB_INFO.scanner;
+  activeTab = TAB_INFO[tabName] ? tabName : "scanner";
 
   tabPanels.forEach((panel) => {
     panel.classList.toggle("active", panel.dataset.panel === tabName);
@@ -42,7 +58,9 @@ export function switchTab(tabName) {
   });
 
   pageTitle.textContent = info.title;
-  pageSubtitle.textContent = info.subtitle;
+  pageSubtitle.textContent = subtitleProviders[activeTab]
+    ? subtitleProviders[activeTab]()
+    : info.subtitle;
 
   // Redraw on opening, so changes made elsewhere (targets, meal split, cooking) always show.
   if (tabName === "today") {

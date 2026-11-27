@@ -12,7 +12,13 @@ import { normalizeDisplayAmount, parseOptionalNumberInput } from "./format.js";
 import { ingredientSourceFields } from "./ingredient-nutrition.js";
 import { normalizeIntakeLog } from "./intake.js";
 import { normalizeNevoData } from "./nevo.js";
-import { createShoppingItem, createStockItem, normalizeStockLink } from "./items.js";
+import {
+  createShoppingItem,
+  createStockItem,
+  ensureUniqueIds,
+  isItemId,
+  normalizeStockLink
+} from "./items.js";
 import { normalizeNutrition } from "./nutrition.js";
 import { normalizeMealType, normalizeTargetSettings } from "./targets.js";
 
@@ -95,10 +101,30 @@ export function loadBarcodeCache() {
 }
 
 export function loadStockItems() {
-  return loadStoredList(STOCK_STORAGE_KEY, (item) => {
+  let idsAdded = false;
+  const items = loadStoredList(STOCK_STORAGE_KEY, (item) => {
     const name = storedItemName(item);
-    return name === "" ? null : { ...createStockItem(item), name };
+    if (name === "") {
+      return null;
+    }
+    idsAdded = idsAdded || !isItemId(item.id);
+    return { ...createStockItem(item), name };
   });
+  return keepIds(STOCK_STORAGE_KEY, items, idsAdded);
+}
+
+// Items saved before ids existed (or from an old backup) get them on load. They are written back once
+// so the ids stay the same on the next load; a failed write only means new ids next time.
+function keepIds(key, items, idsAdded) {
+  const duplicatesFixed = ensureUniqueIds(items);
+  if (idsAdded || duplicatesFixed) {
+    try {
+      localStorage.setItem(key, JSON.stringify(items));
+    } catch (error) {
+      // Storage full or unavailable: the ids still work until the page reloads.
+    }
+  }
+  return items;
 }
 
 // Reads a JSON array from storage and turns each entry into a clean record with normalizeEntry,
@@ -132,17 +158,20 @@ function storedItemName(item) {
 }
 
 export function loadItems() {
-  return loadStoredList(STORAGE_KEY, (item) => {
+  let idsAdded = false;
+  const items = loadStoredList(STORAGE_KEY, (item) => {
     const name = storedItemName(item);
     if (name === "") {
       return null;
     }
+    idsAdded = idsAdded || !isItemId(item.id);
     return {
       ...createShoppingItem(item),
       name,
       bought: typeof item.bought === "boolean" ? item.bought : false
     };
   });
+  return keepIds(STORAGE_KEY, items, idsAdded);
 }
 
 // Reads the daily target settings; missing or damaged data gives empty targets and the default meal split.

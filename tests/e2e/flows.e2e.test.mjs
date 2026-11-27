@@ -84,6 +84,30 @@ const AI_REPLY = {
   ]
 };
 
+// List and pantry items get random ids (crypto.randomUUID). They are replaced by "id-1", "id-2", …
+// in order of first appearance, so the recording is the same on every run but still shows when an
+// item keeps its id (moved to the pantry and back) or gets a new one.
+const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
+function normalizeIds(value, names) {
+  if (Array.isArray(value)) {
+    return value.map((entry) => normalizeIds(entry, names));
+  }
+  if (value === null || typeof value !== "object") {
+    return value;
+  }
+  return Object.fromEntries(
+    Object.entries(value).map(([key, entry]) => {
+      if (key === "id" && typeof entry === "string" && UUID.test(entry)) {
+        if (!names.has(entry)) {
+          names.set(entry, `id-${names.size + 1}`);
+        }
+        return [key, names.get(entry)];
+      }
+      return [key, normalizeIds(entry, names)];
+    })
+  );
+}
+
 // Everything a step can change: visible text of the main areas plus all stored data.
 async function capture(page) {
   return page.evaluate(() => {
@@ -121,7 +145,12 @@ async function capture(page) {
       ].map(value),
       barcodePreview: text("barcodePreview"),
       scannerMessage: text("scannerMessage"),
+      subtitle: text("pageSubtitle"),
+      listMode: text("planModeButton") + " / " + text("shopModeButton"),
+      listAddPreview: text("listAddPreview"),
       shoppingSections: text("shoppingSections"),
+      listAction: text("listActionButton"),
+      moveList: text("moveList"),
       badges: [text("listTabBadge"), text("pantryTabBadge")],
       stockList: text("stockList"),
       pantryScanMessage: text("pantryScanMessage"),
@@ -198,7 +227,9 @@ test("main flows match the recorded reference", { timeout: 120000 }, async () =>
   page.on("dialog", (dialog) => (dialogAnswers.shift() ? dialog.accept() : dialog.dismiss()));
 
   const steps = [];
-  const record = async (name) => steps.push({ name, ...(await capture(page)) });
+  const idNames = new Map();
+  const record = async (name) =>
+    steps.push(normalizeIds({ name, ...(await capture(page)) }, idNames));
 
   // DOM helpers that work regardless of which tab is visible.
   const click = (selector) => page.evaluate((s) => document.querySelector(s).click(), selector);
@@ -240,14 +271,15 @@ test("main flows match the recorded reference", { timeout: 120000 }, async () =>
     await settle();
     await record("start");
 
-    // Shopping list: quick add, search filter.
+    // Shopping list: add by name, then the same name with an amount, which is added to the item.
     await tab("list");
-    await setValue("searchInput", "Appels");
-    await click("#quickAddButton");
+    await setValue("listAddInput", "Appels");
+    await click("#listAddButton");
     await record("quick add");
-    await setValue("searchInput", "zzz");
-    await record("search with no match");
-    await setValue("searchInput", "");
+    await setValue("listAddInput", "2 appels");
+    await record("add box finds the same item");
+    await click("#listAddButton");
+    await record("amount added to existing item");
 
     // Scanner: known product, rescan of the same product, unknown product.
     await tab("scanner");
@@ -277,32 +309,45 @@ test("main flows match the recorded reference", { timeout: 120000 }, async () =>
     await click("#addButton");
     await record("add second known product");
 
-    // List: mark bought, move to stock, edit, delete.
+    // List: Shop mode, tick, "Done shopping" to the pantry, then edit, delete and Undo in Plan mode.
     await tab("list");
-    await page.evaluate(() => {
-      const button = [...document.querySelectorAll("#shoppingSections .item-button")].find((b) =>
-        b.textContent.includes("Halfvolle melk")
-      );
-      button.click();
-    });
+    const tick = (name) =>
+      page.evaluate((itemName) => {
+        const row = [...document.querySelectorAll("#shoppingSections .shop-row")].find((r) =>
+          r.textContent.includes(itemName)
+        );
+        row.querySelector("input").click();
+      }, name);
+    await click("#shopModeButton");
+    await record("shop mode");
+    await tick("Halfvolle melk");
     await record("mark bought");
-    await clickButton("shoppingSections", "To stock");
+    await click("#listActionButton");
+    await record("done shopping confirmation");
+    await click("#moveConfirmButton");
     await record("move to stock");
-    await page.evaluate(() => {
-      const button = [...document.querySelectorAll("#shoppingSections .item-button")].find((b) =>
-        b.textContent.includes("Volkoren pasta")
-      );
-      button.click();
-    });
-    await clickButton("shoppingSections", "To stock");
+    await tick("Volkoren pasta");
+    await click("#listActionButton");
+    await click("#moveConfirmButton");
     await record("move pasta to stock");
-    await clickButton("shoppingSections", "Edit");
-    await setValue("itemInput", "Rode appels");
-    await setValue("noteInput", "Elstar");
-    await click("#addButton");
+    await click("#planModeButton");
+    await click("#shoppingSections .plan-row-main");
+    await setValue("listItemName", "Rode appels");
+    await setValue("listItemNote", "Elstar");
+    await click("#listItemSaveButton");
     await record("edit item");
-    await clickButton("shoppingSections", "Delete", 1);
+    await page.evaluate(() =>
+      document.querySelectorAll("#shoppingSections .plan-row-main")[1].click()
+    );
+    await click("#listItemDeleteButton");
     await record("delete item");
+    await click("#toast .toast-action");
+    await record("undo delete");
+    await page.evaluate(() =>
+      document.querySelectorAll("#shoppingSections .plan-row-main")[1].click()
+    );
+    await click("#listItemDeleteButton");
+    await record("delete item again");
 
     // Pantry: quantity controls, pantry scanner with known, unknown and skipped barcodes, return to list.
     await tab("pantry");
@@ -410,7 +455,12 @@ test("main flows match the recorded reference", { timeout: 120000 }, async () =>
       click("#exportDataButton")
     ]);
     const exported = JSON.parse(await readFile(await download.path(), "utf8"));
-    steps.push({ name: "exported backup", file: download.suggestedFilename(), exported });
+    steps.push(
+      normalizeIds(
+        { name: "exported backup", file: download.suggestedFilename(), exported },
+        idNames
+      )
+    );
     await tab("pantry");
     await click("#clearStockButton");
     await record("clear stock cancelled");

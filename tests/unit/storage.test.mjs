@@ -61,3 +61,38 @@ test("recipe ingredients without an amount are kept, not deleted (regression)", 
     ]
   );
 });
+
+test("items saved before ids existed get ids on load, written back so they stay the same", () => {
+  store.set(STORAGE_KEY, JSON.stringify([{ name: "Melk" }, { name: "Brood", id: "kept" }]));
+  const first = loadItems();
+  assert.equal(first[1].id, "kept");
+  assert.match(first[0].id, /^[0-9a-f-]{36}$/);
+  // The ids were saved, so loading again gives the same ones.
+  assert.deepEqual(
+    loadItems().map((item) => item.id),
+    first.map((item) => item.id)
+  );
+
+  store.set(STOCK_STORAGE_KEY, JSON.stringify([{ name: "Rijst" }, { name: "Pasta" }]));
+  const stockIds = loadStockItems().map((item) => item.id);
+  assert.equal(new Set(stockIds).size, 2);
+  assert.deepEqual(
+    loadStockItems().map((item) => item.id),
+    stockIds
+  );
+});
+
+test("the restock amount is kept, and pantry data from before it existed still loads", () => {
+  store.set(
+    STOCK_STORAGE_KEY,
+    JSON.stringify([
+      { name: "Eggs", quantity: 2, unit: "pcs", restockQuantity: 10 },
+      // As written by the app (or a backup) before restock tracking: no id, no restockQuantity.
+      { name: "Rijst", quantity: 500, unit: "g", category: "Pantry" }
+    ])
+  );
+  const [eggs, rice] = loadStockItems();
+  assert.equal(eggs.restockQuantity, 10);
+  assert.equal(rice.restockQuantity, null);
+  assert.equal(rice.quantity, 500);
+});
