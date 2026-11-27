@@ -17,11 +17,13 @@
 // the API key directly; it only uses the RecipeAI object exported below.
 // ============================================================================
 
+import { completeRecipes, parseServerEvents } from "./recipe-stream.js";
+
 const API_KEY_STORAGE_KEY = "grocery_scanner_anthropic_key_v1";
 const API_URL = "https://api.anthropic.com/v1/messages";
 // Claude Haiku 5.5: the current low-cost Haiku model. It thinks before answering by default,
 // and that thinking counts toward max_tokens, which is why the recipe request allows 16,000 tokens.
-const MODEL = "claude-haiku-5-5";
+export const MODEL = "claude-haiku-5-5";
 const ANTHROPIC_VERSION = "2023-06-01";
 // How long to wait for the API before giving up, so a weak connection can't leave the button stuck on "Thinking...".
 // Recipe generation writes a long JSON answer, so it gets more time than the quick connection test.
@@ -56,7 +58,48 @@ function onUsage(listener) {
   usageListener = listener;
 }
 
-async function callClaude(messages, maxTokens, timeoutMs, extraBody) {
+// Reads a streamed answer (server-sent events) into the same shape as a plain answer, calling onText with
+// all text so far after every piece, so complete recipes can be shown while the rest is still being written.
+async function readStream(response, onText) {
+  const reader = response.body.getReader();
+  const decoder = new TextDecoder();
+  let buffer = "";
+  let text = "";
+  const result = { content: [], stop_reason: null, usage: {} };
+  for (;;) {
+    const { done, value } = await reader.read();
+    if (done) {
+      break;
+    }
+    const parsed = parseServerEvents(buffer + decoder.decode(value, { stream: true }));
+    buffer = parsed.rest;
+    for (const { event, data } of parsed.events) {
+      if (event === "message_start" && data.message) {
+        result.usage = { ...(data.message.usage || {}) };
+      } else if (
+        event === "content_block_delta" &&
+        data.delta &&
+        data.delta.type === "text_delta"
+      ) {
+        text += data.delta.text;
+        onText(text);
+      } else if (event === "message_delta") {
+        result.stop_reason = (data.delta && data.delta.stop_reason) || result.stop_reason;
+        // message_delta carries the final output token count for the whole answer.
+        if (data.usage) {
+          result.usage = { ...result.usage, ...data.usage };
+        }
+      } else if (event === "error") {
+        result.streamError = (data.error && data.error.message) || "The AI stopped with an error.";
+      }
+    }
+  }
+  result.content = [{ type: "text", text }];
+  return result;
+}
+
+// onText, when given, asks for a streamed answer (see readStream); without it the answer arrives at once.
+async function callClaude(messages, maxTokens, timeoutMs, extraBody, onText) {
   const apiKey = getApiKey();
 
   if (apiKey === "") {
@@ -82,7 +125,8 @@ async function callClaude(messages, maxTokens, timeoutMs, extraBody) {
         model: MODEL,
         max_tokens: maxTokens,
         messages,
-        ...(extraBody || {})
+        ...(extraBody || {}),
+        ...(onText ? { stream: true } : {})
       })
     });
   } catch (error) {
@@ -136,9 +180,19 @@ async function callClaude(messages, maxTokens, timeoutMs, extraBody) {
 
   let data;
   try {
-    data = await response.json();
+    const streamed =
+      onText && (response.headers.get("content-type") || "").includes("text/event-stream");
+    data = streamed ? await readStream(response, onText) : await response.json();
   } catch (error) {
-    // Covers both an unreadable body and the timeout firing while the body was still downloading.
+    // The time limit can also run out while the answer is still arriving.
+    if (error && error.name === "AbortError") {
+      return {
+        ok: false,
+        errorType: "timeout",
+        message: "The AI took too long to respond. Check your connection and try again."
+      };
+    }
+    // Covers an unreadable body and a connection that broke off mid-answer.
     return {
       ok: false,
       errorType: "parse_error",
@@ -151,6 +205,11 @@ async function callClaude(messages, maxTokens, timeoutMs, extraBody) {
   // Every answer is billed, also one that is cut off or declined below, so its usage is reported first.
   if (usageListener && data && data.usage) {
     usageListener(data.usage, MODEL);
+  }
+
+  // An error reported inside the stream (e.g. the API was overloaded part-way).
+  if (data.streamError) {
+    return { ok: false, errorType: "api_error", message: data.streamError };
   }
 
   // The answer was cut off at the token limit, so its JSON would be incomplete.
@@ -528,7 +587,6 @@ ${groups}${complexText}`;
 async function generateRecipes(stockItems, preferences, options) {
   const stockList = Array.isArray(stockItems) ? stockItems : [];
   const settings = options || {};
-  const languageName = RECIPE_LANGUAGES[settings.language] || RECIPE_LANGUAGES.en;
   const avoidNames = Array.isArray(settings.avoidNames)
     ? settings.avoidNames.filter((name) => typeof name === "string" && name.trim() !== "")
     : [];
@@ -544,15 +602,45 @@ async function generateRecipes(stockItems, preferences, options) {
   // Both groups are asked for at the same time, so the wait is that of the slower half. If one half
   // fails, the other half's recipes are still shown, with the error as a note.
   const groups = settings.onlyExtras === true ? ["needsExtras"] : ["ready", "needsExtras"];
+  // Each recipe is passed to settings.onRecipe the moment it is complete in the streamed answer, after the
+  // same clean-up as the final list (names checked, stock numbers turned into names, meal type set).
+  const finish = (raw, group) => {
+    const recipe = sanitizeRecipe(raw, group);
+    if (!recipe) {
+      return null;
+    }
+    applyStockIds([recipe], stockList);
+    if (MEAL_TYPE_NAMES.includes(settings.mealType)) {
+      recipe.mealType = settings.mealType;
+    }
+    return recipe;
+  };
+  const shownNames = new Set();
+  const onRaw = (raw, group) => {
+    const recipe = finish(raw, group);
+    if (
+      recipe &&
+      typeof settings.onRecipe === "function" &&
+      !shownNames.has(recipe.name.toLowerCase())
+    ) {
+      shownNames.add(recipe.name.toLowerCase());
+      settings.onRecipe(recipe);
+    }
+  };
   const results = await Promise.all(
     groups.map((group) =>
       requestGroup(
-        buildUserMessage(stockList, preferences, avoidNames, settings.mealType, {
+        buildRecipeRequest({
+          stockList,
+          preferences,
+          avoidNames,
+          mealType: settings.mealType,
           group,
-          complex: settings.complex === true
+          complex: settings.complex === true,
+          language: settings.language
         }),
         group,
-        languageName
+        (raw) => onRaw(raw, group)
       )
     )
   );
@@ -560,8 +648,9 @@ async function generateRecipes(stockItems, preferences, options) {
   const failed = results.find((result) => !result.ok);
   const seen = new Set();
   const recipes = results
-    .filter((result) => result.ok)
-    .flatMap((result) => result.recipes)
+    // A failed half still contributes the recipes it completed before it failed.
+    .flatMap((result) => (result.raw || []).map((raw) => finish(raw, result.group)))
+    .filter(Boolean)
     // The two halves are asked separately, so the same recipe could come back twice.
     .filter((recipe) => {
       const key = recipe.name.toLowerCase();
@@ -571,13 +660,6 @@ async function generateRecipes(stockItems, preferences, options) {
       seen.add(key);
       return true;
     });
-  applyStockIds(recipes, stockList);
-  // A chosen meal type is what was asked for, so the fit badge compares against that meal's share.
-  if (MEAL_TYPE_NAMES.includes(settings.mealType)) {
-    recipes.forEach((recipe) => {
-      recipe.mealType = settings.mealType;
-    });
-  }
 
   if (recipes.length === 0) {
     return (
@@ -591,27 +673,57 @@ async function generateRecipes(stockItems, preferences, options) {
   return { ok: true, recipes, partialError: failed ? failed.message : null };
 }
 
-// One request for one group of recipes; only that group is taken from the answer.
-async function requestGroup(userMessage, group, languageName) {
-  const result = await callClaude(
-    [{ role: "user", content: userMessage }],
-    16000,
-    RECIPE_TIMEOUT_MS,
-    {
-      system: buildSystemPrompt(languageName),
-      // No hidden reasoning: measured in the app, about three quarters of each answer (~11,800 of ~12,000
-      // output tokens for 3 recipes) was reasoning, which made suggestions slow, costly and near the limit.
-      // Claude Haiku 5.5 allows turning it off at effort "high" or lower.
-      thinking: { type: "disabled" },
-      output_config: {
-        effort: "low",
-        format: { type: "json_schema", schema: RECIPE_SCHEMA }
+// The request for one group of 3 recipes, without the model name; exported so the app and
+// tools/measure-recipes.mjs send exactly the same request.
+export function buildRecipeRequest({
+  stockList,
+  preferences,
+  avoidNames,
+  mealType,
+  group,
+  complex,
+  language
+}) {
+  return {
+    max_tokens: 16000,
+    system: buildSystemPrompt(RECIPE_LANGUAGES[language] || RECIPE_LANGUAGES.en),
+    messages: [
+      {
+        role: "user",
+        content: buildUserMessage(stockList, preferences, avoidNames || [], mealType, {
+          group,
+          complex
+        })
       }
+    ],
+    // No hidden reasoning: measured in the app, about three quarters of each answer (~11,800 of ~12,000
+    // output tokens for 3 recipes) was reasoning, which made suggestions slow, costly and near the limit.
+    // Claude Haiku 5.5 allows turning it off at effort "high" or lower.
+    thinking: { type: "disabled" },
+    output_config: {
+      effort: "low",
+      format: { type: "json_schema", schema: RECIPE_SCHEMA }
     }
-  );
+  };
+}
+
+// One streamed request for one group of recipes. onRaw gets each recipe object the moment it is complete;
+// the result holds all raw recipes of the group from the final answer (only that group is taken).
+async function requestGroup(request, group, onRaw) {
+  // The recipes completed so far: kept when the answer is cut off or breaks off later, so recipes
+  // already on screen don't disappear again.
+  let streamed = [];
+  const { max_tokens: maxTokens, messages, ...rest } = request;
+  const result = await callClaude(messages, maxTokens, RECIPE_TIMEOUT_MS, rest, (text) => {
+    const complete = completeRecipes(text, group);
+    for (let i = streamed.length; i < complete.length; i++) {
+      onRaw(complete[i]);
+    }
+    streamed = complete;
+  });
 
   if (!result.ok) {
-    return result;
+    return { ...result, group, raw: streamed };
   }
 
   // Structured outputs guarantee valid JSON of the schema's shape; the try/catch and checks below are a safety net.
@@ -634,10 +746,7 @@ async function requestGroup(userMessage, group, languageName) {
     };
   }
 
-  const recipes = (Array.isArray(parsed[group]) ? parsed[group] : [])
-    .map((raw) => sanitizeRecipe(raw, group))
-    .filter(Boolean);
-  return { ok: true, recipes };
+  return { ok: true, group, raw: Array.isArray(parsed[group]) ? parsed[group] : [] };
 }
 
 // The only surface the rest of the app talks to.

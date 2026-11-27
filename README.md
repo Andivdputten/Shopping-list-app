@@ -58,3 +58,16 @@ behaviour or wording on purpose, re-record that reference and review its diff:
 ```bash
 UPDATE_SNAPSHOTS=1 npm run test:e2e
 ```
+
+## Measuring the AI requests
+
+`tools/measure-recipes.mjs` sends the app's real recipe requests (with and without streaming, normal and
+complex) and prints the time to the first recipe, the total time, tokens, cost and pantry matches. It needs
+a Claude API key; use a separate key with a low spending limit.
+
+```bash
+ANTHROPIC_API_KEY=sk-ant-... node tools/measure-recipes.mjs --runs 2
+```
+
+In a Claude Code cloud session, add `NODE_USE_ENV_PROXY=1` in front and allow `api.anthropic.com` in the
+environment's network settings. `--dry-run` prints the requests without sending anything.
